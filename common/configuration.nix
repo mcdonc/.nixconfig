@@ -281,6 +281,7 @@ in
 
       shellAliases =  {
          swnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix switch";
+         bootnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot";
          ednix = "sudo emacs -nw $HOME/.nixconfig/configuration.nix";
          upnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix switch --upgrade";
          schnix = "nix search nixpkgs";

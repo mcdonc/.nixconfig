@@ -7,8 +7,8 @@
   hardware = {
     nvidia = {
       prime = {
-        # offload.enable = true; # enable to use intel gpu (hybrid mode)
-        sync.enable = true; # enable to use nvidia gpu (discrete mode)
+        offload.enable = true; # enable to use intel gpu (hybrid mode)
+        # sync.enable = true; # enable to use nvidia gpu (discrete mode)
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:1:0:0";
       };
