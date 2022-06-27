@@ -25,7 +25,12 @@ Usage
 - Add a symlink from ``~/.nixconfig/<newsystemname>/configuration.nix`` to
   ``~/.nixconfig/configuration.nix``.
 
-- Run ``sudo nixos-build -I nixos-config=$HOME/.nixconfig/configuration.nix boot``.
+- Rename ``/etc/nixos/configuration.nix{,aside}`` for safety.
+
+- Run ``sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix
+  dry-build`` (or ``dry-activate``) to test config.
+
+- Run ``sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot``.
 
 - Reboot into the version-controlled environment.  Use ``ednix`` to edit the
   current configuration.  Use ``swnix`` to build and switch to an updated
