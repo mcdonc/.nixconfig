@@ -23,7 +23,7 @@ Usage
   ``hardware-configuration.nix`` files in the newly copied directory.
   
 - Add a symlink from ``~/.nixconfig/<newsystemname>/configuration.nix`` to
- ``~/.nixconfig/configuration.nix``.
+  ``~/.nixconfig/configuration.nix``.
 
 - Run ``sudo nixos-build -I nixos-config=$HOME/.nixconfig/configuration.nix boot``.
 
