@@ -103,6 +103,9 @@
 ; don't show autocomplete dropdown (replace nul with 2 for 2 seconds later)
 (setq ac-auto-show-menu nil)
 
+; dont ask if we should follow symlinks
+(setq vc-follow-symlinks t)
+
 (add-to-list 'ac-dictionary-directories 
              "~/.emacs.d/elpa/auto-complete-1.4/dict")
 
@@ -531,3 +534,4 @@
 
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
+

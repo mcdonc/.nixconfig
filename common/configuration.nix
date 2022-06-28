@@ -30,9 +30,31 @@ in
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.splashImage = ./grub/pepebtw.png;
-  boot.loader.grub.splashMode = "normal"; #"stretch"
+  boot.loader.grub.splashMode = "stretch"; # "normal"
   boot.loader.grub.useOSProber = true;
+
+  boot.loader.timeout = 60;
+
+  # figure out how to do this for zsh; see
+  # https://discourse.nixos.org/t/early-boot-remote-decryption/16146
+  # https://nixos.wiki/wiki/Remote_LUKS_Unlocking
+  # https://nixos.wiki/wiki/ZFS#Optional_additional_setup_for_encrypted_ZFS
   
+  # boot.initrd.network = {
+  #   enable = true;
+  #   ssh = {
+  #     enable = true;
+  #     port = 32983;
+  #     hostKeys = [ "/root/initrd-ssh-key" ];
+  #     # All users being a member of the "wheel" group are allowed to connect and enter the password.
+  #     authorizedKeys = with lib; concatLists (
+  #       mapAttrsToList (
+  #         name: user: if elem "wheel" user.extraGroups then user.openssh.authorizedKeys.keys else []
+  #       ) config.users.users
+  #     );
+  #   };
+  # };
+
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.requestEncryptionCredentials = true;
 
