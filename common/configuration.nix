@@ -29,9 +29,10 @@ in
   boot.loader.grub.devices = [ "nodev" ];
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.efiSupport = true;
-  boot.loader.grub.splashImage = ./grub/btw.png;
+  boot.loader.grub.splashImage = ./grub/pepebtw.png;
+  boot.loader.grub.splashMode = "normal"; #"stretch"
   boot.loader.grub.useOSProber = true;
-
+  
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.requestEncryptionCredentials = true;
 
