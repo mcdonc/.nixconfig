@@ -249,7 +249,7 @@ in
         genericName = "Olive Video Editor";
         exec = "nvidia-offload olive-editor";
         terminal = false;
-        categories = [ "Application" ];
+        categories = [ "AudioVideo" "Recorder" ];
         mimeType = [ "application/vnd.olive-project" ];
         icon =  "org.olivevideoeditor.Olive";
       };
