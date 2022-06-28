@@ -12,6 +12,9 @@
 
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
+
+  # why?  I have no idea.
+  systemd.services.NetworkManager-wait-online.enable = false;
 }
 
 
