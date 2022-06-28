@@ -242,6 +242,18 @@ in
         executable = true;
     };
 
+    # add Olive for nvidia-offload (as installed per video)
+    xdg.desktopEntries = {
+      olive = {
+        name = "Olive Video Editor (via nvidia-offload)";
+        genericName = "Olive Video Editor";
+        exec = "nvidia-offload olive-editor";
+        terminal = false;
+        categories = [ "Application" ];
+        mimeType = [ "application/vnd.olive-project" ];
+        icon =  "org.olivevideoeditor.Olive";
+      };
+    };
     programs.emacs.enable = true;
     programs.emacs.extraPackages = epkgs: [
       epkgs.nix-mode
