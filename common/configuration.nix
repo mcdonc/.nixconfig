@@ -72,30 +72,6 @@ in
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
 
-  # services.xserver.videoDrivers = [ "nvidia" ];
-
-  # hardware = {
-  #   nvidia = {
-  #     prime = {
-  #       # offload.enable = true; # enable to use intel gpu (hybrid mode)
-  #       sync.enable = true; # enable to use nvidia gpu (discrete mode)
-  #       intelBusId = "PCI:0:2:0";
-  #       nvidiaBusId = "PCI:1:0:0";
-  #     };
-  #     modesetting.enable = false;
-  #   };
-
-  #   # other opengl stuff is included via <nixos-hardware/common/cpu/intel> (including 
-  #   # intel-media-driver and vaapiIntel)
-  #   opengl = {
-  #     enable = true;
-  #     extraPackages = with pkgs; [ vaapiVdpau ];
-  #     driSupport = true;
-  #     driSupport32Bit = true;
-  #   };
-  #   bluetooth.enable = true;
-  # };
-
   # allow for fwupdmgr firmware update manager use
   services.fwupd.enable = true;
 
@@ -105,6 +81,9 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+
+  # Enable bluetooth
+  hardware.bluetooth.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
