@@ -29,6 +29,7 @@ in
   boot.loader.grub.devices = [ "nodev" ];
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.efiSupport = true;
+  boot.loader.grub.splashImage = ./grub/btw.png;
   boot.loader.grub.useOSProber = true;
 
   boot.supportedFilesystems = [ "zfs" ];
@@ -261,7 +262,7 @@ in
       shellAliases =  {
          swnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix switch";
          bootnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot";
-         ednix = "sudo emacs -nw $HOME/.nixconfig/configuration.nix";
+         ednix = "emacsclient -nw ~/.nixconfig/configuration.nix";
          upnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix switch --upgrade";
          schnix = "nix search nixpkgs";
          rbnix = "sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix build --rollback";
