@@ -21,7 +21,7 @@ in
   # Enable experimental features
   nix = { 
     package = pkgs.nixUnstable;
-    extraOptions = "experimental-features = nix-command flakes"; 
+    extraOptions = "experimental-features = nix-command flakes";
   };
     
   # Use GRUB, assume UEFI
@@ -58,11 +58,8 @@ in
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.requestEncryptionCredentials = true;
 
-  #networking.hostId = "deadbeef";
-
   services.zfs.autoScrub.enable = true;
 
-  #networking.hostName = "thinknix512"; # Define your hostname.
   networking.networkmanager.enable = true;  
 
   # Set your time zone.
@@ -312,13 +309,12 @@ in
          ls = "ls --color=auto";
       };
 
-      profileExtra = ''
-         setopt interactivecomments
-      '';
-
       initExtra = ''
          ## include config generated via "p10k configure" manually;
        	 ## zplug cannot edit home manager's zshrc file.
+
+         # be more bashy
+         setopt interactive_comments bashautolist nobeep nomenucomplete noautolist
 
          [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
