@@ -175,6 +175,7 @@ in
     python310Packages.pyflakes
     pciutils
     neofetch
+    tmux
   ];
 
   fonts.fonts = with pkgs; [
