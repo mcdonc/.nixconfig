@@ -102,6 +102,9 @@ in
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # enable locate
+  services.locate.enable = true;
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
