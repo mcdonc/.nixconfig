@@ -12,9 +12,10 @@ Usage
   
 - On the new vanilla system, add these channels as the root user::
 
-   home-manager https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz
-   nixos https://nixos.org/channels/nixos-22.05
-   nixos-hardware https://github.com/NixOS/nixos-hardware/archive/master.tar.gz
+   sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager
+   sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
+
+- ``nix-channel --update``
 
 - Check out this repo on the new vanilla system into ``~/.nixconfig``.
 
