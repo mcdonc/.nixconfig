@@ -184,6 +184,7 @@ in
     pciutils
     neofetch
     tmux
+    heroic
   ];
 
   fonts.fonts = with pkgs; [
