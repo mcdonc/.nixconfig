@@ -131,6 +131,7 @@
 (add-hook 'python-mode-hook 
 	'(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
 
+(require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
 
 ;; (setq mweb-default-major-mode 'html-mode)
