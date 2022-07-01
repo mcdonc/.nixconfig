@@ -23,6 +23,10 @@ in
         "lock802" = {
           user = "pi";
           hostname = "lock802";
+          forwardAgent = true;
+        };
+        "thinknix*" = {
+          forwardAgent = true;
         };
       };
     };
