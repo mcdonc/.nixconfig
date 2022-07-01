@@ -22,7 +22,6 @@ in
       matchBlocks = {
         "lock802" = {
           user = "pi";
-          hostname = "lock802";
           forwardAgent = true;
         };
         "thinknix*" = {
