@@ -29,13 +29,10 @@ in
   boot.loader.grub.splashImage = ./grub/alwaysnix.png;
   boot.loader.grub.splashMode = "stretch"; # "normal"
   boot.loader.grub.useOSProber = true;
-
   boot.loader.timeout = 60;
-
   # copyKernels: "Using NixOS on a ZFS root file system might result in the boot error
   # external pointer tables not supported when the number of hardlinks in the nix
   # store gets very high.
-
   boot.loader.grub.copyKernels = true;
 
   # figure out how to do this for zsh; see

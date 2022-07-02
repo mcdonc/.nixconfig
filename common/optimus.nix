@@ -13,6 +13,7 @@
         nvidiaBusId = "PCI:1:0:0";
       };
       modesetting.enable = false;
+      powerManagement.enable = true;
     };
 
     # other opengl stuff is included via <nixos-hardware/common/cpu/intel> (including 
@@ -24,4 +25,5 @@
       driSupport32Bit = true;
     };
   };
+  
 }
