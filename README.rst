@@ -15,7 +15,7 @@ Usage
    sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager
    sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
 
-- ``nix-channel --update``
+- ``sudo nix-channel --update``
 
 - Check out this repo on the new vanilla system into ``~/.nixconfig``.
 
@@ -26,7 +26,7 @@ Usage
 - Add a symlink from ``~/.nixconfig/<newsystemname>/configuration.nix`` to
   ``~/.nixconfig/configuration.nix``.
 
-- Rename ``/etc/nixos/configuration.nix{,aside}`` for safety.
+- Rename ``/etc/nixos/configuration.nix{,_aside}`` for safety.
 
 - Run ``sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix
   dry-build`` (or ``dry-activate``) to test config.
