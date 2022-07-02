@@ -8,7 +8,9 @@ Usage
 -----
 
 - Build and boot a new vanilla NixOS 22.05 system with at least a ``chrism``
-  user.  ``~`` below refers to this user's home directory.
+  user.  ``~`` below refers to this user's home directory.  See
+  ``vanilla-config.nix`` in this directory for a reasonable vanilla
+  configuration.
   
 - On the new vanilla system, add these channels as the root user::
 
