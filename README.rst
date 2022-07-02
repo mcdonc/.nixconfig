@@ -32,8 +32,8 @@ Initialize a new system.
 
 - Create the boot volume::
 
-   sudo mkfs.fat -F 32 "$ROOTDEVp1"
-   sudo fatlabel "$ROOTDEVp1" NIXBOOT
+   sudo mkfs.fat -F 32 ${ROOTDEV}p1
+   sudo fatlabel ${ROOTDEV}p1 NIXBOOT
 
 - Create a zpool::
 
@@ -53,7 +53,7 @@ Initialize a new system.
     -O keyformat=passphrase \
     -O mountpoint=none \
     NIXROOT \
-    "$ROOTDEVp2"
+    ${ROOTDEV}p2
 
 - Create zfs volumes::
 
@@ -62,13 +62,15 @@ Initialize a new system.
    # reserved to cope with running out of disk space
    sudo zfs create -o refreservation=1G -o mountpoint=none NIXROOT/reserved
 
-- ``sudo mount -t zfs NIXROOT/root /mnt``
+- Mount the NIXROOT/root volume under ``/mnt``::
+
+   sudo mount -t zfs NIXROOT/root /mnt
 
 - Mount subvolumes::
 
    sudo mkdir /mnt/boot
    sudo mkdir /mnt/home
-   sudo mount "$ROOTDEVp1" /mnt/boot
+   sudo mount ${ROOTDEV}p1 /mnt/boot
    sudo mount -t zfs NIXROOT/home /mnt/home
 
 - ``sudo nixos-generate-config --root /mnt``
