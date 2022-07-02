@@ -16,11 +16,11 @@ in
   ];
 
   # Enable experimental features
-  nix = { 
+  nix = {
     package = pkgs.nixUnstable;
     extraOptions = "experimental-features = nix-command flakes";
   };
-    
+
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -32,11 +32,17 @@ in
 
   boot.loader.timeout = 60;
 
+  # copyKernels: "Using NixOS on a ZFS root file system might result in the boot error
+  # external pointer tables not supported when the number of hardlinks in the nix
+  # store gets very high.
+
+  boot.loader.grub.copyKernels = true;
+
   # figure out how to do this for zsh; see
   # https://discourse.nixos.org/t/early-boot-remote-decryption/16146
   # https://nixos.wiki/wiki/Remote_LUKS_Unlocking
   # https://nixos.wiki/wiki/ZFS#Optional_additional_setup_for_encrypted_ZFS
-  
+
   # boot.initrd.network = {
   #   enable = true;
   #   ssh = {
@@ -55,7 +61,7 @@ in
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.requestEncryptionCredentials = true;
 
-  networking.networkmanager.enable = true;  
+  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -81,7 +87,7 @@ in
   # Configure keymap in X11
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
- 
+
   # Enable the DontZap option (it is this, rather than the above that makes ctrl-alt-bs work)
   services.xserver.enableCtrlAltBackspace = true;
 
@@ -145,7 +151,7 @@ in
     set mouse=
     set ttymouse=
   '';
-  
+
   # List software packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -199,4 +205,3 @@ in
   system.stateVersion = "22.05"; # Did you read the comment?
 
 }
-
