@@ -26,7 +26,7 @@ in
   boot.loader.grub.devices = [ "nodev" ];
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.efiSupport = true;
-  boot.loader.grub.splashImage = ./grub/pepebtw.png;
+  boot.loader.grub.splashImage = ./grub/alwaysnix.png;
   boot.loader.grub.splashMode = "stretch"; # "normal"
   boot.loader.grub.useOSProber = true;
 
