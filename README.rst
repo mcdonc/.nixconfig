@@ -75,7 +75,7 @@ Initialize a new system.
 
 - ``sudo nixos-generate-config --root /mnt``
 
-- Copy ``vanilla-config.nix`` from this repo on top of
+- Copy ``vanilla.nix`` from this repo on top of
   ``/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
   ``networking.hostName``)
 
@@ -91,23 +91,36 @@ Post-Reboot
    sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager
    sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
 
-- ``sudo nix-channel --update``
+- Update the newly added channels::
 
-- Check out this repo on the new vanilla system into ``~/.nixconfig``.
+    sudo nix-channel --update
+
+- Check out this repo on the new vanilla system into ``~/.nixconfig``::
+
+    git clone git@github.com:mcdonc/.nixconfig.git
 
 - Copy an existing system from ``~/.nixconfig/<existingsystemname>`` into
   ``~/.nixconfig/<newsystemname>`` and edit the ``configuration.nix`` and
-  ``hardware-configuration.nix`` files in the newly copied directory.
+  ``hardware-configuration.nix`` files in the newly copied directory, e.g.::
+
+    cp -r thinknix51 newsystemname
 
 - Add a symlink from ``~/.nixconfig/<newsystemname>/configuration.nix`` to
-  ``~/.nixconfig/configuration.nix``.
+  ``~/.nixconfig/configuration.nix``, e.g.::
 
-- Rename ``/etc/nixos/configuration.nix{,_aside}`` for safety.
+     ln -s newsystemname/configuration .
 
-- Run ``sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix
-  dry-build`` (or ``dry-activate``) to test config.
+- Rename ``/etc/nixos/configuration.nix{,_aside}`` for safety::
 
-- Run ``sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot``.
+    sudo mv /etc/nixos/configuration.nix{,_aside}
+
+- Test the configuration::
+
+    sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix dry-activate
+
+- Make the configuration bootable::
+
+    sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot
 
 - Reboot into the version-controlled environment.  Use ``ednix`` to edit the
   current configuration.  Use ``swnix`` to build and switch to an updated
