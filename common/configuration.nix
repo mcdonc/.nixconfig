@@ -73,7 +73,8 @@ in
 
   # services
   services.zfs.autoScrub.enable = true;
-
+  services.zfs.trim.enable = true;
+  
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
