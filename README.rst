@@ -94,7 +94,7 @@ Post-Reboot
 
    sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager
    sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
-   sudo nix-channel --add https://github.com/mcdonc/nixos-hardware/archive/pseries-additons-v4.tar.gz nixos-hardware-fork
+   sudo nix-channel --add https://github.com/mcdonc/nixos-hardware/archive/pseries-additons.tar.gz nixos-hardware-fork
 
 - Update the newly added channels::
 
