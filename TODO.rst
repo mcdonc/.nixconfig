@@ -1,9 +1,12 @@
-- What's the best way to get set up to contribute code representing new systems
-  (e.g. P50, P51, P52) to nixos-hardware?  To test it, should I just do a
-  checkout of the nixos-hardware repo, and, in my configuration, instead of
-  pointing at a channel, point at newly created nix code for the hardware in
-  the checkout, and assume when people use the nixos-hardware channel it will
-  work?
+- Why doesn't ``nix-channel --update`` detect changes made to branches related
+  to "releases" generated via GitHub's ``/archive/branchname.tar.gz``
+  convention?  E.g. if I add and update the channel
+  https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz ,
+  then push a commit to
+  https://github.com/mcdonc/nixos-hardware/tree/pseries-additions , if I
+  ``--update`` again, it doesn't build a new derivation with the changes pushed
+  to the branch.  Note that *GitHub* seems to be doing the right thing.
+  Downloading the release by hand gives me a tarball with the changes.
 
 - I currently have to install ``olive-editor`` (video editor) by hand because
   the build is broken (https://hydra.nixos.org/build/173379959).  I currently
