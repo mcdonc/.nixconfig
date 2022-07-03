@@ -25,9 +25,6 @@
   # store gets very high.
   boot.loader.grub.copyKernels = true;
 
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.requestEncryptionCredentials = true;
-
   networking.networkmanager.enable = true;
 
   # Set your time zone.

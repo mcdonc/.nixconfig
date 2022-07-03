@@ -2,7 +2,9 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
+    <nixos-hardware-fork/lenovo/thinkpad/p52>
+    ../common/pseries.nix
+    ../common/encryptedzfs.nix
     ../common/configuration.nix
   ];
 
@@ -12,6 +14,7 @@
 
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
+  networking.useDHCP = lib.mkForce true;
 
   # why?  I have no idea.
   systemd.services.NetworkManager-wait-online.enable = false;
