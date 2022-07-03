@@ -3,10 +3,7 @@
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
-      <nixos-hardware/lenovo/thinkpad>
-      <nixos-hardware/common/pc/laptop/acpi_call.nix>
-      <nixos-hardware/common/cpu/intel>
-      ../common/optimus.nix
+      <nixos-hardware-fork/lenovo/thinkpad/p51>
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
