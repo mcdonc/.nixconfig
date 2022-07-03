@@ -73,13 +73,17 @@ Initialize a new system.
    sudo mount ${ROOTDEV}p1 /mnt/boot
    sudo mount -t zfs NIXROOT/home /mnt/home
 
-- ``sudo nixos-generate-config --root /mnt``
+- Generate the initial config::
+
+    sudo nixos-generate-config --root /mnt
 
 - Copy ``vanilla.nix`` from this repo on top of
   ``/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
   ``networking.hostName``)
 
-- ``sudo nixos-install``
+- Install the system::
+
+     sudo nixos-install
 
 - Reboot.
 
