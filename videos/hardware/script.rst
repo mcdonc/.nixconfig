@@ -89,8 +89,9 @@ Video Script
   into the branch, ``nix-channel --update`` doesn't find anything new on the
   second run, so it's likely that the archive it downloaded hasn't changed.
 
-- The current nixos-hardware just points at the master archive, so maybe
-  there's a way to invalidate the GitHub archive cache; I don't know.
+- The current GitHub ``nixos-hardware`` channel instructions just tell you to
+  point at the master archive, so maybe there's a way to invalidate the GitHub
+  archive cache; I don't know.
   
 - I won't be submitting a pull request just yet, because I'm not totally solid
   on how to test the code for this configuration to meet the standards of the
