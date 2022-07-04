@@ -11,7 +11,7 @@
       AHCI_RUNTIME_PM_ON_AC = "on";
       AHCI_RUNTIME_PM_ON_BAT = "on";
 
-      # with RUNTIME_PM_ON_BAT/AC set to defaults, P51 can't go to sleep (P50 can)
+      # with RUNTIME_PM_ON_BAT/AC set to defaults, P50/P51 can't go to sleep
       RUNTIME_PM_ON_AC = "on";
       RUNTIME_PM_ON_BAT = "on";
     };

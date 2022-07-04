@@ -4,6 +4,7 @@
   imports = [
     <nixos-hardware-fork/lenovo/thinkpad/p52>
     ../common/pseries.nix
+    ../common/p52sleep.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
   ];
