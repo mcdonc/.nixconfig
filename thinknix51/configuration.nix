@@ -4,6 +4,7 @@
   imports = [
     <nixos-hardware-fork/lenovo/thinkpad/p51>
     ../common/pseries.nix
+    ../common/p51sleep.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
   ];
@@ -14,6 +15,5 @@
   hardware.nvidia.prime.offload.enable = false;
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
+
 }
-
-

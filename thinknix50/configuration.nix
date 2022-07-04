@@ -4,6 +4,7 @@
   imports = [
     <nixos-hardware-fork/lenovo/thinkpad/p50>
     ../common/pseries.nix
+    ../common/p50sleep.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
   ];
