@@ -51,9 +51,9 @@
 
   # Configure keymap in X11
   services.xserver.layout = "us";
-  services.xserver.xkbOptions = "ctrl:nocaps";
+  services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
 
-  # Makes ctrl-alt-backspace work
+  # Makes ctrl-alt-backspace work (requires above xkbOption for terminate too)
   services.xserver.enableCtrlAltBackspace = true;
 
   # Make the DPI the same in sync mode as in offload mode.
