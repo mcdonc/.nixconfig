@@ -3,6 +3,7 @@
 {
   imports = [
     <nixos-hardware-fork/lenovo/thinkpad/p51>
+    <nixos-hardware-fork/common/cpu/intel/kaby-lake>
     ../common/pseries.nix
     ../common/p51sleep.nix
     ../common/encryptedzfs.nix
