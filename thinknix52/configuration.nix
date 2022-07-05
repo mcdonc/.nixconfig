@@ -19,21 +19,6 @@
 
   # why?  I have no idea.
   systemd.services.NetworkManager-wait-online.enable = false;
-  
-  powerManagement.enable = true;
-  powerManagement.resumeCommands =
-    ''
-      /bin/sh -c 'echo -n "0000:02:00.0"> /sys/bus/pci/drivers/nvme/bind'
-      /bin/sh -c 'echo -n "0000:01:00.0"> /sys/bus/pci/drivers/nvidia/bind'
-      /bin/sh -c 'echo -n "0000:01:00.0"> /sys/bus/pci/drivers/nvidia_drm/bind'
-    '';
-  powerManagement.powerDownCommands =
-    ''
-      /bin/sh -c 'echo -n "0000:02:00.0"> /sys/bus/pci/drivers/nvme/unbind'
-      /bin/sh -c 'echo -n "0000:01:00.0"> /sys/bus/pci/drivers/nvidia/unbind'
-      /bin/sh -c 'echo -n "0000:01:00.0"> /sys/bus/pci/drivers/nvidia_drm/unbind'
-    '';
-  
 }
 
 
