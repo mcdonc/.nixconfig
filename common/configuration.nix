@@ -209,6 +209,7 @@
     heroic
     s-tui
     stress-ng
+    usbutils
   ];
 
   fonts.fonts = with pkgs; [
