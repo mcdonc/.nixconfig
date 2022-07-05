@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  hwfork = fetchTarball "https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz";
+in
 {
   imports = [
-    <nixos-hardware-fork/lenovo/thinkpad/p52>
+    (import "${hwfork}/lenovo/thinkpad/p52")
     ../common/pseries.nix
-    ../common/p52sleep.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
   ];
