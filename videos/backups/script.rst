@@ -1,4 +1,4 @@
-NixOS 21: Backing Up and Restoring Your Home Directory When You Use home-manager
+NixOS 22: Backing Up and Restoring Your Home Directory When You Use home-manager
 ================================================================================
 
 - Companion to video at ...
