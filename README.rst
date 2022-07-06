@@ -78,7 +78,7 @@ Initialize a new system.
     sudo nixos-generate-config --root /mnt
 
 - Copy ``vanilla.nix`` from this repo on top of
-  ``/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
+  ``/mnt/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
   ``networking.hostName``)
 
 - Install the system::
