@@ -12,7 +12,7 @@ Video Script
 - NixOS, at least with home-manager, is a bit special.
 
 - home-manager puts symlinks in your home directory that point to files and
-  directories somewhere within ``/nix/store``.
+  directories somewhere within ``/nix``.
 
 - If you simply rsync or tar up your home directory and restore into a fresh
   install it when the backup contains those symlinks, the links will be broken.
@@ -20,7 +20,8 @@ Video Script
 - When the links are broken, wild things can happen.  When the moon is just
   right, for example, the X server won't start.
 
-- Solution: don't back up the symlinks (and thus, don't restore the symlinks).
+- Solution: don't back up symlinks that point into ``/nix`` (and thus, don't
+  restore any broken symlinks).
 
 - To do this, before you back up, use ``findnixlinks.py`` at
   https://github.com/mcdonc/.nixconfig/blob/master/videos/backups/findnixlinks.py
