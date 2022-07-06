@@ -36,7 +36,7 @@ Video Script
 
 - Generate the excludefrom file::
 
-    python3 findnixlinks.py > /tmp/excludefrom.txt
+    cd $HOME; python3 findnixlinks.py > /tmp/excludefrom.txt
 
 - Tar up your home directory, using the excludefrom file as input::
 
