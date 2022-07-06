@@ -79,7 +79,9 @@ Initialize a new system.
 
 - Copy ``vanilla.nix`` from this repo on top of
   ``/mnt/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
-  ``networking.hostName``)
+  ``networking.hostName``)::
+
+    cp ~/.nixconfig/vanilla.nix /mnt/etc/nixos/configuration.nix
 
 - Install the system::
 
