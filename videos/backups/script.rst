@@ -58,4 +58,4 @@ Video Script
 
 - Restart the display manager.
   
-- Bob, he is your uncle.
+- Bob, he becomes your uncle.
