@@ -22,8 +22,8 @@ Video Script
 
 - Solution: don't back up the symlinks (and thus, don't restore the symlinks).
 
-- To do this, before you back up, use
-  http://github.com/mcdonc/.nixconfig/blob/master/videos/backups/findnixlinks.py
+- To do this, before you back up, use ``findnixlinks.py`` at
+  https://github.com/mcdonc/.nixconfig/blob/master/videos/backups/findnixlinks.py
   to generate an ``exclude-from`` list that you can use for intput to the
   ``tar`` (or rsync) command.
 
@@ -41,9 +41,10 @@ Video Script
 
     cd $HOME; tar cvzf /tmp/homebackup.tar.gz --exclude-from=/tmp/excludefrom.txt .
 
-- Reinstall a new system with your nix config.  In my case I scp the
-  ``homebackup.tar.gz`` to another system, then go through my normal NixOS install
-  procedure onto a new hard disk.
+- Scp the ``homebackup.tar.gz`` to another system or copy it to a hard disk or
+  whatever.
+
+- Reinstall a new system with your generic nix config.
 
 - Then, after NixOS is installed, at homedir restore time, just untar the
   backup file you've copied onto the fresh system while you're cd'ed to the
@@ -56,3 +57,4 @@ Video Script
 
 - Restart the display manager.
   
+- Bob, he is your uncle.
