@@ -165,6 +165,7 @@
     stress-ng
     usbutils
     nmap
+    zoom-us
   ];
 
   fonts.fonts = with pkgs; [
