@@ -6,6 +6,7 @@ in
 {
   imports = [
     (import "${hwfork}/lenovo/thinkpad/p52")
+    (import "${hwfork}/lenovo/thinkpad/p52/sleep.nix")
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
