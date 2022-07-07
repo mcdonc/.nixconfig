@@ -15,6 +15,6 @@ in
   networking.hostName = "thinknix51";
   networking.useDHCP = lib.mkForce true;
 
-  #hardware.nvidia.prime.offload.enable = false;
-  #ehardware.nvidia.prime.sync.enable = lib.mkForce true;
+  hardware.nvidia.prime.offload.enable = false;
+  hardware.nvidia.prime.sync.enable = lib.mkForce true;
 }
