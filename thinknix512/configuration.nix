@@ -16,7 +16,7 @@ in
   networking.useDHCP = lib.mkForce true;
 
   #hardware.nvidia.prime.offload.enable = false;
-  #hardware.nvidia.prime.sync.enable = mkForce true;
+  #hardware.nvidia.prime.sync.enable = lib.mkForce true;
 }
 
 
