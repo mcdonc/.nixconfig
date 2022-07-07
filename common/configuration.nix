@@ -10,8 +10,11 @@
   nix.extraOptions =
       ''
         experimental-features = nix-command flakes
-        tarball-ttl = 3600
       '';
+
+  nix.settings = {
+    tarball-ttl = 300;
+  };
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
