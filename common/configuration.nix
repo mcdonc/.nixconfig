@@ -6,10 +6,12 @@
   ];
 
   # Enable experimental features
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = "experimental-features = nix-command flakes";
-  };
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions =
+      ''
+        experimental-features = nix-command flakes
+        tarball-ttl = 3600
+      '';
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
@@ -96,7 +98,7 @@
     };
   };
 
-  
+
   services.fstrim.enable = true;
 
   # default shell for all users
@@ -159,6 +161,7 @@
     s-tui
     stress-ng
     usbutils
+    nmap
   ];
 
   fonts.fonts = with pkgs; [
