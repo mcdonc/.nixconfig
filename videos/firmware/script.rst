@@ -19,7 +19,8 @@ Video Script
 
 - Show wireless list empty.
 
-- ``journalctl -k -e`` will show things like this::
+- Viewing kernel log messages via ``journalctl -k`` will show things like
+  this::
 
     Jul 07 11:47:11 thinknix512 kernel: iwlwifi 0000:04:00.0: no suitable firmware found!
     Jul 07 11:47:11 thinknix512 kernel: iwlwifi 0000:04:00.0: minimum version required: iwlwifi-8265-22
@@ -46,7 +47,7 @@ Video Script
 
 - Show wireless GUI working.
 
-- Now in journalctl -k::
+- Now in ``journalctl -k``::
 
     iwlwifi 0000:04:00.0: loaded firmware version 36.ca7b901d.0 8265-36.ucode op_mode iwlmvm
 
