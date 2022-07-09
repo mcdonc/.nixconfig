@@ -4,7 +4,7 @@ let
   nixos-config = "$HOME/.nixconfig/configuration.nix";
 in
 {
-  imports = [ 
+  imports = [
     <home-manager/nixos>
   ];
 
@@ -13,10 +13,10 @@ in
     home.packages = with pkgs; [
       keybase-gui
     ];
-    
+
     services.keybase.enable = true;
     services.kbfs.enable = true;
-    
+
     programs.ssh = {
       enable = true;
       matchBlocks = {
@@ -29,7 +29,7 @@ in
         };
       };
     };
-    
+
     xdg.configFile."environment.d/ssh_askpass.conf".text = ''
        SSH_ASKPASS="/run/current-system/sw/bin/ksshaskpass"
     '';
@@ -67,6 +67,33 @@ in
         icon =  "org.olivevideoeditor.Olive";
       };
     };
+
+    # thanks to tejing on IRC for clueing me in to .force here: it will
+    # overwrite any existing file.
+    xdg.configFile."autostart/keybase_autostart.desktop".force = true;
+
+    # default keybase_autostart.desktop doesn't run on NVIDIA in sync mode
+    # without --disable-gpu-sandbox.
+    xdg.configFile."autostart/keybase_autostart.desktop".text = ''
+      [Desktop Entry]
+      Comment[en_US]=Keybase Filesystem Service and GUI
+      Comment=Keybase Filesystem Service and GUI
+      Exec=env KEYBASE_AUTOSTART=1 keybase-gui --disable-gpu-sandbox
+      GenericName[en_US]=
+      GenericName=
+      MimeType=
+      Name[en_US]=Keybase
+      Name=Keybase
+      Path=
+      StartupNotify=true
+      Terminal=false
+      TerminalOptions=
+      Type=Application
+      X-DBUS-ServiceName=
+      X-DBUS-StartupType=
+      X-KDE-SubstituteUID=false
+      X-KDE-Username=
+    '';
 
     programs.emacs.enable = true;
     programs.emacs.extraPackages = epkgs: [
@@ -124,14 +151,14 @@ in
         sgrep = "rg";
         ls = "ls --color=auto";
       };
-      
+
       initExtra =
         ''
         # be more bashy
         setopt interactive_comments bashautolist nobeep nomenucomplete noautolist
 
         ## include config generated via "p10k configure" manually;
-      	 ## zplug cannot edit home manager's zshrc file.
+        ## zplug cannot edit home manager's zshrc file.
 
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -173,4 +200,3 @@ in
      };
   };
 }
-  

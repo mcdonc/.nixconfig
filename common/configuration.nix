@@ -166,6 +166,7 @@
     usbutils
     nmap
     zoom-us
+    konversation
   ];
 
   fonts.fonts = with pkgs; [
