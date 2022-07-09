@@ -32,7 +32,7 @@ Video Script
     };
     
 - This causes a desktop entry to be findable for an ``nvidia-offload``-started
-  version of the Olive video editor (it doesn't work reliably under ``sync``
+  version of the Olive video editor (it doesn't work reliably under offload
   mode if this isn't done).
 
 - There are a lot of olive desktop files::
