@@ -6,7 +6,6 @@ in
 {
   imports = [
     (import "${hwfork}/lenovo/thinkpad/p50")
-    (import "${hwfork}/lenovo/thinkpad/p50/sleep.nix")
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
@@ -18,6 +17,8 @@ in
   # override optimus default offload mode to deal with external monitor
   # hardware.nvidia.prime.offload.enable = lib.mkForce false;
   # hardware.nvidia.prime.sync.enable = true;
+
+  #hardware.enableAllFirmware = lib.mkForce false;
 }
 
 
