@@ -16,4 +16,6 @@ in
 
   hardware.nvidia.prime.offload.enable = false;
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
+  # fix suspend/resume screen corruption
+  hardware.nvidia.powerManagement.enable = true;
 }

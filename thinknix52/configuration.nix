@@ -15,6 +15,9 @@ in
   hardware.nvidia.prime.offload.enable = lib.mkForce false;
   hardware.nvidia.prime.sync.enable = true;
 
+  # fix suspend/resume screen corruption
+  hardware.nvidia.powerManagement.enable = true;
+  
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
   networking.useDHCP = lib.mkForce true;

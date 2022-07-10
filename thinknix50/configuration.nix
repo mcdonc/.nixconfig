@@ -17,8 +17,6 @@ in
   # override optimus default offload mode to deal with external monitor
   # hardware.nvidia.prime.offload.enable = lib.mkForce false;
   # hardware.nvidia.prime.sync.enable = true;
-
-  #hardware.enableAllFirmware = lib.mkForce false;
 }
 
 
