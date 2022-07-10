@@ -14,6 +14,7 @@ in
   networking.hostName = "thinknix50";
   networking.useDHCP = lib.mkForce true;
 
+  # doesn't work, but for in the future...
   #services.fprintd.enable = true;
   #services.fprintd.tod.enable = true;
   #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
