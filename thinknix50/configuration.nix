@@ -14,6 +14,10 @@ in
   networking.hostName = "thinknix50";
   networking.useDHCP = lib.mkForce true;
 
+  #services.fprintd.enable = true;
+  #services.fprintd.tod.enable = true;
+  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  
   # override optimus default offload mode to deal with external monitor
   # hardware.nvidia.prime.offload.enable = lib.mkForce false;
   # hardware.nvidia.prime.sync.enable = true;
