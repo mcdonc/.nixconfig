@@ -1,7 +1,7 @@
 NixOS 25: Suppressing Irritating Boot "Error" Messages
 ======================================================
 
-- Companion to video at ...
+- Companion to video at https://youtu.be/8G_ZPVrYmHY
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
@@ -44,7 +44,8 @@ Video Script
 
 - Set the following in your NixOS config::
 
-   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)                                                                            boot.consoleLogLevel = 3;
+   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
+   boot.consoleLogLevel = 3;
     
 - Rebuild.
 
