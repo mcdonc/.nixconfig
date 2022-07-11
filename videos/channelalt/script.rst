@@ -96,7 +96,7 @@ Video Script
 - Every. Commit.  I. Wanted. To Test.
 
 - Eventually I gave that up and fell back to importing directly from a checkout
-  I hade on the filesystem::
+  I had on the filesystem::
     
     imports = [
      /home/chrism/projects/nixos-hardware/lenovo/thinkpad/p51
