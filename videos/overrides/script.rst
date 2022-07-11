@@ -53,11 +53,11 @@ Video Script
   various ``mk...`` function that assign a value a priority are given a
   default priority, which is 100.  Thus this::
 
-    services.throttled.enable = true;
+    services.throttled.enable = false;
 
   Is just a nicer spelling of::
 
-    services.throttled.enable = lib.mkOverride 100 true;
+    services.throttled.enable = lib.mkOverride 100 false;
 
 - It is only when two keys have differing values but the same priority that Nix
   will complain at rebuild time and ask you to intervene.
