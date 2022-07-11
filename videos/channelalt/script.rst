@@ -91,7 +91,7 @@ Video Script
     git tag v2
     git push -u origin v2
     sudo nix-channel --remove nixos-hardware-fork
-    sudo nix-channel --add https://github.com/NixOS/nixos-hardware/mcdonc/archives/v2.tar.gz
+    sudo nix-channel --add https://github.com/NixOS/nixos-hardware/mcdonc/archives/v2.tar.gz nixos-hardware-fork
 
 - Every. Commit.  I. Wanted. To Test.
 
