@@ -1,7 +1,7 @@
 NixOS 26: Overriding Simple Values in Nix Configuration
 =======================================================
 
-- Companion to video at ...
+- Companion to video at https://youtu.be/bbxJH21qXFE
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
@@ -71,7 +71,10 @@ Video Script
 
     services.throttled.enable = lib.mkForce true;
 
-- ``lib.mkForce true;`` is just a nicer spelling of ``lib.mkOverride 50 true;``
+- ``lib.mkForce true;`` is just a nicer spelling of ``lib.mkOverride 50 true;``::
+
+      services.throttled.enable = true;
+      services.throttled.enable = lib.mkForce true;
 
 - Not discussed: How are the values in attribute sets of modules merged?  This
   is a whole other topic that I don't yet understand.
