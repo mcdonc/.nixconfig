@@ -123,4 +123,5 @@ Video Script
 - This solved every problem I had except I'm still a little unclear where the
   cached copies of the repository are stored and how they are garbage collected.
 
-  
+- Domen's thoughts on why you might should not use channels:
+  https://github.com/nix-dot-dev/nix.dev/issues/16#issuecomment-713701415
