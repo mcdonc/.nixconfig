@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 
 let
-  hwfork = fetchTarball "https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz";
-in
-{
+  hwfork = fetchTarball
+    "https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz";
+in {
   imports = [
     (import "${hwfork}/lenovo/thinkpad/p52")
     ../common/pseries.nix
@@ -29,5 +29,4 @@ in
   networking.hostName = "thinknix52";
   networking.useDHCP = lib.mkForce true;
 }
-
 
