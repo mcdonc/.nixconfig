@@ -1,20 +1,15 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./home.nix
-  ];
+  imports = [ ./home.nix ];
 
   # Enable experimental features
   nix.package = pkgs.nixUnstable;
-  nix.extraOptions =
-      ''
-        experimental-features = nix-command flakes
-      '';
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
-  nix.settings = {
-    tarball-ttl = 300;
-  };
+  nix.settings = { tarball-ttl = 300; };
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
@@ -101,7 +96,6 @@
     };
   };
 
-
   services.fstrim.enable = true;
 
   # default shell for all users
@@ -113,11 +107,13 @@
     initialPassword = "pw321";
     extraGroups = [ "wheel" "networkmanager" ];
     openssh = {
-      authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnLD+dQsKPhCV3eY0lMUP4fDrECI1Boe6PbnSHY+eqRpkA/Nd5okdyXvynWETivWsKdDRlT3gIVgEHqEv8s4lzxyZx9G2fAgQVVpBLk18G9wkH0ARJcJ0+RStXLy9mwYl8Bw8J6kl1+t0FE9Aa9RNtqKzpPCNJ1Uzg2VxeNIdUXawh77kIPk/6sKyT/QTNb5ruHBcd9WYyusUcOSavC9rZpfEIFF6ZhXv2FFklAwn4ggWzYzzSLJlMHzsCGmkKmTdwKijkGFR5JQ3UVY64r3SSYw09RY1TYN/vQFqTDw8RoGZVTeJ6Er/F/4xiVBlzMvxtBxkjJA9HLd8djzSKs8yf amnesia@amnesia" ];
+      authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnLD+dQsKPhCV3eY0lMUP4fDrECI1Boe6PbnSHY+eqRpkA/Nd5okdyXvynWETivWsKdDRlT3gIVgEHqEv8s4lzxyZx9G2fAgQVVpBLk18G9wkH0ARJcJ0+RStXLy9mwYl8Bw8J6kl1+t0FE9Aa9RNtqKzpPCNJ1Uzg2VxeNIdUXawh77kIPk/6sKyT/QTNb5ruHBcd9WYyusUcOSavC9rZpfEIFF6ZhXv2FFklAwn4ggWzYzzSLJlMHzsCGmkKmTdwKijkGFR5JQ3UVY64r3SSYw09RY1TYN/vQFqTDw8RoGZVTeJ6Er/F/4xiVBlzMvxtBxkjJA9HLd8djzSKs8yf amnesia@amnesia"
+      ];
     };
   };
 
- environment.etc."vimrc".text = ''
+  environment.etc."vimrc".text = ''
     " get rid of maddening mouseclick-moves-cursor behavior
     set mouse=
     set ttymouse=
@@ -167,11 +163,10 @@
     nmap
     zoom-us
     konversation
+    nixfmt
   ];
 
-  fonts.fonts = with pkgs; [
-    ubuntu_font_family
-  ];
+  fonts.fonts = with pkgs; [ ubuntu_font_family ];
 
   # Disable the firewall altogether.
   networking.firewall.enable = false;
