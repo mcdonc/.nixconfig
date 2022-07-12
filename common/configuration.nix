@@ -164,6 +164,7 @@
     zoom-us
     konversation
     nixfmt
+    wakeonlan
   ];
 
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
