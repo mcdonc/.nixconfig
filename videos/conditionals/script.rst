@@ -14,10 +14,26 @@ Video Script
 
 - Resolution appears to be a two-pass thing.
 
-- First, the unconditional values are resolved.
+- The following is in my imagination and might not have any relation to
+  reality, but I think, by observed behavior, it's close enough.
 
-- Then, the conditional values are resolved, in my imagination, in some sort of
-  dependency tree order.
+  - First, the unconditional values are resolved.
+
+  - Then, the conditional values are resolved, in my imagination, in some sort of
+    dependency tree order.
+
+- Example: on a Lenovo Thinkpad P51, when you resume from sleep, the screen
+  gets fucked up.  But only if you're in "sync mode" (using the NVIDIA GPU
+  exclusively).
+
+- If you set ``hardware.nvidia.powerManagement.enable`` to true, it unfucks this.
+
+- So you could manage this in a top-level config file, and when you change
+  ``hardware.nvidia.prime.sync.enable`` to ``true``, also remember to change
+  ``hardware.nvidia.powerManagement.enable`` to true.
+
+- Or, better, use a conditional such that power management is enabled
+  automatically when you enter sync mode.  Then you only need to change one value.
 
 - You might imagine you can do this::
 
@@ -61,15 +77,15 @@ Video Script
      
 - Infinite recursion detection::
     
-      building Nix...
-      building the system configuration...
-      error: infinite recursion encountered
+     building Nix...
+     building the system configuration...
+     error: infinite recursion encountered
 
-             at /nix/var/nix/profiles/per-user/root/channels/nixos/lib/modules.nix:746:9:
+            at /nix/var/nix/profiles/per-user/root/channels/nixos/lib/modules.nix:746:9:
 
-                745|     in warnDeprecation opt //
-                746|       { value = builtins.addErrorContext "while evaluating the option `${showOption loc}':" value;
-                   |         ^
-                747|         inherit (res.defsFinal') highestPrio;
-      (use '--show-trace' to show detailed location information)
+               745|     in warnDeprecation opt //
+               746|       { value = builtins.addErrorContext "while evaluating the option `${showOption loc}':" value;
+                  |         ^
+               747|         inherit (res.defsFinal') highestPrio;
+     (use '--show-trace' to show detailed location information)
      
