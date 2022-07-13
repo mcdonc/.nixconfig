@@ -1,8 +1,11 @@
 { config, pkgs, ... }:
 
-let nixos-config = "$HOME/.nixconfig/configuration.nix";
+let
+  hm = fetchTarball
+    "https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz";
+  nixos-config = "$HOME/.nixconfig/configuration.nix";
 in {
-  imports = [ <home-manager/nixos> ];
+  imports = [ (import "${hm}/nixos") ];
 
   home-manager.users.chrism = { pkgs, ... }: {
 

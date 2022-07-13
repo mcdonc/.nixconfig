@@ -92,15 +92,6 @@ Initialize a new system.
 Post-Reboot
 -----------
 
-- On the new vanilla system, add these channels as the root user::
-
-   sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz home-manager
-   sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
-
-- Update the newly added channels::
-
-    sudo nix-channel --update
-
 - Check out this repo on the new vanilla system into ``~/.nixconfig``::
 
     git clone git@github.com:mcdonc/.nixconfig.git
