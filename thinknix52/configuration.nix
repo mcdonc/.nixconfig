@@ -15,9 +15,6 @@ in {
   hardware.nvidia.prime.offload.enable = lib.mkForce false;
   hardware.nvidia.prime.sync.enable = true;
 
-  # fix suspend/resume screen corruption
-  hardware.nvidia.powerManagement.enable = true;
-
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot.consoleLogLevel = 3;
 
