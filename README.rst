@@ -11,6 +11,8 @@ Initialize a new system.
 
 - ``export ROOTDEV=/dev/nvmeXnX``
 
+- ``export ROOTDEVPREFIX=${ROOTDEV}p``
+
 - ``sudo sgdisk --zap-all $ROOTDEV``
 
 - ``sudo fdisk $ROOTDEV``, then::
@@ -32,8 +34,8 @@ Initialize a new system.
 
 - Create the boot volume::
 
-   sudo mkfs.fat -F 32 ${ROOTDEV}p1
-   sudo fatlabel ${ROOTDEV}p1 NIXBOOT
+   sudo mkfs.fat -F 32 ${ROOTDEVPREFIX}1
+   sudo fatlabel ${ROOTDEVPREFIX}1 NIXBOOT
 
 - Create a zpool::
 
@@ -53,7 +55,7 @@ Initialize a new system.
     -O keyformat=passphrase \
     -O mountpoint=none \
     NIXROOT \
-    ${ROOTDEV}p2
+    ${ROOTDEVPREFIX}2
 
 - Create zfs volumes::
 
@@ -70,7 +72,7 @@ Initialize a new system.
 
    sudo mkdir /mnt/boot
    sudo mkdir /mnt/home
-   sudo mount ${ROOTDEV}p1 /mnt/boot
+   sudo mount ${ROOTDEVPREFIX}1 /mnt/boot
    sudo mount -t zfs NIXROOT/home /mnt/home
 
 - Generate the initial config::
