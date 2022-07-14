@@ -12,7 +12,8 @@ Video Script
 - It's easy to forget how mind-blowing some of the features of Nix are.  You
   ready to have your skull caved in?
 
-- Remember when the last time you upgraded your shit and something broke?
+- Remember when the last time you upgraded your shit on your last OS and
+  something broke?
 
 - Might not even be because of a version bump in the thing that broke; might
   have been a change to one of its dependencies.  Or one of its dependencies'
