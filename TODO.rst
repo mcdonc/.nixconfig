@@ -29,4 +29,13 @@
   https://nix.dev/tutorials/towards-reproducibility-pinning-nixpkgs#pinning-packages-with-urls-inside-a-nix-expression
   contains an answer to this question, but I think it might be the answer to a
   different question. :)
+
+  Potential answer::
   
+    environment.systemPackages = with pkgs; [
+      konversation
+      nixfmt
+      wakeonlan
+      /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
+      # ....
+    ];
