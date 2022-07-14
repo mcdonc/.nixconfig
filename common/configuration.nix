@@ -165,6 +165,7 @@
     konversation
     nixfmt
     wakeonlan
+    /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
   ];
 
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
