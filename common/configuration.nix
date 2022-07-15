@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./home.nix ];
+  imports = [ ./home.nix ./cachix.nix ];
 
   # Enable experimental features
   nix.package = pkgs.nixUnstable;
