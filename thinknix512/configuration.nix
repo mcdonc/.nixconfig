@@ -9,6 +9,7 @@ in {
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
+    ../common/rc505.nix
   ];
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
