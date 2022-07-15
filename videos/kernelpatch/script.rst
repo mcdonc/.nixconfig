@@ -26,6 +26,8 @@ Video Script
 - Fixing it is just a matter of adding it to some quirks table inside the kernel.
   (show patch).
 
+- https://github.com/mcdonc/.nixconfig/blob/master/videos/kernelpatch/roland.patch
+
 - How do we convince NixOS to apply this patch?
 
 - The NixOS kernel page is cagey about it (show it).
