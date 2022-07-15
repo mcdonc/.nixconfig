@@ -1,0 +1,18 @@
+*** linux-5.15/sound/usb/implicit.c	2022-05-10 16:21:29.338255056 -0400
+--- linux-5.15/sound/usb/implicit.c.roland	2022-05-10 16:30:46.590946394 -0400
+***************
+*** 74,84 ****
+--- 74,86 ----
+  	  .type = IMPLICIT_FB_FIXED,
+  	  .ep_num = 0x84, .iface = 0 },		/* MOTU MicroBook II */
+  
++  	IMPLICIT_FB_SKIP_DEV(0x0582, 0x0171),   /* BOSS RC-505 */
+  	{} /* terminator */
+  };
+  
+  /* Implicit feedback quirk table for capture: only FIXED type */
+  static const struct snd_usb_implicit_fb_match capture_implicit_fb_quirks[] = {
++  	IMPLICIT_FB_FIXED_DEV(0x0582, 0x0171, 0x0d, 0x01), /* BOSS RC-505 */
+  	{} /* terminator */
+  };
+  
