@@ -9,6 +9,7 @@ in {
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
+    ../common/rc505.nix
   ];
 
   # override optimus default offload mode to deal with external monitor
