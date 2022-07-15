@@ -1,7 +1,7 @@
-NixOS 30: Patching the Kernel
-=============================
+NixOS 30: Patching the Kernel (aka Making the Roland RC-505 Looper Work)
+========================================================================
 
-- Companion to video at ...
+- Companion to video at https://youtu.be/SJO-t1Fya1A
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
