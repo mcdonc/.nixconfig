@@ -21,8 +21,8 @@ Video Script
 - NixOS is good at retrieving things from https://cache.nixos.org.  It'd be
   cool if you could have your own personal cache, wouldn't it?
 
-- Tada: cachix.org.  14 day free trial, thereafter costs money per month.
-  Pricing is geared towards small businesses.  https://www.cachix.org/pricing
+- Tada: Cachix.  Seems to have a free tier but unclear from the pricing page.
+  https://www.cachix.org/pricing
   
 - Create an account at https://cachix.org
 
@@ -44,8 +44,7 @@ Caching New Store Paths Created During a ``nixos-rebuild``
 
 - In my case, here's what was pushed::
 
-     $ cachix watch-store mcdonc                                                        
-     Watching /nix/store for new store paths ...
+     $ cachix watch-store mcdonc                               Watching /nix/store for new store paths ...
      compressing and pushing /nix/store/j26mvs5ksi3648q4891r9jgh10xrv4nj-roland.patch (752.00 B)
      compressing and pushing /nix/store/21whdvnxxanvcvcchxsk45smxnfk7402-NVIDIA-Linux-x86_64-515.48.07.run (343.76 MiB)
      compressing and pushing /nix/store/5dpc9ih2sgahcqyrjhqhpyr2px7pfka8-linux-config-5.15.53 (236.89 KiB)
