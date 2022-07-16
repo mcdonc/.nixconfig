@@ -24,11 +24,11 @@ sgdisk --zap-all ${DEV}
 
 # "ef00" is "EFI System Partition", "-n 0:0:+2GiB" means 2 gig starting from the
 # first available sector on rootdev "-c:0 boot" means give it a gpt name of boot
-sgdisk -n 0:0:+2GiB -t ef00 -c 0:${BOOTPGPTNAME} ${DEV}
+sgdisk -n 0:0:+2GiB -t 0:ef00 -c 0:${BOOTPGPTNAME} ${DEV}
 
 # 8300 is "Linux Filesystem", "-n 0:0:0" means take up the rest of the disk
 # starting after the boot partition, "-c:0 root" means name it root
-sgdisk -n 0:0:0 -t 8300 -c 0:${ROOTGPTNAME} ${DEV}
+sgdisk -n 0:0:0 -t 0:8300 -c 0:${ROOTGPTNAME} ${DEV}
 
 mkfs.fat -F 32 ${DEVPREFIX}1
 fatlabel ${DEVPREFIX}1 ${BOOTPLABEL}

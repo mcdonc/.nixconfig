@@ -7,83 +7,38 @@ systems I own.
 Usage
 -----
 
-Initialize a new system.
+- Check out this repository into ``~/.nixconfig`` within the NixOS installer on the
+  new system::
 
-- ``export ROOTDEV=/dev/nvmeXnX``
+    cd
+    git clone https://github.com/mcdonc/.nixconfig.git
 
-- ``export ROOTDEVPREFIX=${ROOTDEV}p``
+- Run the ``prepsystem.sh`` script.  The first argument should be the device
+  name to prepare (e.g. ``/dev/nvme1n1`` or ``/dev/sda``).  The second --
+  optional -- argument allows the partition names created to have a suffix (in
+  case you're installing a second Nix on a system that already has one device
+  formatted with the defaults).::
 
-- ``sudo sgdisk --zap-all $ROOTDEV``
+    ~/.nixconfig/prepsystem.sh /dev/nvme1n1
 
-- ``sudo fdisk $ROOTDEV``, then::
+- This will mount the prepared system on ``/mnt``.
 
-    g
-    n
-    accept default part num
-    accept default first sector
-    last sector: +2G
-    t
-    use partiton type 1 (EFI System)
-    n
-    accept default partition number
-    accept default first sector
-    accept default last sector
-    w
+- Copy the ``~/.nixconfig`` directory into ``/mnt/etc/nixos``::
 
-- No swap partition (huge amount of memory, also security)
+    cd
+    sudo cp .nixconfig /mnt/etc/nixos
 
-- Create the boot volume::
+- Move the system-generated ``/mnt/etc/nixos/configuration.nix`` aside::
 
-   sudo mkfs.fat -F 32 ${ROOTDEVPREFIX}1
-   sudo fatlabel ${ROOTDEVPREFIX}1 NIXBOOT
+    sudo mv /mnt/etc/nixos/configuration.nix{_aside}
 
-- Create a zpool::
+- If necessary, copy one of the existing ``thinknix*`` directories into
+  another, creating a new system.  Remember to change the hostId and hostName, if so.
 
-    sudo zpool create -f \
-    -o altroot="/mnt" \
-    -o ashift=12 \
-    -o autotrim=on \
-    -O compression=lz4 \
-    -O acltype=posixacl \
-    -O xattr=sa \
-    -O relatime=on \
-    -O normalization=formD \
-    -O dnodesize=auto \
-    -O sync=disabled \
-    -O encryption=aes-256-gcm \
-    -O keylocation=prompt \
-    -O keyformat=passphrase \
-    -O mountpoint=none \
-    NIXROOT \
-    ${ROOTDEVPREFIX}2
+- Link the ``configuration.nix`` representing the new system into
+  ``/mnt/etc/nixos/configuration.nix``::
 
-- Create zfs volumes::
-
-   sudo zfs create -o mountpoint=legacy NIXROOT/root
-   sudo zfs create -o mountpoint=legacy NIXROOT/home
-   # reserved to cope with running out of disk space
-   sudo zfs create -o refreservation=1G -o mountpoint=none NIXROOT/reserved
-
-- Mount the NIXROOT/root volume under ``/mnt``::
-
-   sudo mount -t zfs NIXROOT/root /mnt
-
-- Mount subvolumes::
-
-   sudo mkdir /mnt/boot
-   sudo mkdir /mnt/home
-   sudo mount ${ROOTDEVPREFIX}1 /mnt/boot
-   sudo mount -t zfs NIXROOT/home /mnt/home
-
-- Generate the initial config::
-
-    sudo nixos-generate-config --root /mnt
-
-- Copy ``vanilla.nix`` from this repo on top of
-  ``/mnt/etc/nixos/configuration.nix`` and edit (change ``networking.hostId`` and
-  ``networking.hostName``)::
-
-    cp ~/.nixconfig/vanilla.nix /mnt/etc/nixos/configuration.nix
+    sudo ln -s /mnt/etc/nixos/.nixconfig/thinknix512/configuration.nix /mnt/etc/nixos
 
 - Install the system::
 
@@ -97,30 +52,3 @@ Post-Reboot
 - Check out this repo on the new vanilla system into ``~/.nixconfig``::
 
     git clone git@github.com:mcdonc/.nixconfig.git
-
-- Copy an existing system from ``~/.nixconfig/<existingsystemname>`` into
-  ``~/.nixconfig/<newsystemname>`` and edit the ``configuration.nix`` and
-  ``hardware-configuration.nix`` files in the newly copied directory, e.g.::
-
-    cp -r thinknix51 newsystemname
-
-- Add a symlink from ``~/.nixconfig/<newsystemname>/configuration.nix`` to
-  ``~/.nixconfig/configuration.nix``, e.g.::
-
-     ln -s newsystemname/configuration .
-
-- Rename ``/etc/nixos/configuration.nix{,_aside}`` for safety::
-
-    sudo mv /etc/nixos/configuration.nix{,_aside}
-
-- Test the configuration::
-
-    sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix dry-activate
-
-- Make the configuration bootable::
-
-    sudo nixos-rebuild -I nixos-config=$HOME/.nixconfig/configuration.nix boot
-
-- Reboot into the version-controlled environment.  Use ``ednix`` to edit the
-  current configuration.  Use ``swnix`` to build and switch to an updated
-  configuration.
