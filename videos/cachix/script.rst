@@ -99,6 +99,8 @@ Caching New Store Paths Created During a ``nixos-rebuild``
      compressing and pushing /nix/store/i7n77n3jpdcgi72j1bvrx3pzad1klx1l-system-path (13.29 MiB)
      compressing and pushing /nix/store/f9m9wwa0wadavzz1lvi6r8d9m1kw2m9j-google-chrome-103.0.5060.114 (267.79 MiB)
 
+- 1.23 GB of stuff.
+
 - Plenty of other options to send things to your cache *after* they've been
   built (e.g. when your use nix-build or nix-shell, or just know the store
   paths you actually want to put up there).  See

@@ -23,6 +23,6 @@ in {
 
   services.logind.extraConfig = ''
     HandleLidSwitch=ignore
-    LidSwitchIgnoreInhibited=no
+    HandleLidSwitchDocked=ignore
   '';
 }
