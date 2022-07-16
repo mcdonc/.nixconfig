@@ -52,3 +52,9 @@ Post-Reboot
 - Check out this repo on the new vanilla system into ``~/.nixconfig``::
 
     git clone git@github.com:mcdonc/.nixconfig.git
+
+- *or* copy it from /etc/nixos/.nixconfig into the homedir if you've created a
+  new system::
+
+    cp -r /etc/nixos/.nixconfig ~
+    
