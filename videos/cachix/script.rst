@@ -112,11 +112,14 @@ Using The New Store Paths From the Cache On Other Systems
    cachix authtoken <authtoken>
    sudo cachix use <cachename>
 
-- ``cachix use`` will cause files to be written to /etc/nixos (``cachix.nix`` and a
-  directory named ``cachix``).
+- ``cachix use`` will cause some new config files to be written to /etc/nixos
+  (``cachix.nix`` and a directory named ``cachix``).
 
 - Edit your configuration.nix to include the generated
   ``/etc/nixos/cachix.nix`` as an import.
+
+- These are ok to check into shared configuration, they contain no secrets.  On
+  those new systems, you needn't then run ``cachix use``.
 
 - Run ``nixos-rebuild``.
 
