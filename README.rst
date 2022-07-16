@@ -32,8 +32,9 @@ Usage
 
     sudo mv /mnt/etc/nixos/configuration.nix{_aside}
 
-- If necessary, copy one of the existing ``thinknix*`` directories into
-  another, creating a new system.  Remember to change the hostId and hostName, if so.
+- If necessary, copy one of the existing ``thinknix*`` directories (or the
+  ``vanilla`` directory) into another, creating a new system.  Remember to
+  change the hostId and hostName, if so.
 
 - Link the ``configuration.nix`` representing the new system into
   ``/mnt/etc/nixos/configuration.nix``::
