@@ -109,7 +109,7 @@ Caching New Store Paths Created During a ``nixos-rebuild``
 Using The New Store Paths From the Cache On Other Systems
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- On every system on which you want to use your cached store paths::
+- On a system on which you want to use your cached store paths::
 
    cachix authtoken <authtoken>
    sudo cachix use <cachename>
@@ -120,8 +120,10 @@ Using The New Store Paths From the Cache On Other Systems
 - Edit your configuration.nix to include the generated
   ``/etc/nixos/cachix.nix`` as an import.
 
-- These are ok to check into shared configuration, they contain no secrets.  On
-  those new systems, you needn't then run ``cachix use``.
+- ``cachix.nix`` and the ``cachix`` directory are ok to check into shared
+  configuration, they contain no secrets.  If you use a shared configuration,
+  as long as you check it in, and on new systems, check it out, you needn't
+  then run ``cachix use``.
 
 - Run ``nixos-rebuild``.
 
