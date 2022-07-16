@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 
 let
-  hwfork = fetchTarball
-    "https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz";
+  hw = fetchTarball
+    "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
 in {
   imports = [
-    (import "${hwfork}/lenovo/thinkpad/p50")
+    (import "${hw}/lenovo/thinkpad/p50")
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
