@@ -13,8 +13,8 @@ in {
   ];
 
   # override optimus default offload mode to deal with external monitor
-  hardware.nvidia.prime.offload.enable = lib.mkForce false;
-  hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.prime.offload.enable = lib.mkForce false;
+  #hardware.nvidia.prime.sync.enable = true;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot.consoleLogLevel = 3;
