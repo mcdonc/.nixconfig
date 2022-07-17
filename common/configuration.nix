@@ -198,6 +198,7 @@
     gptfdisk
     ardour
     jack2
+    qjackctl
   ];
 
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
