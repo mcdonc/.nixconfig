@@ -69,12 +69,9 @@ Video Script
 
 - You still don't want to run ``throttled``.  What can you do?::
 
-    services.throttled.enable = lib.mkForce true;
+    services.throttled.enable = lib.mkForce false;
 
-- ``lib.mkForce true;`` is just a nicer spelling of ``lib.mkOverride 50 true;``::
-
-      services.throttled.enable = true;
-      services.throttled.enable = lib.mkForce true;
+- ``lib.mkForce false;`` is just a nicer spelling of ``lib.mkOverride 50 false;``.
 
 - Not discussed: How are the values in attribute sets of modules merged?  This
   is a whole other topic that I don't yet understand.
