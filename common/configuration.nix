@@ -8,11 +8,12 @@ let
     rev = "e9e5f5f84dedea81605e493ea6cec41275a9a8fd";
     sha256 = "sha256-49ogeV9eO3RhEbVdrKCKBrbByGv9tU0AdBLCHDENzYY=";
   };
-  oldardourpkgs = import "${oldardourpath}" {};
+  oldardourpkgs = import "${oldardourpath}" { };
   oldardour = oldardourpkgs.ardour;
-in
+  oldjack2 = oldardourpkgs.jack2;
+  oldlibjack2 = oldardourpkgs.libjack2;
 
-{
+in {
   imports = [ ./home.nix ./cachix.nix ];
 
   # Enable experimental features
@@ -22,7 +23,6 @@ in
   #'';
 
   nix.settings = { tarball-ttl = 300; };
-
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
@@ -233,7 +233,7 @@ in
     /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
     cachix
     gptfdisk
-    oldardour
+    ardour
     jack2
     qjackctl
   ];
