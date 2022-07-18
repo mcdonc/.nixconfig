@@ -1,5 +1,17 @@
 { config, pkgs, ... }:
 
+let
+  oldardourpath = pkgs.fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs";
+    # ardour 6.7; neither 6.8 nor 6.9 quit properly
+    rev = "e9e5f5f84dedea81605e493ea6cec41275a9a8fd";
+    sha256 = "sha256-49ogeV9eO3RhEbVdrKCKBrbByGv9tU0AdBLCHDENzYY=";
+  };
+  oldardourpkgs = import "${oldardourpath}" {};
+  oldardour = oldardourpkgs.ardour;
+in
+
 {
   imports = [ ./home.nix ./cachix.nix ];
 
@@ -11,19 +23,6 @@
 
   nix.settings = { tarball-ttl = 300; };
 
-  nixpkgs.overlays = [
-    (self: super: {
-      ardour-git = super.ardour.overrideAttrs (old: {
-        src = super.fetchgit {
-          url = "git://git.ardour.org/ardour/ardour.git";
-          # master on 7/17/2022
-          rev = "4556f55d8ed84b07e6fe81f3f6a8021c414801bf";
-          #sha256 = "0000000000000000000000000000000000000000000000000000";
-          sha256="sha256-4tsV6KV3XXZknQe8C+521fIIWoAuN2lvzvv2Ecp8SQo=";
-        };
-      });
-    })
-  ];
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
@@ -234,7 +233,7 @@
     /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
     cachix
     gptfdisk
-    ardour-git
+    oldardour
     jack2
     qjackctl
   ];
