@@ -11,6 +11,20 @@
 
   nix.settings = { tarball-ttl = 300; };
 
+  nixpkgs.overlays = [
+    (self: super: {
+      ardour-git = super.ardour.overrideAttrs (old: {
+        src = super.fetchgit {
+          url = "git://git.ardour.org/ardour/ardour.git";
+          # master on 7/17/2022
+          rev = "4556f55d8ed84b07e6fe81f3f6a8021c414801bf";
+          #sha256 = "0000000000000000000000000000000000000000000000000000";
+          sha256="sha256-4tsV6KV3XXZknQe8C+521fIIWoAuN2lvzvv2Ecp8SQo=";
+        };
+      });
+    })
+  ];
+
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -141,6 +155,30 @@
     }
   ];
 
+  # for audio plugins, stolen from musnix
+  environment.variables = {
+    DSSI_PATH =
+      "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
+    LADSPA_PATH =
+      "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
+    LV2_PATH =
+      "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
+    LXVST_PATH =
+      "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+    VST_PATH =
+      "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
+    VST3_PATH =
+      "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
+  };
+
+  # enable high precision timers if they exist (https://gentoostudio.org/?page_id=420)
+  services.udev = {
+    extraRules = ''
+      KERNEL=="rtc0", GROUP="audio"
+      KERNEL=="hpet", GROUP="audio"
+    '';
+  };
+
   environment.etc."vimrc".text = ''
     " get rid of maddening mouseclick-moves-cursor behavior
     set mouse=
@@ -196,7 +234,7 @@
     /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
     cachix
     gptfdisk
-    ardour
+    ardour-git
     jack2
     qjackctl
   ];

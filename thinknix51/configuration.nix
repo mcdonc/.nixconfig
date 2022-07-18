@@ -18,6 +18,9 @@ in {
   hardware.nvidia.prime.offload.enable = false;
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
+  # recommended for audio work
+  powerManagement.cpuFreqGovernor = "performance";
+
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot.consoleLogLevel = 3;
 }
