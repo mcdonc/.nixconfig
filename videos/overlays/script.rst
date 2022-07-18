@@ -1,5 +1,5 @@
-NixOS 32: Using An Overlay
-==========================
+NixOS 32: Using An Overlay To Change The Source of a ``nixpkgs`` Package
+========================================================================
 
 - Companion to video at ...
 
