@@ -41,7 +41,7 @@ Video Script
   - Downgrading Ardour to 6.7.  JACK didn't work at all, neither other mode
     worked either
 
-  - Setting ``hardware.pipewire.package = pipewireFull;``
+  - Setting ``hardware.pipewire.package = pkgs.pipewireFull;``
 
   - Adding ``boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];``
 
