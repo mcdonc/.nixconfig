@@ -1,19 +1,6 @@
 { config, pkgs, ... }:
 
-let
-  oldardourpath = pkgs.fetchFromGitHub {
-    owner = "NixOS";
-    repo = "nixpkgs";
-    # ardour 6.7; neither 6.8 nor 6.9 quit properly
-    rev = "e9e5f5f84dedea81605e493ea6cec41275a9a8fd";
-    sha256 = "sha256-49ogeV9eO3RhEbVdrKCKBrbByGv9tU0AdBLCHDENzYY=";
-  };
-  oldardourpkgs = import "${oldardourpath}" { };
-  oldardour = oldardourpkgs.ardour;
-  oldjack2 = oldardourpkgs.jack2;
-  oldlibjack2 = oldardourpkgs.libjack2;
-
-in {
+{
   imports = [ ./home.nix ./cachix.nix ];
 
   # Enable experimental features
@@ -33,10 +20,26 @@ in {
   boot.loader.grub.splashMode = "stretch"; # "normal"
   boot.loader.grub.useOSProber = true;
   boot.loader.timeout = 60;
+
   # copyKernels: "Using NixOS on a ZFS root file system might result in the boot error
   # external pointer tables not supported when the number of hardlinks in the nix
   # store gets very high.
   boot.loader.grub.copyKernels = true;
+
+  # for audio (using pipewire is the only way I could get ardour to record anything)
+  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  #hardware.pulseaudio.package = pkgs.pulseaudioFull;
+  hardware.pulseaudio.enable = false;
+
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    jack.enable = true;
+    pulse.enable = true;
+  };
 
   networking.networkmanager.enable = true;
 
@@ -86,7 +89,6 @@ in {
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
@@ -234,7 +236,6 @@ in {
     cachix
     gptfdisk
     ardour
-    jack2
     qjackctl
   ];
 
