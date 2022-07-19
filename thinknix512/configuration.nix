@@ -11,6 +11,7 @@ in {
     ../common/encryptedzfs.nix
     ../common/configuration.nix
     ../common/rc505.nix
+    ../common/sessile.nix
   ];
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
@@ -22,8 +23,4 @@ in {
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot.consoleLogLevel = 3;
 
-  services.logind.extraConfig = ''
-    HandleLidSwitch=ignore
-    HandleLidSwitchDocked=ignore
-  '';
 }
