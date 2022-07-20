@@ -241,6 +241,11 @@
     freepats
     helm
     distrho
+    calf
+    x42-plugins
+    tap-plugins
+    zam-plugins
+    sanoid
   ];
 
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
