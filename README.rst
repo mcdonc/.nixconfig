@@ -23,23 +23,25 @@ Usage
 
 - This will mount the prepared system on ``/mnt``.
 
-- Copy the ``~/.nixconfig`` directory into ``/mnt/etc/nixos``::
+- Move the system-generated ``/mnt/etc/nixos`` aside::
+
+    sudo mv /mnt/etc/nixos /mnt/etc/nixos_aside
+
+- Copy the ``~/.nixconfig`` directory on top of ``/mnt/etc/nixos`` (not *into*
+  it, it should *become* ``/mnt/etc/nixos``)::
 
     cd
     sudo cp .nixconfig /mnt/etc/nixos
 
-- Move the system-generated ``/mnt/etc/nixos/configuration.nix`` aside::
+- If necessary, copy one of the existing ``/mnt/etc/hosts/thinknix*.nix`` files
+  (or the ``vanilla.nix`` file) into another within the
+  ``/mnt/etc/nixos/hosts`` directory, creating a new system.  Remember to
+  change the ``hostId`` and ``hostName``, if so.
 
-    sudo mv /mnt/etc/nixos/configuration.nix{_aside}
-
-- If necessary, copy one of the existing ``thinknix*`` directories (or the
-  ``vanilla`` directory) into another, creating a new system.  Remember to
-  change the hostId and hostName, if so.
-
-- Link the ``configuration.nix`` representing the new system into
+- Link the nixfile representing the new system into
   ``/mnt/etc/nixos/configuration.nix``::
 
-    sudo ln -s /mnt/etc/nixos/.nixconfig/thinknix512/configuration.nix /mnt/etc/nixos
+    sudo ln -s /mnt/etc/nixos/hosts/thinknix51.nix /mnt/etc/nixos/configuration.nix
 
 - Install the system::
 
@@ -50,12 +52,10 @@ Usage
 Post-Reboot
 -----------
 
-- Check out this repo on the new vanilla system into ``~/.nixconfig``::
+- Change your user's password.
 
-    git clone git@github.com:mcdonc/.nixconfig.git
+- Change ownership of ``/etc/nixos`` (this used to be ``/mnt/etc/nixos`` before
+  the reboot) to the name of the user you created by virtue of installing Nix.::
 
-- *or* copy it from /etc/nixos/.nixconfig into the homedir if you've created a
-  new system::
+    sudo chown -R chrism:users /etc/nixos
 
-    cp -r /etc/nixos/.nixconfig ~
-    

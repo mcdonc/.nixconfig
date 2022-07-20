@@ -3,7 +3,6 @@
 let
   hm = fetchTarball
     "https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz";
-  nixos-config = "$HOME/.nixconfig/configuration.nix";
 in {
   imports = [ (import "${hm}/nixos") ];
 
@@ -135,15 +134,15 @@ in {
       };
 
       shellAliases = {
-        swnix = "sudo nixos-rebuild -I nixos-config=${nixos-config} switch";
-        drynix = "sudo nixos-rebuild -I nixos-config=${nixos-config} dry-build";
-        bootnix = "sudo nixos-rebuild -I nixos-config=${nixos-config} boot";
-        ednix = "emacsclient -nw ${nixos-config}";
+        swnix = "sudo nixos-rebuild switch";
+        drynix = "sudo nixos-rebuild dry-build";
+        bootnix = "sudo nixos-rebuild boot";
+        ednix = "emacsclient -nw /etc/nixos/configuration.nix";
         upnix =
-          "sudo nixos-rebuild -I nixos-config=${nixos-config} switch --upgrade";
+          "sudo nixos-rebuild switch --upgrade";
         schnix = "nix search nixpkgs";
         rbnix =
-          "sudo nixos-rebuild -I nixos-config=${nixos-config} build --rollback";
+          "sudo nixos-rebuild build --rollback";
         mountzfs = "sudo zfs load-key z/storage; sudo zfs mount z/storage";
         restartemacs = "systemctl --user restart emacs";
         open = "kioclient exec";
