@@ -55,7 +55,7 @@ Post-Reboot
 - Change your user's password.
 
 - Change ownership of ``/etc/nixos`` (this used to be ``/mnt/etc/nixos`` before
-  the reboot) to the name of the user you created by virtue of installing Nix.::
+  the reboot) to your user, so you can commit and pull.::
 
     sudo chown -R chrism:users /etc/nixos
 
