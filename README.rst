@@ -34,7 +34,7 @@ Usage
     sudo cp .nixconfig /mnt/etc/nixos
 
 - If necessary, copy one of the existing ``/mnt/etc/hosts/thinknix*.nix`` files
-  (or the ``vanilla.nix`` file) into another within the
+  (or the ``/mnt/etc/hosts/vanilla.nix`` file) into another file within the
   ``/mnt/etc/nixos/hosts`` directory, creating a new system.  Remember to
   change the ``hostId`` and ``hostName``, if so.
 
