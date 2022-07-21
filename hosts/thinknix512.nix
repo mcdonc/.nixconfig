@@ -15,7 +15,6 @@ in {
   ];
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
-  networking.useDHCP = lib.mkForce true;
 
   hardware.nvidia.prime.offload.enable = false;
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
