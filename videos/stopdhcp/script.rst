@@ -10,7 +10,7 @@ Video Script
 ------------
 
 - ``dhcpd`` has problems stopping at system shutdown when this bit of config is
-  present::
+  present ("A stop job is running for DHCP Client...")::
 
     networking.useDHCP = true;
 
