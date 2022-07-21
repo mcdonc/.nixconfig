@@ -1,5 +1,5 @@
-NixOS 34: Squashing an Irritating "A Stop Job Is Running For..." Shutdown Issue
-===============================================================================
+NixOS 34: Squashing an Irritating "A Stop Job Is Running For..." Shutdown Issue in NixOS 22.05
+==============================================================================================
 
 - Companion to video at ...
 
@@ -13,6 +13,10 @@ Video Script
   present::
 
     networking.useDHCP = true;
+
+- The provenance of this particular NixOS option is storied:
+  https://github.com/NixOS/nixpkgs/pull/167327/files/8e42949a2421485c34fa56cff3e768af1c91459e
+  .  I won't try to know wtf is going on.
   
 - Via ``journalctl -b -1`` we can see the issue.  ``dhcpd`` gets a stop request
   at 13:43:39 and only finally stops at 13:45:09.  The delay is because it did
