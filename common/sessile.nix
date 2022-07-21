@@ -11,4 +11,6 @@
       IdleAction=ignore
     '';
   };
+  # recommended for audio work
+  powerManagement.cpuFreqGovernor = "performance";
 }

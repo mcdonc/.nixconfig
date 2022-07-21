@@ -19,12 +19,15 @@ in {
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default is 4)
   boot.consoleLogLevel = 3;
 
-  # why must I do this?  I have no idea.
-  systemd.services.NetworkManager-wait-online.enable = false;
-
   # per-host settings
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
-  networking.useDHCP = lib.mkForce true;
+  #networking.useDHCP = lib.mkForce true;
+  #networking.interfaces.enp0s31f6.useDHCP = true;
+  #networking.interfaces.wlp0s20f3.useDHCP = true;
+
+  # why must I do this?  I have no idea.  Think related to useDHCP.
+  #systemd.services.NetworkManager-wait-online.enable = false;
+
 }
 
