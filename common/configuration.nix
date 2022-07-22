@@ -3,13 +3,28 @@
 {
   imports = [ ./home.nix ./cachix.nix ];
 
-  # Enable experimental features
-  #nix.package = pkgs.nixUnstable;
-  #nix.extraOptions = ''
-  #  experimental-features = nix-command flakes
-  #'';
+  # nix stuff
+  system.stateVersion = "22.05";
 
-  nix.settings = { tarball-ttl = 300; };
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
+  nix.settings = {
+    tarball-ttl = 300;
+    auto-optimise-store = true;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  # NVIDIA requires nonfree
+  nixpkgs.config.allowUnfree = true;
+
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
@@ -20,26 +35,11 @@
   boot.loader.grub.splashMode = "stretch"; # "normal"
   boot.loader.grub.useOSProber = true;
   boot.loader.timeout = 60;
-
+  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
   # copyKernels: "Using NixOS on a ZFS root file system might result in the boot error
   # external pointer tables not supported when the number of hardlinks in the nix
   # store gets very high.
   boot.loader.grub.copyKernels = true;
-
-  # for audio (using pipewire is the only way I could get ardour to record anything)
-  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
-  #hardware.pulseaudio.package = pkgs.pulseaudioFull;
-  #hardware.pulseaudio.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    jack.enable = true;
-    pulse.enable = true;
-  };
 
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
@@ -94,67 +94,43 @@
   };
 
   networking.networkmanager.enable = true;
+  networking.firewall.enable = false;
 
-  # Set your time zone.
   time.timeZone = "America/New_York";
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #  font = "Lat2-Terminus16";
-  #  keyMap = "us";
-  #  useXkbConfig = true; # use xkbOptions in tty.
-  #};
-
-  # ZFS services
-  services.zfs.autoScrub.enable = true;
-  services.zfs.trim.enable = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
-
-  # Makes ctrl-alt-backspace work (requires above xkbOption for terminate too)
-  services.xserver.enableCtrlAltBackspace = true;
-
-  # Make the DPI the same in sync mode as in offload mode.
-  services.xserver.dpi = 96;
-
-  # NVIDIA requires nonfree
-  nixpkgs.config.allowUnfree = true;
-
-  # allow for fwupdmgr firmware update manager use
-  services.fwupd.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # enable locate
-  services.locate.enable = true;
-
-  # Enable sound.
   sound.enable = true;
-
-  # Enable bluetooth
   hardware.bluetooth.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  # desktop stuff
+  services.xserver.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.layout = "us";
+  services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
+  services.xserver.enableCtrlAltBackspace = true;
+  services.xserver.dpi = 96;
+  services.xserver.libinput.enable = true; # touchpad
+  services.printing.enable = true;
+  fonts.fonts = with pkgs; [ ubuntu_font_family ];
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    jack.enable = true;
+    pulse.enable = true;
+  };
 
-  # Enable the OpenSSH daemon.
+
+  # all other services
+  services.fwupd.enable = true;
+  services.locate.enable = true;
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
   };
-
   services.tlp = {
     settings = {
       # only charge up to 80% of the battery capacity
@@ -162,8 +138,12 @@
       STOP_CHARGE_THRESH_BAT0 = "80";
     };
   };
-
   services.fstrim.enable = true;
+  services.zfs.autoScrub.enable = true;
+  services.zfs.trim.enable = true;
+
+
+  programs.steam.enable = true;
 
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
@@ -247,14 +227,5 @@
     zam-plugins
     sanoid
   ];
-
-  fonts.fonts = with pkgs; [ ubuntu_font_family ];
-
-  # Disable the firewall altogether.
-  networking.firewall.enable = false;
-
-  programs.steam.enable = true;
-
-  system.stateVersion = "22.05";
 
 }
