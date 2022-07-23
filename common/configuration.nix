@@ -226,6 +226,7 @@
     tap-plugins
     zam-plugins
     sanoid
+    handbrake
   ];
 
 }
