@@ -14,9 +14,9 @@ Video Script
 
 - In a previous video, I suggested that the following configuration would pin
   the kernel, such that I could use Cachix (http://cachix.org) to avoid needing
-  to rebuild the custom kernel on multiple systems.  I have several systems
-  which are basically identical to each other, and I want them all to be able
-  to use this audio device.::
+  to rebuild the custom patched kernel on multiple systems.  I have several
+  systems which are basically identical to each other, and I want them all to
+  be able to use this audio device.::
 
     # enable the Roland RC-505 as an ALSA device
 
@@ -27,9 +27,9 @@ Video Script
       patch = ./roland.patch;
     }];
 
-- In reality, at least if you ever issue a ``nixos-rebuild upgrade`` command,
-  ``boot.kernelPackages = ...`` isn't a specific enough pin to avoid kernel
-  rebuilds at upgrade time, because, over time, the thing referred to as
+- But, in reality, at least if you ever issue a ``nixos-rebuild upgrade``
+  command, ``boot.kernelPackages = ...`` isn't a specific enough pin to avoid
+  kernel rebuilds at upgrade time, because, over time, the thing referred to as
   ``pkgs.linuxPackages_5_15`` will refer to 5.15.48, 5.15.55, 5.15.58, etc.
 
 - Instead we must do this horrorshow::
@@ -52,9 +52,9 @@ Video Script
       patch = ./roland.patch;
     }];
 
-- I cribbed this from the NixOS Wiki but it was for a 4.X kernel, so I just
-  replaced the 4s with 5s and it worked.  The sha will of course be different
-  if you don't use 5.15.55.
+- I cribbed this from the kernel page on the NixOS Wiki but it was for a 4.X
+  kernel, so I just replaced the 4s with 5s and it worked.  The sha will of
+  course be different if you don't use 5.15.55.
     
 - Note that even *this* isn't enough to not see the kernel rebuild from time to
   time, for reasons I haven't quite pinned down (no pun intended).  I suspect
