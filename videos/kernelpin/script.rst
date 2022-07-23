@@ -9,8 +9,8 @@ NixOS 35: Pinning The Kernel Version
 Video Script
 ------------
 
-- I use a custom kernel for a single dumb reason: I need a two-line patch to it
-  in order to make one of my dumb audio devices work.
+- I use a custom kernel for a single dumb reason: I need a dumb two-line patch
+  to it in order to make one of my dumb audio devices work.
 
 - In a previous video, I suggested that the following configuration would pin
   the kernel, such that I could use Cachix (http://cachix.org) to avoid needing
