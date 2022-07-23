@@ -27,10 +27,11 @@ Video Script
       patch = ./roland.patch;
     }];
 
-- But, in reality, at least if you ever issue a ``nixos-rebuild upgrade``
-  command, ``boot.kernelPackages = ...`` isn't a specific enough pin to avoid
-  kernel rebuilds at upgrade time, because, over time, the thing referred to as
-  ``pkgs.linuxPackages_5_15`` will refer to 5.15.48, 5.15.55, 5.15.58, etc.
+- But, in reality, at least if you ever issue a ``nixos-rebuild switch
+  --upgrade`` command, ``boot.kernelPackages = ...`` isn't a specific enough
+  pin to avoid kernel rebuilds at upgrade time, because, over time, the thing
+  referred to as ``pkgs.linuxPackages_5_15`` will refer to 5.15.48, 5.15.55,
+  5.15.58, etc.
 
 - Instead we must do this horrorshow::
 
