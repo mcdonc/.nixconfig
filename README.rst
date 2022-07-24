@@ -19,7 +19,7 @@ Usage
   case you're installing a second Nix on a system that already has one device
   formatted with the defaults).::
 
-    ~/.nixconfig/prepsystem.sh /dev/nvme1n1
+    sudo ~/.nixconfig/prepsystem.sh /dev/nvme1n1
 
 - This will mount the prepared system on ``/mnt``.
 
@@ -59,3 +59,10 @@ Post-Reboot
 
     sudo chown -R chrism:users /etc/nixos
 
+- Convert the https checkout of ``/etc/nixos`` to an ssh checkout by changing
+  ``url = https://github.com/mcdonc/.nixconfig.git`` to ``url =
+  git@github.com:mcdonc/.nixconfig.git`` in the ``[remote "origin"]`` section
+  of ``/etc/nixos/.git/config``.
+
+- Commit the new system to the repo.
+  
