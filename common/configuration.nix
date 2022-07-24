@@ -185,7 +185,6 @@ in {
     vim_configurable
     wget
     obs-studio
-    firefox
     thermald
     powertop
     libsForQt5.kdeconnect-kde
@@ -201,6 +200,7 @@ in {
     mpv
     vlc
     google-chrome
+    firefox
     audacity
     #etcher
     gimp

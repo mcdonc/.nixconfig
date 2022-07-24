@@ -24,6 +24,26 @@ in {
       };
     };
 
+    # # NUR for browser plugins (see https://discourse.nixos.org/t/problems-setting-up-nur/10690/2)
+    # nixpkgs.config.packageOverrides = pkgs: {
+    #   nur = import (builtins.fetchTarball
+    #     "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+    #       inherit pkgs;
+    #     };
+    # };
+    
+    # programs.firefox.enable = true;
+    # programs.firefox.extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+    #   bitwarden
+    #   privacy-badger
+    #   duckduckgo-privacy-essentials
+    # ];
+    # programs.firefox.profiles."default" = {
+    #   id = 0;
+    #   name = "default";
+    #   isDefault = true;
+    # };
+
     xdg.configFile."environment.d/ssh_askpass.conf".text = ''
       SSH_ASKPASS="/run/current-system/sw/bin/ksshaskpass"
     '';
@@ -138,11 +158,9 @@ in {
         drynix = "sudo nixos-rebuild dry-build";
         bootnix = "sudo nixos-rebuild boot";
         ednix = "emacsclient -nw /etc/nixos/configuration.nix";
-        upnix =
-          "sudo nixos-rebuild switch --upgrade";
+        upnix = "sudo nixos-rebuild switch --upgrade";
         schnix = "nix search nixpkgs";
-        rbnix =
-          "sudo nixos-rebuild build --rollback";
+        rbnix = "sudo nixos-rebuild build --rollback";
         mountzfs = "sudo zfs load-key z/storage; sudo zfs mount z/storage";
         restartemacs = "systemctl --user restart emacs";
         open = "kioclient exec";
