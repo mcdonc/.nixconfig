@@ -54,6 +54,11 @@ Post-Reboot
 
 - Change your user's password.
 
+- Put your private SSH key into ~/.ssh (e.g. ``id_rsa``).  At the next relogin
+  you will be prompted by ksshaskpass for its passphrase.  You will also need
+  to change the ``kdewallet`` password to the new password you gave your user
+  for it to save successfully.
+
 - Change ownership of ``/etc/nixos`` (this used to be ``/mnt/etc/nixos`` before
   the reboot) to your user, so you can commit and pull.::
 
