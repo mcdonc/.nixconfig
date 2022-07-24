@@ -110,7 +110,6 @@ in {
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
-  services.printing.enable = true;
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
   services.pipewire = {
     enable = true;
@@ -123,6 +122,7 @@ in {
   };
 
   # printing
+  services.printing.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
 
