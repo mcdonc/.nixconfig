@@ -123,19 +123,19 @@ in {
   };
 
   # printing
-  #services.avahi.enable = true;
-  #services.avahi.nssmdns = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
 
-  hardware.printers = {
-    ensureDefaultPrinter = printername;
-    ensurePrinters = [{
-      name = printername;
-      location = "downstairs";
-      model = "everywhere";
-      description = "ChrisM HP LaserJet Pro M148fdw";
-      deviceUri = "ipp://192.168.1.190/ipp";
-    }];
-  };
+  # hardware.printers = {
+  #   ensureDefaultPrinter = printername;
+  #   ensurePrinters = [{
+  #     name = printername;
+  #     location = "downstairs";
+  #     model = "everywhere";
+  #     description = "ChrisM HP LaserJet Pro M148fdw";
+  #     deviceUri = "ipp://192.168.1.190/ipp";
+  #   }];
+  # };
 
   # all other services
   services.fwupd.enable = true;
