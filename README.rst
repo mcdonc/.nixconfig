@@ -31,12 +31,14 @@ Usage
   it, it should *become* ``/mnt/etc/nixos``)::
 
     cd
-    sudo cp .nixconfig /mnt/etc/nixos
+    sudo cp -r .nixconfig /mnt/etc/nixos
 
 - If necessary, copy one of the existing ``/mnt/etc/hosts/thinknix*.nix`` files
   (or the ``/mnt/etc/hosts/vanilla.nix`` file) into another file within the
   ``/mnt/etc/nixos/hosts`` directory, creating a new system.  Remember to
-  change the ``hostId`` and ``hostName``, if so.
+  change the ``hostId`` and ``hostName``, if so.  Use this for the hostId::
+
+    cat /etc/machine-id | head -c 8
 
 - Link the nixfile representing the new system into
   ``/mnt/etc/nixos/configuration.nix``::
