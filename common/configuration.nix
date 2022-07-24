@@ -25,7 +25,6 @@
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
 
-
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -122,7 +121,6 @@
     pulse.enable = true;
   };
 
-
   # all other services
   services.fwupd.enable = true;
   services.locate.enable = true;
@@ -141,7 +139,6 @@
   services.fstrim.enable = true;
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
-
 
   programs.steam.enable = true;
 
@@ -184,6 +181,8 @@
     bpytop
     killall
     htop
+    handbrake
+    mpv
     vlc
     google-chrome
     audacity
@@ -226,7 +225,6 @@
     tap-plugins
     zam-plugins
     sanoid
-    handbrake
   ];
 
 }
