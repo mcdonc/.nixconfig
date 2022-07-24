@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
-{
+let printername = "ChrisM_HP_LaserJet_Pro_M148fdw_BBE5CC";
+in {
   imports = [ ./home.nix ./cachix.nix ];
 
   # nix stuff
@@ -121,6 +122,21 @@
     pulse.enable = true;
   };
 
+  # printing
+  #services.avahi.enable = true;
+  #services.avahi.nssmdns = true;
+
+  hardware.printers = {
+    ensureDefaultPrinter = printername;
+    ensurePrinters = [{
+      name = printername;
+      location = "downstairs";
+      model = "everywhere";
+      description = "ChrisM HP LaserJet Pro M148fdw";
+      deviceUri = "ipp://192.168.1.190/ipp";
+    }];
+  };
+
   # all other services
   services.fwupd.enable = true;
   services.locate.enable = true;
@@ -225,6 +241,7 @@
     tap-plugins
     zam-plugins
     sanoid
+    hplip
   ];
 
 }
