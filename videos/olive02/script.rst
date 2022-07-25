@@ -33,8 +33,10 @@ Video Script
 
 - I have created a fork of Olive to see if I could create a set of expressions
   that would produce an Olive 0.2 derivation.  The fork isn't really necessary,
-  and it's actually kinda dumb for the Nix expressions to live there.  But
-  that's where the expressions live now.
+  and it's actually kinda dumb for the Nix expressions to live there, because
+  they just go ahead and check out another version of Olive.  Nix expressions
+  are designed to not live in-tree.  But that's where my expressions live now.
+  https://github.com/mcdonc/olive
 
 - Olive 0.2 is under very heavy development, and thus likely has a lot of rough
   edges, so I don't think it's reasonable to contribute this build to, say,
