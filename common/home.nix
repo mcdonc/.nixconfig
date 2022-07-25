@@ -161,6 +161,7 @@ in {
         upnix = "sudo nixos-rebuild switch --upgrade";
         schnix = "nix search nixpkgs";
         rbnix = "sudo nixos-rebuild build --rollback";
+        replnix = "nix repl '<nixpkgs>'";
         mountzfs = "sudo zfs load-key z/storage; sudo zfs mount z/storage";
         restartemacs = "systemctl --user restart emacs";
         open = "kioclient exec";
