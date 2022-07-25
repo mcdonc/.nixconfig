@@ -243,6 +243,8 @@ in {
     sanoid
     hplip
     geteltorito
+    argyllcms
+    xcalib
   ];
 
 }
