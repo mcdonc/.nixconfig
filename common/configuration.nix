@@ -242,6 +242,7 @@ in {
     zam-plugins
     sanoid
     hplip
+    geteltorito
   ];
 
 }
