@@ -1,5 +1,5 @@
-NixOS 37: Building Your Own Derivation from Upstream Sources
-============================================================
+NixOS 37: Building Your Own Derivation from Upstream Sources (Olive Video Editor 0.2)
+=====================================================================================
 
 - Companion to video at ...
   
