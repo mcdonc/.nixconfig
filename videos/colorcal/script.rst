@@ -43,7 +43,10 @@ Video Script
 
 
 - Make sure your monitor won't turn off or go dim due to its internal poweroff
-  and energy settings.
+  and energy settings.  Optionally, set your screen wallpaper to an all-black
+  color and hide any icons or docks on the screen (not sure if this is required
+  for LCD monitors, but I do it for good measure, and I turn off the lights in
+  the room).
 
 - Invoke ``dispcal``, tellng it to output an ICC profile::
 
