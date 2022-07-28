@@ -21,7 +21,8 @@ Video Script
   such apps aren't supported under NixOS. But DisplayCAL is really just a GUI
   wrapper around ArgyllCMS, which is supported on NixOS.  The process can be
   done with "raw" ArgylCMS and another tool named ``xcalib``; it is a little
-  more manual but still doable.
+  more manual but still doable.  And this guide is probably helpful for
+  non-NixOS-but-still-Linux people too, if they can stomach the Nix-isms.
 
 - The colorimiter I'm using is a Pantone Huey.  You can get one new on ebay for
   like $15-$20, shipped.  Don't bother with the Pro version, AFAICT.  The only
@@ -71,7 +72,8 @@ Video Script
 - To make sure it happens every time you log in, put the following in your
   NixOS configuration's home-manager section.  If you don't yet have
   home-manager, you'll have to set it up (see
-  https://nix-community.github.io/home-manager/index.html)::
+  https://nix-community.github.io/home-manager/index.html).  Note that I've
+  only tested this with KDE, it may need to differ in other desktop environments::
 
     xdg.configFile."autostart-scripts/localxcalib.sh" = {
       text = ''
@@ -91,3 +93,10 @@ Video Script
     sudo journalctl -b0
 
   And search for ``monprofile``. 
+
+- If you run KDE, you'll notice that the file
+  ``$HOME/.config/autostart-scripts/localxcalib.sh`` was seemingly deleted.
+  But KDE actually turned it into a combination of a shell script that lives
+  somewhere it manages and an automatically generated ``.desktop`` file that
+  points to that file. You can see that by visiting the "Autostart" settings
+  page.
