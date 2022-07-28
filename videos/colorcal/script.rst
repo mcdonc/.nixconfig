@@ -12,18 +12,18 @@ Video Script
 - I'm not a professional artist.  I don't really need this.  But it can be fun
   and informative to see what is intended by those kinds of people on your
   monitor, instead of whatever blown-out all-blue profile your monitor vendor
-  shipped it with.  For instance, did you know that the Breeze Dark theme in
-  KDE is actually *brown*?
+  shipped it with.  For instance, did you know that the Ubuntu GNOME theme
+  toolbar is actually *brown*, not mud-gray?
 
 - Color calibration is of course not really a NixOS thing, but, if you're on
-  NixOS, you won't have access to the go-to color calibration GUI for Linux
-  called DisplayCAL.  Apparently DisplayCAL is written in Python 2.X, and such
-  apps aren't supported under NixOS. But DisplayCAL is really just a GUI
+  NixOS 22.05, you won't have access to the go-to color calibration GUI for
+  Linux called DisplayCAL.  Apparently DisplayCAL is written in Python 2.X, and
+  such apps aren't supported under NixOS. But DisplayCAL is really just a GUI
   wrapper around ArgyllCMS, which is supported on NixOS.  The process can be
   done with "raw" ArgylCMS; it is a little more manual but still doable.
 
 - The colorimiter I'm using is a Pantone Huey.  You can get one new on ebay for
-  like $15-$20, shipped.  Don't bother with the Pro, AFAICT.  The only
+  like $15-$20, shipped.  Don't bother with the Pro version, AFAICT.  The only
   difference is software, which you can't use under Linux anyway.
   https://www.ebay.com/itm/165593425452?hash=item268e23262c:g:v9wAAOSw0Nti3OHT
 
@@ -43,10 +43,13 @@ Video Script
 
 
 - Make sure your monitor won't turn off or go dim due to its internal poweroff
-  and energy settings.  Maybe wipe it down a bit.  Optionally, set your screen
-  wallpaper to an all-black color and hide any icons or docks on the screen.
-  I'm not sure if this is required for LCD monitors, but I do it for good
-  measure.  I also turn off the lights in the room.
+  and energy settings.  Maybe wipe it down a bit.  I think ``dispcal`` shuts
+  off the screen lock while it's running but YMMV depending on your setup, so
+  it might not be a bad idea to turn off any screen lock or blanking you have.
+  Optionally, set your screen wallpaper to an all-black color and hide any
+  icons or docks on the screen.  I'm not sure if this is required for LCD
+  monitors, but I do it for good measure.  I also turn off the lights in the
+  room.
 
 - Invoke ``dispcal``, tellng it to output an ICC profile::
 
