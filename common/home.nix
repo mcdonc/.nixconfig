@@ -6,7 +6,7 @@ let
 in {
   imports = [ (import "${hm}/nixos") ];
 
-  home-manager.users.chrism = { pkgs, ... }: {
+  home-manager.users.chrism = { pkgs, config, ... }: {
 
     home.packages = with pkgs; [ keybase-gui ];
 
@@ -24,26 +24,6 @@ in {
       };
     };
 
-    # # NUR for browser plugins (see https://discourse.nixos.org/t/problems-setting-up-nur/10690/2)
-    # nixpkgs.config.packageOverrides = pkgs: {
-    #   nur = import (builtins.fetchTarball
-    #     "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-    #       inherit pkgs;
-    #     };
-    # };
-    
-    # programs.firefox.enable = true;
-    # programs.firefox.extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    #   bitwarden
-    #   privacy-badger
-    #   duckduckgo-privacy-essentials
-    # ];
-    # programs.firefox.profiles."default" = {
-    #   id = 0;
-    #   name = "default";
-    #   isDefault = true;
-    # };
-
     xdg.configFile."environment.d/ssh_askpass.conf".text = ''
       SSH_ASKPASS="/run/current-system/sw/bin/ksshaskpass"
     '';
@@ -58,7 +38,17 @@ in {
     xdg.configFile."plasma-workspace/env/ssh-agent-startup.sh" = {
       text = ''
         #!/bin/sh
-                [ -n "$SSH_AGENT_PID" ] || eval "$(ssh-agent -s)"
+        [ -n "$SSH_AGENT_PID" ] || eval "$(ssh-agent -s)"
+      '';
+      executable = true;
+    };
+
+    xdg.configFile."autostart-scripts/localxcalib.sh" = {
+      text = ''
+        #!/bin/sh
+        set -x
+        f="${config.xdg.configHome}/monprofile.icc"
+        if [ -e "$f" ]; then xcalib -s :0 "$f"; else echo "no file $f"; fi
       '';
       executable = true;
     };
@@ -66,7 +56,7 @@ in {
     xdg.configFile."plasma-workspace/shutdown/ssh-agent-shutdown.sh" = {
       text = ''
         #!/bin/sh
-                [ -z "$SSH_AGENT_PID" ] || eval "$(ssh-agent -k)"
+        [ -z "$SSH_AGENT_PID" ] || eval "$(ssh-agent -k)"
       '';
       executable = true;
     };
@@ -82,6 +72,13 @@ in {
         mimeType = [ "application/vnd.olive-project" ];
         icon = "org.olivevideoeditor.Olive";
       };
+      # localxcalib = {
+      #   name = "xcalib of ~/.monprofile.icc";
+      #   genericName = "xcalib of ~/.monprofile.icc";
+      #   exec = "xcalib -S :0 ${config.home.homeDirectory}/.monprofile.icc";
+      #   categories = [ "Graphics" ];
+      #   terminal = false;
+      # };
     };
 
     # thanks to tejing on IRC for clueing me in to .force here: it will
