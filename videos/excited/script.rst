@@ -46,8 +46,8 @@ often seems possible than impossible.  Here are some concrete examples:
 - I can reinstall a system in that amount of time delta time for backup and
   restore of the homedir.
 
-- My systems are always available: local name resolution and ssh config are
-  shared.
+- My systems are always available remotely: local name resolution and ssh
+  config are shared.
 
 - I can print from any system.
 
@@ -68,17 +68,16 @@ often seems possible than impossible.  Here are some concrete examples:
 - I can use an old build of a package, reproducibly built years ago, to work
   around bitrot.
 
-Community is important.  Technology will only get you so far: another
-abstraction layer on top of Ubuntu (e.g. Ansible) might get you some of these
-benefits.  But NixOS has an excellent community, which I've not witnessed
-in many other places.
+Technology will only get you so far: another abstraction layer on top of Ubuntu
+(e.g. Ansible) might get you some of these benefits.  But NixOS has an
+excellent community, which I've not witnessed in many other places.
 
 - Unreal politeness, humility, and thoroughness on Discourse, Matrix, IRC,
   and GitHub.
 
 - Vanishingly small numbers of sightings of bureaucrats, trolls, "influencers",
-  or condescending assholes.  This may be because if you are one of these, it
-  appears that you are basically ignored, perhaps after one warning.
+  or condescending know it alls.  This may be because if you are one of these,
+  it appears that you are basically ignored, perhaps after one warning.
 
 - Everyone is smarter than I am.  They are also recognizably human.
 
@@ -98,9 +97,8 @@ NixOS has a revolutionary paradigm.
 - But it manages, currently, to bridge the gap, pretending to be just another
   geeky Linux distro.
 
-- It pretends exceedingly well to be just another Linux distro.  In reality, it
-  is a wolf in sheep's clothing.  It is a one-way street.  Once you use it, you
-  cannot go back.
+- In reality, it is a wolf in sheep's clothing.  It is a one-way street.  Once
+  you use it, you cannot go back.
   
 NixOS will have some challenges.
 
