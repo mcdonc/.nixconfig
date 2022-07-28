@@ -20,7 +20,8 @@ Video Script
   Linux called DisplayCAL.  Apparently DisplayCAL is written in Python 2.X, and
   such apps aren't supported under NixOS. But DisplayCAL is really just a GUI
   wrapper around ArgyllCMS, which is supported on NixOS.  The process can be
-  done with "raw" ArgylCMS; it is a little more manual but still doable.
+  done with "raw" ArgylCMS and another tool named ``xcalib``; it is a little
+  more manual but still doable.
 
 - The colorimiter I'm using is a Pantone Huey.  You can get one new on ebay for
   like $15-$20, shipped.  Don't bother with the Pro version, AFAICT.  The only
@@ -46,20 +47,47 @@ Video Script
   and energy settings.  Maybe wipe it down a bit.  I think ``dispcal`` shuts
   off the screen lock while it's running but YMMV depending on your setup, so
   it might not be a bad idea to turn off any screen lock or blanking you have.
-  Optionally, set your screen wallpaper to an all-black color and hide any
-  icons or docks on the screen.  I'm not sure if this is required for LCD
-  monitors, but I do it for good measure.  I also turn off the lights in the
-  room.
+  Maybe disable any "night color" (red-shift) software you have.  Optionally,
+  set your screen wallpaper to an all-black color and hide any icons or docks
+  on the screen.  I'm not sure if this is required for LCD monitors, but I do
+  it for good measure.  I also turn off the lights in the room.
 
 - Invoke ``dispcal``, tellng it to output an ICC profile::
 
-    sudo dispcal -o profile
+    sudo dispcal -o monprofile
 
-- Attach the Huey and confirm.
+- Attach the Huey over the colored swatch and and confirm.
   
-- Choose "7", "Continue on to calibration" when prompted.  It's diminishing
-  returns to do anything special like shutting off the lights or whatever here;
-  just jam that thing on the monitor and wait forever while the color swatch
-  cycles.
+- Choose "7", "Continue on to calibration" when prompted and watch the swatch
+  cycle, seemingly forever but more like 30 minutes.
+  
+- After waiting forever, two files will be generated: ``monprofile.icc`` and
+  ``monprofile.cal`` and ``dispcal`` will exit.
 
-- Two files will be generated: ``profile.icc`` and ``profile.cal``.
+- To test it out::
+
+    xcalib -s :0 monprofile.icc
+
+- To make sure it happens every time you log in, put the following in your
+  NixOS configuration's home-manager section.  If you don't yet have
+  home-manager, you'll have to set it up (see
+  https://nix-community.github.io/home-manager/index.html)::
+
+    xdg.configFile."autostart-scripts/localxcalib.sh" = {
+      text = ''
+        #!/bin/sh
+        set -x
+        f="${config.xdg.configHome}/monprofile.icc"
+        if [ -e "$f" ]; then xcalib -s :0 "$f"; else echo "no file $f"; fi
+      '';
+      executable = true;
+    };
+    
+  Then, move the generated ``monprofile.icc`` such that it's in
+  ``$HOME/.config/monprofile.icc``, and log out and log back in to test it.
+
+- When you relogin, to see whether it worked or not, run::
+
+    sudo journalctl -b0
+
+  And search for ``monprofile``. 
