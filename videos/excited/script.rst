@@ -12,10 +12,18 @@ Video Script
 I think people should be excited about NixOS.  Or at least not dismissive.  I
 can explain to you why I think this.
 
-I don't feel like I'm wasting my time with NixOS.  I don't mind spending
-seemingly arbitrary amounts of time to create and maintain a shared, repeatable
-configuration.  Here's why:
+I've been using NixOS for a little over a month.  I had no intention of
+creating *two* videos about it, let alone 39 of them.  It was just organic
+happenstance.  I have converted five systems in my place to NixOS from various
+other distributions.  The only thing that is left is really a Raspberry Pi that
+runs my front door unlock, and that will likely get converted too in time.
 
+This is mostly because I don't feel like I'm wasting my time with NixOS.  I
+don't mind spending seemingly arbitrary amounts of time to create and maintain
+a shared, repeatable configuration.  Here's why:
+
+- I am not a smart man.
+  
 - My systems all have the same set of installed programs.
 
 - If I need to, I can deviate from the shared norm for just one system.
@@ -37,7 +45,8 @@ configuration.  Here's why:
 This feature is a virtuous cycle.  Because I don't feel like I'm wasting my
 time, I tend to get to the bottom of issues and fix them at the root.  Because
 once it's fixed in my Nix configuration, it's fixed.  Everywhere.  Success more
-often seems possible than impossible.  Here are some concrete examples:
+often seems possible than impossible, which is a game of inches.  Here are some
+concrete examples:
 
 - I can bring up a new system with the vast majority of my required
   customizations in 20 minutes because my config is version controlled.  It's
@@ -69,19 +78,21 @@ often seems possible than impossible.  Here are some concrete examples:
   around bitrot.
 
 Technology will only get you so far: another abstraction layer on top of Ubuntu
-(e.g. Ansible) might get you some of these benefits.  But NixOS has an
-excellent community, which I've not witnessed in many other places.
+(e.g. Ansible) might get you some of these benefits.  But NixOS also somehow
+happens to have an excellent community, the likes of which I've not witnessed
+in many other places.
 
 - Unreal politeness, humility, and thoroughness on Discourse, Matrix, IRC,
   and GitHub.
 
 - Vanishingly small numbers of sightings of bureaucrats, trolls, "influencers",
-  or condescending know it alls.  This may be because if you are one of these,
+  or condescending know-it-alls.  This may be because if you are one of these,
   it appears that you are basically ignored, perhaps after one warning.
 
 - Everyone is smarter than I am.  They are also recognizably human.
 
-- Very few people in the community are cynical about NixOS.
+- Very few people in the community are cynical about NixOS.  Or, if they are,
+  they are good-natured about it.
 
 - People that I respect, know, and like, and whom deeply understand building
   systems are already involved.
@@ -98,7 +109,7 @@ NixOS has a revolutionary paradigm.
   geeky Linux distro.
 
 - In reality, it is a wolf in sheep's clothing.  It is a one-way street.  Once
-  you use it, you cannot go back.
+  you use it, you cannot go back, at least if you give it a fair shake.
   
 NixOS will have some challenges.
 
