@@ -51,11 +51,11 @@ Video Script
   set your screen wallpaper to an all-black color and hide any icons or docks
   on the screen.  I'm not sure if this is required for LCD monitors, but I do
   it for good measure.  I also turn off the lights in the room and throw a
-  towel over the monitor face.
+  towel over the monitor face once the calibration is running.
 
 - Run ``dispcal -h`` to obtain the number of the monitor you want to calibrate.
   For example, the internal monitor of my Thinkpad P52 is #1, potrayed in
-  dispwin output as::
+  ``dispcal -h`` output as::
 
    1 = 'Monitor 1, Output eDP-1 at 0, 0, width 1920, height 1080'
 
@@ -68,7 +68,8 @@ Video Script
 
     sudo dispcal -d 1 -qv -o monprofile
 
-  ``-qv`` means "quality very low."
+  ``-qv`` means "quality: very-low."  I think that runs more around half an
+  hour.
 
   If you are using a Huey, both ``dispcal`` and ``dispwin`` will display an
   ignorable warning at startup something like::
