@@ -1,5 +1,6 @@
-NixOS 40: Monitor Color Calibration
-===================================
+=====================================
+ NixOS 40: Monitor Color Calibration
+=====================================
 
 - Companion to video at ...
 
@@ -7,7 +8,7 @@ NixOS 40: Monitor Color Calibration
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
 
 Video Script
-------------
+============
 
 - I'm not a professional artist.  I don't really need this.  But it can be fun
   and informative to see what is intended by those kinds of people on your
@@ -20,9 +21,9 @@ Video Script
   Linux called DisplayCAL.  Apparently DisplayCAL is written in Python 2.X, and
   such apps aren't supported under NixOS. But DisplayCAL is really just a GUI
   wrapper around ArgyllCMS, which is supported on NixOS.  The process can be
-  done with "raw" ArgylCMS and another tool named ``xcalib``; it is a little
-  more manual but still doable.  And this guide is probably helpful for
-  non-NixOS-but-still-Linux people too, if they can stomach the Nix-isms.
+  done with "raw" ArgylCMS; it is a little more manual but still doable.  And
+  this guide is probably helpful for non-NixOS-but-still-Linux people too, if
+  they can stomach the Nix-isms.
 
 - The colorimiter I'm using is a Pantone Huey.  You can get one new on ebay for
   like $15-$20, shipped.  Don't bother with the Pro version.  The only
@@ -33,13 +34,11 @@ Video Script
 
     Bus 001 Device 016: ID 0971:2005 Gretag-Macbeth AG Huey
 
-- Add ``argyllcms`` and ``xcalib`` into environment.systemPackages and
-  rebuild.  This will install those packages::
+- Add ``argyllcms`` into environment.systemPackages and rebuild::
 
     environment.systemPackages = with pkgs; [
       # ...
       argyllcms
-      xcalib
       # ...
     ];
 
@@ -54,26 +53,41 @@ Video Script
   it for good measure.  I also turn off the lights in the room and throw a
   towel over the monitor face.
 
-- Invoke ``dispcal``, tellng it to output an ICC profile::
+- Run ``dispcal -h`` to obtain the number of the monitor you want to calibrate.
+  For example, the internal monitor of my Thinkpad P52 is #1, potrayed in
+  dispwin output as::
 
-    sudo dispcal -o monprofile
+   1 = 'Monitor 1, Output eDP-1 at 0, 0, width 1920, height 1080'
 
-- It takes forever at its default quality level (somewhere around 2 hours). You
+- Invoke ``dispcal``, tellng it to output an ICC profile for, say, monitor 1::
+
+    sudo dispcal -d 1 -o monprofile
+
+  It takes forever at its default quality level (somewhere around 2 hours). 
   might cut down the time by reducing the quality, e.g.::
 
-    sudo dispcal -qv -o monprofile
+    sudo dispcal -d 1 -qv -o monprofile
+
+  ``-qv`` means "quality very low."
+
+  If you are using a Huey, both ``dispcal`` and ``dispwin`` will display an
+  ignorable warning at startup something like::
+
+    Dispwin: Warning - new_dispwin: Expected VideoLUT depth 11 doesn't match actual 10
+
+  Don't worry about it.
 
 - Attach the Huey over the colored swatch and and confirm.
   
 - Choose "7", "Continue on to calibration" when prompted and watch the swatch
-  cycle forever. 
+  start to cycle. Throw a towel over the monitor and the colorimiter.
   
 - After waiting forever, two files will be generated: ``monprofile.icc`` and
   ``monprofile.cal`` and ``dispcal`` will exit.
 
-- To test it out::
+- To test the generated icc file out against monitor 1::
 
-    xcalib -s :0 monprofile.icc
+    dispwin -d 1 monprofile.icc
 
 - To make sure it happens every time you log in, put the following in your
   NixOS configuration's home-manager section.  If you don't yet have
@@ -81,14 +95,14 @@ Video Script
   https://nix-community.github.io/home-manager/index.html).  Note that I've
   only tested this with KDE, it may need to differ in other desktop
   environments.  It just puts a file in
-  ``$HOME/.config/autostart-scripts/localxcalib.sh`` and makes it executable::
+  ``$HOME/.config/autostart-scripts/moncalib.sh`` and makes it executable::
 
-    xdg.configFile."autostart-scripts/localxcalib.sh" = {
+    xdg.configFile."autostart-scripts/moncalib.sh" = {
       text = ''
         #!/bin/sh
         set -x
         f="${config.xdg.configHome}/monprofile.icc"
-        if [ -e "$f" ]; then xcalib -s :0 "$f"; else echo "no file $f"; fi
+        if [ -e "$f" ]; then dispcal -d 1 "$f"; else echo "no file $f"; fi
       '';
       executable = true;
     };
@@ -103,7 +117,7 @@ Video Script
   And search for ``monprofile``. 
 
 - If you run KDE, you'll notice that the file
-  ``$HOME/.config/autostart-scripts/localxcalib.sh`` was seemingly deleted.
+  ``$HOME/.config/autostart-scripts/moncalib.sh`` was seemingly deleted.
   But KDE actually turned it into a combination of a shell script that lives
   somewhere it manages and an automatically generated ``.desktop`` file that
   points to that file. You can see that by visiting the "Autostart" settings
