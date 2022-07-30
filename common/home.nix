@@ -25,7 +25,7 @@ in {
     };
 
     xdg.configFile."environment.d/ssh_askpass.conf".text = ''
-      SSH_ASKPASS="/run/current-system/sw/bin/ksshaskpass"
+      SSH_ASKPASS="${pkgs.ksshaskpass}/bin/ksshaskpass"
     '';
 
     xdg.configFile."autostart/ssh-add.desktop".text = ''
