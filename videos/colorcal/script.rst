@@ -25,8 +25,8 @@ Video Script
   non-NixOS-but-still-Linux people too, if they can stomach the Nix-isms.
 
 - The colorimiter I'm using is a Pantone Huey.  You can get one new on ebay for
-  like $15-$20, shipped.  Don't bother with the Pro version, AFAICT.  The only
-  difference is software, which you can't use under Linux anyway.
+  like $15-$20, shipped.  Don't bother with the Pro version.  The only
+  difference is software, AFAICT, which you can't use under Linux anyway.
   https://www.ebay.com/itm/165593425452?hash=item268e23262c:g:v9wAAOSw0Nti3OHT
 
 - Output of ``lsusb`` for the device.::
@@ -51,16 +51,22 @@ Video Script
   Maybe disable any "night color" (red-shift) software you have.  Optionally,
   set your screen wallpaper to an all-black color and hide any icons or docks
   on the screen.  I'm not sure if this is required for LCD monitors, but I do
-  it for good measure.  I also turn off the lights in the room.
+  it for good measure.  I also turn off the lights in the room and throw a
+  towel over the monitor face.
 
 - Invoke ``dispcal``, tellng it to output an ICC profile::
 
     sudo dispcal -o monprofile
 
+- It takes forever at its default quality level (somewhere around 2 hours). You
+  might cut down the time by reducing the quality, e.g.::
+
+    sudo dispcal -qv -o monprofile
+
 - Attach the Huey over the colored swatch and and confirm.
   
 - Choose "7", "Continue on to calibration" when prompted and watch the swatch
-  cycle, seemingly forever but more like 30 minutes.
+  cycle forever. 
   
 - After waiting forever, two files will be generated: ``monprofile.icc`` and
   ``monprofile.cal`` and ``dispcal`` will exit.
