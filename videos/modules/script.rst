@@ -20,8 +20,8 @@ Video Script
 
 - About the ellipsis in the function arguments The ellipsis allows the function
   to accept any number of arguments other than those specified, which it throws
-  away.  In NixOS, appears to be a relatively useless feature, because the
-  values passed to the argument function are matched automagically anyway.  Or,
+  away.  In Nix, appears to be a relatively useless feature, because the values
+  passed to the argument function are matched automagically anyway.  Or,
   rather, they aren't cared about until they are accessed.  E.g. ::
 
     { pkgs, ajsfhkjasfdjkasfkjasfk}:
