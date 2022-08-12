@@ -124,6 +124,10 @@ in {
     pulse.enable = true;
   };
 
+  # virtualization
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
+
   # printing
   services.printing.enable = true;
   services.avahi.enable = true;
@@ -248,6 +252,7 @@ in {
     geteltorito
     argyllcms
     xcalib
+    virt-manager
   ];
 
 }
