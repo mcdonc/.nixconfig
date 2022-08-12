@@ -3,6 +3,7 @@
 import subprocess
 import os.path
 import shutil
+import pyedid
 
 EDID_NAME_TAGS = [
     bytearray.fromhex('000000fc00'),
@@ -15,52 +16,64 @@ def serial_from_edid(edid):
     return serial
 
 def name_from_edid(edid):
-  """
-  Parse a byte array edid blob to extract some sort of human-readable name.
+    """
+    Parse a byte array edid blob to extract some sort of human-readable name.
 
-  For more info, see:
-  http://read.pudn.com/downloads110/ebook/456020/E-EDID%20Standard.pdf
-  """
-  names = []
-  for i in range(0, 6):
-    offset = 36 + i * 18
-    tag = edid[offset : offset + 5]
-    val = edid[offset + 5 : offset + 18]
-    if tag in EDID_NAME_TAGS:
-      names += [val.decode('utf-8').strip()]
-  return '-'.join(names)
+    For more info, see:
+    http://read.pudn.com/downloads110/ebook/456020/E-EDID%20Standard.pdf
+    """
+    names = []
+    for i in range(0, 6):
+        offset = 36 + i * 18
+        tag = edid[offset : offset + 5]
+        val = edid[offset + 5 : offset + 18]
+        if tag in EDID_NAME_TAGS:
+            names += [val.decode('utf-8').strip()]
+            return '-'.join(names)
+
+def hyphen_separate(s, default=''):
+    if s is None:
+        return default
+    return '-'.join(s.split())
+
+def monid_from_edid(edid):
+    e = pyedid.parse_edid(edid)
+    manufacturer = hyphen_separate(e.manufacturer, 'nomanufacturer')
+    name = hyphen_separate(e.name, 'noname')
+    serial = e.serial or 'noserial'
+    year = e.year or 'noyear'
+    week = e.week or 'noweek'
+    monid = f"{manufacturer}-{name}-{year}-{week}-{serial}"
+    return monid
 
 def get_xrandr_monitors():
-  """
-  Gets the mapping from xrandr to actual monitor names.::
+    """
+    Gets the mapping from xrandr to actual monitor names.::
 
     eDP1 => 'LG Display'
 
-  """
-  xrandr_out = subprocess.check_output(['xrandr', '--verbose']).decode('utf-8')
+    """
+    xrandr_out = subprocess.check_output(['xrandr', '--verbose']).decode('utf-8')
 
-  names = dict()
-  serials = dict()
-  monitor = None
-  in_edid = False
-  edid = b''
-  for line in xrandr_out.splitlines():
-    line = line.strip()
-    words = line.split()
-    if len(words) > 1 and words[1] == 'connected':
-      monitor = words[0]
-    elif line == 'EDID:':
-      in_edid = True
-    elif in_edid and len(line) == 32:
-      edid += bytearray.fromhex(line)
-    else:
-      if in_edid:
-        names[monitor] = name_from_edid(edid)
-        serials[monitor] = serial_from_edid(edid)
-      in_edid = False
-      edid = b''
-
-  return {'names':names, 'serials':serials}
+    names = dict()
+    monitor = None
+    in_edid = False
+    edid = b''
+    for line in xrandr_out.splitlines():
+        line = line.strip()
+        words = line.split()
+        if len(words) > 1 and words[1] == 'connected':
+            monitor = words[0]
+        elif line == 'EDID:':
+            in_edid = True
+        elif in_edid and len(line) == 32:
+            edid += bytearray.fromhex(line)
+        else:
+            if in_edid:
+                names[monitor] = name_from_edid(edid)
+            in_edid = False
+            edid = b''
+    return names
 
 def get_dispwin_mapping():
   """
@@ -82,9 +95,9 @@ def get_dispwin_mapping():
       dispwin_mapping[name] = num
   return dispwin_mapping
 
-def icc_file_for_monitor_name(name, serial):
+def icc_file_for_monitor_name(name):
   name = name.replace(' ', '-')
-  return os.path.expanduser('~/.color/icc/{}-{}.icc'.format(name, serial))
+  return os.path.expanduser(f'~/.color/icc/{name}.icc')
 
 def assert_executable(executable):
   if not shutil.which(executable):
