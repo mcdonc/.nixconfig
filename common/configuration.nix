@@ -98,7 +98,6 @@ in {
 
   time.timeZone = "America/New_York";
 
-  sound.enable = true;
   hardware.bluetooth.enable = true;
 
   # desktop stuff
@@ -111,6 +110,10 @@ in {
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
   fonts.fonts = with pkgs; [ ubuntu_font_family ];
+
+  # sound
+  sound.enable = true;
+  #hardware.pulseaudio.enable = true;
   services.pipewire = {
     enable = true;
     alsa = {
