@@ -25,6 +25,7 @@ in {
           port = 8222;
         };
         "thinknix*" = { forwardAgent = true; };
+        "bouncer.repoze.org" = { forwardAgent = true; };
       };
     };
 
