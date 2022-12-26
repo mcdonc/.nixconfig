@@ -22,5 +22,9 @@ in {
   # override optimus default offload mode to deal with external monitor
   # hardware.nvidia.prime.offload.enable = lib.mkForce false;
   # hardware.nvidia.prime.sync.enable = true;
+
+  # why must I do this?  I have no idea.  But if I don't, swnix pauses then "fails"
+  # (really just prints an error) when it switches configurations.
+  systemd.services.NetworkManager-wait-online.enable = false;
 }
 

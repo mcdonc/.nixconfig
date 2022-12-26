@@ -24,5 +24,8 @@ in {
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
 
+  # why must I do this?  I have no idea.  But if I don't, swnix pauses then "fails"
+  # (really just prints an error) when it switches configurations.
+  systemd.services.NetworkManager-wait-online.enable = false;
 }
 
