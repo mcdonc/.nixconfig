@@ -2,13 +2,14 @@
 
 let
   hm = fetchTarball
-    "https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz";
+    "https://github.com/nix-community/home-manager/archive/release-22.11.tar.gz";
 in {
   imports = [ (import "${hm}/nixos") ];
 
   home-manager.users.chrism = { pkgs, config, ... }: {
 
     home.packages = with pkgs; [ keybase-gui ];
+    home.stateVersion = "22.05";
 
     services.keybase.enable = true;
     services.kbfs.enable = true;
