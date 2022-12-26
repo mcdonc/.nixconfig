@@ -253,6 +253,7 @@ in {
     argyllcms
     xcalib
     virt-manager
+    rpi-imager
   ];
 
 }

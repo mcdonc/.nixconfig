@@ -20,7 +20,12 @@ in {
           user = "pi";
           forwardAgent = true;
         };
+        "mark" = {
+          user = "mycroft";
+          port = 8222;
+        };
         "thinknix*" = { forwardAgent = true; };
+        "bouncer.repoze.org" = { forwardAgent = true; };
       };
     };
 
