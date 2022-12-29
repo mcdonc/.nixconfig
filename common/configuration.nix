@@ -254,6 +254,7 @@ in {
     xcalib
     virt-manager
     rpi-imager
+    dig
   ];
 
 }
