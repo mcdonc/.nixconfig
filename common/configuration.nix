@@ -255,6 +255,7 @@ in {
     virt-manager
     rpi-imager
     dig
+    s3cmd
   ];
 
 }
