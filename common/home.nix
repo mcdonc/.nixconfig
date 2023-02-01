@@ -27,6 +27,7 @@ in {
         };
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
+        "lock802.repoze.org" = { forwardAgent = true; };
       };
     };
 

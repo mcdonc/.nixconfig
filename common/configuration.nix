@@ -171,7 +171,7 @@ in {
 
   # enable docker
   virtualisation.docker.enable = true;
-  
+
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
 
