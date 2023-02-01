@@ -10,6 +10,7 @@ in {
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
+    trusted-users = root chrism
   '';
 
   nix.settings = {
@@ -259,6 +260,7 @@ in {
     rpi-imager
     dig
     s3cmd
+    kaffeine
   ];
 
 }
