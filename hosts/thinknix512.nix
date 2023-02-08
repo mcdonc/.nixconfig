@@ -26,5 +26,5 @@ in {
   # (really just prints an error) when it switches configurations.
   systemd.services.NetworkManager-wait-online.enable = false;
   
-  services.cachix-agent.enable = true;
+  #services.cachix-agent.enable = true;
 }
