@@ -8,10 +8,10 @@
     argsOverride = rec {
       src = pkgs.fetchurl {
         url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
-        sha256 = "sha256-LAuuKfrJjgqUCJFKRVGylxNlrAAANRyyVda9mqCEmAg=";
+        sha256 = "sha256-2pJw2+ZN3x2xPHBHCVf/Z5brmW2Ge7Su19FKcOHGWnI=";
       };
-      version = "5.15.85";
-      modDirVersion = "5.15.85";
+      version = "5.15.94";
+      modDirVersion = "5.15.94";
     };
   });
 
