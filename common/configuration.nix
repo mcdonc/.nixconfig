@@ -165,6 +165,7 @@ in {
   };
   services.fstrim.enable = true;
   services.zfs.autoScrub.enable = true;
+  services.zfs.autoScrub.interval = "quarterly";
   services.zfs.trim.enable = true;
 
   programs.steam.enable = true;
