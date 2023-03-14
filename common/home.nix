@@ -21,10 +21,7 @@ in {
           user = "pi";
           forwardAgent = true;
         };
-        "mark" = {
-          user = "mycroft";
-          port = 8222;
-        };
+        "win10" = { user = "user"; };
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
         "lock802.repoze.org" = { forwardAgent = true; };
