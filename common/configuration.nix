@@ -265,6 +265,7 @@ in {
     dig
     s3cmd
     kaffeine
+    pcmanfm-qt
   ];
 
 }
