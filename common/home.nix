@@ -87,8 +87,9 @@ in {
         osd-level=2
         volume=20
         volume-max=150
-        autofit=100%x100%
-        window-maximized
+        autofit=100%x98%
+        geometry=+50%-25
+        #window-maximized
         # see https://github.com/mpv-player/mpv/issues/10229
       '';
     };
