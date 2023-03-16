@@ -84,7 +84,7 @@ in {
 
     xdg.configFile."mpv/mpv.conf" = {
       text = ''
-        osd_level=2
+        osd-level=2
         volume=20
         volume-max=150
         autofit=100%x100%
