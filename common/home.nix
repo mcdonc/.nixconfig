@@ -65,6 +65,34 @@ in {
       executable = true;
     };
 
+    xdg.configFile."mpv/input.conf" = {
+      text = ''
+        PGDWN osd-msg-bar seek 5 exact
+        PGUP osd-msg-bar seek -5
+        Shift+PGDWN osd-msg-bar seek 30 exact
+        Shift+PGUP osd-msg-bar seek -30 exact
+        RIGHT osd-msg-bar seek 1 exact
+        LEFT osd-msg-bar seek -1 exact
+        Shift+RIGHT osd-msg-bar seek 1 exact
+        Shift+LEFT osd-msg-bar seek -1 exact
+        UP add volume 2
+        DOWN add volume -2
+        n playlist-next
+        p playlist-prev
+      '';
+    };
+
+    xdg.configFile."mpv/mpv.conf" = {
+      text = ''
+        osd_level=2
+        volume=20
+        volume-max=150
+        autofit=100%x100%
+        window-maximized
+        # see https://github.com/mpv-player/mpv/issues/10229
+      '';
+    };
+
     # add Olive for nvidia-offload (as installed per video)
     xdg.desktopEntries = {
       olive = {
