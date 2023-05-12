@@ -267,6 +267,9 @@ in {
     kaffeine
     pcmanfm-qt
     thonny
+    cutecom
+    rshell
+    mplayer
   ];
 
 }
