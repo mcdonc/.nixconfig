@@ -21,6 +21,10 @@ in {
           user = "pi";
           forwardAgent = true;
         };
+        "wlock802" = {
+          user = "pi";
+          forwardAgent = true;
+        };
         "win10" = { user = "user"; };
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
@@ -43,16 +47,6 @@ in {
       text = ''
         #!/bin/sh
         [ -n "$SSH_AGENT_PID" ] || eval "$(ssh-agent -s)"
-      '';
-      executable = true;
-    };
-
-    xdg.configFile."autostart-scripts/localxcalib.sh" = {
-      text = ''
-        #!/bin/sh
-        set -x
-        f="${config.xdg.configHome}/monprofile.icc"
-        if [ -e "$f" ]; then xcalib -s :0 "$f"; else echo "no file $f"; fi
       '';
       executable = true;
     };
