@@ -176,6 +176,12 @@ in {
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
 
+  programs.ssh = {
+      pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
+      hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
+  };
+
+
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;

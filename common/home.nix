@@ -21,7 +21,7 @@ in {
           user = "pi";
           forwardAgent = true;
         };
-        "wlock802" = {
+        "testlock802" = {
           user = "pi";
           forwardAgent = true;
         };
@@ -29,6 +29,9 @@ in {
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
         "lock802.repoze.org" = { forwardAgent = true; };
+        "192.168.1.1" = {
+          user = "root";
+        };
       };
     };
 
