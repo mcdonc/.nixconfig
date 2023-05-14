@@ -25,6 +25,11 @@ in {
           user = "pi";
           forwardAgent = true;
         };
+        "testlock802lan" = {
+          user = "pi";
+          forwardAgent = true;
+        };
+        
         "win10" = { user = "user"; };
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
