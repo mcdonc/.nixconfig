@@ -9,10 +9,10 @@
 
 ;; Normal font sizing
 
-(setq default-frame-alist '((width . 88)
+(setq default-frame-alist '((width . 80)
                             (height . 34)
                             (font-backend . "xft")
-                            (font . "Ubuntu Mono-18")))
+                            (font . "Ubuntu Mono-16")))
 
 
 
