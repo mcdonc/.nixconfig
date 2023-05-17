@@ -278,6 +278,7 @@ in {
     mplayer
     black
     vscode
+    python310Packages.pyserial
   ];
 
 }
