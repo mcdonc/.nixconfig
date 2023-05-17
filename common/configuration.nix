@@ -276,6 +276,7 @@ in {
     cutecom
     rshell
     mplayer
+    black
   ];
 
 }

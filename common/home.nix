@@ -14,6 +14,12 @@ in {
     services.keybase.enable = true;
     services.kbfs.enable = true;
 
+    xdg.configFile."black".text = ''
+      [tool.black]
+      line-length = 80
+    '';
+
+
     programs.ssh = {
       enable = true;
       matchBlocks = {
