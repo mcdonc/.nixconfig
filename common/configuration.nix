@@ -277,6 +277,7 @@ in {
     rshell
     mplayer
     black
+    vscode
   ];
 
 }
