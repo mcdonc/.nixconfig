@@ -230,12 +230,14 @@ in {
     baobab
     signal-desktop
     virtualbox
-    python310
+    (python310.withPackages (p: with p; [
+      python310Packages.pyserial
+      python310Packages.pyflakes
+    ]))
     xz
     libreoffice
     ffmpeg-full
     iperf
-    python310Packages.pyflakes
     pciutils
     neofetch
     tmux
@@ -278,7 +280,5 @@ in {
     mplayer
     black
     vscode
-    python310Packages.pyserial
   ];
-
 }
