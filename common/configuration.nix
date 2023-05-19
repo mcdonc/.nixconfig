@@ -165,10 +165,9 @@
   users.defaultUserShell = pkgs.zsh;
 
   programs.ssh = {
-      pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
-      hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
+    pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
+    hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
   };
-
 
   # Define a user account.
   users.users.chrism = {
@@ -211,17 +210,18 @@
     google-chrome
     firefox
     audacity
-    #etcher
     gimp
     transmission-qt
     remmina
     baobab
     signal-desktop
     virtualbox
-    (python310.withPackages (p: with p; [
-      python310Packages.pyserial # for pico-w-go in vscode
-      python310Packages.pyflakes # for emacs
-    ]))
+    (python310.withPackages (p:
+      with p; [
+        python310Packages.pyserial # for pico-w-go in vscode
+        python310Packages.pyflakes # for emacs
+        python310Packages.black # for cmdline and vscode
+      ]))
     xz
     libreoffice
     ffmpeg-full
@@ -266,7 +266,6 @@
     cutecom
     rshell
     mplayer
-    black
     vscode
   ];
 }
