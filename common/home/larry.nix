@@ -10,14 +10,15 @@ in {
   users.users.larry = {
     isNormalUser = true;
     initialPassword = "pw321";
-    extraGroups = [ "wheel" "networkmanager" "audio" "docker" "nixconfig" ];
+    extraGroups =
+      [ "wheel" "networkmanager" "audio" "docker" "nixconfig" "dialout" ];
     openssh = {
       authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7HKxDuPFuJ4+iUd3fSQ0fvbNEM8gXuBBw5MwPROpWgqrVUKAY5isZQoRqlGBYzxmpOEdlF5wm3vzq8Gu2AVnivZ3uDuFJ9v1A6XVbkumv/D8KL4K1eOI66qQ6ZxzQckd+PbqjjTXftNXEg8JB/135cotAGHdugvkFk9ceRKAXzmGhIc+4WbIbliGGgiw9c1OT9eUgbinhPmEpPFH9fzHULi42ErFZKV3m49jvBcEzr50s1cIIaUyw9nN4GJPnPI0rXLTbHvIZ9VN+3u3ZlbDsd4TZknVWeaBPYjRoFjenxu3rsgnCrZQnUtWkt1Hb+JCUby2W4IEHiUctbhqja2WG5O51VSraOyfFb5gYmemHUvPJidmeaM6ATvX6nq7rvziqL2mC3RDZFDCfy+LfPP79SsxpFj9aSJh2mPDOLR9gxlHuPcMn3+jsa2jMeJT9OFVctgi+3QfXgizEWCn9hMSYprw/xAdj5YiPJAziNzfZ+3AwBT33XL8TA+WyZXAtwrVTKe5dzuO4llDVjZGe2oc6//ByBX7UZnEqVl8tfxQbMXVzMkpD0CZuuq+DXe00Y94b8FYBlojXPy6baB2DlzpnckY/WdhTsUiFxmI8ekTnmhemOo/Nvd/zBTWCSGhFN6m06BsTb6IbrZDbRqpzbKOtKA7Ea+G9D3fWKxdwfk6akQ== larry@agendaless.com"
       ];
     };
   };
-  
+
   home-manager.users.larry = { pkgs, config, ... }: {
 
     home.packages = with pkgs; [ keybase-gui ];

@@ -15,14 +15,15 @@ in {
   users.users.chrism = {
     isNormalUser = true;
     initialPassword = "pw321";
-    extraGroups = [ "wheel" "networkmanager" "audio" "docker" "nixconfig" ];
+    extraGroups =
+      [ "wheel" "networkmanager" "audio" "docker" "nixconfig" "dialout" ];
     openssh = {
       authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnLD+dQsKPhCV3eY0lMUP4fDrECI1Boe6PbnSHY+eqRpkA/Nd5okdyXvynWETivWsKdDRlT3gIVgEHqEv8s4lzxyZx9G2fAgQVVpBLk18G9wkH0ARJcJ0+RStXLy9mwYl8Bw8J6kl1+t0FE9Aa9RNtqKzpPCNJ1Uzg2VxeNIdUXawh77kIPk/6sKyT/QTNb5ruHBcd9WYyusUcOSavC9rZpfEIFF6ZhXv2FFklAwn4ggWzYzzSLJlMHzsCGmkKmTdwKijkGFR5JQ3UVY64r3SSYw09RY1TYN/vQFqTDw8RoGZVTeJ6Er/F/4xiVBlzMvxtBxkjJA9HLd8djzSKs8yf amnesia@amnesia"
       ];
     };
   };
-  
+
   home-manager.users.chrism = { pkgs, config, ... }: {
 
     home.packages = with pkgs; [ keybase-gui ];
@@ -35,7 +36,6 @@ in {
       [tool.black]
       line-length = 80
     '';
-
 
     programs.ssh = {
       enable = true;
@@ -52,14 +52,12 @@ in {
           user = "pi";
           forwardAgent = true;
         };
-        
+
         "win10" = { user = "user"; };
         "thinknix*" = { forwardAgent = true; };
         "bouncer.repoze.org" = { forwardAgent = true; };
         "lock802.repoze.org" = { forwardAgent = true; };
-        "192.168.1.1" = {
-          user = "root";
-        };
+        "192.168.1.1" = { user = "root"; };
       };
     };
 
