@@ -10,7 +10,6 @@ in {
     ../common/encryptedzfs.nix
     ../common/configuration.nix
     ../common/home/larry.nix
-    ../common/home/chrism.nix
   ];
   networking.hostId = "83540bcc";
   networking.hostName = "thinknix51";
