@@ -253,5 +253,6 @@
     rshell
     mplayer
     vscode
+    gnome.cheese
   ];
 }
