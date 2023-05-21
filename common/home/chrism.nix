@@ -6,7 +6,12 @@ let
 in {
   imports = [ (import "${hm}/nixos") ];
 
-    # Define a user account.
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+    trusted-users = root chrism
+  '';
+
+  # Define a user account.
   users.users.chrism = {
     isNormalUser = true;
     initialPassword = "pw321";

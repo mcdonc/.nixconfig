@@ -1,16 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./home/chrism.nix ./cachix.nix ];
+  imports = [ ./cachix.nix ];
 
   # nix stuff
   system.stateVersion = "22.05";
 
   nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    trusted-users = root chrism
-  '';
 
   nix.settings = {
     tarball-ttl = 300;
