@@ -11,6 +11,7 @@ in {
     ../common/configuration.nix
     ../common/rc505.nix
     ../common/sessile.nix
+    ../common/home/larry.nix
   ];
   networking.hostId = "83540bcc";
   networking.hostName = "thinknix51";
