@@ -254,5 +254,7 @@
     mplayer
     vscode
     gnome.cheese
+    teams
+    virtualbox
   ];
 }
