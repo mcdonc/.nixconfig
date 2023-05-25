@@ -11,6 +11,9 @@ in {
     trusted-users = root chrism
   '';
 
+
+  users.extraGroups.vboxusers.members = [ "chrism" ];
+
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;
