@@ -174,8 +174,6 @@
   '';
 
   
-  virtualisation.virtualbox.host.enable = true;
-
   # List software packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -257,6 +255,5 @@
     mplayer
     vscode
     gnome.cheese
-    virtualbox
   ];
 }
