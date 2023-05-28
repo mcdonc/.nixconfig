@@ -12,7 +12,7 @@
 (setq default-frame-alist '((width . 80)
                             (height . 34)
                             (font-backend . "xft")
-                            (font . "Ubuntu Mono-16")))
+                            (font . "Ubuntu Mono-18")))
 
 
 

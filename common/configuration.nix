@@ -255,5 +255,6 @@
     mplayer
     vscode
     gnome.cheese
+    sqlite
   ];
 }
