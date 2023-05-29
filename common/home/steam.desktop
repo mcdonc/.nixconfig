@@ -1,0 +1,48 @@
+[Desktop Entry]
+Name=Steam (nvidia-offload)
+Comment=Application for managing and playing games on Steam (nvidia-offload)
+Exec=nvidia-offload steam %U
+Icon=steam
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;Game;
+MimeType=x-scheme-handler/steam;x-scheme-handler/steamlink;
+Actions=Store;Community;Library;Servers;Screenshots;News;Settings;BigPicture;Friends;
+PrefersNonDefaultGPU=true
+X-KDE-RunOnDiscreteGpu=true
+
+[Desktop Action Store]
+Name=Store
+Exec=nvidia-offload steam steam://store
+
+[Desktop Action Community]
+Name=Community
+Exec=nvidia-offload steam steam://url/SteamIDControlPage
+
+[Desktop Action Library]
+Name=Library
+Exec=nvidia-offload steam steam://open/games
+
+[Desktop Action Servers]
+Name=Servers
+Exec=nvidia-offload steam steam://open/servers
+
+[Desktop Action Screenshots]
+Name=Screenshots
+Exec=nvidia-offload steam steam://open/screenshots
+
+[Desktop Action News]
+Name=News
+Exec=nvidia-offload steam steam://open/news
+
+[Desktop Action Settings]
+Name=Settings
+Exec=nvidia-offload steam steam://open/settings
+
+[Desktop Action BigPicture]
+Name=Big Picture
+Exec=nvidia-offload steam steam://open/bigpicture
+
+[Desktop Action Friends]
+Name=Friends
+Exec=nvidia-offload steam steam://open/friends
