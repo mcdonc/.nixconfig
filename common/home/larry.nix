@@ -132,6 +132,11 @@ in {
       executable = true;
     };
 
+    # uses nvidia-offload
+    home.file.".local/share/applications/steam.desktop" = {
+      source = ./steam.desktop;
+    };
+
     programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
