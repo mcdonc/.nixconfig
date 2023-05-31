@@ -48,6 +48,18 @@
           }
         ];
       };
+      thinknix51 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-p51
+          ./hosts/thinknix52.nix
+          ./users/larry/user.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useUserPackages = true;
+            home-manager.users.chrism = import ./users/larry/hm.nix;
+          }
+        ];
+      };
     };
   };
 }

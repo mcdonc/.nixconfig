@@ -1,25 +1,6 @@
 { config, pkgs, ... }:
 
-let
-  hm = fetchTarball
-    "https://github.com/nix-community/home-manager/archive/release-22.11.tar.gz";
-in {
-  imports = [ (import "${hm}/nixos") ];
-
-  # Define a user account.
-  users.users.larry = {
-    isNormalUser = true;
-    initialPassword = "pw321";
-    extraGroups =
-      [ "wheel" "networkmanager" "audio" "docker" "nixconfig" "dialout" ];
-    openssh = {
-      authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPUUOSs6sqwBofcXAsX+D+1OpZiS+K59QbV87GWMcpQ larry@agendaless.com"
-      ];
-    };
-  };
-
-  home-manager.users.larry = { pkgs, config, ... }: {
+{
 
     home.packages = with pkgs; [ keybase-gui ];
     home.stateVersion = "22.05";
@@ -117,7 +98,7 @@ in {
     services.emacs.enable = true;
 
     home.file.".emacs.d" = {
-      source = ./emacs/.emacs.d;
+      source = ../emacs/.emacs.d;
       recursive = true;
     };
 
@@ -128,13 +109,13 @@ in {
     };
 
     home.file.".p10k.zsh" = {
-      source = ./p10k/.p10k.zsh;
+      source = ../p10k/.p10k.zsh;
       executable = true;
     };
 
     # uses nvidia-offload
     home.file.".local/share/applications/steam.desktop" = {
-      source = ./steam.desktop;
+      source = ../steam.desktop;
     };
 
     programs.zsh = {
