@@ -52,11 +52,23 @@
         system = "x86_64-linux";
         modules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-p51
-          ./hosts/thinknix52.nix
+          ./hosts/thinknix51.nix
           ./users/larry/user.nix
           home-manager.nixosModules.home-manager {
             home-manager.useUserPackages = true;
-            home-manager.users.chrism = import ./users/larry/hm.nix;
+            home-manager.users.larry = import ./users/larry/hm.nix;
+          }
+        ];
+      };
+      thinknix420 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-t420
+          ./hosts/thinknix420.nix
+          ./users/chrism/user.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useUserPackages = true;
+            home-manager.users.chrism = import ./users/chrism/hm.nix;
           }
         ];
       };
