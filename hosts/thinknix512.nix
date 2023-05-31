@@ -1,12 +1,7 @@
 { config, pkgs, lib, ... }:
 
-let
-  hw = fetchTarball
-    "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
-
-in {
+{
   imports = [
-    (import "${hw}/lenovo/thinkpad/p51")
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
