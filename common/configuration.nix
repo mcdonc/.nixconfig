@@ -7,6 +7,9 @@
   system.stateVersion = "22.05";
 
   nix.package = pkgs.nixUnstable;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+    '';
 
   nix.settings = {
     tarball-ttl = 300;

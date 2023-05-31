@@ -7,7 +7,6 @@ in {
   imports = [ (import "${hm}/nixos") ];
 
   nix.extraOptions = ''
-    experimental-features = nix-command flakes
     trusted-users = root chrism
   '';
 
