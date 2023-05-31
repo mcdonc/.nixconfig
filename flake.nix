@@ -17,10 +17,10 @@
         modules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-p51
           ./hosts/thinknix512.nix
-          ./common/home/chrism.nix
+          ./users/chrism/user.nix
           home-manager.nixosModules.home-manager {
             home-manager.useUserPackages = true;
-            home-manager.users.chrism = import ./common/home/chrism-hm.nix;
+            home-manager.users.chrism = import ./users/chrism/hm.nix;
           }
         ];
       };
