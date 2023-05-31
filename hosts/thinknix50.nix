@@ -1,16 +1,10 @@
 { config, pkgs, lib, ... }:
-
-let
-  hw = fetchTarball
-    "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
-in {
+{
   imports = [
-    (import "${hw}/lenovo/thinkpad/p50")
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
     ../common/rc505.nix
-    ../common/home/chrism.nix
   ];
   networking.hostId = "f416c9cd";
   networking.hostName = "thinknix50";
