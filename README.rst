@@ -40,8 +40,8 @@ Usage
 
     cat /etc/machine-id | head -c 8
 
-- Link the nixfile representing the new system into
-  ``/mnt/etc/nixos/configuration.nix``::
+- Link the nixfile representing the new system into (XXX probably wont work
+  with new flakes stuff) ``/mnt/etc/nixos/configuration.nix``::
 
     sudo ln -s /mnt/etc/nixos/hosts/thinknix51.nix /mnt/etc/nixos/configuration.nix
 

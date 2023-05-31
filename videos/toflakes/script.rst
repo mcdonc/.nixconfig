@@ -1,7 +1,10 @@
 NixOS 40: Converting an Existing NixOS Configuration To Flakes
 ==============================================================
 
-- Companion to video at 
+- Companion to video at
+
+- See the master branch of https://github.com/mcdonc/.nixconfig for a working
+  Flakes-based configuration.
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
