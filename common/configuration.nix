@@ -8,7 +8,6 @@
 
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
-    trusted-users = root chrism
     experimental-features = nix-command flakes
     '';
 
