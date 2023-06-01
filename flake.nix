@@ -74,4 +74,8 @@
       };
     };
   };
+#home-manager https://github.com/nix-community/home-manager/archive/release-22.11.tar.gz
+#nixos https://nixos.org/channels/nixos-22.11
+#nixos-hardware https://github.com/NixOS/nixos-hardware/archive/master.tar.gz
+#nixos-hardware-fork https://github.com/mcdonc/nixos-hardware/archive/pseries-additions.tar.gz
 }
