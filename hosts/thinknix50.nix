@@ -4,7 +4,7 @@
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
-    ../common/rc505.nix
+#    ../common/rc505.nix
   ];
   networking.hostId = "f416c9cd";
   networking.hostName = "thinknix50";

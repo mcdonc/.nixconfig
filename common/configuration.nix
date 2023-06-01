@@ -140,8 +140,10 @@
   services.locate.enable = true;
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
   };
   services.tlp = {
     settings = {
@@ -162,6 +164,7 @@
 
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
 
   programs.ssh = {
     pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
@@ -191,7 +194,7 @@
     openvpn
     unzip
     ripgrep
-    bpytop
+    btop
     killall
     htop
     handbrake
