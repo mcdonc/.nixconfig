@@ -7,6 +7,7 @@
     ../common/configuration.nix
 #    ../common/rc505.nix
     ../common/sessile.nix
+#    ../common/oldnvidia.nix
   ];
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";

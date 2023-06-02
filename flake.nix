@@ -5,9 +5,10 @@
     nixpkgs.url        = "github:NixOS/nixpkgs/nixos-23.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
+    nixpkgs-2211.url = "github:NixOS/nixpkgs/nixos-22.11";
   };
 
-  outputs = { self, nixpkgs, nix, nixos-hardware, home-manager }: {
+  outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-2211 }: {
     nixosConfigurations = {
       thinknix512 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
