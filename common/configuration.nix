@@ -179,7 +179,14 @@
     set ttymouse=
   '';
 
-  
+  # use older stable version of olive-editor
+  oldpkgs = import (builtins.fetchGit {
+         name = "olive-editor-0.1.2";
+         url = "https://github.com/NixOS/nixpkgs/";
+         ref = "refs/heads/nixpkgs-unstable";
+         rev = "8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8";
+     }) {}; # found via https://lazamar.co.uk/nix-versions/
+
   # List software packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -232,7 +239,7 @@
     nixfmt
     wakeonlan
     #    /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
-    olive-editor
+    oldpkgs.olive-editor
     cachix
     gptfdisk # "sgdisk"
     ardour
@@ -263,5 +270,6 @@
     vscode
     gnome.cheese
     sqlite
+    tldr
   ];
 }
