@@ -1,8 +1,9 @@
 { config, pkgs, nixpkgs, nixpkgs-2211, ...}:
 
 let
+  oldpkgs = import  nixpkgs-2211{};
   # We'll use this twice
-  pinnedKernelPackages = nixpkgs-2211.linuxPackages_latest;
+  pinnedKernelPackages = oldpkgs.linuxPackages_latest;
 
 in
 
@@ -15,7 +16,7 @@ in
     linuxPackages_latest = pinnedKernelPackages;
 
     # make sure x11 will use the correct package as well
-    nvidia_x11 = nixpkgs-2211.nvidia_x11;
+    nvidia_x11 = oldpkgs.nvidia_x11;
   };
 
   # line up your kernel packages at boot

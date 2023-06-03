@@ -8,10 +8,11 @@
     nixpkgs-2211.url = "github:NixOS/nixpkgs/nixos-22.11";
   };
 
-  outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-2211 }: {
+  outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-2211 }@inputs: {
     nixosConfigurations = {
       thinknix512 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = inputs;
         modules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-p51
           ./hosts/thinknix512.nix
