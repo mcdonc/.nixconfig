@@ -4,6 +4,7 @@
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
+    ../common/oldnvidia.nix
 #    ../common/rc505.nix
   ];
   networking.hostId = "f416c9cd";
