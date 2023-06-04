@@ -97,10 +97,10 @@ Video Script
 
 - So, elsewhere in my config::
 
-  environment.systemPackages = with pkgs; [
-    ...
-    r2211.olive-editor
-    ...
+    environment.systemPackages = with pkgs; [
+      ...
+      r2211.olive-editor
+      ...
 
 - Replace the 22.11 release input with any other input as necessary.
   
