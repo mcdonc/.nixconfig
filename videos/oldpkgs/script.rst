@@ -1,7 +1,7 @@
 NixOS 41: Mixing Older and Newer nixpkgs Packages Under a Flakes-based Config
 =============================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=0NbSw1RwPow
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
