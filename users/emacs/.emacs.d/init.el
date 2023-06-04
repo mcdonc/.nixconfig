@@ -1,7 +1,7 @@
 ;; Presentation font sizing
 
 ;; (setq default-frame-alist '((width . 80)
-;;                             (height . 25)
+;;                             (height . 34)
 ;;                             (font-backend . "xft")
 ;;                             (font . "Ubuntu Mono-22")))
 

@@ -230,8 +230,7 @@
     konversation
     nixfmt
     wakeonlan
-    #    /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
-    r2211.olive-editor
+    r2211.olive-editor # use 0.1.2 (see flake.nix overlay-r2211)
     cachix
     gptfdisk # "sgdisk"
     ardour
