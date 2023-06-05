@@ -130,9 +130,9 @@
       };
 
       shellAliases = {
-        swnix = "sudo nixos-rebuild switch";
-        drynix = "sudo nixos-rebuild dry-build";
-        bootnix = "sudo nixos-rebuild boot";
+        swnix = "sudo nixos-rebuild switch --verbose";
+        drynix = "sudo nixos-rebuild dry-build --verbose";
+        bootnix = "sudo nixos-rebuild boot --verbose";
         ednix = "emacsclient -nw /etc/nixos/flake.nix";
         schnix = "nix search nixpkgs";
         rbnix = "sudo nixos-rebuild build --rollback";
