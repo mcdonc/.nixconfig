@@ -140,8 +140,10 @@
   services.locate.enable = true;
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
   };
   services.tlp = {
     settings = {
@@ -162,6 +164,7 @@
 
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
 
   programs.ssh = {
     pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
@@ -176,7 +179,6 @@
     set ttymouse=
   '';
 
-  
   # List software packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -191,7 +193,7 @@
     openvpn
     unzip
     ripgrep
-    bpytop
+    btop
     killall
     htop
     handbrake
@@ -228,8 +230,7 @@
     konversation
     nixfmt
     wakeonlan
-    #    /nix/store/4nq5wfa01vq6x00q8k777qhf47bp2wd4-olive-editor-0.1.2
-    olive-editor
+    r2211.olive-editor # use 0.1.2 (see flake.nix overlay-r2211)
     cachix
     gptfdisk # "sgdisk"
     ardour
@@ -260,5 +261,6 @@
     vscode
     gnome.cheese
     sqlite
+    tldr
   ];
 }

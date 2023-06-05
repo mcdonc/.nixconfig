@@ -188,11 +188,11 @@
     };
 
     shellAliases = {
-      swnix = "sudo nixos-rebuild switch";
-      drynix = "sudo nixos-rebuild dry-build";
-      bootnix = "sudo nixos-rebuild boot";
+      swnix = "sudo nixos-rebuild switch --verbose";
+      drynix = "sudo nixos-rebuild dry-build --verbose";
+      bootnix = "sudo nixos-rebuild boot --verbose";
       ednix = "emacsclient -nw /etc/nixos/flake.nix";
-      upnix = "cd /etc/nixos; nix flake update; sudo nixos-rebuild switch";
+      upnix = "cd /etc/nixos; nix flake update; sudo nixos-rebuild switch --verbose";
       schnix = "nix search nixpkgs";
       rbnix = "sudo nixos-rebuild build --rollback";
       replnix = "nix repl '<nixpkgs>'";
