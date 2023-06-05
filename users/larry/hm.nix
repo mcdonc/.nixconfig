@@ -134,7 +134,6 @@
         drynix = "sudo nixos-rebuild dry-build";
         bootnix = "sudo nixos-rebuild boot";
         ednix = "emacsclient -nw /etc/nixos/flake.nix";
-        upnix = "cd /etc/nixos; nix flake update; sudo nixos-rebuild switch";
         schnix = "nix search nixpkgs";
         rbnix = "sudo nixos-rebuild build --rollback";
         replnix = "nix repl '<nixpkgs>'";
