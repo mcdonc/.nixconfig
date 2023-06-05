@@ -262,5 +262,6 @@
     gnome.cheese
     sqlite
     tldr
+    tree
   ];
 }
