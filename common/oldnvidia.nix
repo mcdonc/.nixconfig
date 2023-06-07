@@ -3,7 +3,8 @@
 {
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
-
+  hardware.nvidia.powerManagement.enable = true;
+  
 }
 
 
