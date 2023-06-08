@@ -6,7 +6,7 @@
     ../common/encryptedzfs.nix
     ../common/configuration.nix
     #    ../common/rc505.nix
-    ../common/oldnvidia.nix
+#    ../common/oldnvidia.nix
   ];
 
   # override optimus default offload mode to deal with external monitor
