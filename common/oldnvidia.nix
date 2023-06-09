@@ -2,7 +2,7 @@
 
  {
 
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
   #hardware.nvidia.powerManagement.enable = true;
 
   # 6/7/2023 under 23.05: beta reports as 530.41.03, stable as 530.41.03, 
