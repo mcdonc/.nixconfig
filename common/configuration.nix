@@ -263,5 +263,6 @@
     sqlite
     tldr
     tree
+    lha
   ];
 }
