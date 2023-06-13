@@ -40,6 +40,12 @@
   # store gets very high.
   boot.loader.grub.copyKernels = true;
 
+  ## obs
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
+    
+
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
     {
