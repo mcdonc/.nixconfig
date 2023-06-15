@@ -1,4 +1,4 @@
-NixOS 41: Using The OBS Background Removal Plugin on NixOS 23.05
+NixOS 42: Using The OBS Background Removal Plugin on NixOS 23.05
 ================================================================
 
 - Companion to video at
