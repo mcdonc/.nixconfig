@@ -270,5 +270,8 @@
     tldr
     tree
     lha
+    quickemu
+    quickgui
+    gnome.zenity # undeclared dep of quickgui
   ];
 }
