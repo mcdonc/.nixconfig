@@ -6,21 +6,14 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
-    nixpkgs-obs-overrides.url = "github:mcdonc/nixpkgs/chrism-obs-overrides";
   };
 
   outputs =
-    { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211, nixpkgs-obs-overrides }@inputs:
+    { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211 }@inputs:
     let
       system = "x86_64-linux";
       overlay-r2211 = final: prev: {
         r2211 = import nixpkgs-r2211 {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      };
-      overlay-obs-overrides = final: prev: {
-        obs-overrides = import nixpkgs-obs-overrides {
           inherit system;
           config.allowUnfree = true;
         };
@@ -30,7 +23,7 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 overlay-obs-overrides ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
             ./users/chrism/user.nix
