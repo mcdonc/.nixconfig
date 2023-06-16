@@ -190,7 +190,11 @@
   environment.systemPackages = with pkgs; [
     vim_configurable
     wget
-    obs-studio
+    (wrapOBS {
+      plugins = with obs-studio-plugins; [
+        obs-backgroundremoval
+      ];
+    })
     thermald
     powertop
     libsForQt5.kdeconnect-kde
