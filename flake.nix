@@ -6,11 +6,10 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
-    nixpkgs-obs-overrides.url = "github:mcdonc/nixpkgs/chrism-obs-overrides";
   };
 
   outputs =
-    { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211, nixpkgs-obs-overrides }@inputs:
+    { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211 }@inputs:
     let
       system = "x86_64-linux";
       overlay-r2211 = final: prev: {
@@ -19,10 +18,34 @@
           config.allowUnfree = true;
         };
       };
-      overlay-obs-overrides = final: prev: {
-        obs-overrides = import nixpkgs-obs-overrides {
-          inherit system;
-          config.allowUnfree = true;
+      overlay-obs-bgremoval = final: prev: {
+        onnxruntime = prev.onnxruntime.overrideAttrs (old: {
+          version = "1.14.1";
+          src = prev.fetchFromGitHub {
+            owner = "microsoft";
+            repo = "onnxruntime";
+            rev = "v1.14.1";
+            sha256 = "sha256-E+pm/Ma6dZTYlX3DpB49ynTETsRS2TBqgHSCijl/Txc=";
+            fetchSubmodules = true;
+          };
+          buildInputs = old.buildInputs
+            ++ [ prev.cudaPackages.cudatoolkit prev.cudaPackages.tensorrt ];
+          cmakeFlags = old.cmakeFlags ++ [
+            "-Donnxruntime_USE_TENSORRT=ON"
+            "-DCUDA_INCLUDE_DIR=${prev.cudaPackages.cudatoolkit}/include"
+          ];
+        });
+        obs-studio-plugins = prev.obs-studio-plugins // {
+          obs-backgroundremoval =
+            prev.obs-studio-plugins.obs-backgroundremoval.overrideAttrs (old: {
+              version = "0.5.16";
+              src = prev.fetchFromGitHub {
+                owner = "royshil";
+                repo = "obs-backgroundremoval";
+                rev = "v0.5.16";
+                hash = "";# "sha256-Bq0Lfn+e9A1P7ZubA65nWksFZAeu5C8NvT36dG5N2Ug=";
+              };
+            });
         };
       };
     in {
@@ -30,7 +53,9 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 overlay-obs-overrides ]; })
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [ overlay-r2211 overlay-obs-bgremoval ];
+            })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
             ./users/chrism/user.nix
