@@ -17,9 +17,9 @@ Video Script
   should create an overlay something like::
 
    final: prev: {
-   vimPlugins = prev.vimPlugins.extend (final': prev': {
-     indent-blankline-nvim-lua = prev.callPackage ../packages/indent-blankline-nvim-lua { };
-   });
+     vimPlugins = prev.vimPlugins.extend (final': prev': {
+       indent-blankline-nvim-lua = prev.callPackage ../packages/indent-blankline-nvim-lua { };
+     });
    }
 
   This would ostensibly override (or add) the
