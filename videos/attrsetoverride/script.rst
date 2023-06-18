@@ -1,7 +1,7 @@
 NixOS 43: Overriding Packages That are Within Attribute Sets
 ============================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/7a2Yladt0JI
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
@@ -41,12 +41,12 @@ Video Script
       obs-studio-plugins = prev.obs-studio-plugins // {
         obs-backgroundremoval =
           prev.obs-studio-plugins.obs-backgroundremoval.overrideAttrs (old: {
-            version = "0.5.16";
+            version = "0.5.17";
             src = prev.fetchFromGitHub {
               owner = "royshil";
               repo = "obs-backgroundremoval";
-              rev = "v0.5.16";
-              hash = "sha256-Bq0Lfn+e9A1P7ZubA65nWksFZAeu5C8NvT36dG5N2Ug=";
+              rev = "v0.5.17";
+              hash = "";
             };
           });
       };
