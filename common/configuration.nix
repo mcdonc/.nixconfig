@@ -231,7 +231,6 @@
     pciutils
     neofetch
     tmux
-    heroic
     s-tui
     stress-ng
     usbutils
