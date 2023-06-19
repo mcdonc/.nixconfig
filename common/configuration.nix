@@ -98,6 +98,16 @@
     '';
   };
 
+  # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
+  systemd.services.cups = {
+    overrideStrategy = "asDropin";
+    serviceConfig.LogFilterPatterns="~.*Expiring subscriptions.*";
+  };
+  # restart faster
+  systemd.extraConfig = ''
+  DefaultTimeoutStopSec=10s
+  '';
+
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
 
