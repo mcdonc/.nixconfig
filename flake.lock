@@ -102,22 +102,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-obs-overrides": {
-      "locked": {
-        "lastModified": 1686915450,
-        "narHash": "sha256-VyqAgnL1cX90FE1PmEHWWIkszwSMaZctvkopvrSjxeA=",
-        "owner": "mcdonc",
-        "repo": "nixpkgs",
-        "rev": "a175b5cb2e4c4f68cedf99529bf7d7aa6dc49305",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mcdonc",
-        "ref": "chrism-obs-overrides",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-r2211": {
       "locked": {
         "lastModified": 1686751072,
@@ -188,7 +172,6 @@
         "nix": "nix",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-obs-overrides": "nixpkgs-obs-overrides",
         "nixpkgs-r2211": "nixpkgs-r2211"
       }
     }
