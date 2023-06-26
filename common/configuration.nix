@@ -9,7 +9,8 @@
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
-    '';
+    trusted-users = root @wheel
+  '';
 
   nix.settings = {
     tarball-ttl = 300;
@@ -41,10 +42,7 @@
   boot.loader.grub.copyKernels = true;
 
   ## obs
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
-    
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
@@ -97,6 +95,16 @@
       KERNEL=="hpet", GROUP="audio"
     '';
   };
+
+  # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
+  systemd.services.cups = {
+    overrideStrategy = "asDropin";
+    serviceConfig.LogFilterPatterns = "~.*Expiring subscriptions.*";
+  };
+  # restart faster
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=10s
+  '';
 
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
@@ -191,9 +199,7 @@
     vim_configurable
     wget
     (wrapOBS {
-      plugins = with obs-studio-plugins; [
-        obs-backgroundremoval
-      ];
+      plugins = [ ];
     })
     thermald
     powertop
@@ -231,7 +237,6 @@
     pciutils
     neofetch
     tmux
-    heroic
     s-tui
     stress-ng
     usbutils

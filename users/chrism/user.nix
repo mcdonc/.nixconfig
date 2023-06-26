@@ -3,10 +3,6 @@
 {
   #imports = [ (import "${home-manager}/nixos") ];
 
-  nix.extraOptions = ''
-    trusted-users = root chrism
-  '';
-
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;
