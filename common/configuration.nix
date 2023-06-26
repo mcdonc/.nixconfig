@@ -9,7 +9,8 @@
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
-    '';
+    trusted-users = root @wheel
+  '';
 
   nix.settings = {
     tarball-ttl = 300;
@@ -41,10 +42,7 @@
   boot.loader.grub.copyKernels = true;
 
   ## obs
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
-    
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
@@ -101,11 +99,11 @@
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
     overrideStrategy = "asDropin";
-    serviceConfig.LogFilterPatterns="~.*Expiring subscriptions.*";
+    serviceConfig.LogFilterPatterns = "~.*Expiring subscriptions.*";
   };
   # restart faster
   systemd.extraConfig = ''
-  DefaultTimeoutStopSec=10s
+    DefaultTimeoutStopSec=10s
   '';
 
   networking.networkmanager.enable = true;
