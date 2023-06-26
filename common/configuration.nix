@@ -199,9 +199,7 @@
     vim_configurable
     wget
     (wrapOBS {
-      plugins = with obs-studio-plugins; [
-        obs-backgroundremoval
-      ];
+      plugins = [ callPackage ./obs-backgroundremoval {} ];
     })
     thermald
     powertop
