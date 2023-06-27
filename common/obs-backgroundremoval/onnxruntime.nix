@@ -2,7 +2,7 @@
 , cmake, python3Packages, libpng, zlib, eigen, protobuf3_20, nlohmann_json
 , boost181, boost179, oneDNN, abseil-cpp_202206, gtest, pythonSupport ? false
 , tensorrtSupport ? false, nsync, re2, cudaPackages_11_6, microsoft_gsl, gcc11
-, python3, callPackage }:
+, python3, callPackage, fetchgit, autoPatchelfHook }:
 
 # to build with cmake/deps.txt downloads: NIXPKGS_ALLOW_UNFREE=1 nix-build --option sandbox false --impure --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
 # without: NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
@@ -11,7 +11,7 @@ assert pythonSupport
   -> lib.versionOlder protobuf3_20.version "3.20"; # XXX uhhhhh...
 
 let
-  flatbuffers-1_12 = stdenv.mkDerivation rec {
+  flatbuffers-1_12_0 = stdenv.mkDerivation rec {
     pname = "flatbuffers";
     version = "1.12.0";
 
@@ -135,14 +135,25 @@ let
     version = "unstable";
 
     nativeBuildInputs = [ cmake ];
+    buildInputs = [ protobuf3_20 python3 ];
 
     cmakeDir = "../";
 
-    src = fetchFromGitHub {
-      owner = "onnx";
-      repo = "onnx-tensorrt";
+    cmakeFlags = [
+      "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}"
+      "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include"
+      "-DGOOGLETEST_SOURCE_DIR=${googletest.src}"
+      "-DTENSORRT_ROOT=${cudaPackages_11_6.tensorrt_8_5_1}"
+      "-DTENSORRT_INCLUDE_DIR=${cudaPackages_11_6.tensorrt_8_5_1.dev}/include"
+      #    "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
+    ];
+
+    # fetchFromGitHub's fetchSubmodules doesn't work
+    src = fetchgit {
+      url = "https://github.com/onnx/onnx-tensorrt.git";
       rev = "369d6676423c2a6dbf4a5665c4b5010240d99d3c";
-      sha256 = "sha256-+jNi66ib9KxslKf/VJJIx6w7akQjCuzYl3h9CBKz4lU=";
+      sha256 = "sha256-WopvaKYdTcNBcZ4tnxXmtgfxuLLFoAc+u57/bzBNXbU=";
+      fetchSubmodules = true;
     };
 
   };
@@ -223,7 +234,7 @@ in stdenvNoCC.mkDerivation rec {
     })
   ];
 
-  nativeBuildInputs = [ gcc11 cmake pkg-config python3Packages.python gtest ]
+  nativeBuildInputs = [ gcc11 cmake pkg-config python3Packages.python gtest autoPatchelfHook ]
     ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
@@ -237,23 +248,26 @@ in stdenvNoCC.mkDerivation rec {
     protobuf3_20
     nsync
     microsoft_gsl
-    flatbuffers-1_12
+    flatbuffers-1_12_0
     python3Packages.onnx
     cudaPackages_11_6.cuda_cudart
     cudaPackages_11_6.cudnn
     pytorch-cpuinfo
     googletest
+    onnx-tensorrt
   ] ++ lib.optionals pythonSupport [
     python3Packages.numpy
     python3Packages.pybind11
     python3Packages.packaging
+  ] ++ lib.optionals tensorrtSupport [
+    cudaPackages_11_6.tensorrt_8_5_1
   ];
 
   # TODO: build server, and move .so's to lib output
   # Python's wheel is stored in a separate dist output
   outputs = [ "out" "dev" ] ++ lib.optionals pythonSupport [ "dist" ];
 
-  #  enableParallelBuilding = true;
+  enableParallelBuilding = true;
 
   cmakeDir = "../cmake";
 
@@ -279,7 +293,7 @@ in stdenvNoCC.mkDerivation rec {
     "-DFETCHCONTENT_SOURCE_DIR_RE2=${re2.src}"
     "-DFETCHCONTENT_SOURCE_DIR_GSL=${microsoft_gsl.src}"
     "-DFETCHCONTENT_SOURCE_DIR_SAFEINT=${safeint.src}"
-    "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${flatbuffers-1_12.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${flatbuffers-1_12_0.src}"
     "-DFETCHCONTENT_SOURCE_DIR_MICROSOFT_WIL=${wil.src}"
     "-DFETCHCONTENT_SOURCE_DIR_ONNX=${python3Packages.onnx.src}"
     "-DFETCHCONTENT_SOURCE_DIR_CUTLASS=${cutlass.src}"
@@ -301,9 +315,10 @@ in stdenvNoCC.mkDerivation rec {
   ] ++ lib.optionals pythonSupport [ "-Donnxruntime_ENABLE_PYTHON=ON" ]
     ++ lib.optionals tensorrtSupport [
       "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${onnx-tensorrt.src}"
-      "-Donnxruntime_USE_TENSORRT=ON" # XXX i needed this
-      "-Donnxruntime_TENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}" # XXX
-      "-DTENSORRT_INCLUDE_DIR=${cudaPackages_11_6.tensorrt_8_5_1.dev}/include" # XXX
+      "-Donnxruntime_USE_TENSORRT=ON"
+      "-Donnxruntime_TENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
+      "-DTENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
+      "-DTENSORRT_INCLUDE_DIR=${cudaPackages_11_6.tensorrt_8_5_1.dev}/include"
     ];
 
   # see onnxruntime's python build wrapper

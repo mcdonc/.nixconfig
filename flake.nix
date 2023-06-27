@@ -21,15 +21,7 @@
       overlay-obs-bgremoval = final: prev: {
         obs-studio-plugins = prev.obs-studio-plugins // {
           obs-backgroundremoval =
-            prev.obs-studio-plugins.obs-backgroundremoval.overrideAttrs (old: {
-              version = "0.5.17";
-              src = prev.fetchFromGitHub {
-                owner = "royshil";
-                repo = "obs-backgroundremoval";
-                rev = "v0.5.17";
-                hash = "sha256-Bq0Lfn+e9A1P7ZubA65nWksFZAeu5C8NvT36dG5N2Ug=";
-              };
-            });
+            prev.callPackage ./common/obs-backgroundremoval { };
         };
       };
     in {
