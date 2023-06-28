@@ -284,5 +284,8 @@
     quickemu
     quickgui
     gnome.zenity # undeclared dep of quickgui
+    nix-du
+    graphviz
+    zgrviewer
   ];
 }
