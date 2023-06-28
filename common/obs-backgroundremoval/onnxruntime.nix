@@ -4,6 +4,13 @@
 , tensorrtSupport ? false, nsync, re2, cudaPackages_11_6, microsoft_gsl, gcc11
 , python3, callPackage, fetchgit, autoPatchelfHook }:
 
+# existing:
+# ./pj72h6n21clvzc7b9zvdljv4bani9qac-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
+# ./afaabz5lmq7mn2anz4q75ym3jz57xs6c-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
+# ./a3m9c7d330508d22yb9qp1znymvxpgfd-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
+# ./kr3pdmvvakf2y0g3kgcb7d2hy0171ngg-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
+# ./74bfq8k04kidf2vzq7qkpq4lw9fbq886-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
+
 # to build with cmake/deps.txt downloads: NIXPKGS_ALLOW_UNFREE=1 nix-build --option sandbox false --impure --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
 # without: NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
 
@@ -140,6 +147,7 @@ let
     cmakeDir = "../";
 
     cmakeFlags = [
+      "-DONNX_USE_PROTOBUF_SHARED_LIBS=ON"
       "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}"
       "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include"
       "-DGOOGLETEST_SOURCE_DIR=${googletest.src}"
@@ -279,7 +287,7 @@ in stdenvNoCC.mkDerivation rec {
     "-Donnxruntime_USE_MPI=ON"
     "-Donnxruntime_USE_DNNL=YES"
 
-    #    "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
+    "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
 
     # override cmake/deps.txt downloads
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
@@ -307,9 +315,11 @@ in stdenvNoCC.mkDerivation rec {
     "-Donnxruntime_CUDNN_HOME=${cudaPackages_11_6.cudnn}"
     "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include"
 
-    # for ONNX "-DCUDAToolkit_ROOT=${cudaPackages_11_6.cudatoolkit}"
+    # cmake-specific flag to tell nvcc which platforms to generate code for
+    "-DCMAKE_CUDA_ARCHITECTURES=50;52;53" # XXX maxwell, how to generalize?
+
+    # for onnx-tensorrt
     "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}"
-    "-DCMAKE_CUDA_ARCHITECTURES=50" # XXX maxwell
     "-DCMAKE_CUDA_COMPILER=${cudaPackages_11_6.cudatoolkit}/bin/nvcc"
 
   ] ++ lib.optionals pythonSupport [ "-Donnxruntime_ENABLE_PYTHON=ON" ]
