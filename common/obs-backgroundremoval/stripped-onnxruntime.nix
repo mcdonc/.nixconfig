@@ -1,8 +1,45 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
-, cmake, python3Packages, libpng, zlib, eigen, protobuf3_20, nlohmann_json
-, boost181, boost179, oneDNN, abseil-cpp_202206, gtest, pythonSupport ? false
-, tensorrtSupport ? false, nsync, re2, cudaPackages_11_6, microsoft_gsl, gcc11
-, python3, callPackage, fetchgit, autoPatchelfHook }:
+, cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN
+, abseil-cpp_202206, gtest, pythonSupport ? false, tensorrtSupport ? false
+, nsync, re2, cudaPackages_11_6, microsoft_gsl, gcc11, python3, callPackage
+, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20
+}:
+
+# make[1]: Leaving directory '/build/onnxruntime/build'
+# /nix/store/fqfi0m3fw3szj3n99r5n359579808bh6-cmake-3.25.3/bin/cmake -E cmake_progress_start /build/onnxruntime/build/CMakeFiles 0
+# adding opengl runpath to all executables and libs
+# buildPhase completed in 47 minutes 57 seconds
+# running tests
+# check flags: -j8 SHELL=/nix/store/7q1b1bsmxi91zci6g8714rcljl620y7f-bash-5.2-p15/bin/bash VERBOSE=y test
+# Running tests...
+# /nix/store/fqfi0m3fw3szj3n99r5n359579808bh6-cmake-3.25.3/bin/ctest --force-new-ctest-process 
+# Test project /build/onnxruntime/build
+#     Start 1: onnxruntime_test_all
+#     Start 2: onnx_test_pytorch_converted
+#     Start 3: onnx_test_pytorch_operator
+#     Start 4: onnxruntime_shared_lib_test
+#     Start 5: onnxruntime_global_thread_pools_test
+#     Start 6: onnxruntime_api_tests_without_env
+#     Start 7: onnxruntime_customopregistration_test
+# 1/7 Test #6: onnxruntime_api_tests_without_env .......   Passed    0.01 sec
+# 2/7 Test #7: onnxruntime_customopregistration_test ...   Passed    0.18 sec
+# 3/7 Test #3: onnx_test_pytorch_operator ..............   Passed    0.33 sec
+# 4/7 Test #2: onnx_test_pytorch_converted .............   Passed    0.53 sec
+# 5/7 Test #4: onnxruntime_shared_lib_test .............Subprocess aborted***Exception:   1.24 sec
+# [==========] Running 76 tests from 3 test suites.
+# [----------] Global test environment set-up.
+# [----------] 70 tests from CApiTest
+# [ RUN      ] CApiTest.dim_param
+# [       OK ] CApiTest.dim_param (70 ms)
+# [ RUN      ] CApiTest.SparseOutputModel
+# [       OK ] CApiTest.SparseOutputModel (44 ms)
+# [ RUN      ] CApiTest.SparseInputModel
+# [       OK ] CApiTest.SparseInputModel (5 ms)
+# [ RUN      ] CApiTest.custom_op_handler
+# Running custom op inference
+# Running simple inference with cuda provider
+# unknown file: Failure
+#   C++ exception with description "/build/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:124 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, ERRTYPE, const char*) [with ERRTYPE = cudaError; bool THRW = true; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /build/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:117 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, ERRTYPE, const char*) [with ERRTYPE = cudaError; bool THRW = true; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDA failure 35: CUDA driver version is insufficient for CUDA runtime version ; GPU=0 ; hostname=localhost ; expr=cudaSetDevice(info_.device_id);
 
 # existing:
 # ./pj72h6n21clvzc7b9zvdljv4bani9qac-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
@@ -15,12 +52,37 @@
 # to build with cmake/deps.txt downloads: NIXPKGS_ALLOW_UNFREE=1 nix-build --option sandbox false --impure --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
 # without: NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
 
-assert pythonSupport
-  -> lib.versionOlder protobuf3_20.version "3.20"; # XXX uhhhhh...
-
 let
+  addrunpath-sh = ''
+    echo "running autopatchelf"
+    autoPatchelf "$out"
+    echo "adding opengl runpath to all executables and libs"
+    find $out -type f | while read lib; do
+      addOpenGLRunpath "$lib"
+    done
+  '';
+
+  srccopy-install = ''
+    mkdir $out
+    cp -rv $src/* $out
+  '';
+
+  protobuf = stdenv.mkDerivation rec {
+    pname = "protobuf-src-for-onnxruntime";
+    version = "3.20.2";
+
+    src = fetchFromGitHub {
+      owner = "protocolbuffers";
+      repo = "protobuf";
+      rev = "v${version}";
+      sha256 = "sha256-7hLTIujvYIGRqBQgPHrCq0XOh0GJrePBszXJnBFaXVM=";
+    };
+
+    installPhase = srccopy-install;
+  };
+
   flatbuffers-1_12_0 = stdenv.mkDerivation rec {
-    pname = "flatbuffers";
+    pname = "flatbuffers-src-for-onnxruntime";
     version = "1.12.0";
 
     src = fetchFromGitHub {
@@ -30,39 +92,11 @@ let
       sha256 = "sha256-L1B5Y/c897Jg9fGwT2J3+vaXsZ+lfXnskp8Gto1p/Tg=";
     };
 
-    nativeBuildInputs = [ cmake python3 ];
-
-    postPatch = ''
-      # Fix default value of "test_data_path" to make tests work
-          substituteInPlace tests/test.cpp --replace '"tests/";' '"../tests/";'
-    '';
-
-    cmakeFlags = [
-      "-DFLATBUFFERS_BUILD_TESTS=OFF"
-      "-DFLATBUFFERS_OSX_BUILD_UNIVERSAL=OFF"
-    ];
-
-    doCheck = false; # XXX
-    checkTarget = "test";
-
-    meta = with lib; {
-      description = "Memory Efficient Serialization Library";
-      longDescription = ''
-        FlatBuffers is an efficient cross platform serialization library for
-        games and other memory constrained apps. It allows you to directly
-        access serialized data without unpacking/parsing it first, while still
-        having great forwards/backwards compatibility.
-      '';
-      homepage = "https://google.github.io/flatbuffers/";
-      license = licenses.asl20;
-      maintainers = [ maintainers.teh ];
-      mainProgram = "flatc";
-      platforms = platforms.unix;
-    };
+    installPhase = srccopy-install;
   };
 
   howard-hinnant-date-2_4_1 = stdenv.mkDerivation rec {
-    pname = "howard-hinnant-date";
+    pname = "howard-hinnant-date-src-for-onnxruntime";
     version = "2.4.1";
 
     src = fetchFromGitHub {
@@ -72,29 +106,40 @@ let
       sha256 = "sha256-BYL7wxsYRI45l8C3VwxYIIocn5TzJnBtU0UZ9pHwwZw=";
     };
 
-    nativeBuildInputs = [ cmake ];
+    installPhase = srccopy-install;
+  };
 
-    cmakeFlags = [ "-DBUILD_SHARED_LIBS=true" "-DUSE_SYSTEM_TZ_DB=true" ];
+  nsync = stdenv.mkDerivation rec {
+    pname = "nsync-src-for-onnxruntime";
+    version = "1.23.0";
 
-    outputs = [ "out" "dev" ];
-
-    meta = with lib; {
-      license = licenses.mit;
-      description =
-        "A date and time library based on the C++11/14/17 <chrono> header";
-      homepage = "https://github.com/HowardHinnant/date";
-      platforms = platforms.unix;
-      maintainers = with maintainers; [ r-burns ];
+    src = fetchFromGitHub {
+      owner = "google";
+      repo = "nsync";
+      rev = "${version}";
+      sha256 = "sha256-4xvR47MbYaWBf+jKL6xH2g0NvIgC4Pz1mBNR7eRQY8A=";
     };
+
+    installPhase = srccopy-install;
+  };
+
+  onnx = stdenv.mkDerivation rec {
+    pname = "onnx-src-for-onnxruntime";
+    version = "1.13.0";
+
+    src = fetchFromGitHub {
+      owner = "onnx";
+      repo = "onnx";
+      rev = "v${version}";
+      sha256 = "sha256-D8POBAkZVr0O5i4qsSuYRkDfL8WsDTqzgNACmmkFwGs=";
+    };
+
+    installPhase = srccopy-install;
   };
 
   safeint = stdenv.mkDerivation rec {
-    pname = "safeint";
+    pname = "safeint-src-for-onnxruntime";
     version = "unstable";
-
-    nativeBuildInputs = [ cmake ];
-
-    cmakeDir = "../";
 
     src = fetchFromGitHub {
       owner = "dcleblanc";
@@ -103,15 +148,13 @@ let
       sha256 = "sha256-PK1ce4C0uCR4TzLFg+elZdSk5DdPCRhhwT3LvEwWnPU=";
     };
 
+    installPhase = srccopy-install;
+
   };
 
   wil = stdenv.mkDerivation rec {
-    pname = "wil";
+    pname = "wil-src-for-onnxruntime";
     version = "unstable";
-
-    nativeBuildInputs = [ cmake ];
-
-    cmakeDir = "../";
 
     src = fetchFromGitHub {
       owner = "microsoft";
@@ -119,15 +162,13 @@ let
       rev = "5f4caba4e7a9017816e47becdd918fcc872039ba";
       sha256 = "sha256-nbiDtBZsni7hp9fROBB1D4j7ssBZOgG5goeb6/lSS20=";
     };
+
+    installPhase = srccopy-install;
   };
 
   cutlass = stdenv.mkDerivation rec {
-    pname = "cutlass";
+    pname = "cutlass-src-for-onnxruntime";
     version = "2.11.0";
-
-    nativeBuildInputs = [ cmake ];
-
-    cmakeDir = "../";
 
     src = fetchFromGitHub {
       owner = "NVIDIA";
@@ -136,16 +177,27 @@ let
       sha256 = "sha256-P8A1NEcYp5o15dB+d0zzSLwVWv472txLY7zDMYb70o4=";
     };
 
+    installPhase = srccopy-install;
+
   };
 
   onnx-tensorrt = stdenv.mkDerivation rec {
     pname = "onnx-tensorrt";
     version = "unstable";
 
-    nativeBuildInputs = [ cmake ];
-    buildInputs = [ protobuf3_20 python3 ];
+    nativeBuildInputs = [ cmake autoPatchelfHook addOpenGLRunpath ];
+    buildInputs = [
+      protobuf3_20
+      python3
+      cudaPackages_11_6.tensorrt_8_5_1
+      cudaPackages_11_6.cuda_cudart
+      cudaPackages_11_6.cudnn
+      #pkgs.linuxKernel.packages.linux_6_1.nvidia_x11_production
+    ];
 
     cmakeDir = "../";
+
+    doCheck = true; # XXX
 
     cmakeFlags = [
       "-DONNX_USE_PROTOBUF_SHARED_LIBS=ON"
@@ -165,15 +217,15 @@ let
       fetchSubmodules = true;
     };
 
+    dontAutoPatchelf = true;
+
+    postFixup = addrunpath-sh;
+
   };
 
   mp11 = stdenv.mkDerivation rec {
-    pname = "mp11";
+    pname = "mp11-src-for-onnxruntime";
     version = "boost-1.79.0";
-
-    nativeBuildInputs = [ cmake boost179 ];
-
-    cmakeDir = "../";
 
     src = fetchFromGitHub {
       owner = "boostorg";
@@ -182,15 +234,13 @@ let
       sha256 = "sha256-ZxgPDLvpISrjpEHKpLGBowRKGfSwTf6TBfJD18yw+LM=";
     };
 
+    installPhase = srccopy-install;
+
   };
 
   googletest = stdenv.mkDerivation rec {
-    pname = "googletest";
+    pname = "googletest-src-for-onnxruntime";
     version = "unstable";
-
-    nativeBuildInputs = [ cmake ];
-
-    cmakeDir = "../";
 
     src = fetchFromGitHub {
       owner = "google";
@@ -198,20 +248,13 @@ let
       rev = "519beb0e52c842729b4b53731d27c0e0c32ab4a2";
       sha256 = "sha256-6LG2Q9QSQBG6oynBkgdtXBsUra6LXPOZWR6i0dPMdeY=";
     };
+
+    installPhase = srccopy-install;
   };
 
   pytorch-cpuinfo = stdenv.mkDerivation rec {
-    pname = "pytorch-cpuinfo";
+    pname = "pytorch-cpuinfo-src-for-onnxruntime";
     version = "unstable";
-
-    nativeBuildInputs = [ cmake googletest ];
-
-    cmakeDir = "../";
-    cmakeFlags = [
-      # otherwise would need googlebenchmarks # XXX
-      "-DCPUINFO_BUILD_BENCHMARKS=OFF"
-      "-DGOOGLETEST_SOURCE_DIR=${googletest.src}"
-    ];
 
     src = fetchFromGitHub {
       owner = "pytorch";
@@ -219,6 +262,8 @@ let
       rev = "5916273f79a21551890fd3d56fc5375a78d1598d";
       sha256 = "sha256-nXBnloVTuB+AVX59VDU/Wc+Dsx94o92YQuHp3jowx2A=";
     };
+
+    installPhase = srccopy-install;
   };
 
 in stdenvNoCC.mkDerivation rec {
@@ -229,18 +274,10 @@ in stdenvNoCC.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/microsoft/onnxruntime.git";
     rev = "v${version}";
-    sha256 = "sha256-TBcEML7UL2VSrQHSwyMJTgKos+QVbeyR3c7wzL8xdoo=";
+    sha256 = "sha256-w47sXGPXq2/B/GtXzsNlCWCXAY4J3Jt4DapN4IducO8=";
     fetchSubmodules = true;
     deepClone = true;
   };
-
-  # src = fetchFromGitHub {
-  #   owner = "microsoft";
-  #   repo = "onnxruntime";
-  #   rev = "v${version}";
-  #   sha256 = "sha256-cedOy9RIxtRszcpyL6/eX8r2u9nnTkK90/5IWgvZpKg=";
-  #   fetchSubmodules = true;
-  # };
 
   patches = [
     # Use dnnl from nixpkgs instead of submodules
@@ -252,9 +289,15 @@ in stdenvNoCC.mkDerivation rec {
     })
   ];
 
-  nativeBuildInputs =
-    [ gcc11 cmake pkg-config python3Packages.python gtest autoPatchelfHook ]
-    ++ lib.optionals pythonSupport
+  nativeBuildInputs = [
+    gcc11
+    cmake
+    pkg-config
+    python3Packages.python
+    gtest
+    autoPatchelfHook
+    addOpenGLRunpath
+  ] ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
   buildInputs = [
@@ -262,9 +305,9 @@ in stdenvNoCC.mkDerivation rec {
     zlib
     nlohmann_json
     oneDNN
-    python3Packages.onnx
     cudaPackages_11_6.cuda_cudart
     cudaPackages_11_6.cudnn
+    #    python3Packages.onnx
     #    howard-hinnant-date-2_4_1
     #    boost181
     #    protobuf3_20
@@ -280,6 +323,7 @@ in stdenvNoCC.mkDerivation rec {
   ] ++ lib.optionals tensorrtSupport [
     cudaPackages_11_6.tensorrt_8_5_1
     onnx-tensorrt
+    #pkgs.linuxKernel.packages.linux_6_1.nvidia_x11_production
   ];
 
   # TODO: build server, and move .so's to lib output
@@ -303,21 +347,21 @@ in stdenvNoCC.mkDerivation rec {
     # override cmake/deps.txt downloads
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202206.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_DATE=${howard-hinnant-date-2_4_1.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_GOOGLE_NSYNC=${nsync.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_PROTOBUF=${protobuf3_20.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_BOOST=${boost181.src}" # wants 1.81
-    # "-DFETCHCONTENT_SOURCE_DIR_MP11=${mp11.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_RE2=${re2.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_GSL=${microsoft_gsl.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_SAFEINT=${safeint.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${flatbuffers-1_12_0.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_MICROSOFT_WIL=${wil.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_ONNX=${python3Packages.onnx.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_CUTLASS=${cutlass.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_PYTORCH_CPUINFO=${pytorch-cpuinfo.src}"
-    # "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${googletest.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202206.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_DATE=${howard-hinnant-date-2_4_1.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_GOOGLE_NSYNC=${nsync.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_PROTOBUF=${protobuf.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_BOOST=${boost181.src}" # wants 1.81
+    "-DFETCHCONTENT_SOURCE_DIR_MP11=${mp11.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_RE2=${re2.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_GSL=${microsoft_gsl.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_SAFEINT=${safeint.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${flatbuffers-1_12_0.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_MICROSOFT_WIL=${wil.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_ONNX=${onnx.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_CUTLASS=${cutlass.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_PYTORCH_CPUINFO=${pytorch-cpuinfo.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${googletest.src}"
 
     # see onnxruntime's python build wrapper
     "-Donnxruntime_USE_FULL_PROTOBUF=ON"
@@ -335,7 +379,7 @@ in stdenvNoCC.mkDerivation rec {
 
   ] ++ lib.optionals pythonSupport [ "-Donnxruntime_ENABLE_PYTHON=ON" ]
     ++ lib.optionals tensorrtSupport [
-#      "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${onnx-tensorrt.src}"
+      "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${onnx-tensorrt.src}"
       "-Donnxruntime_USE_TENSORRT=ON"
       "-Donnxruntime_TENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
       "-DTENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
@@ -355,9 +399,12 @@ in stdenvNoCC.mkDerivation rec {
       --replace '$'{prefix}/@CMAKE_INSTALL_ @CMAKE_INSTALL_
   '';
 
-  postBuild = lib.optionalString pythonSupport ''
-    python ../setup.py bdist_wheel
-  '';
+  dontAutoPatchelf = true;
+
+  postBuild = lib.optionalString tensorrtSupport addrunpath-sh;
+  # '' ++ lib.optionalString pythonSupport ''
+  #   python ../setup.py bdist_wheel
+  # ''
 
   postInstall = ''
     # perform parts of `tools/ci_build/github/linux/copy_strip_binary.sh`
@@ -367,11 +414,19 @@ in stdenvNoCC.mkDerivation rec {
       ../include/onnxruntime/core/session/onnxruntime_*.h
   '';
 
-  passthru = {
-    inherit protobuf3_20;
-    tests =
-      lib.optionalAttrs pythonSupport { python = python3Packages.onnxruntime; };
-  };
+  postFixup = lib.optionalString tensorrtSupport addrunpath-sh;
+
+  # tmp = ''
+  #   find $out -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
+  #     addOpenGLRunpath "$lib"
+  #   done
+  # '';
+
+  #  passthru = {
+  #    inherit protobuf3_20;
+  #    tests =
+  #      lib.optionalAttrs pythonSupport { python = python3Packages.onnxruntime; }#;
+  #  };
 
   meta = with lib; {
     description =
