@@ -1,8 +1,10 @@
 { lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, callPackage
 , cudaPackages_11_6, autoPatchelfHook }:
 
-let onnxruntime = callPackage ./onnxruntime.nix { tensorrtSupport = true; };
-in stdenv.mkDerivation rec {
+let
+  onnxruntime =
+    callPackage ./stripped-onnxruntime.nix { tensorrtSupport = true; };
+in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   pname = "obs-backgroundremoval";
   version = "1.0.3";
 
@@ -10,24 +12,30 @@ in stdenv.mkDerivation rec {
     owner = "royshil";
     repo = "obs-backgroundremoval";
     rev = "v${version}";
-    hash = "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs"; #"sha256-Bq0Lfn+e9A1P7ZubA65nWksFZAeu5C8NvT36dG5N2Ug=";
+    hash =
+      "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs"; # "sha256-Bq0Lfn+e9A1P7ZubA65nWksFZAeu5C8NvT36dG5N2Ug=";
   };
 
-  nativeBuildInputs = [ cmake autoPatchelfHook ];
+  nativeBuildInputs =
+    [ cmake cudaPackages_11_6.autoAddOpenGLRunpathHook autoPatchelfHook ];
+
   buildInputs = [
     obs-studio
     onnxruntime
     opencv
-#    cudaPackages_11_6.tensorrt_8_5_1
+    cudaPackages_11_6.tensorrt_8_5_1
+    cudaPackages_11_6.cuda_cudart
+    cudaPackages_11_6.cudnn
   ];
 
   dontWrapQtApps = true;
 
-  cmakeFlags = [ "-DUSE_SYSTEM_ONNXRUNTIME=ON"
-                 "-DUSE_SYSTEM_OPENCV=ON"
-                 "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt"
-#                 "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
-               ];
+  cmakeFlags = [
+    "-DUSE_SYSTEM_ONNXRUNTIME=ON"
+    "-DUSE_SYSTEM_OPENCV=ON"
+    "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt"
+    #                 "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
+  ];
 
   postInstall = ''
     mkdir $out/lib $out/share
