@@ -287,5 +287,6 @@
     nix-du
     graphviz
     zgrviewer
+    bintools # "strings"
   ];
 }
