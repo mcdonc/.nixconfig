@@ -310,6 +310,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
         "https://aur.archlinux.org/cgit/aur.git/plain/system-dnnl.diff?h=python-onnxruntime&id=9c392fb542979981fe0026e0fe3cc361a5f00a36";
       sha256 = "sha256-+kedzJHLFU1vMbKO9cn8fr+9A5+IxIuiqzOfR2AfJ0k=";
     })
+    ./no-werror.patch
   ];
 
   nativeBuildInputs = [
@@ -329,9 +330,9 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     oneDNN
     cudaPackages_11_6.cudatoolkit
     cudaPackages_11_6.cudnn
-#    cudaPackages_11_6.cuda_cudart
-    flatbuffers
-    protobuf3_20
+    cudaPackages_11_6.cuda_cudart
+    #    flatbuffers
+    #    protobuf3_20
     #    python3Packages.onnx
     #    howard-hinnant-date-2_4_1
     #    boost181
@@ -353,23 +354,22 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   # Python's wheel is stored in a separate dist output
   outputs = [ "out" "dev" ] ++ lib.optionals pythonSupport [ "dist" ];
 
-  enableParallelBuilding = false; # XXX
+  enableParallelBuilding = true;
 
   cmakeDir = "../cmake";
 
   cmakeFlags = [
+    # from original onnxruntime default.nix
     "-Donnxruntime_PREFER_SYSTEM_LIB=ON"
     "-Donnxruntime_BUILD_SHARED_LIB=ON"
     "-Donnxruntime_ENABLE_LTO=ON"
     "-Donnxruntime_BUILD_UNIT_TESTS=ON"
     "-Donnxruntime_USE_MPI=ON"
     "-Donnxruntime_USE_DNNL=YES"
-
-    "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
-
-    # override cmake/deps.txt downloads
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
+
+    # override cmake/deps.txt downloads
     "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202206.src}"
     "-DFETCHCONTENT_SOURCE_DIR_DATE=${howard-hinnant-date-2_4_1.src}"
     "-DFETCHCONTENT_SOURCE_DIR_GOOGLE_NSYNC=${nsync.src}"
@@ -386,10 +386,10 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-DFETCHCONTENT_SOURCE_DIR_PYTORCH_CPUINFO=${pytorch-cpuinfo.src}"
     "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${googletest.src}"
 
-    # don't treat warnings as errors while compiling this misery
-    "-DCMAKE_COMPILE_WARNING_AS_ERROR=FALSE"
+    # debugging
+    "-DCMAKE_VERBOSE_MAKEFILE=ON"
 
-    # see onnxruntime's python build wrapper
+    # see onnxruntime's tools/ci_build/build.py
     "-Donnxruntime_USE_FULL_PROTOBUF=ON"
     "-DProtobuf_USE_STATIC_LIBS=ON"
     "-Donnxruntime_USE_CUDA=ON"
@@ -417,7 +417,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
       --replace '$'{prefix}/@CMAKE_INSTALL_ @CMAKE_INSTALL_
   '';
 
-  # see onnxruntime's python build wrapper
+  # see onnxruntime's python tools/ci_build/build.py
   preBuild = ''
       export CMAKE_COMPILE_WARNING_AS_ERROR=FALSE
       '' + lib.optionalString tensorrtSupport ''
