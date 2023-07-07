@@ -23,8 +23,8 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     obs-studio
     onnxruntime
     opencv
+    cudaPackages_11_6.cudatoolkit
     cudaPackages_11_6.tensorrt_8_5_1
-    cudaPackages_11_6.cuda_cudart
     cudaPackages_11_6.cudnn
   ];
 
@@ -34,7 +34,6 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-DUSE_SYSTEM_ONNXRUNTIME=ON"
     "-DUSE_SYSTEM_OPENCV=ON"
     "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt"
-    #                 "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
   ];
 
   postInstall = ''
