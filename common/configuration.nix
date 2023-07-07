@@ -6,6 +6,14 @@
   # nix stuff
   system.stateVersion = "22.05";
 
+  # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    '';
+  };
+
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -198,11 +206,7 @@
   environment.systemPackages = with pkgs; [
     vim_configurable
     wget
-    (wrapOBS {
-      plugins = with obs-studio-plugins; [
-        obs-backgroundremoval
-      ];
-    })
+    (wrapOBS { plugins = with obs-studio-plugins; [ obs-backgroundremoval ]; })
     thermald
     powertop
     libsForQt5.kdeconnect-kde
@@ -288,5 +292,8 @@
     graphviz
     zgrviewer
     bintools # "strings"
+    thinkfan
+    lm_sensors
+    nvd
   ];
 }
