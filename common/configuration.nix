@@ -6,6 +6,14 @@
   # nix stuff
   system.stateVersion = "22.05";
 
+  # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    '';
+  };
+
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -280,5 +288,12 @@
     quickemu
     quickgui
     gnome.zenity # undeclared dep of quickgui
+    nix-du
+    graphviz
+    zgrviewer
+    bintools # "strings"
+    thinkfan
+    lm_sensors
+    nvd # for nixos-rebuild diffing
   ];
 }
