@@ -294,6 +294,6 @@
     bintools # "strings"
     thinkfan
     lm_sensors
-    nvd
+    nvd # for nixos-rebuild diffing
   ];
 }
