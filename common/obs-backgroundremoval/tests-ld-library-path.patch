@@ -1,0 +1,10 @@
+--- a/cmake/onnxruntime_unittests.cmake
++++ b/cmake/onnxruntime_unittests.cmake
+@@ -175,6 +175,7 @@ function(AddTest)
+         COMMAND ${_UT_TARGET} ${TEST_ARGS}
+         WORKING_DIRECTORY $<TARGET_FILE_DIR:${_UT_TARGET}>
+       )
++     set_property(TEST ${_UT_TARGET} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=/run/opengl-driver/lib")
+     endif()
+   endif()
+ endfunction(AddTest)
