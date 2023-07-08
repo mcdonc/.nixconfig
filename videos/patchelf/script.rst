@@ -215,7 +215,7 @@ Details
     
 - We can use ``nix-build`` to realize the derivation::
 
-    [nix-shell:/etc/nixos/videos/patchelf]$ nix-build bool.nix 
+    [chrism@thinknix512:/etc/nixos/videos/patchelf]$ nix-build bool.nix 
     this derivation will be built:
       /nix/store/5ghdrfn4l186rab8d1jrj22zjpd7wx3a-bool.drv
     building '/nix/store/5ghdrfn4l186rab8d1jrj22zjpd7wx3a-bool.drv'...
@@ -376,8 +376,8 @@ Details
 - We can see this by visiting the ``result`` symlink left by ``nix-build`` and
   using ``ldd`` to examine the paths it will search for shared libraries::
 
-    [nix-shell:/etc/nixos/videos/patchelf]$ cd result
-    [nix-shell:/etc/nixos/videos/patchelf/result]$ ldd bool 
+    [chrism@thinknix512:/etc/nixos/videos/patchelf]$ cd result
+    [chrism@thinknix512:/etc/nixos/videos/patchelf/result]$ ldd bool 
         linux-vdso.so.1 (0x00007f8a026dc000)
         libboolector.so => /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so (0x00007f8a0254f000)
         libstdc++.so.6 => /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6 (0x00007f8a02329000)
@@ -391,15 +391,145 @@ Details
 - Note that it also includes RPATHS, transitively, for dependencies of
   ``boolector``::
 
-    [nix-shell:/etc/nixos/videos/patchelf/result]$ cd /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib
-    [nix-shell:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib]$ ldd libboolector.so 
-            linux-vdso.so.1 (0x00007ffeebbc3000)
-            libbtor2parser.so => /nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libbtor2parser.so (0x00007effe9999000)
-            libgmp.so.10 => /nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/libgmp.so.10 (0x00007effe98f9000)
-            libstdc++.so.6 => /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6 (0x00007effe96d3000)
-            libm.so.6 => /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libm.so.6 (0x00007effe95f3000)
-            libgcc_s.so.1 => /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libgcc_s.so.1 (0x00007effe95d0000)
-            libc.so.6 => /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libc.so.6 (0x00007effe93ea000)
-            /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib64/ld-linux-x86-64.so.2 (0x00007effe9b2d000)
+    [chrism@thinknix512:/etc/nixos/videos/patchelf/result]$ cd /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib
+    [chrism@thinknix512:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib]$ ldd libboolector.so 
+                linux-vdso.so.1 (0x00007ffeebbc3000)
+                libbtor2parser.so => /nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libbtor2parser.so (0x00007effe9999000)
+                libgmp.so.10 => /nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/libgmp.so.10 (0x00007effe98f9000)
+                libstdc++.so.6 => /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6 (0x00007effe96d3000)
+                libm.so.6 => /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libm.so.6 (0x00007effe95f3000)
+                libgcc_s.so.1 => /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libgcc_s.so.1 (0x00007effe95d0000)
+                libc.so.6 => /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libc.so.6 (0x00007effe93ea000)
+                /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib64/ld-linux-x86-64.so.2 (0x00007effe9b2d000)
 
-    [nix-shell:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib]$
+        [chrism@thinknix512:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib]$
+
+- When we run ``bool`` with the ``LD_DEBUG=libs`` environment variable set (a
+  feature of the GNU loader), we can see our RPATH stuff in action::
+
+    [chrism@thinknix512:/etc/nixos/videos/patchelf]$ cd result
+    [chrism@thinknix512:/etc/nixos/videos/patchelf/result]$ LD_DEBUG=libs ./bool
+        693937:     find library=libboolector.so [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/glibc-hwcaps/x86-64-v3:/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/glibc-hwcaps/x86-64-v2:/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/glibc-hwcaps/x86-64-v3/libboolector.so
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/glibc-hwcaps/x86-64-v2/libboolector.so
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libboolector.so
+        693937:      search path=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/glibc-hwcaps/x86-64-v3:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/glibc-hwcaps/x86-64-v2:/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib              (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/glibc-hwcaps/x86-64-v3/libboolector.so
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/glibc-hwcaps/x86-64-v2/libboolector.so
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so
+        693937:
+        693937:     find library=libstdc++.so.6 [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libstdc++.so.6
+        693937:      search path=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib            (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libstdc++.so.6
+        693937:      search path=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/glibc-hwcaps/x86-64-v3:/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/glibc-hwcaps/x86-64-v2:/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib               (system search path)
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/glibc-hwcaps/x86-64-v3/libstdc++.so.6
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/glibc-hwcaps/x86-64-v2/libstdc++.so.6
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libstdc++.so.6
+        693937:      search path=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/glibc-hwcaps/x86-64-v3:/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/glibc-hwcaps/x86-64-v2:/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib         (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/glibc-hwcaps/x86-64-v3/libstdc++.so.6
+        693937:       trying file=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/glibc-hwcaps/x86-64-v2/libstdc++.so.6
+        693937:       trying file=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6
+        693937:
+        693937:     find library=libm.so.6 [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libm.so.6
+        693937:      search path=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib            (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libm.so.6
+        693937:      search path=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib               (system search path)
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libm.so.6
+        693937:
+        693937:     find library=libgcc_s.so.1 [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libgcc_s.so.1
+        693937:      search path=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib            (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libgcc_s.so.1
+        693937:      search path=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib               (system search path)
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libgcc_s.so.1
+        693937:      search path=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib             (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libgcc_s.so.1
+        693937:
+        693937:     find library=libc.so.6 [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libc.so.6
+        693937:      search path=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib            (RUNPATH from file ./bool)
+        693937:       trying file=/nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libc.so.6
+        693937:      search path=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib               (system search path)
+        693937:       trying file=/nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libc.so.6
+        693937:
+        693937:     find library=libbtor2parser.so [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libbtor2parser.so
+        693937:      search path=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/glibc-hwcaps/x86-64-v3:/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/glibc-hwcaps/x86-64-v2:/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v3:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v2:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib         (RUNPATH from file /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so)
+        693937:       trying file=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/glibc-hwcaps/x86-64-v3/libbtor2parser.so
+        693937:       trying file=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/glibc-hwcaps/x86-64-v2/libbtor2parser.so
+        693937:       trying file=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libbtor2parser.so
+        693937:
+        693937:     find library=libgmp.so.10 [0]; searching
+        693937:      search path=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib               (LD_LIBRARY_PATH)
+        693937:       trying file=/nix/store/j25bk9yxdqcvrirx4vvrxpaiw1cfr0sm-pipewire-0.3.71-jack/lib/libgmp.so.10
+        693937:      search path=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v3:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v2:/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib          (RUNPATH from file /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so)
+        693937:       trying file=/nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libgmp.so.10
+        693937:       trying file=/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v3/libgmp.so.10
+        693937:       trying file=/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/glibc-hwcaps/x86-64-v2/libgmp.so.10
+        693937:       trying file=/nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/libgmp.so.10
+        693937:
+        693937:
+        693937:     calling init: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/ld-linux-x86-64.so.2
+        693937:
+        693937:
+        693937:     calling init: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libc.so.6
+        693937:
+        693937:
+        693937:     calling init: /nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/libgmp.so.10
+        693937:
+        693937:
+        693937:     calling init: /nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libbtor2parser.so
+        693937:
+        693937:
+        693937:     calling init: /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libgcc_s.so.1
+        693937:
+        693937:
+        693937:     calling init: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libm.so.6
+        693937:
+        693937:
+        693937:     calling init: /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6
+        693937:
+        693937:
+        693937:     calling init: /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so
+        693937:
+        693937:
+        693937:     initialize program: ./bool
+        693937:
+        693937:
+        693937:     transferring control: ./bool
+        693937:
+    hello from file that uses a shared library    693937:
+        693937:     calling fini:  [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/ms3p2368syy33q1ac4ln2mk823h3g0a0-boolector-3.2.2/lib/libboolector.so [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libstdc++.so.6 [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libm.so.6 [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/sm14bmd3l61p5m0q7wa5g7rz2bl6azqf-gcc-12.2.0-lib/lib/libgcc_s.so.1 [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/qnxzw6whxs8783c07m32ac0hdfrhmb8v-btor2tools-1.0.0-pre_9831f9909fb283752a3d6d60d43613173bd8af42-lib/lib/libbtor2parser.so [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/0h2qlf5y50h7g3ir92pr91sjig6nhdhp-gmp-with-cxx-6.2.1/lib/libgmp.so.10 [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/libc.so.6 [0]
+        693937:
+        693937:
+        693937:     calling fini: /nix/store/dg8mpqqykmw9c7l0bgzzb5znkymlbfjw-glibc-2.37-8/lib/ld-linux-x86-64.so.2 [0]
+        693937:
