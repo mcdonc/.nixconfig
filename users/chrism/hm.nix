@@ -203,6 +203,12 @@
       ls = "ls --color=auto";
     };
 
+    completionInit = ""; # speed up start time
+
+    #initExtraFirst = ''
+    #  zmodload zsh/zprof
+    #'';
+
     initExtra = ''
       # be more bashy
       setopt interactive_comments bashautolist nobeep nomenucomplete noautolist
@@ -240,6 +246,7 @@
       # Theming section
       autoload -U colors
       colors
+      #zprof
     '';
     zplug = {
       enable = true;
