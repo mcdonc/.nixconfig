@@ -1,12 +1,13 @@
-{ stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config ,
-cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN ,
-abseil-cpp_202206, gtest, pythonSupport ? false, tensorrtSupport ? false ,
-nsync, re2, cudaPackages_11_6, microsoft_gsl, python3, callPackage , fetchgit,
-autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20, flatbuffers }:
+{ stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
+, cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN
+, abseil-cpp_202206, gtest, pythonSupport ? false, tensorrtSupport ? false
+, nsync, re2, cudaPackages_11_6, microsoft_gsl, python3, callPackage, fetchgit
+, autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20, flatbuffers
+, breakpointHook }:
 
 # export LD_LIBRARY_PATH=/run/opengl-driver/lib:/nix/store/chpc1c8qw7fzl84pkix3rw1b85ymbi8f-onnxruntime-1.14.1/lib
 # for x in `find /nix/store -name "libonnxruntime_providers_shared.so"`; do echo $x; nix-store --query --roots $x; done
-   
+
 # make[1]: Leaving directory '/build/onnxruntime/build'
 # /nix/store/fqfi0m3fw3szj3n99r5n359579808bh6-cmake-3.25.3/bin/cmake -E cmake_progress_start /build/onnxruntime/build/CMakeFiles 0
 # adding opengl runpath to all executables and libs
@@ -199,52 +200,6 @@ let
     installPhase = srccopy-install;
 
   };
-  
-  onnx-tensorrt-full = cudaPackages_11_6.backendStdenv.mkDerivation rec {
-    pname = "onnx-tensorrt";
-    version = "unstable";
-
-    nativeBuildInputs =
-      [ cmake autoPatchelfHook cudaPackages_11_6.autoAddOpenGLRunpathHook ];
-    buildInputs = [
-      protobuf3_20
-      python3
-      cudaPackages_11_6.cudatoolkit
-      cudaPackages_11_6.tensorrt_8_5_1
-#      cudaPackages_11_6.cuda_cudart # already in cudatoolkit
-#      cudaPackages_11_6.cudnn
-    ];
-
-    cmakeDir = "../";
-
-    preBuild = ''
-      export ORT_TENSORRT_MAX_WORKSPACE_SIZE=1073741824;
-      export ORT_TENSORRT_MAX_PARTITION_ITERATIONS=1000;
-      export ORT_TENSORRT_MIN_SUBGRAPH_SIZE=1;
-      export ORT_TENSORRT_FP16_ENABLE=0;
-    '';
-    
-    doCheck = false; # XXX
-
-    cmakeFlags = [
-      "-DONNX_USE_PROTOBUF_SHARED_LIBS=ON"
-#      "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}" # handled
- #     "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
-      "-DGOOGLETEST_SOURCE_DIR=${googletest.src}"
-      "-DTENSORRT_ROOT=${cudaPackages_11_6.tensorrt_8_5_1}"
-      "-DTENSORRT_INCLUDE_DIR=${cudaPackages_11_6.tensorrt_8_5_1.dev}/include"
-      "-DCMAKE_VERBOSE_MAKEFILE=ON" # debugging
-    ];
-
-    # fetchFromGitHub's fetchSubmodules doesn't work
-    src = fetchgit {
-      url = "https://github.com/onnx/onnx-tensorrt.git";
-      rev = "369d6676423c2a6dbf4a5665c4b5010240d99d3c";
-      sha256 = "sha256-WopvaKYdTcNBcZ4tnxXmtgfxuLLFoAc+u57/bzBNXbU=";
-      fetchSubmodules = true;
-    };
-
-  };
 
   mp11 = stdenv.mkDerivation rec {
     pname = "mp11-src-for-onnxruntime";
@@ -297,7 +252,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/microsoft/onnxruntime.git";
     rev = "v${version}";
-    sha256 = "sha256-Xk35fryzIo+uOSGDWE0AN/dPEc/nSC0Jp0dq1DEbQiU=";
+    sha256 = "sha256-4maQbtafOteoYloD57vg55vl9utslMPP4CF/TYBZN1A=";
     fetchSubmodules = true;
     deepClone = true;
   };
@@ -321,6 +276,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     gtest
     autoPatchelfHook
     cudaPackages_11_6.autoAddOpenGLRunpathHook
+    breakpointHook
   ] ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
@@ -331,6 +287,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     oneDNN
     cudaPackages_11_6.cudatoolkit
     cudaPackages_11_6.cudnn
+    cudaPackages_11_6.libcublas
     # cudaPackages_11_6.cuda_cudart # already in cudatoolkit
     #    flatbuffers
     #    protobuf3_20
@@ -348,7 +305,6 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     python3Packages.packaging
   ] ++ lib.optionals tensorrtSupport [
     cudaPackages_11_6.tensorrt_8_5_1
-    onnx-tensorrt-full
   ];
 
   # TODO: build server, and move .so's to lib output
@@ -395,21 +351,21 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-DProtobuf_USE_STATIC_LIBS=ON"
     "-Donnxruntime_USE_CUDA=ON"
     "-Donnxruntime_CUDNN_HOME=${cudaPackages_11_6.cudnn}"
-#    "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
+    #    "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
 
     # cmake-specific flag to tell nvcc which platforms to generate code for
-#    "-DCMAKE_CUDA_ARCHITECTURES=50;52;53" # XXX maxwell, how to generalize? # handled
+    #    "-DCMAKE_CUDA_ARCHITECTURES=50;52;53" # XXX maxwell, how to generalize? # handled
 
     # for onnx-tensorrt
-#    "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}" # handled
-#    "-DCMAKE_CUDA_COMPILER=${cudaPackages_11_6.cudatoolkit}/bin/nvcc" # handled
+    #    "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}" # handled
+    #    "-DCMAKE_CUDA_COMPILER=${cudaPackages_11_6.cudatoolkit}/bin/nvcc" # handled
 
   ] ++ lib.optionals pythonSupport [ "-Donnxruntime_ENABLE_PYTHON=ON" ]
     ++ lib.optionals tensorrtSupport [
-      "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${onnx-tensorrt-full.src}"
+      "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${onnx-tensorrt.src}"
       "-Donnxruntime_USE_TENSORRT=ON"
       "-Donnxruntime_TENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
-#      "-DTENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
+      #      "-DTENSORRT_HOME=${cudaPackages_11_6.tensorrt_8_5_1}"
       "-DTENSORRT_INCLUDE_DIR=${cudaPackages_11_6.tensorrt_8_5_1.dev}/include"
     ];
 
@@ -419,30 +375,27 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   '';
 
   # see onnxruntime's python tools/ci_build/build.py
-  preBuild = ''
-      export CMAKE_COMPILE_WARNING_AS_ERROR=FALSE
-      '' + lib.optionalString tensorrtSupport ''
+  preBuild = lib.optionalString tensorrtSupport ''
     export ORT_TENSORRT_MAX_WORKSPACE_SIZE=1073741824
     export ORT_TENSORRT_MAX_PARTITION_ITERATIONS=1000
     export ORT_TENSORRT_MIN_SUBGRAPH_SIZE=1
     export ORT_TENSORRT_FP16_ENABLE=0
   '';
-  
+
   postBuild = lib.optionalString pythonSupport ''
     python ../setup.py bdist_wheel
   '';
 
-  doCheck = false; # XXX 7th test fails
+  doCheck = true; # XXX 7th test fails
 
   preCheck = ''
-    #export LD_DEBUG=libs
+    export LD_LIBRARY_PATH=${pkgs.linuxPackages.nvidia_x11_production}/lib
     echo "running autopatchelf"
     autoPatchelf "$out"
     echo "adding opengl runpath to all executables and libs"
     find $out -type f | while read lib; do
       addOpenGLRunpath "$lib"
     done
-    export LD_LIBRARY_PATH=/run/opengl-driver/lib
   '';
 
   postInstall = ''
