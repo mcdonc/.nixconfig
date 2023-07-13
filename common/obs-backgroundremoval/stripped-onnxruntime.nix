@@ -176,10 +176,11 @@ let
     }
   ];
 
+  # originally from mathematica, with changes
   # cudaEnv = symlinkJoin {
   #     name = "onnxruntime-cuda-env";
   #     paths = with cudaPackages_11_6; [
-  #       cuda_cudart cuda_nvcc libcublas libcufft # libcurand libcusparse
+  #       cuda_cudart cuda_nvcc libcublas cudnn #libcufft libcurand libcusparse
   #     ];
   #     postBuild = ''
   #       ln -s ${addOpenGLRunpath.driverLink}/lib/libcuda.so $out/lib
