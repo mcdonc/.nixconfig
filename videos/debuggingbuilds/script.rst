@@ -27,11 +27,12 @@ Sandboxing
 !!!!!!!!!!
 
 - For a few years now, NixOS has enabled "sandboxed builds" of software
-  realized via ``stdenv.mkDerivation``.
+  realized via ``stdenv.mkDerivation``.  It is only done on Linux, not on
+  MacOS.  It is actually a feature of Nix, rather than NixOS.
 
 - Sandboxes have limited access to build system resources.  A sandbox is a
   chroot environment with only the minimum number of essential system files and
-  utilities necessary (e.g. ``/etc/passwd``, ``bin/sh``, etc), no remote
+  utilities necessary (e.g. ``/etc/passwd``, ``/bin/sh``, etc), no remote
   network access, and a ``/nix/store`` that contains only the packages
   specified by the derivation's build inputs.  *Note: it is not a container*.
 
