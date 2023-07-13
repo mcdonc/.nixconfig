@@ -4,7 +4,7 @@
          COMMAND ${_UT_TARGET} ${TEST_ARGS}
          WORKING_DIRECTORY $<TARGET_FILE_DIR:${_UT_TARGET}>
        )
-+     set_property(TEST ${_UT_TARGET} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=/run/opengl-driver/lib")
++     set_property(TEST ${_UT_TARGET} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=@cudalibpath@")
      endif()
    endif()
  endfunction(AddTest)
