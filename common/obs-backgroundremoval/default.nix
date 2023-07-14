@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, callPackage
-, cudaPackages_11_6, autoPatchelfHook }:
+, cudaPackages_11_6, autoPatchelfHook, addOpenGLRunpath }:
 
 
 # obs startup
@@ -86,7 +86,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   passthru.obsWrapperArguments =
     [ 
       "--prefix LD_LIBRARY_PATH : ${onnxruntime}/lib"
-      "--prefix LD_LIBRARY_PATH : /run/opengl-driver/lib"
+      "--prefix LD_LIBRARY_PATH : ${addOpenGLRunpath.driverLink}/lib"
     ];
 
   meta = with lib; {
