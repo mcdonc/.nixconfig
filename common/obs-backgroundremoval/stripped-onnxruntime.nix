@@ -5,6 +5,9 @@
 , autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20, flatbuffers
 , breakpointHook, linkFarm, substituteAll, symlinkJoin }:
 
+# from https://github.com/microsoft/onnxruntime/issues/8298
+#./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
+  
 # export LD_LIBRARY_PATH=/run/opengl-driver/lib:/nix/store/chpc1c8qw7fzl84pkix3rw1b85ymbi8f-onnxruntime-1.14.1/lib
 # for x in `find /nix/store -name "libonnxruntime_providers_shared.so"`; do echo $x; nix-store --query --roots $x; done
 
@@ -51,6 +54,50 @@
 # ./kr3pdmvvakf2y0g3kgcb7d2hy0171ngg-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
 # ./74bfq8k04kidf2vzq7qkpq4lw9fbq886-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
 # /nix/store/nbyxxf72f04rbr1cqk1rmcandz5qxyhk-onnxruntime-1.14.1
+
+# [----------] Global test environment tear-down
+# [==========] 3792 tests from 260 test suites ran. (79778 ms total)
+# [  PASSED  ] 3768 tests.
+# [  FAILED  ] 24 tests, listed below:
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_to_float
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Add
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Add_Relu
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Div1
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Div2
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sub1
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sub2
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Elu
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Exp
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_LeakyRelu
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs_Log
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Add_Round
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sigmoid
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Softplus
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs_Sqrt
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Tanh
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_36_ops
+# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Elu_LeakyRelu
+# [  FAILED  ] MathOpTest.CosDouble
+# [  FAILED  ] Random.RandomNormalGpu
+# [  FAILED  ] Random.RandomUniformGpu
+# [  FAILED  ] FusedMatMulOpTest.DoubleTypeNoTranspose
+
+# 24 FAILED TESTS
+#   YOU HAVE 9 DISABLED TESTS
+
+
+
+# 86% tests passed, 1 tests failed out of 7
+
+# Total Test time (real) =  80.79 sec
+
+# The following tests FAILED:
+#           1 - onnxruntime_test_all (Failed)
+# Errors while running CTest
+# make: *** [Makefile:94: test] Error 8
+# build failed in checkPhase with exit code 2
 
 # to build with cmake/deps.txt downloads: NIXPKGS_ALLOW_UNFREE=1 nix-build --option sandbox false --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
 # without: NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
@@ -211,7 +258,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     })
     (substituteAll {
       src = ./tests-ld-library-path.patch;
-      cudalibpath = "${cudaPackages_11_6.cudatoolkit}/lib/stubs";
+      cudalibpath = "${addOpenGLRunpath.driverLink}/lib";
     })
     #./no-werror.patch
   ];
@@ -232,9 +279,9 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     zlib
     nlohmann_json
     oneDNN
+    cudaPackages_11_6.libcublas # already in cudatoolkit
     cudaPackages_11_6.cudatoolkit
     cudaPackages_11_6.cudnn
-    # cudaPackages_11_6.libcublas # already in cudatoolkit
     # cudaPackages_11_6.cuda_cudart # already in cudatoolkit
     #    flatbuffers
     #    protobuf3_20
@@ -258,7 +305,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  env.LDFLAGS = "-L${cudaPackages_11_6.cudatoolkit}/lib/stubs";
+  env.LDFLAGS = "-L${addOpenGLRunpath.driverLink}/lib";
   env.NIX_CFLAGS_COMPILE = "-Wno-unused-parameter";
 
   cmakeDir = "../cmake";
@@ -298,7 +345,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-Donnxruntime_USE_FULL_PROTOBUF=ON"
     "-DProtobuf_USE_STATIC_LIBS=ON"
     "-Donnxruntime_USE_CUDA=ON"
-    "-Donnxruntime_CUDNN_HOME=${cudaPackages_11_6.cudnn}"
+    "-Donnxruntime_CUDNN_HOME=${cudaPackages_11_6.cudnn}/lib"
     #    "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
 
     # cmake-specific flag to tell nvcc which platforms to generate code for
@@ -334,16 +381,16 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     python ../setup.py bdist_wheel
   '';
 
-  doCheck = false; # XXX 7th test fails
-
+  doCheck = true; # XXX 7th test fails
+ 
   preCheck = ''
-    export LD_LIBRARY_PATH=${cudaPackages_11_6.cudatoolkit}/lib/stubs
-    echo "running autopatchelf"
-    autoPatchelf "$out"
-    echo "adding opengl runpath to all executables and libs"
-    find $out -type f | while read lib; do
-      addOpenGLRunpath "$lib"
-    done
+    export LD_LIBRARY_PATH=${addOpenGLRunpath.driverLink}/lib
+    # echo "running autopatchelf"
+    # autoPatchelf "$out"
+    # echo "adding opengl runpath to all executables and libs"
+    # find $out -type f | while read lib; do
+    #   addOpenGLRunpath "$lib"
+    # done
   '';
 
   postInstall = ''
