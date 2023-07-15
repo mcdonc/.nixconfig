@@ -30,7 +30,7 @@
           inherit system;
           modules = [
             ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [ overlay-r2211 overlay-obs-bgremoval ];
+              nixpkgs.overlays = [ overlay-r2211 ];
             })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
@@ -46,7 +46,7 @@
           inherit system;
           modules = [
             ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [ overlay-r2211 overlay-obs-bgremoval ];
+              nixpkgs.overlays = [ overlay-r2211 ];
             })
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             ./hosts/thinknix50.nix
