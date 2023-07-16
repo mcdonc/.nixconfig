@@ -11,12 +11,12 @@ Overview
 
 - Nix allows few compromises when it comes to building software from source.
   It pretty much forces you to actually fix the software which you're building
-  such that it can be built within a reproducible environment.  It is an
-  eat-your-vegetables affair.
+  such that it can be built within a reproducible environment.
 
-- This often makes packaging software for Nix/NixOS tricky and frustrating.
-  It's also makes the result very stable, because once it has been done, the
-  result is highly likely to work on any system and "stays finished."
+- This often makes packaging software for Nix/NixOS tricky and frustrating.  It
+  can be a maddeningly eat-your-vegetables affair.  It's also makes the result
+  very stable, because once it has been done, the result is highly likely to
+  work on any system and "stays finished."
 
 - "Works On My Machine"(TM) is not a thing in Nix unless you work pretty hard
   at it.
@@ -46,27 +46,6 @@ Sandboxing
 
   https://www.youtube.com/watch?v=ULqoCjANK-I&pp=ygUNbWljOTIgc2FuZGJveA%3D%3D
  
-Aside: Nix-expression Impurities
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-- There are even more restrictions about the build environment than a sandbox:
-  Nix won't allow you to add things to your derivation-expressions that are
-  "impure" by default.  Most notably, without a command flag, your derivation
-  must not contain any ``<bracketed>`` names such as ``<nixpkgs>`` because this
-  implies a reliance on the ``NIX_PATH`` environment variable, which may change
-  per-system.
-
-- These are typically easy to debug, because the system just won't start the
-  build if you have these names in an expression file and you try to evaluate
-  the expression in pure mode.  Use ``--impure`` as a flag to ``'nix-build`` to
-  temporarily work around it.
-
-- To permanently work around it, you'll need to change your Nix derivation
-  expression.
-
-- You'll often see ``--impure`` and the disabling of sandboxing used together,
-  but they are logically distinct.
-
 Debugging
 !!!!!!!!!
 
@@ -88,6 +67,27 @@ Debugging
 
   - ``sysdig``
 
+Aside: Nix-expression Impurities
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+- There are even more restrictions about the build environment than a sandbox:
+  Nix won't allow you to add things to your derivation-expressions that are
+  "impure" by default.  Most notably, without a command flag, your derivation
+  must not contain any ``<bracketed>`` names such as ``<nixpkgs>`` because this
+  implies a reliance on the ``NIX_PATH`` environment variable, which may change
+  per-system.
+
+- These are typically easy to debug, because the system just won't start the
+  build if you have these names in an expression file and you try to evaluate
+  the expression in pure mode.  Use ``--impure`` as a flag to ``'nix-build`` to
+  temporarily work around it.
+
+- To permanently work around it, you'll need to change your Nix derivation
+  expression.
+
+- You'll often see ``--impure`` and the disabling of sandboxing used together,
+  but they are logically distinct.
+
 Turning Off Sandboxing to Debug a Failing Build
 -----------------------------------------------
 
@@ -103,7 +103,7 @@ Turning Off Sandboxing to Debug a Failing Build
   argument to ``nix-build``.
 
 - In order for this to suceed as a normal user, you will need this somewhere in
-  your NixOS configuration::
+  your active NixOS configuration::
 
     nix.extraOptions = ''
       trusted-users = root @wheel
@@ -111,16 +111,16 @@ Turning Off Sandboxing to Debug a Failing Build
     
 - Once that is done, any user in the ``wheel`` UNIX group will be permitted to
   use the ``--option sandbox false``.  You can put a user (imagine your
-  username is fred) in the ``wheel`` group by doing this somewhere in your
+  username is chrism) in the ``wheel`` group by doing this somewhere in your
   NixOS configuration::
 
-    users.user.fred.extraGroups = [ "wheel" ]
+    users.user.chrism.extraGroups = [ "wheel" ]
   
 Demo
 !!!!
 
-- I want background blur because my camera background is typically a superfund
-  disaster.
+- I want background blur because my camera background environment is typically
+  a superfund disaster.
 
 - ``obs-backgroundremoval`` plugin has a Nix presence and it works.  Out of the
   box, Nix lets you use the 0.5.7 version of it.
@@ -137,13 +137,20 @@ Demo
 - Newer version of ``onnxruntime`` is not in nixpkgs.  It also builds very
   differently.  The newer version of ``obs-backgroundremoval`` also uses a
   feature of ``onnxruntime`` not exposed by the current packaging of
-  ``onnxruntime`` 1.13.1 in Nix at all ("tensorrt" support).  I just wanted a
-  Pepsi and she wouldn't give it to me.
+  ``onnxruntime`` 1.13.1 in Nix at all ("tensorrt" support).  ``onnxruntime``
+  is useful on its own without TensorRT but ``obs-backgroundremoval`` requires
+  it, so it's not useful to me without it.  I just wanted a Pepsi and she
+  wouldn't give it to me.
 
 - My first attempts at the upgrade via overlays were unsuccessful.  I couldn't
   get ``onnxruntime`` to build at all.  So I created my own version of the
   nixpkgs ``onnxruntime`` derivation for hacking purposes and made a new
   ``obs-backgroundremoval`` derivation that depends on it.
+
+  .. note::
+
+     This is not idiomatic Nix code, I'm not experienced enough to write such a
+     thing.
 
 - Many, many changes to those files later, I finally achieved a good build (the
   ``buildPhase`` succeeded), but the test suite puked (the ``checkPhase``
@@ -175,6 +182,11 @@ Demo
 
   (the NIXPKGS_ALLOW_UNFREE=1 envvar is necessary for some CUDA builds).
 
+  .. note::
+
+     ``with import <nixpkgs>`` won't work on flakes-based NixOS systems unless
+     you define a ``nixos`` channel.
+
 - Lo and behold, when we build without a sandbox, we still have test failures,
   but many fewer, and but none of them are "CUDA driver is insufficent..."
   errors.  So we know that at least part of our issue is the ``nix-build``
@@ -195,6 +207,52 @@ Demo
   turned on.
 
 - Back to trying to get the tests to pass.
+
+Using ``breakpointHook`` and ``cntr``
+-------------------------------------
+
+- We know now that the sandbox environment and its interaction with shared
+  libraries has at least something to do with some of the test failures.
+
+- We can attempt to change our derivation such that we apply extra patches,
+  use different dependency versions, use different compile flags, etc.
+
+- But sometimes compile times make this prohibitive.  Also, by the way, the
+  build environment is also deleted after the build fails.
+
+- To tell our build to pause before it exits so we can take a look at the
+  sandbox itself, we can use the ``breakpointHook`` build input.
+
+Demo
+!!!!
+
+- But the build of ``onnxruntime-1.14.1`` consumes about 50 minutes on my
+  octo-core Thinkpad P51.  ``nix-build`` will start from scratch every time we
+  make a change to our derivation file and rerun it.  This makes incremental
+  attempts to fix the build very inefficient.
+
+- We need to add ``cntr`` to our global applications list to have it available
+  when we need it.
+
+- We add ``breakpointHook`` to our expression file's arguments.
+
+- Put that in our ``nativeBuildInputs`` and rerun the build.
+
+- It spits out a ``cntr`` command that we can use for the first stage of
+  reaching the sandbox.  Run it under ``sudo``.
+
+- Once connected via cntr, run ``cntr exec`` to enter the sandbox.
+
+- We find that ``/run/opengl-drivers/lib`` (aka addOpenGLRunpath.driverLink)
+  doesn't exist in the sandbox.  That's why our tests can't work.  Thus, the
+  ``onnxruntime`` tests will never pass under the sandbox, because it needs to
+  find the NVIDIA drivers, which will never exist there.  Theory confirmed.
+
+- So I'll continue to disable the sandbox as we try to make the tests pass.  If
+  I can get the tests passing without the sandbox, and I get
+  ``obs-backgroundremoval`` working under the resulting environment, I'll just
+  disable the tests (again, not doing software engineering here, not trying to
+  contribute this to nixpkgs, just trying to get background blur).
 
 Turning Sandboxing Back On and Using ``LD_DEBUG=lib``
 -----------------------------------------------------
@@ -254,20 +312,6 @@ Using CUDA stubs
 - This isn't much progress, but it does at least verify that the bits of the
   code we changed were in the right place, and gives us more confidence that
   this isn't just a "libraries not found" situation while in the sandbox.
-
-Using ``breakpointHook`` and ``cntr``
--------------------------------------
-
-- We know now that the sandbox environment and its interaction with shared
-  libraries has at least something to do with some of the test failures.
-
-- We can attempt to change our derivation such that we apply extra patches,
-  use different dependency versions, use different compile flags, etc.
-
-- But the build of ``onnxruntime-1.14.1`` consumes about 50 minutes on my
-  octo-core Thinkpad P51.  ``nix-build`` will start from scratch every time we
-  make a change to our derivation file and rerun it.  This makes incremental
-  attempts to fix the build very inefficient.
 
 Using nix-shell
 ---------------
