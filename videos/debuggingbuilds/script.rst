@@ -9,6 +9,8 @@ NixOS 46: Debugging A Failing Build
 Overview
 --------
 
+- This video script available via link in the description.
+
 - Nix allows few compromises when it comes to building software from source.
   It pretty much forces you to actually fix the software which you're building
   such that it can be built within a reproducible environment.
@@ -27,8 +29,8 @@ Sandboxing
 !!!!!!!!!!
 
 - For a few years now, NixOS has enabled "sandboxed builds" of software
-  realized via ``stdenv.mkDerivation``.  It is only done on Linux, not on
-  MacOS.  It is actually a feature of Nix, rather than NixOS.
+  realized via ``stdenv.mkDerivation``.  It is actually a feature of Nix,
+  rather than NixOS.
 
 - Sandboxes have limited access to build system resources.  A sandbox is a
   chroot environment with only the minimum number of essential system files and
