@@ -256,8 +256,8 @@ Demo
   disable the tests (again, not doing software engineering here, not trying to
   contribute this to nixpkgs, just trying to get background blur).
 
-Using ``LD_DEBUG=lib``
-----------------------
+Using ``LD_DEBUG=libs``
+-----------------------
 
 - When stuff doesn't work, it's often enlightening to run the offender under
   ``strace`` to see what the hell is happening under the hood.
