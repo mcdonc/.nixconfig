@@ -305,6 +305,9 @@ Un-parallelizing builds
 
     __noChroot = true;
 
+- See https://zimbatm.com/notes/nix-packaging-the-heretic-way for more
+  information.
+
 Using nix-shell
 ---------------
 
