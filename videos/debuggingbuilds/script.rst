@@ -176,7 +176,7 @@ Demo
 
 - Before turning off sandboxing::
 
-    NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
+    NIXPKGS_ALLOW_UNFREE=1 nix-build --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {}'
 
   After::
 
