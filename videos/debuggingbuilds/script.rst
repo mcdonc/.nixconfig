@@ -256,8 +256,8 @@ Demo
   disable the tests (again, not doing software engineering here, not trying to
   contribute this to nixpkgs, just trying to get background blur).
 
-Turning Sandboxing Back On and Using ``LD_DEBUG=lib``
------------------------------------------------------
+Using ``LD_DEBUG=lib``
+----------------------
 
 - When stuff doesn't work, it's often enlightening to run the offender under
   ``strace`` to see what the hell is happening under the hood.
@@ -288,32 +288,22 @@ Un-parallelizing builds
 - For debugging sanity, it should be turned off if it's on.
   ``enableParallelBuilding = false;``
 
-Using CUDA stubs
-!!!!!!!!!!!!!!!!
+``sandbox = relaxed``
+!!!!!!!!!!!!!!!!!!!!!
 
-- Some research implies that it is possible to use "stub" CUDA libraries to
-  compile on machines that don't actually have a CUDA driver installed.  This
-  is unlikely to fix our problem because the stub libraries just raise errors
-  when you try to use them, and the tests use libraries, they don't just
-  compile against them.
+- Although Nix, by default, does not allow it, if you need just a specific
+  derivation to be built outside of any sandboxing, you can enable such a
+  feature by adding the ``sandbox = relaxed`` option in your ``nix.conf``.  To
+  do this in NixOS, you can add the following to your config::
 
-- But what the hell, why not try it.
+    nix.extraOptions = ''
+       sandbox = relaxed;
+    '';
+- Once this change has been activated, you can use the following flag in the
+  body of any call to ``stdenv.mkDerivation`` to allow only that derivation to
+  be built outside of any sandbox::
 
-- After we begin to use stubs during the test suite, we still have the same
-  number of errors, but the errors change.  In particular, the
-  CUDA-lib-related errors change from::
-
-    CUDA failure 35: CUDA driver version is insufficient for CUDA runtime
-    version ; GPU=0 ; hostname=localhost ; expr=cudaSetDevice(info_.device_id);
-
-  To::
-
-    CUDA failure 34: CUDA driver is a stub library ; GPU=0 ; hostname=localhost
-    ; expr=cudaSetDevice(info_.device_id);
-
-- This isn't much progress, but it does at least verify that the bits of the
-  code we changed were in the right place, and gives us more confidence that
-  this isn't just a "libraries not found" situation while in the sandbox.
+    __noChroot = true;
 
 Using nix-shell
 ---------------
