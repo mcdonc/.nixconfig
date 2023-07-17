@@ -1,15 +1,15 @@
 NixOS 46: Debugging A Failing Build
 ===================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/S0XYmWPMVF0
+
+- This text script available via link in the video description.
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
 
 Overview
 --------
-
-- This video script available via link in the description.
 
 - Nix allows few compromises when it comes to building software from source.
   It pretty much forces you to actually fix the software which you're building
