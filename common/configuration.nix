@@ -296,6 +296,9 @@
     lm_sensors
     nvd # for nixos-rebuild diffing
     cntr # for build debugging
-    element-web
+    gnupg
+    pinentry
+    age # for flyingcircus
+    lsof
   ];
 }
