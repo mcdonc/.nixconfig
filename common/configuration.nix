@@ -297,8 +297,10 @@
     nvd # for nixos-rebuild diffing
     cntr # for build debugging
     gnupg
-    pinentry
+    pinentry # dep of gpg
     age # for flyingcircus
     lsof
+    progress
+    mc
   ];
 }
