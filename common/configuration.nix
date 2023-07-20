@@ -33,7 +33,8 @@
 
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
+  
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -302,5 +303,6 @@
     lsof
     progress
     mc
+    etcher
   ];
 }
