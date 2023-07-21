@@ -1,9 +1,9 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
 , cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN
 , abseil-cpp_202206, gtest, pythonSupport ? false, tensorrtSupport ? false
-, nsync, re2, cudaPackages_11_6, microsoft_gsl, python3, callPackage, fetchgit
+, nsync, re2, cudaPackages_11_8, microsoft_gsl, python3, callPackage, fetchgit
 , autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20, flatbuffers
-, breakpointHook, linkFarm, substituteAll, symlinkJoin }:
+, breakpointHook, linkFarm, substituteAll, symlinkJoin, mpi }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
@@ -119,14 +119,16 @@ let
   #  path = "${cudaPackages_11_6.cudatoolkit}/lib/stubs/libcuda.so";
   #}];
 
-  srcdeps = linkFarm "onnxruntime-1.14.1-srcdeps" [
+  onnxver = "1.15.1";
+
+  srcdeps = linkFarm "onnxruntime-${onnxver}-srcdeps" [
     {
       name = "protobuf";
       path = fetchFromGitHub {
         owner = "protocolbuffers";
         repo = "protobuf";
-        rev = "v3.20.2";
-        sha256 = "sha256-7hLTIujvYIGRqBQgPHrCq0XOh0GJrePBszXJnBFaXVM=";
+        rev = "v21.12";
+        sha256 = "sha256-VZQEFHq17UsTH5CZZOcJBKiScGV2xPJ/e6gkkVliRCU=";
       };
     }
     {
@@ -161,7 +163,7 @@ let
       path = fetchFromGitHub {
         owner = "onnx";
         repo = "onnx";
-        rev = "v1.13.0";
+        rev = "v1.14.0";
         sha256 = "sha256-D8POBAkZVr0O5i4qsSuYRkDfL8WsDTqzgNACmmkFwGs=";
       };
     }
@@ -188,8 +190,8 @@ let
       path = fetchFromGitHub {
         owner = "NVIDIA";
         repo = "cutlass";
-        rev = "v2.11.0";
-        sha256 = "sha256-P8A1NEcYp5o15dB+d0zzSLwVWv472txLY7zDMYb70o4=";
+        rev = "v3.0.0";
+        sha256 = "sha256-YPD5Sy6SvByjIcGtgeGH80TEKg2BtqJWSg46RvnJChY=";
       };
     }
     {
@@ -197,8 +199,8 @@ let
       # fetchFromGitHub's fetchSubmodules doesn't work
       path = fetchgit {
         url = "https://github.com/onnx/onnx-tensorrt.git";
-        rev = "369d6676423c2a6dbf4a5665c4b5010240d99d3c";
-        sha256 = "sha256-WopvaKYdTcNBcZ4tnxXmtgfxuLLFoAc+u57/bzBNXbU=";
+        rev = "ba6a4fb34fdeaa3613bf981610c657e7b663a699";
+        sha256 = "sha256-BcvkX0hX3AmogTFwILs86/MuITkknfuCAaaOuBKRjv8=";
         fetchSubmodules = true;
       };
     }
@@ -233,10 +235,10 @@ let
 
   cuda_joined = symlinkJoin {
     name = "cuda-joined-for-onnxruntime";
-    paths = [ cudaPackages_11_6.cudatoolkit cudaPackages_11_6.cudnn ]
+    paths = [ cudaPackages_11_8.cudatoolkit cudaPackages_11_8.cudnn ]
       ++ lib.optionals tensorrtSupport [
-        cudaPackages_11_6.tensorrt_8_5_1
-        cudaPackages_11_6.tensorrt_8_5_1.dev
+        cudaPackages_11_8.tensorrt
+        cudaPackages_11_8.tensorrt.dev
       ];
   };
 
@@ -252,15 +254,15 @@ let
   #     '';
   #   };
 
-in cudaPackages_11_6.backendStdenv.mkDerivation rec {
+in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   pname = "onnxruntime";
-  version = "1.14.1";
+  version = "${onnxver}";
 
   # fetchFromGitHub's fetchSubmodules doesn't work
   src = fetchgit {
     url = "https://github.com/microsoft/onnxruntime.git";
     rev = "v${version}";
-    sha256 = "sha256-4maQbtafOteoYloD57vg55vl9utslMPP4CF/TYBZN1A=";
+    sha256 = "sha256-0iszvRkROdqHKYI7yBaUZgmhZ3I1ycgR70BiZ9sV470=";
     fetchSubmodules = true;
     deepClone = true;
   };
@@ -286,8 +288,8 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     python3Packages.python
     gtest
     autoPatchelfHook
-    cudaPackages_11_6.autoAddOpenGLRunpathHook
-    breakpointHook
+    cudaPackages_11_8.autoAddOpenGLRunpathHook
+#    breakpointHook
   ] ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
@@ -296,6 +298,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     zlib
     nlohmann_json
     oneDNN
+    mpi
     cuda_joined
     #cudaPackages_11_6.libcublas # already in cudatoolkit
     #cudaPackages_11_6.cudatoolkit
@@ -324,7 +327,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   enableParallelBuilding = false;
 
   env.LDFLAGS = "-L${addOpenGLRunpath.driverLink}/lib";
-  env.NIX_CFLAGS_COMPILE = "-Wno-unused-parameter";
+  #env.NIX_CFLAGS_COMPILE = "-Wno-unused-parameter";
 
   cmakeDir = "../cmake";
 
@@ -338,7 +341,8 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-Donnxruntime_USE_DNNL=YES"
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
-
+    "-Donnxruntime_MPI_HOME=${mpi}"
+    
     # override cmake/deps.txt downloads
     "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202206.src}"
     "-DFETCHCONTENT_SOURCE_DIR_DATE=${srcdeps}/howard-hinnant-date"
