@@ -1,9 +1,9 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
 , cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN
-, abseil-cpp_202206, gtest, pythonSupport ? false, tensorrtSupport ? false
-, nsync, re2, cudaPackages_11_8, microsoft_gsl, python3, callPackage, fetchgit
-, autoPatchelfHook, addOpenGLRunpath, pkgs, protobuf3_20, flatbuffers
-, breakpointHook, linkFarm, substituteAll, symlinkJoin, mpi }:
+, gtest, pythonSupport ? false, tensorrtSupport ? false, cudaPackages_11_8
+, microsoft_gsl, python3, callPackage, fetchgit, autoPatchelfHook
+, addOpenGLRunpath, pkgs, flatbuffers, breakpointHook, linkFarm, substituteAll
+, symlinkJoin, mpi, git, unstable }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
@@ -164,7 +164,7 @@ let
         owner = "onnx";
         repo = "onnx";
         rev = "v1.14.0";
-        sha256 = "sha256-D8POBAkZVr0O5i4qsSuYRkDfL8WsDTqzgNACmmkFwGs=";
+        sha256 = "sha256-f+s25Y/jGosaSdoZY6PE3j6pENkfDcD+IQndrbtuzWg=";
       };
     }
     {
@@ -197,8 +197,9 @@ let
     {
       name = "onnx-tensorrt";
       # fetchFromGitHub's fetchSubmodules doesn't work
-      path = fetchgit {
-        url = "https://github.com/onnx/onnx-tensorrt.git";
+      path = fetchFromGitHub {
+        owner = "onnx";
+        repo = "onnx-tensorrt";
         rev = "ba6a4fb34fdeaa3613bf981610c657e7b663a699";
         sha256 = "sha256-BcvkX0hX3AmogTFwILs86/MuITkknfuCAaaOuBKRjv8=";
         fetchSubmodules = true;
@@ -231,7 +232,37 @@ let
         sha256 = "sha256-nXBnloVTuB+AVX59VDU/Wc+Dsx94o92YQuHp3jowx2A=";
       };
     }
+    {
+      name = "abseil";
+      path = fetchFromGitHub {
+        owner = "abseil";
+        repo = "abseil-cpp";
+        rev = "20220623.1";
+        sha256 = "sha256-Od1FZOOWEXVQsnZBwGjDIExi6LdYtomyL0STR44SsG8=";
+      };
+    }
+    {
+      name = "gsl";
+      path = fetchFromGitHub {
+        owner = "microsoft";
+        repo = "GSL";
+        rev = "v4.0.0";
+        sha256 = "sha256-cXDFqt2KgMFGfdh6NGE+JmP4R0Wm9LNHM0eIblYe6zU=";
+      };
+    }
+    {
+      name = "re2";
+      path = fetchFromGitHub {
+        owner = "google";
+        repo = "re2";
+        rev = "2022-06-01";
+        sha256 = "sha256-UontAjOXpnPcOgoFHjf+1WSbCR7h58/U7nn4meT200Y=";
+      };
+    }
+
   ];
+
+  #re2;https://github.com/google/re2/archive/refs/tags/2022-06-01.zip;aa77313b76e91b531ee7f3e45f004c6a502a5374
 
   cuda_joined = symlinkJoin {
     name = "cuda-joined-for-onnxruntime";
@@ -259,10 +290,12 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   version = "${onnxver}";
 
   # fetchFromGitHub's fetchSubmodules doesn't work
-  src = fetchgit {
+  src = fetchFromGitHub {
     url = "https://github.com/microsoft/onnxruntime.git";
+    owner = "microsoft";
+    repo = "onnxruntime";
     rev = "v${version}";
-    sha256 = "sha256-0iszvRkROdqHKYI7yBaUZgmhZ3I1ycgR70BiZ9sV470=";
+    sha256 = "sha256-4xbVoiDZNPO9G+OGjEO1SgIWuN9X76kmo8PjGocTnKw=";
     fetchSubmodules = true;
     deepClone = true;
   };
@@ -283,29 +316,29 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [
-    cmake
+    unstable.cmake
     pkg-config
     python3Packages.python
     gtest
     autoPatchelfHook
     cudaPackages_11_8.autoAddOpenGLRunpathHook
-#    breakpointHook
+    #    breakpointHook
   ] ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
   buildInputs = [
     libpng
-    zlib
+    #    zlib
     nlohmann_json
     oneDNN
-    mpi
+    #    mpi
     cuda_joined
+    git
     #cudaPackages_11_6.libcublas # already in cudatoolkit
     #cudaPackages_11_6.cudatoolkit
     #cudaPackages_11_6.cudnn
     # cudaPackages_11_6.cuda_cudart # already in cudatoolkit
     #    flatbuffers
-    #    protobuf3_20
     #    python3Packages.onnx
     #    howard-hinnant-date-2_4_1
     #    boost181
@@ -324,35 +357,114 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   # Python's wheel is stored in a separate dist output
   outputs = [ "out" "dev" ] ++ lib.optionals pythonSupport [ "dist" ];
 
-  enableParallelBuilding = false;
+  enableParallelBuilding = true;
 
-  env.LDFLAGS = "-L${addOpenGLRunpath.driverLink}/lib";
-  #env.NIX_CFLAGS_COMPILE = "-Wno-unused-parameter";
-
+  #env.LDFLAGS = "-L${addOpenGLRunpath.driverLink}/lib";
   cmakeDir = "../cmake";
+  #NIX_CFLAGS_COMPILE = ["-O2"];
 
   cmakeFlags = [
-    # from original onnxruntime default.nix
-    "-Donnxruntime_PREFER_SYSTEM_LIB=ON"
+    # taken from a successful invocation of
+    # ./build.sh --config RelWithDebInfo --build_shared_lib --compile_no_warning_as_error --skip_submodule_sync --use_cuda --cuda_home=/usr/local/cuda-11.8 --cudnn_home=/usr/lib --parallel
+    # on ubuntu
+    "--compile-no-warning-as-error"
+    "-DFETCHCONTENT_QUIET=OFF"
+    "-Donnxruntime_ARMNN_BN_USE_CPU=ON"
+    "-Donnxruntime_ARMNN_RELU_USE_CPU=ON"
+    "-Donnxruntime_BUILD_APPLE_FRAMEWORK=OFF"
+    "-Donnxruntime_BUILD_BENCHMARKS=OFF"
+    "-Donnxruntime_BUILD_CSHARP=OFF"
+    "-Donnxruntime_BUILD_JAVA=OFF"
+    "-Donnxruntime_BUILD_MS_EXPERIMENTAL_OPS=OFF"
+    "-Donnxruntime_BUILD_NODEJS=OFF"
+    "-Donnxruntime_BUILD_OBJC=OFF"
     "-Donnxruntime_BUILD_SHARED_LIB=ON"
-    "-Donnxruntime_ENABLE_LTO=ON"
+    "-Donnxruntime_BUILD_WEBASSEMBLY=OFF"
+    "-Donnxruntime_BUILD_WEBASSEMBLY_STATIC_LIB=OFF"
+    "-Donnxruntime_DISABLE_CONTRIB_OPS=OFF"
+    "-Donnxruntime_DISABLE_EXCEPTIONS=OFF"
+    "-Donnxruntime_DISABLE_ML_OPS=OFF"
+    "-Donnxruntime_DISABLE_RTTI=OFF"
+    "-Donnxruntime_ENABLE_CPU_FP16_OPS=OFF"
+    "-Donnxruntime_ENABLE_CUDA_LINE_NUMBER_INFO=OFF"
+    "-Donnxruntime_ENABLE_CUDA_PROFILING=OFF"
+    "-Donnxruntime_ENABLE_EXTERNAL_CUSTOM_OP_SCHEMAS=OFF"
+    "-Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=OFF"
+    "-Donnxruntime_ENABLE_LAZY_TENSOR=OFF"
+    "-Donnxruntime_ENABLE_LTO=OFF"
+    "-Donnxruntime_ENABLE_MEMLEAK_CHECKER=OFF"
+    "-Donnxruntime_ENABLE_MEMORY_PROFILE=OFF"
+    "-Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF"
+    "-Donnxruntime_ENABLE_NVTX_PROFILE=OFF"
+    "-Donnxruntime_ENABLE_PYTHON=OFF"
+    "-Donnxruntime_ENABLE_ROCM_PROFILING=OFF"
+    "-Donnxruntime_ENABLE_TRAINING_APIS=OFF"
+    "-Donnxruntime_ENABLE_TRAINING=OFF"
+    "-Donnxruntime_ENABLE_TRAINING_OPS=OFF"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_API_EXCEPTION_CATCHING=OFF"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_DEBUG_INFO=OFF"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_EXCEPTION_CATCHING=ON"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_EXCEPTION_THROWING=ON"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_PROFILING=OFF"
+    "-Donnxruntime_ENABLE_WEBASSEMBLY_THREADS=OFF"
+    "-Donnxruntime_EXTENDED_MINIMAL_BUILD=OFF"
+    "-DOnnxruntime_GCOV_COVERAGE=OFF"
+    "-Donnxruntime_GENERATE_TEST_REPORTS=ON"
+    "-Donnxruntime_MINIMAL_BUILD_CUSTOM_OPS=OFF"
+    "-Donnxruntime_MINIMAL_BUILD=OFF"
+    "-Donnxruntime_NVCC_THREADS=0"
+    "-Donnxruntime_PYBIND_EXPORT_OPSCHEMA=OFF"
+    "-Donnxruntime_REDUCED_OPS_BUILD=OFF"
+    "-Donnxruntime_RUN_ONNX_TESTS=OFF"
+    "-Donnxruntime_TVM_CUDA_RUNTIME=OFF"
+    "-Donnxruntime_TVM_USE_HASH=OFF"
+    "-Donnxruntime_USE_ACL_1902=OFF"
+    "-Donnxruntime_USE_ACL_1905=OFF"
+    "-Donnxruntime_USE_ACL_1908=OFF"
+    "-Donnxruntime_USE_ACL_2002=OFF"
+    "-Donnxruntime_USE_ACL=OFF"
+    "-Donnxruntime_USE_ARMNN=OFF"
+    "-Donnxruntime_USE_CANN=OFF"
+    "-Donnxruntime_USE_CUDA=ON"
+    "-Donnxruntime_USE_DML=OFF"
+    "-Donnxruntime_USE_DNNL=OFF"
+    "-Donnxruntime_USE_JSEP=OFF"
+    "-Donnxruntime_USE_LLVM=OFF"
+    "-Donnxruntime_USE_MIGRAPHX=OFF"
+    "-Donnxruntime_USE_MIMALLOC=OFF"
+    "-Donnxruntime_USE_MPI=OFF"
+    "-Donnxruntime_USE_NCCL=OFF"
+    "-Donnxruntime_USE_NNAPI_BUILTIN=OFF"
+    "-Donnxruntime_USE_RKNPU=OFF"
+    "-Donnxruntime_USE_ROCM=OFF"
+    "-Donnxruntime_USE_TELEMETRY=OFF"
+    "-Donnxruntime_USE_TENSORRT_BUILTIN_PARSER=ON"
+    "-Donnxruntime_USE_TENSORRT=OFF"
+    "-Donnxruntime_USE_TVM=OFF"
+    "-Donnxruntime_USE_VITISAI=OFF"
+    "-Donnxruntime_USE_WINML=OFF"
+    "-Donnxruntime_USE_XNNPACK=OFF"
+    "-Donnxruntime_WEBASSEMBLY_RUN_TESTS_IN_BROWSER=OFF"
+
+    # from original onnxruntime default.nix
+    #"-Donnxruntime_PREFER_SYSTEM_LIB=ON"
+    #"-Donnxruntime_BUILD_SHARED_LIB=ON"
+    #"-Donnxruntime_ENABLE_LTO=ON"
     "-Donnxruntime_BUILD_UNIT_TESTS=ON"
-    "-Donnxruntime_USE_MPI=ON"
-    "-Donnxruntime_USE_DNNL=YES"
+    #"-Donnxruntime_USE_DNNL=YES"
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
-    "-Donnxruntime_MPI_HOME=${mpi}"
-    
+
     # override cmake/deps.txt downloads
-    "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202206.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${srcdeps}/abseil"
     "-DFETCHCONTENT_SOURCE_DIR_DATE=${srcdeps}/howard-hinnant-date"
     "-DFETCHCONTENT_SOURCE_DIR_GOOGLE_NSYNC=${srcdeps}/nsync"
     "-DFETCHCONTENT_SOURCE_DIR_PROTOBUF=${srcdeps}/protobuf"
     "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${srcdeps}/flatbuffers"
-    "-DFETCHCONTENT_SOURCE_DIR_BOOST=${boost181.src}"
+    #"-DFETCHCONTENT_SOURCE_DIR_BOOST=${boost181.src}"
     "-DFETCHCONTENT_SOURCE_DIR_MP11=${srcdeps}/mp11"
-    "-DFETCHCONTENT_SOURCE_DIR_RE2=${re2.src}"
-    "-DFETCHCONTENT_SOURCE_DIR_GSL=${microsoft_gsl.src}"
+    "-DFETCHCONTENT_SOURCE_DIR_RE2=${srcdeps}/re2"
+    "-DFETCHCONTENT_SOURCE_DIR_GSL=${srcdeps}/gsl"
     "-DFETCHCONTENT_SOURCE_DIR_SAFEINT=${srcdeps}/safeint"
     "-DFETCHCONTENT_SOURCE_DIR_MICROSOFT_WIL=${srcdeps}/wil"
     "-DFETCHCONTENT_SOURCE_DIR_ONNX=${srcdeps}/onnx"
@@ -364,14 +476,13 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-DCMAKE_VERBOSE_MAKEFILE=ON"
 
     # see onnxruntime's tools/ci_build/build.py
-    "-Donnxruntime_USE_FULL_PROTOBUF=ON"
-    "-DProtobuf_USE_STATIC_LIBS=ON"
-    "-Donnxruntime_USE_CUDA=ON"
+    #    "-Donnxruntime_USE_FULL_PROTOBUF=ON"
+    #    "-DProtobuf_USE_STATIC_LIBS=ON"
+    #    "-Donnxruntime_USE_CUDA=ON"
+    "-DCUDA_CUDA_LIBRARY=${cuda_joined}/lib/stubs"
+    "-Donnxruntime_CUDA_HOME=${cuda_joined}"
     "-Donnxruntime_CUDNN_HOME=${cuda_joined}/lib"
     #    "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
-
-    # cmake-specific flag to tell nvcc which platforms to generate code for
-    #    "-DCMAKE_CUDA_ARCHITECTURES=50;52;53" # XXX maxwell, how to generalize? # handled
 
     # for onnx-tensorrt
     #    "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}" # handled
