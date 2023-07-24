@@ -34,7 +34,8 @@
 
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
+  
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -297,5 +298,13 @@
     lm_sensors
     nvd # for nixos-rebuild diffing
     cntr # for build debugging
+    gnupg
+    pinentry # dep of gpg
+    age # for flyingcircus
+    lsof
+    progress
+    mc
+    etcher
+    pre-commit
   ];
 }
