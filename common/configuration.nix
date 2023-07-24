@@ -18,6 +18,7 @@
   nix.extraOptions = ''
     experimental-features = nix-command flakes
     trusted-users = root @wheel
+    sandbox = relaxed
   '';
 
   nix.settings = {
