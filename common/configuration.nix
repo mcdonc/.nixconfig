@@ -304,5 +304,6 @@
     progress
     mc
     etcher
+    pre-commit
   ];
 }
