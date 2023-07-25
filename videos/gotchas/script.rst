@@ -43,7 +43,7 @@ The ``sha256`` / ``hash`` Argument to a Fetcher is a Cache Key
 
 - Change version to ``2.11``, rerun.
 
-- W. T. F.
+- W T F.
 
 - Doesn't refetch after you change version, URL, owner, etc.  You *must* change
   the hash.
