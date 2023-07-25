@@ -282,7 +282,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     owner = "microsoft";
     repo = "onnxruntime";
     rev = "v${version}";
-    sha256 = "sha256-0iszvRkROdqHKYI7yBaUZgmhZ3I1ycgR70BiZ9sV470=";
+    sha256 = "sha256-6s0iYGbh7cclHAXJ1jGktL3o5JdyqMsGwxe53vANObA=";
     fetchSubmodules = true;
     deepClone = true;
   };
@@ -305,9 +305,10 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   nativeBuildInputs = [
     unstable.cmake
     pkg-config
-    python3Packages.python
+#    python3Packages.python
     gtest
     autoPatchelfHook
+    python3
     cudaPackages_11_8.autoAddOpenGLRunpathHook
     #    breakpointHook
   ] ++ lib.optionals pythonSupport
@@ -336,10 +337,16 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
 
   cmakeFlags = [
     # taken from a successful invocation of
-    # ./build.sh --config RelWithDebInfo --build_shared_lib --compile_no_warning_as_error --skip_submodule_sync --use_cuda --cuda_home=/usr/local/cuda-11.8 --cudnn_home=/usr/lib --parallel
+    # ./build.sh --config Release --build_shared_lib --compile_no_warning_as_error --skip_submodule_sync --use_cuda --cuda_home=/usr/local/cuda-11.8 --cudnn_home=/usr/lib --parallel
     # on ubuntu
     "--compile-no-warning-as-error"
+    "-DCMAKE_BUILD_TYPE=Release"
+#    "-DCMAKE_PREFIX_PATH=/home/chrism/projects/onnxruntime/build/Linux/Release/installed"
+    "-DCMAKE_TLS_VERIFY=ON"
     "-DFETCHCONTENT_QUIET=OFF"
+    "-DOnnxruntime_GCOV_COVERAGE=OFF"
+    "-DPYTHON_EXECUTABLE=${python3}/bin/python3"
+    "-DPython_EXECUTABLE=${python3}/bin/python3"
     "-Donnxruntime_ARMNN_BN_USE_CPU=ON"
     "-Donnxruntime_ARMNN_RELU_USE_CPU=ON"
     "-Donnxruntime_BUILD_APPLE_FRAMEWORK=OFF"
@@ -369,8 +376,8 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_ENABLE_NVTX_PROFILE=OFF"
     "-Donnxruntime_ENABLE_PYTHON=OFF"
     "-Donnxruntime_ENABLE_ROCM_PROFILING=OFF"
-    "-Donnxruntime_ENABLE_TRAINING_APIS=OFF"
     "-Donnxruntime_ENABLE_TRAINING=OFF"
+    "-Donnxruntime_ENABLE_TRAINING_APIS=OFF"
     "-Donnxruntime_ENABLE_TRAINING_OPS=OFF"
     "-Donnxruntime_ENABLE_WEBASSEMBLY_API_EXCEPTION_CATCHING=OFF"
     "-Donnxruntime_ENABLE_WEBASSEMBLY_DEBUG_INFO=OFF"
@@ -379,24 +386,22 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_ENABLE_WEBASSEMBLY_PROFILING=OFF"
     "-Donnxruntime_ENABLE_WEBASSEMBLY_THREADS=OFF"
     "-Donnxruntime_EXTENDED_MINIMAL_BUILD=OFF"
-    "-DOnnxruntime_GCOV_COVERAGE=OFF"
     "-Donnxruntime_GENERATE_TEST_REPORTS=ON"
-    "-Donnxruntime_MINIMAL_BUILD_CUSTOM_OPS=OFF"
     "-Donnxruntime_MINIMAL_BUILD=OFF"
+    "-Donnxruntime_MINIMAL_BUILD_CUSTOM_OPS=OFF"
     "-Donnxruntime_NVCC_THREADS=0"
     "-Donnxruntime_PYBIND_EXPORT_OPSCHEMA=OFF"
     "-Donnxruntime_REDUCED_OPS_BUILD=OFF"
-    "-Donnxruntime_RUN_ONNX_TESTS=ON"
+    "-Donnxruntime_RUN_ONNX_TESTS=OFF"
     "-Donnxruntime_TVM_CUDA_RUNTIME=OFF"
     "-Donnxruntime_TVM_USE_HASH=OFF"
+    "-Donnxruntime_USE_ACL=OFF"
     "-Donnxruntime_USE_ACL_1902=OFF"
     "-Donnxruntime_USE_ACL_1905=OFF"
     "-Donnxruntime_USE_ACL_1908=OFF"
     "-Donnxruntime_USE_ACL_2002=OFF"
-    "-Donnxruntime_USE_ACL=OFF"
     "-Donnxruntime_USE_ARMNN=OFF"
     "-Donnxruntime_USE_CANN=OFF"
-    "-Donnxruntime_USE_CUDA=ON"
     "-Donnxruntime_USE_DML=OFF"
     "-Donnxruntime_USE_DNNL=OFF"
     "-Donnxruntime_USE_JSEP=OFF"
@@ -409,6 +414,8 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_USE_RKNPU=OFF"
     "-Donnxruntime_USE_ROCM=OFF"
     "-Donnxruntime_USE_TELEMETRY=OFF"
+    "-Donnxruntime_USE_TENSORRT=OFF"
+    "-Donnxruntime_USE_TENSORRT_BUILTIN_PARSER=ON"
     "-Donnxruntime_USE_TVM=OFF"
     "-Donnxruntime_USE_VITISAI=OFF"
     "-Donnxruntime_USE_WINML=OFF"
@@ -442,7 +449,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     # see onnxruntime's tools/ci_build/build.py
     #    "-Donnxruntime_USE_FULL_PROTOBUF=ON"
     #    "-DProtobuf_USE_STATIC_LIBS=ON"
-    #    "-Donnxruntime_USE_CUDA=ON"
+    "-Donnxruntime_USE_CUDA=ON"
     "-DCUDA_CUDA_LIBRARY=${cuda_joined}/lib/stubs"
     "-Donnxruntime_CUDA_HOME=${cuda_joined}"
     "-Donnxruntime_CUDNN_HOME=${cuda_joined}/lib"
@@ -486,6 +493,8 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     # done
   '';
 
+  postCheck = "${cmake}/bin/ctest --build-config Release --verbose --timeout 10800";
+    
   postInstall = ''
     # perform parts of `tools/ci_build/github/linux/copy_strip_binary.sh`
     install -m644 -Dt $out/include \
