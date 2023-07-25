@@ -127,8 +127,6 @@
   services.xserver.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.sddm.enable = true;
-  # failed attempt to enable wayland
-  #services.xserver.displayManager.sddm.settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
   services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
@@ -139,7 +137,7 @@
 
   # sound
   sound.enable = true;
-  #hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa = {
