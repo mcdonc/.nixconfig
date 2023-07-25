@@ -1,9 +1,8 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
-, cmake, python3Packages, libpng, zlib, eigen, nlohmann_json, boost181, oneDNN
-, gtest, pythonSupport ? false, tensorrtSupport ? false, cudaPackages_11_8
-, microsoft_gsl, python3, callPackage, fetchgit, autoPatchelfHook
-, addOpenGLRunpath, pkgs, flatbuffers, breakpointHook, linkFarm, substituteAll
-, symlinkJoin, mpi, git, unstable }:
+, cmake, python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest
+, pythonSupport ? false, tensorrtSupport ? false, cudaPackages_11_8, python3
+, callPackage, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs
+, breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
@@ -262,8 +261,6 @@ let
 
   ];
 
-  #re2;https://github.com/google/re2/archive/refs/tags/2022-06-01.zip;aa77313b76e91b531ee7f3e45f004c6a502a5374
-
   cuda_joined = symlinkJoin {
     name = "cuda-joined-for-onnxruntime";
     paths = [ cudaPackages_11_8.cudatoolkit cudaPackages_11_8.cudnn ]
@@ -273,21 +270,11 @@ let
       ];
   };
 
-  # originally from mathematica, with changes
-  # cudaEnv = symlinkJoin {
-  #     name = "onnxruntime-cuda-env";
-  #     paths = with cudaPackages_11_6; [
-  #       cuda_cudart cuda_nvcc libcublas cudnn #libcufft libcurand libcusparse
-  #     ];
-  #     postBuild = ''
-  #       ln -s ${addOpenGLRunpath.driverLink}/lib/libcuda.so $out/lib
-  #       ln -s lib $out/lib64
-  #     '';
-  #   };
-
 in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   pname = "onnxruntime";
   version = "${onnxver}";
+
+  __noChroot = true;
 
   # fetchFromGitHub's fetchSubmodules doesn't work
   src = fetchFromGitHub {
@@ -295,7 +282,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     owner = "microsoft";
     repo = "onnxruntime";
     rev = "v${version}";
-    sha256 = "sha256-4xbVoiDZNPO9G+OGjEO1SgIWuN9X76kmo8PjGocTnKw=";
+    sha256 = "sha256-0iszvRkROdqHKYI7yBaUZgmhZ3I1ycgR70BiZ9sV470=";
     fetchSubmodules = true;
     deepClone = true;
   };
@@ -328,25 +315,10 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
 
   buildInputs = [
     libpng
-    #    zlib
     nlohmann_json
     oneDNN
-    #    mpi
     cuda_joined
     git
-    #cudaPackages_11_6.libcublas # already in cudatoolkit
-    #cudaPackages_11_6.cudatoolkit
-    #cudaPackages_11_6.cudnn
-    # cudaPackages_11_6.cuda_cudart # already in cudatoolkit
-    #    flatbuffers
-    #    python3Packages.onnx
-    #    howard-hinnant-date-2_4_1
-    #    boost181
-    #    nsync
-    #    microsoft_gsl
-    #    flatbuffers-1_12_0
-    #    pytorch-cpuinfo
-    #    googletest
   ] ++ lib.optionals pythonSupport [
     python3Packages.numpy
     python3Packages.pybind11
@@ -359,7 +331,6 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  #env.LDFLAGS = "-L${addOpenGLRunpath.driverLink}/lib";
   cmakeDir = "../cmake";
   #NIX_CFLAGS_COMPILE = ["-O2"];
 
@@ -381,7 +352,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_BUILD_SHARED_LIB=ON"
     "-Donnxruntime_BUILD_WEBASSEMBLY=OFF"
     "-Donnxruntime_BUILD_WEBASSEMBLY_STATIC_LIB=OFF"
-    "-Donnxruntime_DISABLE_CONTRIB_OPS=OFF"
+    "-Donnxruntime_DISABLE_CONTRIB_OPS=ON" # XXX
     "-Donnxruntime_DISABLE_EXCEPTIONS=OFF"
     "-Donnxruntime_DISABLE_ML_OPS=OFF"
     "-Donnxruntime_DISABLE_RTTI=OFF"
@@ -415,7 +386,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_NVCC_THREADS=0"
     "-Donnxruntime_PYBIND_EXPORT_OPSCHEMA=OFF"
     "-Donnxruntime_REDUCED_OPS_BUILD=OFF"
-    "-Donnxruntime_RUN_ONNX_TESTS=OFF"
+    "-Donnxruntime_RUN_ONNX_TESTS=ON"
     "-Donnxruntime_TVM_CUDA_RUNTIME=OFF"
     "-Donnxruntime_TVM_USE_HASH=OFF"
     "-Donnxruntime_USE_ACL_1902=OFF"
@@ -438,8 +409,6 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_USE_RKNPU=OFF"
     "-Donnxruntime_USE_ROCM=OFF"
     "-Donnxruntime_USE_TELEMETRY=OFF"
-    "-Donnxruntime_USE_TENSORRT_BUILTIN_PARSER=ON"
-    "-Donnxruntime_USE_TENSORRT=OFF"
     "-Donnxruntime_USE_TVM=OFF"
     "-Donnxruntime_USE_VITISAI=OFF"
     "-Donnxruntime_USE_WINML=OFF"
@@ -447,11 +416,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-Donnxruntime_WEBASSEMBLY_RUN_TESTS_IN_BROWSER=OFF"
 
     # from original onnxruntime default.nix
-    #"-Donnxruntime_PREFER_SYSTEM_LIB=ON"
-    #"-Donnxruntime_BUILD_SHARED_LIB=ON"
-    #"-Donnxruntime_ENABLE_LTO=ON"
     "-Donnxruntime_BUILD_UNIT_TESTS=ON"
-    #"-Donnxruntime_USE_DNNL=YES"
     "-Donnxruntime_USE_PREINSTALLED_EIGEN=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
 
@@ -461,7 +426,6 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-DFETCHCONTENT_SOURCE_DIR_GOOGLE_NSYNC=${srcdeps}/nsync"
     "-DFETCHCONTENT_SOURCE_DIR_PROTOBUF=${srcdeps}/protobuf"
     "-DFETCHCONTENT_SOURCE_DIR_FLATBUFFERS=${srcdeps}/flatbuffers"
-    #"-DFETCHCONTENT_SOURCE_DIR_BOOST=${boost181.src}"
     "-DFETCHCONTENT_SOURCE_DIR_MP11=${srcdeps}/mp11"
     "-DFETCHCONTENT_SOURCE_DIR_RE2=${srcdeps}/re2"
     "-DFETCHCONTENT_SOURCE_DIR_GSL=${srcdeps}/gsl"
@@ -482,14 +446,10 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-DCUDA_CUDA_LIBRARY=${cuda_joined}/lib/stubs"
     "-Donnxruntime_CUDA_HOME=${cuda_joined}"
     "-Donnxruntime_CUDNN_HOME=${cuda_joined}/lib"
-    #    "-DCUDA_INCLUDE_DIR=${cudaPackages_11_6.cudatoolkit}/include" # handled
-
-    # for onnx-tensorrt
-    #    "-DCUDA_TOOLKIT_ROOT_DIR=${cudaPackages_11_6.cudatoolkit}" # handled
-    #    "-DCMAKE_CUDA_COMPILER=${cudaPackages_11_6.cudatoolkit}/bin/nvcc" # handled
 
   ] ++ lib.optionals pythonSupport [ "-Donnxruntime_ENABLE_PYTHON=ON" ]
     ++ lib.optionals tensorrtSupport [
+      "-Donnxruntime_USE_TENSORRT_BUILTIN_PARSER=ON"
       "-DFETCHCONTENT_SOURCE_DIR_ONNX_TENSORRT=${srcdeps}/onnx-tensorrt"
       "-Donnxruntime_USE_TENSORRT=ON"
       "-Donnxruntime_TENSORRT_HOME=${cuda_joined}"
@@ -514,7 +474,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     python ../setup.py bdist_wheel
   '';
 
-  doCheck = false; # XXX 7th test fails
+  doCheck = true; # XXX 7th test fails
 
   preCheck = ''
     export LD_LIBRARY_PATH=${addOpenGLRunpath.driverLink}/lib

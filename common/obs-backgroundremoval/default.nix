@@ -47,8 +47,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     owner = "royshil";
     repo = "obs-backgroundremoval";
     rev = "v${version}";
-    hash =
-      "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs";
+    hash = "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs=";
   };
 
   nativeBuildInputs =
