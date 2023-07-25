@@ -2,7 +2,8 @@
 , cmake, python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest
 , pythonSupport ? false, tensorrtSupport ? false, cudaPackages_11_8, python3
 , callPackage, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs
-, breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable }:
+, breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable
+, runTests ? true }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
@@ -305,7 +306,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   nativeBuildInputs = [
     unstable.cmake
     pkg-config
-#    python3Packages.python
+    #    python3Packages.python
     gtest
     autoPatchelfHook
     python3
@@ -314,17 +315,12 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   ] ++ lib.optionals pythonSupport
     (with python3Packages; [ setuptools wheel pip pythonOutputDistHook ]);
 
-  buildInputs = [
-    libpng
-    nlohmann_json
-    oneDNN
-    cuda_joined
-    git
-  ] ++ lib.optionals pythonSupport [
-    python3Packages.numpy
-    python3Packages.pybind11
-    python3Packages.packaging
-  ];
+  buildInputs = [ libpng nlohmann_json oneDNN cuda_joined git ]
+    ++ lib.optionals pythonSupport [
+      python3Packages.numpy
+      python3Packages.pybind11
+      python3Packages.packaging
+    ];
 
   # TODO: build server, and move .so's to lib output
   # Python's wheel is stored in a separate dist output
@@ -341,7 +337,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     # on ubuntu
     "--compile-no-warning-as-error"
     "-DCMAKE_BUILD_TYPE=Release"
-#    "-DCMAKE_PREFIX_PATH=/home/chrism/projects/onnxruntime/build/Linux/Release/installed"
+    #    "-DCMAKE_PREFIX_PATH=/home/chrism/projects/onnxruntime/build/Linux/Release/installed"
     "-DCMAKE_TLS_VERIFY=ON"
     "-DFETCHCONTENT_QUIET=OFF"
     "-DOnnxruntime_GCOV_COVERAGE=OFF"
@@ -444,7 +440,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${srcdeps}/googletest"
 
     # debugging
-    "-DCMAKE_VERBOSE_MAKEFILE=ON"
+    #"-DCMAKE_VERBOSE_MAKEFILE=ON"
 
     # see onnxruntime's tools/ci_build/build.py
     #    "-Donnxruntime_USE_FULL_PROTOBUF=ON"
@@ -481,7 +477,7 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     python ../setup.py bdist_wheel
   '';
 
-  doCheck = true; # XXX 7th test fails
+  doCheck = runTests;
 
   preCheck = ''
     export LD_LIBRARY_PATH=${addOpenGLRunpath.driverLink}/lib
@@ -493,8 +489,8 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     # done
   '';
 
-  postCheck = "${cmake}/bin/ctest --build-config Release --verbose --timeout 10800";
-    
+  #postCheck = "${cmake}/bin/ctest --build-config Release --verbose --timeout 10800";
+
   postInstall = ''
     # perform parts of `tools/ci_build/github/linux/copy_strip_binary.sh`
     install -m644 -Dt $out/include \

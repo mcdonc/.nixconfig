@@ -38,7 +38,7 @@
 
 let
   onnxruntime =
-    callPackage ./onnxruntime.nix {tensorrtSupport=true;};
+    callPackage ./onnxruntime.nix {};
 in cudaPackages_11_6.backendStdenv.mkDerivation rec {
   pname = "obs-backgroundremoval";
   version = "1.0.3";
