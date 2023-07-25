@@ -213,6 +213,7 @@
     powertop
     libsForQt5.kdeconnect-kde
     libsForQt5.krdc
+    libsForQt5.breeze-gtk
     gnome.gnome-disk-utility
     openvpn
     unzip
@@ -306,5 +307,6 @@
     mc
     etcher
     pre-commit
+    gnome.gnome-terminal
   ];
 }

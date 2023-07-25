@@ -4,6 +4,14 @@
   home.packages = with pkgs; [ keybase-gui ];
   home.stateVersion = "22.05";
 
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Breeze-Dark";
+      package = pkgs.libsForQt5.breeze-gtk;
+    };
+  };
+
   services.keybase.enable = true;
   services.kbfs.enable = true;
   services.gpg-agent = {
