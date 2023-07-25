@@ -1,7 +1,7 @@
 NixOS 47: Packaging Gotchas
 ===========================
 
-- Companion to video at
+- Companion to video at https://youtu.be/_jl0KgOLjMA
 
 - This script is available in a link in the video description.
 
