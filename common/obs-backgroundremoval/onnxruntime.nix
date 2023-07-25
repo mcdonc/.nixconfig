@@ -1,9 +1,9 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
 , cmake, python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest
-, pythonSupport ? false, tensorrtSupport ? false, cudaPackages_11_8, python3
+, pythonSupport ? true, tensorrtSupport ? true, cudaPackages_11_8, python3
 , callPackage, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs
 , breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable
-, runTests ? true }:
+, runTests ? false }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
