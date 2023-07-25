@@ -306,5 +306,6 @@
     mc
     etcher
     pre-commit
+    gnome.gnome-terminal
   ];
 }
