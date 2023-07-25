@@ -12,7 +12,7 @@ Script
 =======
 
 When you package software for Nix, there are a few gotchas that you really must
-be aware of to save your sanity.
+be aware of to preserve your sanity.
 
 The ``sha256`` / ``hash`` Argument to a Fetcher is a Cache Key
 --------------------------------------------------------------
@@ -70,6 +70,8 @@ Why is Weird Shit Happening?
 ----------------------------
 
 - Fetchers use ~/.cache/nix subdirs as caches
+
+- Delete that directory if you're seeing weirdness.
 
 - https://github.com/NixOS/nix/issues/3271
   
