@@ -12,6 +12,45 @@
     };
   };
 
+  programs.gnome-terminal = {
+    enable = true;
+    showMenubar = false;
+
+    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = {
+      default = true;
+      visibleName = "chrism";
+
+      scrollbackLines = 10485760; # null is meant to mean infinite but no work
+      showScrollbar = true;
+      font = "Ubuntu Mono 18";
+      boldIsBright = true;
+      audibleBell = false;
+
+      colors = {
+        palette = [
+          "#171421"
+          "#ED1515"
+          "#11D116"
+          "#FF6D03"
+          "#1D99F3"
+          "#A347BA"
+          "#2AA1B3"
+          "#D0CFCC"
+          "#5E5C64"
+          "#F66151"
+          "#33D17A"
+          "#E9AD0C"
+          "#2A7BDE"
+          "#C061CB"
+          "#33C7DE"
+          "#FFFFFF"
+        ];
+        backgroundColor = "#1c2023"; #0E0E0F
+        foregroundColor = "#FFFFFF"; #"#D0CFCC"; #c7ccd1
+      };
+    };
+  };
+
   services.keybase.enable = true;
   services.kbfs.enable = true;
   services.gpg-agent = {
