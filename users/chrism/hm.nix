@@ -20,7 +20,7 @@
       default = true;
       visibleName = "chrism";
 
-      scrollbackLines = 1048576;
+      scrollbackLines = 10485760; # null is meant to mean infinite but no work
       showScrollbar = true;
       font = "Ubuntu Mono 18";
       boldIsBright = true;
