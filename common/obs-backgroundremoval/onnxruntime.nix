@@ -1,6 +1,6 @@
 { stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
 , cmake, python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest
-, pythonSupport ? true, tensorrtSupport ? true, cudaPackages_11_8, python3
+, pythonSupport ? true, tensorrtSupport ? false, cudaPackages_11_8, python3
 , callPackage, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs
 , breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable
 , runTests ? false }:
