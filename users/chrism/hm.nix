@@ -46,7 +46,7 @@
           "#FFFFFF"
         ];
         backgroundColor = "#1c2023"; #0E0E0F
-        foregroundColor = "#D0CFCC"; #c7ccd1
+        foregroundColor = "#FFFFFF"; #"#D0CFCC"; #c7ccd1
       };
     };
   };
