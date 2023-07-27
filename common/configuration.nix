@@ -305,5 +305,6 @@
     mc
     etcher
     pre-commit
+    html-tidy
   ];
 }

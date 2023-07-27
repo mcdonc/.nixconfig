@@ -22,6 +22,7 @@
 
       scrollbackLines = 10485760; # null is meant to mean infinite but no work
       showScrollbar = true;
+      scrollOnOutput = false;
       font = "Ubuntu Mono 18";
       boldIsBright = true;
       audibleBell = false;
