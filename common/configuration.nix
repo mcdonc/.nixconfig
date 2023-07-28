@@ -294,5 +294,6 @@
     dua
     duf
     ncdu
+    inetutils # for telnet
   ];
 }
