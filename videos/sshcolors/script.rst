@@ -1,7 +1,7 @@
 NixOS 48: Automatically Change Terminal Colors When You SSH (home-manager/gnome-terminal/zsh)
 =============================================================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/qhlfcHwXWvs
 
 - This text script available via link in the video description.
 
