@@ -1,7 +1,19 @@
 { config, pkgs, home-manager, ... }:
 
+let
+  ssh-chcolor = pkgs.writeShellScriptBin "ssh-chcolor" ''
+    function chcolor(){
+      # emulates right-clicking and selecting a numbered profile.
+      # hide output if it fails (if you're ssh'ed in, for example, and
+      # use ssh recursively).  --clearmodifiers ignores any
+      # modifier keys you're physically holding before sending the command
+      xdotool key --clearmodifiers Shift+F10 r $1 > /dev/null 2>&1
+    }
+    chcolor 2; ssh $@; chcolor 1
+  '';
+in
 {
-  home.packages = with pkgs; [ keybase-gui ];
+  home.packages = with pkgs; [ keybase-gui ssh-chcolor xdotool ];
   home.stateVersion = "22.05";
 
   gtk = {
@@ -18,7 +30,7 @@
 
     profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = {
       default = true;
-      visibleName = "chrism";
+      visibleName = "1grey";
 
       scrollbackLines = 10485760; # null is meant to mean infinite but no work
       showScrollbar = true;
@@ -48,6 +60,74 @@
         ];
         backgroundColor = "#1c2023"; #0E0E0F
         foregroundColor = "#FFFFFF"; #"#D0CFCC"; #c7ccd1
+      };
+    };
+    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = {
+      default = false;
+      visibleName = "2blue";
+
+      scrollbackLines = 10485760; # null is meant to mean infinite but no work
+      showScrollbar = true;
+      scrollOnOutput = false;
+      font = "Ubuntu Mono 18";
+      boldIsBright = true;
+      audibleBell = false;
+
+      colors = {
+        palette = [
+          "#171421"
+          "#ED1515"
+          "#11D116"
+          "#FF6D03"
+          "#1D99F3"
+          "#A347BA"
+          "#2AA1B3"
+          "#D0CFCC"
+          "#5E5C64"
+          "#F66151"
+          "#33D17A"
+          "#E9AD0C"
+          "#2A7BDE"
+          "#C061CB"
+          "#33C7DE"
+          "#FFFFFF"
+        ];
+        backgroundColor = "#00008E";
+        foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = {
+      default = false;
+      visibleName = "3black";
+
+      scrollbackLines = 10485760; # null is meant to mean infinite but no work
+      showScrollbar = true;
+      scrollOnOutput = false; 
+      font = "Ubuntu Mono 18";
+      boldIsBright = true;
+      audibleBell = false;
+
+      colors = {
+        palette = [
+          "#171421"
+          "#ED1515"
+          "#11D116"
+          "#FF6D03"
+          "#1D99F3"
+          "#A347BA"
+          "#2AA1B3"
+          "#D0CFCC"
+          "#5E5C64"
+          "#F66151"
+          "#33D17A"
+          "#E9AD0C"
+          "#2A7BDE"
+          "#C061CB"
+          "#33C7DE"
+          "#FFFFFF"
+        ];
+        backgroundColor = "#000000";
+        foregroundColor = "#D0CFCC";
       };
     };
   };
@@ -143,7 +223,7 @@
       #window-maximized
       # see https://github.com/mpv-player/mpv/issues/10229
     '';
-  };
+  }; 
 
   # add Olive for nvidia-offload (as installed per video)
   xdg.desktopEntries = {
@@ -254,6 +334,10 @@
       edit = "emacsclient -n -c";
       sgrep = "rg";
       ls = "ls --color=auto";
+      greyterm = "xdotool key --clearmodifiers Shift+F10 r 1";
+      blueterm = "xdotool key --clearmodifiers Shift+F10 r 2";
+      blackterm = "xdotool key --clearmodifiers Shift+F10 r 3";
+      ssh = "${ssh-chcolor}/bin/ssh-chcolor";
     };
 
     completionInit = ""; # speed up start time
