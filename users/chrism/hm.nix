@@ -198,13 +198,6 @@ in
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
-    # localxcalib = {
-    #   name = "xcalib of ~/.monprofile.icc";
-    #   genericName = "xcalib of ~/.monprofile.icc";
-    #   exec = "xcalib -S :0 ${config.home.homeDirectory}/.monprofile.icc";
-    #   categories = [ "Graphics" ];
-    #   terminal = false;
-    # };
   };
 
   # thanks to tejing on IRC for clueing me in to .force here: it will
