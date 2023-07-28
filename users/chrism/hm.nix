@@ -7,7 +7,9 @@ let
       # hide output if it fails (if you're ssh'ed in, for example, and
       # use ssh recursively).  --clearmodifiers ignores any
       # modifier keys you're physically holding before sending the command
-      xdotool key --clearmodifiers Shift+F10 r $1 > /dev/null 2>&1
+      if [ -n "$GNOME_TERMINAL_SERVICE" ]; then
+         xdotool key --clearmodifiers Shift+F10 r $1 > /dev/null 2>&1
+      fi
     }
     chcolor 2; ssh $@; chcolor 1
   '';
