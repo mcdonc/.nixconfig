@@ -1,5 +1,5 @@
-NixOS 48: Automatically Change Terminal Color When You SSH (home-manager/gnome-terminal/zsh)
-============================================================================================
+NixOS 48: Automatically Change Terminal Colors When You SSH (home-manager/gnome-terminal/zsh)
+=============================================================================================
 
 - Companion to video at
 
@@ -74,11 +74,11 @@ Script
   whole picture.
 
 - The ``xdotool`` tool allows us to emulate sending keystrokes and other X
-  input signals.  ``xdotool key Shift-F10 r 2`` sends Shift-F10 (the equivalent
+  input signals.  ``xdotool key Shift+F10 r 2`` sends Shift-F10 (the equivalent
   of a right-click in gnome-terminal), then emulates typing the "r" key, which
   activates the profiles menu, then emulates typing another key, which is a
   number representing the profile I'd like to select.  For example, when I type
-  into gnome-terminal ``xdotool key Shift-F10 r 2`` it will select the
+  into gnome-terminal ``xdotool key Shift+F10 r 2`` it will select the
   gnome-terminal profile numbered 2 in the list, which, in my case, selects a
   profile I've created named ``2blue`` and makes my background terminal color
   blue.
