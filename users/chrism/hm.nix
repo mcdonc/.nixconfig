@@ -3,7 +3,7 @@
 let
   ssh-chcolor = pkgs.writeShellScriptBin "ssh-chcolor" ''
     function chcolor(){
-      # emulates right-clicking and selecting a numbered profile.
+      # emulates right-clicking and selecting a numbered gnome-terminal profile.
       # hide output if it fails (if you're ssh'ed in, for example, and
       # use ssh recursively).  --clearmodifiers ignores any
       # modifier keys you're physically holding before sending the command
