@@ -306,5 +306,8 @@
     etcher
     pre-commit
     html-tidy
+    dua
+    duf
+    ncdu
   ];
 }
