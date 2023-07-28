@@ -11,6 +11,42 @@ let
     }
     chcolor 2; ssh $@; chcolor 1
   '';
+  defaultpalette = [
+    "#171421"
+    "#ED1515"
+    "#11D116"
+    "#FF6D03"
+    "#1D99F3"
+    "#A347BA"
+    "#2AA1B3"
+    "#D0CFCC"
+    "#5E5C64"
+    "#F66151"
+    "#33D17A"
+    "#E9AD0C"
+    "#2A7BDE"
+    "#C061CB"
+    "#33C7DE"
+    "#FFFFFF"
+  ];
+  defaultprofile = {
+      default = true;
+      visibleName = "1grey";
+
+      scrollbackLines = 10485760; # null is meant to mean infinite but no work
+      showScrollbar = true;
+      scrollOnOutput = false;
+      font = "Ubuntu Mono 18";
+      boldIsBright = true;
+      audibleBell = false;
+
+      colors = {
+        palette = defaultpalette;
+        backgroundColor = "#1C2023";
+        foregroundColor = "#FFFFFF";
+      };
+    };
+
 in
 {
   home.packages = with pkgs; [ keybase-gui ssh-chcolor xdotool ];
@@ -28,105 +64,31 @@ in
     enable = true;
     showMenubar = false;
 
-    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = {
-      default = true;
-      visibleName = "1grey";
-
-      scrollbackLines = 10485760; # null is meant to mean infinite but no work
-      showScrollbar = true;
-      scrollOnOutput = false;
-      font = "Ubuntu Mono 18";
-      boldIsBright = true;
-      audibleBell = false;
-
-      colors = {
-        palette = [
-          "#171421"
-          "#ED1515"
-          "#11D116"
-          "#FF6D03"
-          "#1D99F3"
-          "#A347BA"
-          "#2AA1B3"
-          "#D0CFCC"
-          "#5E5C64"
-          "#F66151"
-          "#33D17A"
-          "#E9AD0C"
-          "#2A7BDE"
-          "#C061CB"
-          "#33C7DE"
-          "#FFFFFF"
-        ];
-        backgroundColor = "#1c2023"; #0E0E0F
-        foregroundColor = "#FFFFFF"; #"#D0CFCC"; #c7ccd1
-      };
-    };
-    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = {
+    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = defaultprofile;
+    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = defaultprofile // {
       default = false;
       visibleName = "2blue";
-
-      scrollbackLines = 10485760; # null is meant to mean infinite but no work
-      showScrollbar = true;
-      scrollOnOutput = false;
-      font = "Ubuntu Mono 18";
-      boldIsBright = true;
-      audibleBell = false;
-
       colors = {
-        palette = [
-          "#171421"
-          "#ED1515"
-          "#11D116"
-          "#FF6D03"
-          "#1D99F3"
-          "#A347BA"
-          "#2AA1B3"
-          "#D0CFCC"
-          "#5E5C64"
-          "#F66151"
-          "#33D17A"
-          "#E9AD0C"
-          "#2A7BDE"
-          "#C061CB"
-          "#33C7DE"
-          "#FFFFFF"
-        ];
+        palette = defaultpalette;
         backgroundColor = "#00008E";
         foregroundColor = "#D0CFCC";
       };
     };
-    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = {
+    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = defaultprofile // {
       default = false;
       visibleName = "3black";
-
-      scrollbackLines = 10485760; # null is meant to mean infinite but no work
-      showScrollbar = true;
-      scrollOnOutput = false; 
-      font = "Ubuntu Mono 18";
-      boldIsBright = true;
-      audibleBell = false;
-
       colors = {
-        palette = [
-          "#171421"
-          "#ED1515"
-          "#11D116"
-          "#FF6D03"
-          "#1D99F3"
-          "#A347BA"
-          "#2AA1B3"
-          "#D0CFCC"
-          "#5E5C64"
-          "#F66151"
-          "#33D17A"
-          "#E9AD0C"
-          "#2A7BDE"
-          "#C061CB"
-          "#33C7DE"
-          "#FFFFFF"
-        ];
+        palette = defaultpalette;
         backgroundColor = "#000000";
+        foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.a37ed5e4-99f5-4eba-acef-e491965a6076 = defaultprofile // {
+      default = false;
+      visibleName = "4purple";
+      colors = {
+        palette = defaultpalette;
+        backgroundColor = "#2C0035";
         foregroundColor = "#D0CFCC";
       };
     };
