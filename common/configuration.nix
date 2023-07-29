@@ -3,7 +3,6 @@
 {
   imports = [ ./cachix.nix ];
 
-  # nix stuff
   system.stateVersion = "22.05";
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -14,22 +13,22 @@
     '';
   };
 
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    trusted-users = root @wheel
-    sandbox = relaxed
-  '';
-
-  nix.settings = {
-    tarball-ttl = 300;
-    auto-optimise-store = true;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      trusted-users = root @wheel
+      sandbox = relaxed
+    '';
+    settings = {
+      tarball-ttl = 300;
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   # NVIDIA requires nonfree
