@@ -7,8 +7,8 @@ systems I own.
 Usage
 -----
 
-- Check out this repository into ``~/.nixconfig`` within the NixOS installer on the
-  new system::
+- Check out this repository into ``~/.nixconfig`` within the NixOS installer on
+  the new system::
 
     cd
     git clone https://github.com/mcdonc/.nixconfig.git
