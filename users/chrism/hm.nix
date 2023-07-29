@@ -271,15 +271,11 @@ in {
     source = ../steam.desktop;
   };
 
-  programs.dircolors = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  programs.gitui.enable = true;
 
+  programs.dircolors.enable = true;
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
-
-  programs.gitui.enable = true;
 
   programs.zsh = {
     enable = true;
@@ -293,7 +289,7 @@ in {
         "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
       LADSPA_PATH =
         "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
-      LV2_PATH =
+      LV2_PATH = 
         "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
       LXVST_PATH =
         "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
@@ -327,12 +323,13 @@ in {
     completionInit = ""; # speed up zsh start time
 
     #initExtraFirst = ''
-    #  zmodload zsh/zprof
+    # zmodload zsh/zprof
     #'';
 
     initExtra = ''
       # be more bashy
       setopt interactive_comments bashautolist nobeep nomenucomplete noautolist
+
 
       ## include config generated via "p10k configure" manually;
       ## zplug cannot edit home manager's zshrc file.
@@ -341,6 +338,7 @@ in {
 
       ## Keybindings section
       bindkey -e
+      bindkey '^I' fzf-completion                         # anything**<TAB>
       bindkey '^[[7~' beginning-of-line                   # Home key
       bindkey '^[[H' beginning-of-line                    # Home key
       # [Home] - Go to beginning of line
@@ -366,11 +364,6 @@ in {
       bindkey '^[[1;5C' forward-word
       # delete previous word with ctrl+backspace
       bindkey '^H' backward-kill-word
-      # Shift+tab undo last action
-      bindkey '^[[Z' undo
-      # Theming section
-      autoload -U colors
-      colors
       #zprof
     '';
     zplug = {
