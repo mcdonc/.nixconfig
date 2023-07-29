@@ -295,5 +295,9 @@
     duf
     ncdu
     inetutils # for telnet
+    asciiquarium
+    rig
+    cowsay
+    banner
   ];
 }

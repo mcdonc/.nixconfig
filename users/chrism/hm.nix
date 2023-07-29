@@ -12,7 +12,7 @@ let
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
     }
-    chcolor 2; ssh $@; chcolor 1
+    chcolor 4; ssh $@; chcolor 1
   '';
   defaultpalette = [
     "#171421"
