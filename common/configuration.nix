@@ -35,7 +35,7 @@
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
-  
+
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -186,8 +186,6 @@
     set ttymouse=
   '';
 
-  # List software packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim_configurable
     #pkgs.allthepythons.packages.x86_64-linux."2.7.18"
