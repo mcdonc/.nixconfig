@@ -9,7 +9,8 @@
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
-      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
+           /run/current-system "$systemConfig"
     '';
   };
 
@@ -81,7 +82,8 @@
     }
   ];
 
-  # enable high precision timers if they exist (https://gentoostudio.org/?page_id=420)
+  # enable high precision timers if they exist
+  # (https://gentoostudio.org/?page_id=420)
   services.udev = {
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
