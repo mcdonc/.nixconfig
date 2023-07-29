@@ -190,6 +190,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim_configurable
+    #pkgs.allthepythons.packages.x86_64-linux."2.7.18"
+    #pkgs.allthepythons.packages.x86_64-linux."3.9.16"
     wget
     (wrapOBS { plugins = with obs-studio-plugins; [ obs-backgroundremoval ]; })
     thermald
@@ -299,5 +301,7 @@
     rig
     cowsay
     banner
+    lolcat
+    fortune
   ];
 }
