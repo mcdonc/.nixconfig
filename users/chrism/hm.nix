@@ -33,26 +33,31 @@ let
     "#FFFFFF"
   ];
   defaultprofile = {
-      default = true;
-      visibleName = "1grey";
+    default = true;
+    visibleName = "1grey";
 
-      scrollbackLines = 10485760; # null is meant to mean infinite but no work
-      showScrollbar = true;
-      scrollOnOutput = false;
-      font = "Ubuntu Mono 18";
-      boldIsBright = true;
-      audibleBell = false;
+    scrollbackLines = 10485760; # null is meant to mean infinite but no work
+    showScrollbar = true;
+    scrollOnOutput = false;
+    font = "Ubuntu Mono 18";
+    boldIsBright = true;
+    audibleBell = false;
 
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#1C2023";
-        foregroundColor = "#FFFFFF";
-      };
+    colors = {
+      palette = defaultpalette;
+      backgroundColor = "#1C2023";
+      foregroundColor = "#FFFFFF";
     };
+  };
 
-in
-{
-  home.packages = with pkgs; [ keybase-gui ssh-chcolor xdotool ];
+in {
+  home.packages = with pkgs; [
+    keybase-gui
+    ssh-chcolor
+    xdotool
+    # fd is an unnamed dependency of fzf
+    fd
+  ];
   home.stateVersion = "22.05";
 
   gtk = {
@@ -188,7 +193,7 @@ in
       #window-maximized
       # see https://github.com/mpv-player/mpv/issues/10229
     '';
-  }; 
+  };
 
   # add Olive for nvidia-offload (as installed per video)
   xdg.desktopEntries = {
@@ -271,6 +276,11 @@ in
     enableZshIntegration = true;
   };
 
+  programs.fzf.enable = true;
+  programs.fzf.enableZshIntegration = true;
+
+  programs.gitui.enable = true;
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -280,17 +290,17 @@ in
     sessionVariables = {
       EDITOR = "vi";
       DSSI_PATH =
-      "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
+        "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
       LADSPA_PATH =
-      "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
+        "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
       LV2_PATH =
-      "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
+        "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
       LXVST_PATH =
-      "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+        "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
       VST_PATH =
-      "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
+        "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
       VST3_PATH =
-      "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
+        "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
     };
 
     shellAliases = {
