@@ -74,7 +74,7 @@ fzf
     programs.fzf.enableZshIntegration = true;
     
 - The following ``programs.zsh`` option was necessary for me for ``**<TAB>`` to
-  work, but could be unnecessary for you.
+  work, but could be unnecessary for you::
 
     initExtra = ''
         bindkey '^I' fzf-completion
