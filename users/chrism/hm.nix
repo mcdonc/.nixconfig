@@ -57,6 +57,7 @@ in {
     xdotool
     # fd is an unnamed dependency of fzf
     fd
+    shell-genie
   ];
   home.stateVersion = "22.05";
 
@@ -98,6 +99,32 @@ in {
         palette = defaultpalette;
         backgroundColor = "#2C0035";
         foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.f9a98c86-a974-42bb-98a0-be84f87b9076 = defaultprofile // {
+      default = false;
+      visibleName = "5yellow";
+      colors = {
+        palette = [
+          "#171421"
+          "#ED1515"
+          "#11D116"
+          "#FF6D03"
+          "#1D99F3"
+          "#A347BA"
+          "#2AA1B3"
+          "#D0CFCC"
+          "#5E5C64"
+          "#F66151"
+          "#33D17A"
+          "#D8D8D7"
+          "#2A7BDE"
+          "#C061CB"
+          "#33C7DE"
+          "#FFFFFF"
+        ];
+        backgroundColor = "#F1F168";
+        foregroundColor = "#000000";
       };
     };
   };
@@ -214,6 +241,7 @@ in {
 
   # default keybase_autostart.desktop doesn't run on NVIDIA in sync mode
   # without --disable-gpu-sandbox.
+
   xdg.configFile."autostart/keybase_autostart.desktop".text = ''
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
@@ -317,7 +345,9 @@ in {
       blueterm = "${gterm-change-profile} 2";
       blackterm = "${gterm-change-profile} 3";
       purpleterm = "${gterm-change-profile} 4";
+      yellowterm = "${gterm-change-profile} 5";
       ssh = "${ssh-chcolor}/bin/ssh-chcolor";
+      ai = "shell-genie ask";
     };
 
     completionInit = ""; # speed up zsh start time
