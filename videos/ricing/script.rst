@@ -1,5 +1,5 @@
- NixOS 49: Ricing the Terminal (zsh)
-====================================
+NixOS 49: Ricing the Terminal (zsh)
+===================================
 
 - Companion to video at
 
