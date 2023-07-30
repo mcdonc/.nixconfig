@@ -5,6 +5,7 @@
     keybase-gui
     # fd is an unnamed dependency of fzf
     fd
+    shell-genie
   ];
   home.stateVersion = "22.05";
 
