@@ -1,5 +1,5 @@
-NixOS 49: Ricing the Terminal (zsh)
-===================================
+NixOS 49: Ricing the Terminal (zsh/p10k/fzf/shell-genie)
+========================================================
 
 - Companion to video at
 
@@ -7,6 +7,9 @@ NixOS 49: Ricing the Terminal (zsh)
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
+
+- See the a full ``home-manager`` configuration with the features demonstrated
+  here at https://github.com/mcdonc/.nixconfig/blob/master/users/chrism/hm.nix
 
 Script
 ------
