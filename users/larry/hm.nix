@@ -117,8 +117,8 @@
   };
 
   programs.dircolors.enable = true;
-  programs.fzf.enable = true;
-  programs.fzf.enableZshIntegration = true;
+  #programs.fzf.enable = true;
+  #programs.fzf.enableZshIntegration = true;
 
   programs.zsh = {
     enable = true;
