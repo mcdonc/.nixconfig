@@ -4,7 +4,7 @@
 
   home.packages = with pkgs; [
     keybase-gui
-    shell-genie
+    #shell-genie
     # fd is an unnamed dependency of fzf
     fd
   ];
