@@ -302,5 +302,6 @@
     banner
     lolcat
     fortune
+    file
   ];
 }
