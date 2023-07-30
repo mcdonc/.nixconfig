@@ -10,11 +10,6 @@
 
   services.keybase.enable = true;
   services.kbfs.enable = true;
-  services.gpg-agent = {
-    enable = true;
-    defaultCacheTtl = 1800;
-    enableSshSupport = true;
-  };
 
   xdg.configFile."black".text = ''
     [tool.black]
