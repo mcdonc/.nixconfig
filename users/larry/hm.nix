@@ -2,7 +2,7 @@
 
 {
 
-    home.packages = with pkgs; [ keybase-gui ];
+    home.packages = with pkgs; [ keybase-gui shell-genie ];
     home.stateVersion = "22.05";
 
     services.keybase.enable = true;
