@@ -148,6 +148,7 @@
       edit = "emacsclient -n -c";
       sgrep = "rg";
       ls = "ls --color=auto";
+      ai = "shell-genie ask";
     };
 
     completionInit = ""; # speed up zsh start time
