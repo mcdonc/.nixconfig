@@ -119,7 +119,7 @@
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
-  fonts.fonts = with pkgs; [ ubuntu_font_family ];
+  fonts.fonts = with pkgs; [ ubuntu_font_family nerdfonts ];
 
   # sound
   sound.enable = true;
