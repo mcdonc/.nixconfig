@@ -12,7 +12,12 @@ let
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
     }
-    chcolor 4; ssh $@||true; chcolor 1
+    chcolor 4
+    ssh $@
+    if [ $? -ne 0 ]; then
+       read -p "SSH exited unexpectedly... hit any key to continue"
+    fi
+    chcolor 1
   '';
   defaultpalette = [
     "#171421"
