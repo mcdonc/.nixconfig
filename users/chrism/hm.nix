@@ -5,9 +5,8 @@ let
   ssh-chcolor = pkgs.writeShellScriptBin "ssh-chcolor" ''
     function chcolor(){
       # emulates right-clicking and selecting a numbered gnome-terminal profile.
-      # hide output if it fails (if you're ssh'ed in, for example, and
-      # use ssh recursively).  --clearmodifiers ignores any
-      # modifier keys you're physically holding before sending the command
+      # hide output if it fails.  --clearmodifiers ignores any modifier keys
+      # you're physically holding before sending the command
       if [ -n "$GNOME_TERMINAL_SERVICE" ]; then
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
