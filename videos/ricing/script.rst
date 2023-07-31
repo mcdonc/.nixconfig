@@ -14,7 +14,7 @@ NixOS 49: Ricing the Terminal (zsh/p10k/fzf/shell-genie)
 Script
 ------
 
-- This video is super unoriginal in general, but these are the steps that get
+- This video is super unoriginal in general. These are the steps that get
   rice you covet from having seen all the other Linux terminal ricing videos,
   but within NixOS.
 
