@@ -12,7 +12,7 @@ let
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
     }
-    chcolor 4
+    chcolor 5
     ssh $@
     if [ $? -ne 0 ]; then
        read -p "SSH exited unexpectedly... hit any key to continue"
