@@ -60,8 +60,7 @@ in {
     keybase-gui
     ssh-chcolor
     xdotool
-    # fd is an unnamed dependency of fzf
-    fd
+    fd  # fd is an unnamed dependency of fzf
     shell-genie
   ];
   home.stateVersion = "22.05";
