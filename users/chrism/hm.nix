@@ -13,7 +13,7 @@ let
       fi
     }
     chcolor 5
-    ssh $@
+    ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
        read -p "SSH exited unexpectedly... hit any key to continue"
     fi
