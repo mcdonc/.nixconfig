@@ -1,7 +1,7 @@
 NixOS 49: Ricing the Terminal (zsh/p10k/fzf/shell-genie)
 ========================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=R2-HOeTlcyE
 
 - This text script available via link in the video description.
 
