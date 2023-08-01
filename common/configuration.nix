@@ -317,5 +317,6 @@
     lolcat
     fortune
     file
+    wireshark
   ];
 }

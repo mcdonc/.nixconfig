@@ -61,6 +61,7 @@ in {
     xdotool
     fd  # fd is an unnamed dependency of fzf
     shell-genie
+    nushell
   ];
   home.stateVersion = "22.05";
 
