@@ -298,6 +298,14 @@ in {
     executable = true;
   };
 
+  xdg.configFile."nushell/oh-my-posh.nu" = {
+    source = ./oh-my-posh.nu;
+  };
+
+  xdg.configFile."nushell/config.nu" = {
+    source = ./config.nu;
+  };
+
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
     source = ../steam.desktop;
@@ -306,6 +314,10 @@ in {
   programs.gitui.enable = true;
 
   programs.dircolors.enable = true;
+
+  programs.oh-my-posh = {
+    enable = true;
+  };
 
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
