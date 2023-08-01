@@ -4,120 +4,7 @@ cudaPackages_11_8, python3, callPackage, fetchgit, autoPatchelfHook ,
 addOpenGLRunpath, breakpointHook, linkFarm, substituteAll, symlinkJoin , git,
 unstable, pythonSupport ? true, tensorrtSupport ? true, runTests ? true }:
 
-# from https://github.com/microsoft/onnxruntime/issues/8298
-#./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
-
-# export LD_LIBRARY_PATH=/run/opengl-driver/lib:/nix/store/chpc1c8qw7fzl84pkix3rw1b85ymbi8f-onnxruntime-1.14.1/lib
-# for x in `find /nix/store -name "libonnxruntime_providers_shared.so"`; do echo $x; nix-store --query --roots $x; done
-
-# make[1]: Leaving directory '/build/onnxruntime/build'
-# /nix/store/fqfi0m3fw3szj3n99r5n359579808bh6-cmake-3.25.3/bin/cmake -E cmake_progress_start /build/onnxruntime/build/CMakeFiles 0
-# adding opengl runpath to all executables and libs
-# buildPhase completed in 47 minutes 57 seconds
-# running tests
-# check flags: -j8 SHELL=/nix/store/7q1b1bsmxi91zci6g8714rcljl620y7f-bash-5.2-p15/bin/bash VERBOSE=y test
-# Running tests...
-# /nix/store/fqfi0m3fw3szj3n99r5n359579808bh6-cmake-3.25.3/bin/ctest --force-new-ctest-process 
-# Test project /build/onnxruntime/build
-#     Start 1: onnxruntime_test_all
-#     Start 2: onnx_test_pytorch_converted
-#     Start 3: onnx_test_pytorch_operator
-#     Start 4: onnxruntime_shared_lib_test
-#     Start 5: onnxruntime_global_thread_pools_test
-#     Start 6: onnxruntime_api_tests_without_env
-#     Start 7: onnxruntime_customopregistration_test
-# 1/7 Test #6: onnxruntime_api_tests_without_env .......   Passed    0.01 sec
-# 2/7 Test #7: onnxruntime_customopregistration_test ...   Passed    0.18 sec
-# 3/7 Test #3: onnx_test_pytorch_operator ..............   Passed    0.33 sec
-# 4/7 Test #2: onnx_test_pytorch_converted .............   Passed    0.53 sec
-# 5/7 Test #4: onnxruntime_shared_lib_test .............Subprocess aborted***Exception:   1.24 sec
-# [==========] Running 76 tests from 3 test suites.
-# [----------] Global test environment set-up.
-# [----------] 70 tests from CApiTest
-# [ RUN      ] CApiTest.dim_param
-# [       OK ] CApiTest.dim_param (70 ms)
-# [ RUN      ] CApiTest.SparseOutputModel
-# [       OK ] CApiTest.SparseOutputModel (44 ms)
-# [ RUN      ] CApiTest.SparseInputModel
-# [       OK ] CApiTest.SparseInputModel (5 ms)
-# [ RUN      ] CApiTest.custom_op_handler
-# Running custom op inference
-# Running simple inference with cuda provider
-# unknown file: Failure
-#   C++ exception with description "/build/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:124 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, ERRTYPE, const char*) [with ERRTYPE = cudaError; bool THRW = true; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /build/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:117 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, ERRTYPE, const char*) [with ERRTYPE = cudaError; bool THRW = true; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDA failure 35: CUDA driver version is insufficient for CUDA runtime version ; GPU=0 ; hostname=localhost ; expr=cudaSetDevice(info_.device_id);
-
-# existing:
-# ./pj72h6n21clvzc7b9zvdljv4bani9qac-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
-# ./afaabz5lmq7mn2anz4q75ym3jz57xs6c-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
-# ./a3m9c7d330508d22yb9qp1znymvxpgfd-onnxruntime-1.14.1/lib/libonnxruntime_providers_shared.so
-# ./kr3pdmvvakf2y0g3kgcb7d2hy0171ngg-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
-# ./74bfq8k04kidf2vzq7qkpq4lw9fbq886-onnxruntime-1.13.1/lib/libonnxruntime_providers_shared.so
-# /nix/store/nbyxxf72f04rbr1cqk1rmcandz5qxyhk-onnxruntime-1.14.1
-
-# [----------] Global test environment tear-down
-# [==========] 3792 tests from 260 test suites ran. (79778 ms total)
-# [  PASSED  ] 3768 tests.
-# [  FAILED  ] 24 tests, listed below:
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_to_float
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Add
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Add_Relu
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Div1
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Div2
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sub1
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sub2
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Elu
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Exp
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_LeakyRelu
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs_Log
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Add_Round
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Sigmoid
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Softplus
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Abs_Sqrt
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Mul_Tanh
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_36_ops
-# [  FAILED  ] DnnlMatMulIntegerFusion.MatMulInteger_Cast_Elu_LeakyRelu
-# [  FAILED  ] MathOpTest.CosDouble
-# [  FAILED  ] Random.RandomNormalGpu
-# [  FAILED  ] Random.RandomUniformGpu
-# [  FAILED  ] FusedMatMulOpTest.DoubleTypeNoTranspose
-
-# 24 FAILED TESTS
-#   YOU HAVE 9 DISABLED TESTS
-
-# 86% tests passed, 1 tests failed out of 7
-
-# Total Test time (real) =  80.79 sec
-
-# The following tests FAILED:
-#           1 - onnxruntime_test_all (Failed)
-# Errors while running CTest
-# make: *** [Makefile:94: test] Error 8
-# build failed in checkPhase with exit code 2
-
-# 2023-07-14 11:17:39.978017855 [E:onnxruntime:MatMulInteger:MatMulInteger, sequential_executor.cc:494 ExecuteKernel] Non-zero status code returned while running MatMulInteger node. Name:'matmul1' Status Message: CUBLAS failure 8: CUBLAS_STATUS_ARCH_MISMATCH ; GPU=0 ; hostname=thinknix512 ; expr=cublasGemmEx( cublas, CUBLAS_OP_N, CUBLAS_OP_N, n, m, k, &alpha, ldb_aligned == ldb ? b : b_padded.get(), CUDA_R_8I, ldb_aligned, lda_aligned == lda ? a : a_padded.get(), CUDA_R_8I, lda_aligned, &beta, c, CUDA_R_32I, ldc, CUDA_R_32I, CUBLAS_GEMM_DFALT);
-
-# https://github.com/NVIDIA/FasterTransformer/issues/25
-
-# CUBLAS_STATUS_ARCH_MISMATCH
-
-# The function requires a feature absent from the device architecture; usually caused by compute capability lower than 5.0.
-
-#   To correct: compile and run the application on a device with appropriate compute capability.
-
-# to build with cmake/deps.txt downloads: NIXPKGS_ALLOW_UNFREE=1 nix-build --option sandbox false --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
-# without: NIXPKGS_ALLOW_UNFREE=1 --expr 'with import <nixpkgs> {}; callPackage ./onnxruntime.nix {tensorrtSupport=true;}'
-# debug shared lib stuff: LD_DEBUG=libs
-
 let
-  # We do not have access to /run/opengl-driver/lib in the sandbox,
-  # so use a stub instead.
-  #cudaStub = linkFarm "cuda-stub" [{
-  #  name = "libcuda.so.1";
-  #  path = "${cudaPackages_11_6.cudatoolkit}/lib/stubs/libcuda.so";
-  #}];
-
   onnxver = "1.15.1";
 
   srcdeps = linkFarm "onnxruntime-${onnxver}-srcdeps" [
@@ -334,7 +221,6 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     # on ubuntu
     "--compile-no-warning-as-error"
     "-DCMAKE_BUILD_TYPE=Release"
-    #    "-DCMAKE_PREFIX_PATH=/home/chrism/projects/onnxruntime/build/Linux/Release/installed"
     "-DCMAKE_TLS_VERIFY=ON"
     "-DFETCHCONTENT_QUIET=OFF"
     "-DOnnxruntime_GCOV_COVERAGE=OFF"
@@ -485,8 +371,6 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
     #   addOpenGLRunpath "$lib"
     # done
   '';
-
-  #postCheck = "${cmake}/bin/ctest --build-config Release --verbose --timeout 10800";
 
   postInstall = ''
     # perform parts of `tools/ci_build/github/linux/copy_strip_binary.sh`
