@@ -1,9 +1,8 @@
-{ stdenv, stdenvNoCC, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config
-, cmake, python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest
-, pythonSupport ? true, tensorrtSupport ? false, cudaPackages_11_8, python3
-, callPackage, fetchgit, autoPatchelfHook, addOpenGLRunpath, pkgs
-, breakpointHook, linkFarm, substituteAll, symlinkJoin, git, unstable
-, runTests ? false }:
+{ pkgs, lib, fetchFromGitHub, fetchpatch, fetchurl, pkg-config , cmake,
+python3Packages, libpng, eigen, nlohmann_json, oneDNN, gtest ,
+cudaPackages_11_8, python3, callPackage, fetchgit, autoPatchelfHook ,
+addOpenGLRunpath, breakpointHook, linkFarm, substituteAll, symlinkJoin , git,
+unstable, pythonSupport ? true, tensorrtSupport ? true, runTests ? true }:
 
 # from https://github.com/microsoft/onnxruntime/issues/8298
 #./build.sh --parallel --build --update --config Release --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64 --tensorrt_home /home/cgarcia/Documentos/tensorrt/TensorRT-7.2.3.4 --use_tensorrt --build_wheel --cmake_extra_defines ONNXRUNTIME_VERSION=$(cat ./VERSION_NUMBER) --cuda_version=11.4 --enable_pybind
@@ -196,7 +195,6 @@ let
     }
     {
       name = "onnx-tensorrt";
-      # fetchFromGitHub's fetchSubmodules doesn't work
       path = fetchFromGitHub {
         owner = "onnx";
         repo = "onnx-tensorrt";
@@ -277,13 +275,12 @@ in cudaPackages_11_8.backendStdenv.mkDerivation rec {
 
   __noChroot = true;
 
-  # fetchFromGitHub's fetchSubmodules doesn't work
   src = fetchFromGitHub {
     url = "https://github.com/microsoft/onnxruntime.git";
     owner = "microsoft";
     repo = "onnxruntime";
     rev = "v${version}";
-    sha256 = "sha256-6s0iYGbh7cclHAXJ1jGktL3o5JdyqMsGwxe53vANObA=";
+    sha256 = "sha256-DeNMKj5b1QdHboKfOcltyBYJve0qABGRWLt1iM3JPgM=";
     fetchSubmodules = true;
     deepClone = true;
   };

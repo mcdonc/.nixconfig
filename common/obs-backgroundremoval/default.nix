@@ -1,5 +1,5 @@
-{ lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, callPackage
-, cudaPackages_11_6, autoPatchelfHook, addOpenGLRunpath }:
+{ lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, curl, callPackage
+, cudaPackages_11_8, autoPatchelfHook, addOpenGLRunpath }:
 
 
 # obs startup
@@ -37,9 +37,8 @@
 # Jul 13 14:19:21 thinknix512 kwin_x11[8671]: kwin_core: XCB error: 152 (BadDamage), sequence: 54145, resource id: 23530895, major code: 143 (DAMAGE), minor code: 3 (Subtract)
 
 let
-  onnxruntime =
-    callPackage ./onnxruntime.nix {};
-in cudaPackages_11_6.backendStdenv.mkDerivation rec {
+  onnxruntime = callPackage ./onnxruntime.nix {};
+in cudaPackages_11_8.backendStdenv.mkDerivation rec {
   pname = "obs-backgroundremoval";
   version = "1.0.3";
 
@@ -48,15 +47,17 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     repo = "obs-backgroundremoval";
     rev = "v${version}";
     hash = "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs=";
+#    fetchSubmodules = true;
   };
 
   nativeBuildInputs =
-    [ cmake cudaPackages_11_6.autoAddOpenGLRunpathHook autoPatchelfHook ];
+    [ cmake cudaPackages_11_8.autoAddOpenGLRunpathHook autoPatchelfHook ];
 
   buildInputs = [
     obs-studio
     onnxruntime
     opencv
+    curl
   ];
 
   dontWrapQtApps = true;
@@ -69,6 +70,7 @@ in cudaPackages_11_6.backendStdenv.mkDerivation rec {
     "-DVERSION={$version}"
     "-DUSE_SYSTEM_ONNXRUNTIME=ON"
     "-DUSE_SYSTEM_OPENCV=ON"
+    "-DUSE_SYSTEM_CURL=ON"
     "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include"
     "-DOnnxruntime_INCLUDES_DIR=${onnxruntime.dev}/include"
     "-DOnnxruntime_LIBRARIES=${onnxruntime}/lib/libonnxruntime.so"

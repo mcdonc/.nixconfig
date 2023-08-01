@@ -16,7 +16,7 @@
           config = { allowUnfree = true; };
         };
         onnxruntime =
-          (with pkgs; callPackage ./onnxruntime.nix { unstable = unstable; });
+          (with pkgs; callPackage ./onnxruntime.nix { inherit unstable; });
       in rec {
         defaultApp = flake-utils.lib.mkApp { drv = defaultPackage; };
         defaultPackage = onnxruntime;
