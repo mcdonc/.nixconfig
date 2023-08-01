@@ -100,7 +100,7 @@
   services.emacs.enable = true;
 
   home.file.".emacs.d" = {
-    source = ../emacs/.emacs.d;
+    source = ../.emacs.d;
     recursive = true;
   };
 
@@ -111,7 +111,7 @@
   };
 
   home.file.".p10k.zsh" = {
-    source = ../p10k/.p10k.zsh;
+    source = ../.p10k.zsh;
     executable = true;
   };
 
