@@ -1,8 +1,6 @@
 { config, pkgs, home-manager, ... }:
 
 {
-  #imports = [ (import "${home-manager}/nixos") ];
-
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;

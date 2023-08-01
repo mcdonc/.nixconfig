@@ -10,11 +10,15 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable }@inputs:
+    , nixpkgs-unstable } @inputs:
     let
       system = "x86_64-linux";
-      overlay-r2211 = final: prev: {
+      overlay-nixpkgs = final: prev: {
         r2211 = import nixpkgs-r2211 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
         };
@@ -36,7 +40,7 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 overlay-unstable overlay-obs-bgremoval ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
             ./users/chrism/user.nix
@@ -50,7 +54,7 @@
         thinknix50 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             ./hosts/thinknix50.nix
             ./users/chrism/user.nix
@@ -64,7 +68,7 @@
         thinknix52 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p52
             ./hosts/thinknix52.nix
             ./users/chrism/user.nix
@@ -78,7 +82,7 @@
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix51.nix
             ./users/larry/user.nix
@@ -92,7 +96,7 @@
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-t420
             ./hosts/thinknix420.nix
             ./users/chrism/user.nix

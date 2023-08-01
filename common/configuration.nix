@@ -3,39 +3,39 @@
 {
   imports = [ ./cachix.nix ];
 
-  # nix stuff
   system.stateVersion = "22.05";
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
-      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
+           /run/current-system "$systemConfig"
     '';
   };
 
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    trusted-users = root @wheel
-    sandbox = relaxed
-  '';
-
-  nix.settings = {
-    tarball-ttl = 300;
-    auto-optimise-store = true;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      trusted-users = root @wheel
+      sandbox = relaxed
+    '';
+    settings = {
+      tarball-ttl = 300;
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
-  
+
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -46,9 +46,9 @@
   boot.loader.grub.useOSProber = true;
   boot.loader.timeout = 60;
   boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
-  # copyKernels: "Using NixOS on a ZFS root file system might result in the boot error
-  # external pointer tables not supported when the number of hardlinks in the nix
-  # store gets very high.
+  # copyKernels: "Using NixOS on a ZFS root file system might result in the
+  # boot error external pointer tables not supported when the number of
+  # hardlinks in the nix store gets very high.
   boot.loader.grub.copyKernels = true;
 
   ## obs
@@ -82,23 +82,8 @@
     }
   ];
 
-  # for audio plugins, stolen from musnix
-  environment.variables = {
-    DSSI_PATH =
-      "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
-    LADSPA_PATH =
-      "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
-    LV2_PATH =
-      "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
-    LXVST_PATH =
-      "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
-    VST_PATH =
-      "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
-    VST3_PATH =
-      "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
-  };
-
-  # enable high precision timers if they exist (https://gentoostudio.org/?page_id=420)
+  # enable high precision timers if they exist
+  # (https://gentoostudio.org/?page_id=420)
   services.udev = {
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
@@ -111,6 +96,7 @@
     overrideStrategy = "asDropin";
     serviceConfig.LogFilterPatterns = "~.*Expiring subscriptions.*";
   };
+
   # restart faster
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=10s
@@ -133,7 +119,7 @@
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
-  fonts.fonts = with pkgs; [ ubuntu_font_family ];
+  fonts.fonts = with pkgs; [ ubuntu_font_family nerdfonts ];
 
   # sound
   sound.enable = true;
@@ -201,10 +187,10 @@
     set ttymouse=
   '';
 
-  # List software packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim_configurable
+    #pkgs.allthepythons.packages.x86_64-linux."2.7.18"
+    #pkgs.allthepythons.packages.x86_64-linux."3.9.16"
     wget
     (wrapOBS { plugins = with obs-studio-plugins; [ obs-backgroundremoval ]; })
     thermald
@@ -305,5 +291,17 @@
     mc
     etcher
     pre-commit
+    html-tidy
+    dua
+    duf
+    ncdu
+    inetutils # for telnet
+    asciiquarium
+    rig
+    cowsay
+    banner
+    lolcat
+    fortune
+    file
   ];
 }
