@@ -23,12 +23,6 @@
           config.allowUnfree = true;
         };
       };
-      overlay-unstable = final: prev: {
-        unstable = import nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      };
       overlay-obs-bgremoval = final: prev: {
         obs-studio-plugins = prev.obs-studio-plugins // {
           obs-backgroundremoval =
