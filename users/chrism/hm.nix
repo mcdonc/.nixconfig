@@ -62,6 +62,7 @@ in {
     fd  # fd is an unnamed dependency of fzf
     shell-genie
     nushell
+    oh-my-posh # not enabled via programs.xxx cuz dont want it enabled in zsh
   ];
   home.stateVersion = "22.05";
 
@@ -314,10 +315,6 @@ in {
   programs.gitui.enable = true;
 
   programs.dircolors.enable = true;
-
-  programs.oh-my-posh = {
-    enable = true;
-  };
 
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
