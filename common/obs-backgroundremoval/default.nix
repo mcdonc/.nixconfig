@@ -1,6 +1,6 @@
-{ lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, curl, callPackage
-, cudaPackages_11_8, autoPatchelfHook, addOpenGLRunpath }:
-
+{ lib, stdenv, fetchFromGitHub, cmake, obs-studio, opencv, curl, ninja ,
+libsForQt5, qt6, callPackage, cudaPackages_11_8, autoPatchelfHook,
+addOpenGLRunpath }:
 
 # obs startup
 
@@ -15,7 +15,7 @@
 # Jul 13 14:19:10 thinknix512 kernel: Code: Unable to access opcode bytes at 0x7f77b03eaa36.
 # Jul 13 14:19:10 thinknix512 systemd[1]: Started Process Core Dump (PID 355109/UID 0).
 # Jul 13 14:19:21 thinknix512 systemd-coredump[355110]: [🡕] Process 353717 (.obs-wrapped) of user 1000 dumped core.
-                                                      
+
 #     Module libonnxruntime_providers_cuda.so without build-id.
 #     Module libonnxruntime_providers_shared.so without build-id.
 #     Module libquadmath.so.0 without build-id.
@@ -36,59 +36,53 @@
 # Jul 13 14:19:21 thinknix512 kwin_x11[8671]: kwin_core: Failed to focus 0x5000008 (error 3)
 # Jul 13 14:19:21 thinknix512 kwin_x11[8671]: kwin_core: XCB error: 152 (BadDamage), sequence: 54145, resource id: 23530895, major code: 143 (DAMAGE), minor code: 3 (Subtract)
 
-let
-  onnxruntime = callPackage ./onnxruntime.nix {};
-in cudaPackages_11_8.backendStdenv.mkDerivation rec {
+let onnxruntime = callPackage ./onnxruntime.nix { };
+in stdenv.mkDerivation rec {
   pname = "obs-backgroundremoval";
-  version = "1.0.3";
+  version = "1.1.3";
 
   src = fetchFromGitHub {
     owner = "royshil";
     repo = "obs-backgroundremoval";
     rev = "v${version}";
-    hash = "sha256-B8FvTq+ucidefIN3aqAJbezcHnTv6vYPxjYETiMiMFs=";
-#    fetchSubmodules = true;
+    hash = "sha256-bBx0CnbmAQ8WKG017sab1d8Js6+MfiQj1y+FLgEaaLU=";
+    fetchSubmodules = true;
   };
 
   nativeBuildInputs =
-    [ cmake cudaPackages_11_8.autoAddOpenGLRunpathHook autoPatchelfHook ];
+    [ cmake cudaPackages_11_8.autoAddOpenGLRunpathHook autoPatchelfHook
+      ninja ];
 
-  buildInputs = [
-    obs-studio
-    onnxruntime
-    opencv
-    curl
-  ];
+  buildInputs =
+    [ obs-studio onnxruntime opencv qt6.qtbase curl ];
 
   dontWrapQtApps = true;
 
-  env.NIX_CFLAGS_COMPILE = "-I${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt";
+  env.NIX_CFLAGS_COMPILE = ''
+    -I${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt
+    -L${onnxruntime}/lib
+    -Wl,--no-undefined
+  '';
 
   # pulled from scripts/PKGBUILD
   cmakeFlags = [
+    "-DENABLE_QT=ON"
+    "-DENABLE_FRONTEND_API=ON"
+    "-DCMAKE_MODULE_PATH=${src}/cmake"
     "-DobsIncludePath=${obs-studio}/include/obs"
     "-DVERSION={$version}"
     "-DUSE_SYSTEM_ONNXRUNTIME=ON"
     "-DUSE_SYSTEM_OPENCV=ON"
     "-DUSE_SYSTEM_CURL=ON"
     "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include"
-    "-DOnnxruntime_INCLUDES_DIR=${onnxruntime.dev}/include"
     "-DOnnxruntime_LIBRARIES=${onnxruntime}/lib/libonnxruntime.so"
-#    "-DOnnxruntime_INCLUDE_DIR=${onnxruntime.dev}/include/onnxruntime/core/providers/tensorrt"
   ];
 
-  postInstall = ''
-    mkdir $out/lib $out/share
-    mv $out/obs-plugins/64bit $out/lib/obs-plugins
-    rm -rf $out/obs-plugins
-    mv $out/data $out/share/obs
-  '';
-
-  passthru.obsWrapperArguments =
-    [ 
-      "--prefix LD_LIBRARY_PATH : ${onnxruntime}/lib"
-      "--prefix LD_LIBRARY_PATH : ${addOpenGLRunpath.driverLink}/lib"
-    ];
+  passthru.obsWrapperArguments = [
+    "--prefix LD_LIBRARY_PATH : ${onnxruntime}/lib"
+    "--prefix LD_LIBRARY_PATH : ${addOpenGLRunpath.driverLink}/lib"
+    "--prefix LD_LIBRARY_PATH : ${onnxruntime}/lib"
+  ];
 
   meta = with lib; {
     description =
