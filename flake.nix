@@ -27,7 +27,7 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 overlay-nixpkgs-python ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-r2211 ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
             ./users/chrism/user.nix
