@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-r2211, ... }:
 
 {
   imports = [ ./cachix.nix ];
@@ -252,7 +252,7 @@
     konversation
     nixfmt
     wakeonlan
-    r2211.olive-editor # use 0.1.2 (see flake.nix overlay-r2211)
+    pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
     cachix
     gptfdisk # "sgdisk"
     ardour

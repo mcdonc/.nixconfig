@@ -4,7 +4,6 @@
   imports = [
     ../common/pseries.nix
     ../common/encryptedzfs.nix
-    ../common/configuration.nix
     ../common/sessile.nix
     ../common/rc505.nix
 #    ../common/oldnvidia.nix

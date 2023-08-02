@@ -14,23 +14,27 @@
     , nixpkgs-unstable, agenix }@inputs:
     let
       system = "x86_64-linux";
-      overlay-nixpkgs = final: prev: {
-        r2211 = import nixpkgs-r2211 {
+      specialargs = {
+        pkgs-unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
         };
-        unstable = import nixpkgs-unstable {
+        pkgs-r2211 = import nixpkgs-r2211 {
           inherit system;
           config.allowUnfree = true;
         };
+        inherit inputs;
       };
+
       chris-modules = [
+        ./common/configuration.nix
         ./users/chrism/user.nix
-        home-manager.nixosModules.home-manager
-        agenix.nixosModules.default
-        {
-          home-manager.useUserPackages = true;
-          home-manager.users.chrism = import ./users/chrism/hm.nix;
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useUserPackages = true;
+            users.chrism = import ./users/chrism/hm.nix;
+            extraSpecialArgs = { inherit specialargs; };
+          };
         }
       ];
     in {
@@ -38,31 +42,30 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
           ];
+          specialArgs = { inherit specialargs; };
         };
         thinknix50 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             ./hosts/thinknix50.nix
           ];
+          specialArgs = { inherit specialargs; };
         };
         thinknix52 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p52
             ./hosts/thinknix52.nix
           ];
+          specialArgs = { inherit specialargs; };
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix51.nix
             ./users/larry/user.nix
@@ -72,14 +75,15 @@
               home-manager.users.larry = import ./users/larry/hm.nix;
             }
           ];
+          specialArgs = { inherit specialargs; };
         };
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
             nixos-hardware.nixosModules.lenovo-thinkpad-t420
             ./hosts/thinknix420.nix
           ];
+          specialArgs = { inherit specialargs; };
         };
       };
     };
