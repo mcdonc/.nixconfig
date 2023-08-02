@@ -7,10 +7,11 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
+    agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable } @inputs:
+    , nixpkgs-unstable, agenix }@inputs:
     let
       system = "x86_64-linux";
       overlay-nixpkgs = final: prev: {
@@ -33,6 +34,7 @@
             ./hosts/thinknix512.nix
             ./users/chrism/user.nix
             home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
             {
               home-manager.useUserPackages = true;
               home-manager.users.chrism = import ./users/chrism/hm.nix;
