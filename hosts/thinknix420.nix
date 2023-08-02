@@ -1,7 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixos-hardware, ... }:
 
 {
   imports = [
+    "${nixos-hardware}/lenovo/thinkpad/t420"
     ../common/tseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix

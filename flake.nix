@@ -23,6 +23,8 @@
           inherit system;
           config.allowUnfree = true;
         };
+        inherit nixos-hardware;
+        inherit system;
         inherit inputs;
       };
 
@@ -33,7 +35,7 @@
           home-manager = {
             useUserPackages = true;
             users.chrism = import ./users/chrism/hm.nix;
-            extraSpecialArgs = { inherit specialargs; };
+            extraSpecialArgs = specialargs;
           };
         }
       ];
@@ -42,15 +44,13 @@
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix512.nix
           ];
-          specialArgs = { inherit specialargs; };
+          specialArgs = specialargs;
         };
         thinknix50 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            nixos-hardware.nixosModules.lenovo-thinkpad-p50
             ./hosts/thinknix50.nix
           ];
           specialArgs = { inherit specialargs; };
@@ -58,15 +58,13 @@
         thinknix52 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            nixos-hardware.nixosModules.lenovo-thinkpad-p52
             ./hosts/thinknix52.nix
           ];
-          specialArgs = { inherit specialargs; };
+          specialArgs = specialargs;
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            nixos-hardware.nixosModules.lenovo-thinkpad-p51
             ./hosts/thinknix51.nix
             ./users/larry/user.nix
             home-manager.nixosModules.home-manager
@@ -80,10 +78,9 @@
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = chris-modules ++ [
-            nixos-hardware.nixosModules.lenovo-thinkpad-t420
             ./hosts/thinknix420.nix
           ];
-          specialArgs = { inherit specialargs; };
+          specialArgs = specialargs;
         };
       };
     };
