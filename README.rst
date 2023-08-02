@@ -40,10 +40,24 @@ Usage
 
     cat /etc/machine-id | head -c 8
 
-- Link the nixfile representing the new system into (XXX probably wont work
-  with new flakes stuff) ``/mnt/etc/nixos/configuration.nix``::
+- Edit the ``flake.nix`` file adding the new system to ``nixosConfigurations``,
+  referencing the right ``nixos-hardware`` module and the file created in
+  the last step, eg.::
 
-    sudo ln -s /mnt/etc/nixos/hosts/thinknix51.nix /mnt/etc/nixos/configuration.nix
+        mynewsystem = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
+            nixos-hardware.nixosModules.lenovo-thinkpad-p51
+            ./hosts/mynewsystem.nix
+            ./users/chrism/user.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useUserPackages = true;
+              home-manager.users.chrism = import ./users/chrism/hm.nix;
+            }
+          ];
+        };
 
 - Install the system::
 
