@@ -279,6 +279,13 @@ in {
     epkgs.smart-tabs-mode
     epkgs.whitespace-cleanup-mode
     epkgs.flycheck-pyflakes
+    epkgs.nord-theme
+    epkgs.nordless-theme
+    epkgs.vscode-dark-plus-theme
+    epkgs.doom-modeline
+    epkgs.all-the-icons
+    epkgs.all-the-icons-dired
+    pkgs.emacs-all-the-icons-fonts
   ];
 
   services.emacs.enable = true;
