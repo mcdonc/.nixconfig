@@ -29,7 +29,6 @@
       };
 
       chris-modules = [
-        ./common/configuration.nix
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager {
           home-manager = {
