@@ -19,9 +19,10 @@ Overview
 - It is possible to disuse overlays in your Nix configuration pretty easily if
   you use flakes.
 
-- It's not really necessary to disuse overlays, they work fine.  But along the
-  way, we'll learn how to pass flake inputs and derivatives thereof down to our
-  "normal" config files without using overlays.
+- It's not really necessary to disuse overlays, they work fine.  But we'll
+  learn how to pass flake inputs and derivatives thereof down to our "normal"
+  config files without using overlays, in a way that will probably feel more
+  natural (despite some arcane spelling).
 
 Overlays
 --------
