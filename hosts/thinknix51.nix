@@ -6,7 +6,6 @@
     ../common/configuration.nix
     ../common/pseries.nix
     ../common/encryptedzfs.nix
-    ../common/configuration.nix
 #    ../common/oldnvidia.nix
   ];
   networking.hostId = "83540bcc";
