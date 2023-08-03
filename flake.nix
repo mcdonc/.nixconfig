@@ -14,7 +14,7 @@
     , nixpkgs-unstable, agenix }@inputs:
     let
       system = "x86_64-linux";
-      specialargs = {
+      specialArgs = {
         pkgs-unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
@@ -35,7 +35,7 @@
           home-manager = {
             useUserPackages = true;
             users.chrism = import ./users/chrism/hm.nix;
-            extraSpecialArgs = specialargs;
+            extraSpecialArgs = specialArgs;
           };
         }
       ];
@@ -46,7 +46,7 @@
           home-manager = {
             useUserPackages = true;
             users.larry = import ./users/larry/hm.nix;
-            extraSpecialArgs = specialargs;
+            extraSpecialArgs = specialArgs;
           };
         }
       ];
@@ -54,28 +54,28 @@
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix512.nix ];
-          specialArgs = specialargs;
         };
         thinknix50 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix50.nix ];
-          specialArgs = { inherit specialargs; };
         };
         thinknix52 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix52.nix ];
-          specialArgs = specialargs;
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit specialArgs;
           modules = larry-modules ++ [ ./hosts/thinknix51.nix ];
-          specialArgs = { inherit specialargs; };
         };
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system;
+          inherit specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix420.nix ];
-          specialArgs = specialargs;
         };
       };
     };
