@@ -217,7 +217,7 @@ Disusing Overlays
       };
     
 - Some folks pass down "bare" ``inputs`` as ``specialArgs`` but here we do some
-  preprocessing by importing the unstabel and 22.11 nixpkgs with special flags
+  preprocessing by importing the unstable and 22.11 nixpkgs with special flags
   so we needn't do it in downstream modules.  We pass in ``inputs`` as a key
   just in case we need it anyway.
 
