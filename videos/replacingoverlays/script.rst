@@ -1,7 +1,7 @@
 NixOS 50: Replacing Overlays in a Flakes-Based Config
 =====================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/IoeCzw22SkI
 
 - This text script available via link in the video description.
 
