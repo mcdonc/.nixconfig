@@ -21,15 +21,16 @@ Overview
 
 - It's not really necessary to disuse overlays, they work fine.  But we'll
   learn how to pass flake inputs and derivatives thereof down to our "normal"
-  config files without using overlays, in a way that will probably feel more
-  natural (despite some arcane spelling).
+  config modules without using overlays, in a way that will probably feel more
+  natural than attaching random stuff to ``pkgs`` (despite some arcane
+  spelling).
 
 Overlays
 --------
 
 - The ``overlay-nixpkgs`` overlay below allows us to access
   ``pkgs.r2211.<anypackage>`` and ``pkgs.unstable.<anypackage>`` within any of
-  our configuration files::
+  our configuration modules::
 
     {
       description = "Chris' Jawns";
@@ -43,7 +44,7 @@ Overlays
       };
 
       outputs = { self, nixpkgs, nix, nixos-hardware, home-manager,
-                  nixpkgs-r2211, nixpkgs-unstable, agenix }@inputs:
+                  nixpkgs-r2211, nixpkgs-unstable, agenix }:
         let
           system = "x86_64-linux";
           overlay-nixpkgs = final: prev: {
@@ -100,7 +101,7 @@ Disusing Overlays
   need to do this anyway, there are better ways to do what overlays do.
 
 - We can use the ``specialArgs`` argument to ``nixpkgs.lib.nixosSystem`` to
-  pass in whatever we want to downstream files that will be sent to their
+  pass in whatever we want to downstream modules that will be sent to their
   argument list.
 
 - Here is a changed version of the above which disuses overlays.::
@@ -196,10 +197,39 @@ Disusing Overlays
 - Note that ``inherit specialArgs;`` is just a shorter way of spelling
   ``specialArgs = specialArgs;``.
 
+- Note that we append ``@inputs`` to our ``outputs`` argument list.  This
+  captures all the stuff we pass in to our outputs in a single attribute set.
+
+  We can then pass inputs down via ``specialArgs`` ala::
+
+      specialArgs = {
+        pkgs-unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-r2211 = import nixpkgs-r2211 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        inherit nixos-hardware;
+        inherit system;
+        inherit inputs;
+      };
+    
+- Some folks pass down "bare" ``inputs`` as ``specialArgs`` but here we do some
+  preprocessing by importing the unstabel and 22.11 nixpkgs with special flags
+  so we needn't do it in downstream modules.  We pass in ``inputs`` as a key
+  just in case we need it anyway.
+
+- Our use of ``specialArgs`` adds the following arguments to any imported
+  module::
+
+    pkgs-unstable, pkgs-r211, nixos-hardware, system, inputs
+      
 - In an overlay, all overlaid attributes are attached to ``pkgs``.  But now
   that we've added ``specialArgs`` to our call to ``nixpkgs.lib.nixosSystem``,
-  Nix will pass them down directly to our imported files, and so those files
-  must expect them in their argument lists.
+  Nix will pass them down directly to our imported modules, and so those
+  modules can expect them in their argument lists.
 
 - Using the 22.11 and unstable versions of nixpkgs becomes adding
   ``pkgs-r2211`` and ``pkgs-unstable`` to the arglist of ``configuration.nix``
