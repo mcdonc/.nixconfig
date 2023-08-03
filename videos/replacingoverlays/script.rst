@@ -153,9 +153,52 @@ Disusing Overlays
           };
         }
 
-- In an overlay, all overlaid attributes are attached to ``pkgs``.  But now we
-  are passing them down directly to our imported files, and so those files must
-  expect them in their argument lists.
+- Note that we got rid of both::
+
+      overlay-nixpkgs = final: prev: {
+        r2211 = import nixpkgs-r2211 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
+
+  And::
+
+      ({ config, pkgs, ... }: {
+            nixpkgs.overlays = [ overlay-nixpkgs ];
+            })
+
+  Replacing them respectively with::
+    
+      specialArgs = {
+        pkgs-unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-r2211 = import nixpkgs-r2211 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        inherit nixos-hardware;
+        inherit system;
+        inherit inputs;
+      };
+
+  And::
+
+    inherit specialArgs;
+
+- Note that ``inherit specialArgs;`` is just a shorter way of spelling
+  ``specialArgs = specialArgs;``.
+
+- In an overlay, all overlaid attributes are attached to ``pkgs``.  But now
+  that we've added ``specialArgs`` to our call to ``nixpkgs.lib.nixosSystem``,
+  Nix will pass them down directly to our imported files, and so those files
+  must expect them in their argument lists.
 
 - Using the 22.11 and unstable versions of nixpkgs becomes adding
   ``pkgs-r2211`` and ``pkgs-unstable`` to the arglist of ``configuration.nix``
