@@ -38,6 +38,16 @@
           };
         }
       ];
+      larry-modules = [
+        ./users/larry/user.nix
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useUserPackages = true;
+            users.larry = import ./users/larry/hm.nix;
+            extraSpecialArgs = specialargs;
+          };
+        }
+      ];
     in {
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
@@ -63,14 +73,8 @@
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [
+          modules = larry-modules ++ [
             ./hosts/thinknix51.nix
-            ./users/larry/user.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useUserPackages = true;
-              home-manager.users.larry = import ./users/larry/hm.nix;
-            }
           ];
           specialArgs = { inherit specialargs; };
         };
