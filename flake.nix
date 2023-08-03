@@ -30,7 +30,8 @@
 
       chris-modules = [
         ./users/chrism/user.nix
-        home-manager.nixosModules.home-manager {
+        home-manager.nixosModules.home-manager
+        {
           home-manager = {
             useUserPackages = true;
             users.chrism = import ./users/chrism/hm.nix;
@@ -40,7 +41,8 @@
       ];
       larry-modules = [
         ./users/larry/user.nix
-        home-manager.nixosModules.home-manager {
+        home-manager.nixosModules.home-manager
+        {
           home-manager = {
             useUserPackages = true;
             users.larry = import ./users/larry/hm.nix;
@@ -52,37 +54,27 @@
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = chris-modules ++ [
-            ./hosts/thinknix512.nix
-          ];
+          modules = chris-modules ++ [ ./hosts/thinknix512.nix ];
           specialArgs = specialargs;
         };
         thinknix50 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = chris-modules ++ [
-            ./hosts/thinknix50.nix
-          ];
+          modules = chris-modules ++ [ ./hosts/thinknix50.nix ];
           specialArgs = { inherit specialargs; };
         };
         thinknix52 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = chris-modules ++ [
-            ./hosts/thinknix52.nix
-          ];
+          modules = chris-modules ++ [ ./hosts/thinknix52.nix ];
           specialArgs = specialargs;
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = larry-modules ++ [
-            ./hosts/thinknix51.nix
-          ];
+          modules = larry-modules ++ [ ./hosts/thinknix51.nix ];
           specialArgs = { inherit specialargs; };
         };
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = chris-modules ++ [
-            ./hosts/thinknix420.nix
-          ];
+          modules = chris-modules ++ [ ./hosts/thinknix420.nix ];
           specialArgs = specialargs;
         };
       };
