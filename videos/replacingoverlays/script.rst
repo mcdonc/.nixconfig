@@ -11,11 +11,17 @@ NixOS 50: Replacing Overlays in a Flakes-Based Config
 Overview
 --------
 
+- Nix overlays are most typically used to gain access to older or newer
+  revisions of ``nixpkgs`` packages.  If you want, say, the most recent version
+  of ``cmake`` (from the unstable branch of nixpkgs).  Or an older version of
+  ``olive-editor`` (from the 22.11 branch of nixpkgs).
+
 - It is possible to disuse overlays in your Nix configuration pretty easily if
   you use flakes.
 
-- Along the way, we'll learn how to pass flake inputs and derivatives thereof
-  down to our "normal" config files.
+- It's not really necessary to disuse overlays, they work fine.  But along the
+  way, we'll learn how to pass flake inputs and derivatives thereof down to our
+  "normal" config files without using overlays.
 
 Overlays
 --------
