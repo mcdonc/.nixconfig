@@ -11,12 +11,18 @@ let
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
     }
+    function bye (){
+       chcolor 1
+       exit
+    }
     chcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
-       read -p "SSH exited unexpectedly... hit any key to continue"
+       trap 'bye' SIGINT
+       echo -e "\033[0;31mSSH exited unexpectedly, hit a key to continue\033[0m"
+       read -p ""
     fi
-    chcolor 1
+    bye
   '';
   defaultpalette = [
     "#171421"
