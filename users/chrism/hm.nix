@@ -19,7 +19,7 @@ let
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
        trap 'bye' SIGINT
-       echo -e "\033[0;31mSSH exited unexpectedly, hit a key to continue\033[0m"
+       echo -e "\033[0;31mSSH exited unexpectedly, hit enter to continue\033[0m"
        read -p ""
     fi
     bye
