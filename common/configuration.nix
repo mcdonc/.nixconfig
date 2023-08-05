@@ -1,7 +1,8 @@
-{ config, pkgs, pkgs-r2211,  ... }:
+{ config, pkgs, pkgs-r2211, modulesPath, ... }:
 
 {
-  imports = [ ./cachix.nix ];
+  # qemu-vm.nix is imported to allow virtualisation.memorySize and virtualisation.cores to work
+  imports = [ ./cachix.nix (modulesPath + "/virtualisation/qemu-vm.nix") ];
 
   system.stateVersion = "22.05";
 
@@ -150,6 +151,8 @@
 
   # virtualization
   virtualisation.libvirtd.enable = true;
+  virtualisation.memorySize = 8192;
+  virtualisation.cores = 4;
 
   # vmVariant configuration is added only when building VM with nixos-rebuild build-vm
   virtualisation.vmVariant = {
