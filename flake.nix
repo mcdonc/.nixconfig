@@ -7,11 +7,14 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
+    plasma-manager.url = "github:pjones/plasma-manager";
+    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+    plasma-manager.inputs.home-manager.follows = "home-manager";
     agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, agenix }@inputs:
+    , nixpkgs-unstable, plasma-manager, agenix }@inputs:
     let
       system = "x86_64-linux";
       specialArgs = {
@@ -24,6 +27,7 @@
           config.allowUnfree = true;
         };
         inherit nixos-hardware;
+        inherit plasma-manager;
         inherit system;
         inherit inputs;
       };

@@ -150,6 +150,14 @@
 
   # virtualization
   virtualisation.libvirtd.enable = true;
+  virtualisation.vmVariant = {
+    # following configuration is added only when building VM with nixos-rebuild build-vm
+    virtualisation = {
+      memorySize =  2147483648; # Use 2GB memory.
+      cores = 4;
+    };
+  };
+
   programs.dconf.enable = true;
 
   # printing

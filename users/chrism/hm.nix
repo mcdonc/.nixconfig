@@ -1,4 +1,4 @@
-{ config, pkgs, home-manager, ... }:
+{ config, pkgs, home-manager, plasma-manager, ... }:
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
@@ -61,6 +61,11 @@ let
   };
 
 in {
+  imports = [
+    plasma-manager.homeManagerModules.plasma-manager
+    ./plasma.nix
+  ];
+
   home.packages = with pkgs; [
     keybase-gui
     ssh-chcolor
