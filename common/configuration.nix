@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-r2211, ... }:
+{ config, pkgs, pkgs-r2211,  ... }:
 
 {
   imports = [ ./cachix.nix ];
@@ -150,6 +150,15 @@
 
   # virtualization
   virtualisation.libvirtd.enable = true;
+
+  # vmVariant configuration is added only when building VM with nixos-rebuild build-vm
+  virtualisation.vmVariant = {
+    virtualisation = {
+      memorySize = 8192; # Use 8GB memory (value is in MB)
+      cores = 4;
+    };
+  };
+
   programs.dconf.enable = true;
 
   # printing
