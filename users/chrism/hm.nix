@@ -1,4 +1,4 @@
-{ config, pkgs, home-manager, plasma-manager, ... }:
+{ config, pkgs, ... }:
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
@@ -61,16 +61,13 @@ let
   };
 
 in {
-  imports = [
-    plasma-manager.homeManagerModules.plasma-manager
-    ./plasma.nix
-  ];
+  imports = [ ./plasma.nix ];
 
   home.packages = with pkgs; [
     keybase-gui
     ssh-chcolor
     xdotool
-    fd  # fd is an unnamed dependency of fzf
+    fd # fd is an unnamed dependency of fzf
     shell-genie
     nushell
     oh-my-posh # not enabled via programs.xxx cuz dont want it enabled in zsh
@@ -317,13 +314,9 @@ in {
     executable = true;
   };
 
-  xdg.configFile."nushell/oh-my-posh.nu" = {
-    source = ./oh-my-posh.nu;
-  };
+  xdg.configFile."nushell/oh-my-posh.nu" = { source = ./oh-my-posh.nu; };
 
-  xdg.configFile."nushell/config.nu" = {
-    source = ./config.nu;
-  };
+  xdg.configFile."nushell/config.nu" = { source = ./config.nu; };
 
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
@@ -349,7 +342,7 @@ in {
         "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
       LADSPA_PATH =
         "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
-      LV2_PATH = 
+      LV2_PATH =
         "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
       LXVST_PATH =
         "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";

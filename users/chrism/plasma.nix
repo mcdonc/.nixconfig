@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, plasma-manager, ...}:
 let
   wallpaper-large = builtins.path {
     path = ./a-scanner-darkly-desktop-wallpaper.jpg;
@@ -8,6 +8,9 @@ let
   };
 in
 {
+  imports = [
+    plasma-manager.homeManagerModules.plasma-manager
+  ];
   programs.plasma = {
     enable = true;
     shortcuts = {

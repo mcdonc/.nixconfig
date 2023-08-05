@@ -154,7 +154,8 @@
   virtualisation.memorySize = 8192;
   virtualisation.cores = 4;
 
-  # vmVariant configuration is added only when building VM with nixos-rebuild build-vm
+  # vmVariant configuration is added only when building VM with nixos-rebuild build-vm (doesnt seem
+  # to work)
   virtualisation.vmVariant = {
     virtualisation = {
       memorySize = 8192; # Use 8GB memory (value is in MB)
