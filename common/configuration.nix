@@ -312,5 +312,6 @@
     fortune
     file
     wireshark
+    ruby
   ];
 }
