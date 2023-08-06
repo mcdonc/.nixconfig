@@ -1,12 +1,15 @@
 NixOS 51: Using Plasma-Manager to Configure Per-User Plasma Desktop Settings
 ============================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=2r0KnIZX5HY
 
 - This text script available via link in the video description.
 
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
+
+- See my config that contains this stuff at
+  https://github.com/mcdonc/.nixconfig/tree/use-plasma-manager
 
 Overview
 --------
