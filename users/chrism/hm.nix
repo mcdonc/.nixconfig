@@ -375,6 +375,7 @@ in {
       yellowterm = "${gterm-change-profile} 5";
       ssh = "${ssh-chcolor}/bin/ssh-chcolor";
       ai = "shell-genie ask";
+      diff = "${pkgs.colordiff}/bin/colordiff";
     };
 
     completionInit = ""; # speed up zsh start time

@@ -29,13 +29,11 @@ Overview
 Demo
 ----
 
-- We can scrape our current KDE Plasma config by running ``nix run github:pjones/plasma-manager``.
-
-- This will spit out a huge Nix attribute set to stdout.
-
-- We can capture it by running::
+- We can scrape our current KDE Plasma config by running::
 
     nix run github:pjones/plasma-manager > ~/plasma_orig.nix
+
+- This will spit out a huge Nix attribute set to stdout.
 
 - Note that currently there is a small bug that may require you to move your
   ``~/.config/dolphinrc`` aside temporarily before being able to successfully
@@ -66,7 +64,7 @@ Demo
   appearance choices.  This is because KDE tends to put state information into
   config files, likely.
 
-- But I've created a branch in a fork that does at
+- But I've created a branch in a trivial fork that does at
   https://github.com/mcdonc/plasma-manager/tree/enable-look-and-feel-settings
 
   It will capture a setting from the ``kdeglobals`` file named
@@ -90,7 +88,12 @@ Demo
         
 - Some hand-editing of the result of running the above has to be done.  This is
   not ideal.  In particular, we need to replace any hardcoded paths in the
-  output with expressions that will generate the right paths.::
+  output with expressions that will generate the right paths.  For me, a lot of
+  these paths are wallpaper paths.
+
+  I also want to be able to just select a wallpaper without needing to upload
+  it, so I put a couple of them into the store and refer to them later in the
+  config::
 
     { pkgs, plasma-manager, ...}:
     let
@@ -101,3 +104,19 @@ Demo
         path = ./scannerdarkly.png;
       };
   
+    imports = [
+      plasma-manager.homeManagerModules.plasma-manager
+    ];
+
+    ... the path-fixed output from nix run ...
+
+- Show a diff of the path-fixed output from nix run.
+
+  I think it might technically be possible to have the script that runs when
+  you do ``nix run`` replace a hardcoded path for any file that is present in
+  the output that starts with ``/nix/store`` with an expression that resolves
+  to the actual path in the nix store.  It just doesn't yet, so you gotta do it
+  by hand.
+
+- Demonstrate using ``nixos-rebuild build-vm``.
+
