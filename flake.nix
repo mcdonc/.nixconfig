@@ -77,6 +77,11 @@
           inherit specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix420.nix ];
         };
+        nixos = nixpkgs.lib.nixosSystem {
+          inherit system;
+          inherit specialArgs;
+          modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
+        };
       };
     };
 }
