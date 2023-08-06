@@ -2,7 +2,7 @@
 
 {
   # qemu-vm.nix is imported to allow virtualisation.memorySize and virtualisation.cores to work
-  imports = [ ./cachix.nix (modulesPath + "/virtualisation/qemu-vm.nix") ];
+  imports = [ ./cachix.nix ];
 
   system.stateVersion = "22.05";
 
@@ -39,6 +39,7 @@
 
   # Use GRUB, assume UEFI
   boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
   boot.loader.grub.devices = [ "nodev" ];
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.efiSupport = true;
@@ -151,8 +152,6 @@
 
   # virtualization
   virtualisation.libvirtd.enable = true;
-  virtualisation.memorySize = 8192;
-  virtualisation.cores = 4;
 
   # vmVariant configuration is added only when building VM with nixos-rebuild build-vm (doesnt seem
   # to work)
