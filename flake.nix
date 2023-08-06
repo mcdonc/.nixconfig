@@ -7,7 +7,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
-    plasma-manager.url = "github:pjones/plasma-manager";
+    plasma-manager.url = "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
     agenix.url = "github:ryantm/agenix";

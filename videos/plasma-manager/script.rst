@@ -53,12 +53,19 @@ Demo
         from ./rc2nix:176:in `run'
         from ./rc2nix:266:in `<main>'    
 
-  If so, just temporarily rename ``~/.config/dolphinrc`` to
-  ``~/.config/dolphinrc_aside`` and rerun the ``nix run`` command.
+  If so, just delete the offending line from ``dolphinrc`` or temporarily
+  rename ``~/.config/dolphinrc`` to ``~/.config/dolphinrc_aside`` and rerun the
+  ``nix run`` command.
 
 - The captured ``.nix`` file will be large, probably contains TMI.  But it does
   get us going, and works well enough for the purposes of this video.  We're
-  just going to add it, lightly modified, to our version controlled Nix configuration,
-  and then cause it to be included in our configuration.
+  just going to add it, lightly modified, to our version controlled Nix
+  configuration, and then cause it to be included in our configuration.
 
-  
+- Note that pjones' plasma-manager does not currently capture theming or
+  appearance choices.  This is because KDE tends to put state information into
+  config files, I suspect.
+
+        "kdeglobals"."KDE"."LookAndFeelPackage" = "org.kde.breezedark.desktop";
+        
+  ruby rc2nix.rb -a ~/.config/plasma-org.kde.plasma.desktop-appletsrc
