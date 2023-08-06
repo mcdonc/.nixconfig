@@ -3,7 +3,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./vm-hardware-configuration.nix
+      ./vm-hardware-config.nix
       ../common/configuration.nix
     ];
   
