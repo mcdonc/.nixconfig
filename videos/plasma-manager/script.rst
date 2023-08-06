@@ -53,12 +53,51 @@ Demo
         from ./rc2nix:176:in `run'
         from ./rc2nix:266:in `<main>'    
 
-  If so, just temporarily rename ``~/.config/dolphinrc`` to
-  ``~/.config/dolphinrc_aside`` and rerun the ``nix run`` command.
+  If so, just delete the offending line from ``dolphinrc`` or temporarily
+  rename ``~/.config/dolphinrc`` to ``~/.config/dolphinrc_aside`` and rerun the
+  ``nix run`` command.
 
-- The captured ``.nix`` file will be large, probably contains TMI.  But it does
+- The captured ``.nix`` file will be large, and contains TMI.  But it does
   get us going, and works well enough for the purposes of this video.  We're
-  just going to add it, lightly modified, to our version controlled Nix configuration,
-  and then cause it to be included in our configuration.
+  just going to add it, lightly modified, to our version controlled Nix
+  configuration, and then cause it to be included in our configuration.
 
+- Note that pjones' plasma-manager does not currently capture theming or
+  appearance choices.  This is because KDE tends to put state information into
+  config files, likely.
+
+- But I've created a branch in a fork that does at
+  https://github.com/mcdonc/plasma-manager/tree/enable-look-and-feel-settings
+
+  It will capture a setting from the ``kdeglobals`` file named
+  ``LookAndFeelPackage`` which is stripped intentionally upstream, probably
+  because it's technically unknown whether or not the named theme is installed.
+  But I always use one of the default themes, so I know it will be there::
+
+        "kdeglobals"."KDE"."LookAndFeelPackage" = "org.kde.breezedark.desktop";
+
+  It also includes settings from a file that pjones' upstream doesnt:
+  ``~/.config/plasma-org.kde.plasma.desktop-appletsrc``, which contains info
+  about which apps and widgets are in the task manager panel, which widgets I
+  have on my desktop, and various other appearance-related settings.
+
+  It *doesn't* yet capture which wallpaper I want to use, which is
+  mindbendingly frustrating. :)
+
+  But in any case, what I am now running to capture my KDE config state is::
+
+    nix run github:mcdonc/plasma-manager/enable-look-and-feel-settings
+        
+- Some hand-editing of the result of running the above has to be done.  This is
+  not ideal.  In particular, we need to replace any hardcoded paths in the
+  output with expressions that will generate the right paths.::
+
+    { pkgs, plasma-manager, ...}:
+    let
+      wallpaper-large = builtins.path {
+        path = ./a-scanner-darkly-desktop-wallpaper.jpg;
+      };
+      wallpaper-small = builtins.path {
+        path = ./scannerdarkly.png;
+      };
   
