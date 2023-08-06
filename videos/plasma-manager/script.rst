@@ -64,7 +64,9 @@ Demo
 
 - Note that pjones' plasma-manager does not currently capture theming or
   appearance choices.  This is because KDE tends to put state information into
-  config files, I suspect.
+  config files, likely.
+
+- But I've created a branch in a fork that does at 
 
         "kdeglobals"."KDE"."LookAndFeelPackage" = "org.kde.breezedark.desktop";
         
