@@ -8,6 +8,8 @@
 #    ../common/oldnvidia.nix
 #    ../common/rc505.nix
   ];
+  system.stateVersion = "22.05";
+
   networking.hostId = "f416c9cd";
   networking.hostName = "thinknix50";
 

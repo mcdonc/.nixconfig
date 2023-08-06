@@ -10,6 +10,8 @@
     ../common/configuration.nix
 #    ../common/oldnvidia.nix
   ];
+  system.stateVersion = "22.05";
+
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 

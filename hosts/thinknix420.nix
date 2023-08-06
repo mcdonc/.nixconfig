@@ -8,6 +8,8 @@
     ../common/configuration.nix
 #    ../common/rc505.nix
   ];
+  system.stateVersion = "22.05";
+
   networking.hostId = "f5836aae";
   networking.hostName = "thinknix420";
   # silence BIOS-related "errors" at boot shown before NixOS stage 1 output (default
