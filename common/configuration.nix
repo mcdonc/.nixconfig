@@ -314,5 +314,6 @@
     file
     wireshark
     ruby
+    colordiff
   ];
 }

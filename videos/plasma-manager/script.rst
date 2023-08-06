@@ -29,13 +29,11 @@ Overview
 Demo
 ----
 
-- We can scrape our current KDE Plasma config by running ``nix run github:pjones/plasma-manager``.
-
-- This will spit out a huge Nix attribute set to stdout.
-
-- We can capture it by running::
+- We can scrape our current KDE Plasma config by running::
 
     nix run github:pjones/plasma-manager > ~/plasma_orig.nix
+
+- This will spit out a huge Nix attribute set to stdout.
 
 - Note that currently there is a small bug that may require you to move your
   ``~/.config/dolphinrc`` aside temporarily before being able to successfully
@@ -57,7 +55,7 @@ Demo
   rename ``~/.config/dolphinrc`` to ``~/.config/dolphinrc_aside`` and rerun the
   ``nix run`` command.
 
-- The captured ``.nix`` file will be large, probably contains TMI.  But it does
+- The captured ``.nix`` file will be large, and contains TMI.  But it does
   get us going, and works well enough for the purposes of this video.  We're
   just going to add it, lightly modified, to our version controlled Nix
   configuration, and then cause it to be included in our configuration.
@@ -66,8 +64,58 @@ Demo
   appearance choices.  This is because KDE tends to put state information into
   config files, likely.
 
-- But I've created a branch in a fork that does at 
+- But I've created a branch in a trivial fork that does at
+  https://github.com/mcdonc/plasma-manager/tree/enable-look-and-feel-settings
+
+  It will capture a setting from the ``kdeglobals`` file named
+  ``LookAndFeelPackage`` which is stripped intentionally upstream, probably
+  because it's technically unknown whether or not the named theme is installed.
+  But I always use one of the default themes, so I know it will be there::
 
         "kdeglobals"."KDE"."LookAndFeelPackage" = "org.kde.breezedark.desktop";
+
+  It also includes settings from a file that pjones' upstream doesnt:
+  ``~/.config/plasma-org.kde.plasma.desktop-appletsrc``, which contains info
+  about which apps and widgets are in the task manager panel, which widgets I
+  have on my desktop, and various other appearance-related settings.
+
+  It *doesn't* yet capture which wallpaper I want to use, which is
+  mindbendingly frustrating. :)
+
+  But in any case, what I am now running to capture my KDE config state is::
+
+    nix run github:mcdonc/plasma-manager/enable-look-and-feel-settings
         
-  ruby rc2nix.rb -a ~/.config/plasma-org.kde.plasma.desktop-appletsrc
+- Some hand-editing of the result of running the above has to be done.  This is
+  not ideal.  In particular, we need to replace any hardcoded paths in the
+  output with expressions that will generate the right paths.  For me, a lot of
+  these paths are wallpaper paths.
+
+  I also want to be able to just select a wallpaper without needing to upload
+  it, so I put a couple of them into the store and refer to them later in the
+  config::
+
+    { pkgs, plasma-manager, ...}:
+    let
+      wallpaper-large = builtins.path {
+        path = ./a-scanner-darkly-desktop-wallpaper.jpg;
+      };
+      wallpaper-small = builtins.path {
+        path = ./scannerdarkly.png;
+      };
+  
+    imports = [
+      plasma-manager.homeManagerModules.plasma-manager
+    ];
+
+    ... the path-fixed output from nix run ...
+
+- Show a diff of the path-fixed output from nix run.
+
+  I think it might technically be possible to have the script that runs when
+  you do ``nix run`` replace a hardcoded path for any file that is present in
+  the output that starts with ``/nix/store`` with an expression that resolves
+  to the actual path in the nix store.  It just doesn't yet, so you gotta do it
+  by hand.
+
+- Demonstrate using ``nixos-rebuild build-vm``.
