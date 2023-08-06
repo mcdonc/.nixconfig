@@ -4,8 +4,6 @@
   # qemu-vm.nix is imported to allow virtualisation.memorySize and virtualisation.cores to work
   imports = [ ./cachix.nix ];
 
-  system.stateVersion = "22.05";
-
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
     supportsDryActivation = true;

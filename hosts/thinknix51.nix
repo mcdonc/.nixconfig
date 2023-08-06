@@ -8,6 +8,8 @@
     ../common/encryptedzfs.nix
 #    ../common/oldnvidia.nix
   ];
+  system.stateVersion = "22.05";
+
   networking.hostId = "83540bcc";
   networking.hostName = "thinknix51";
 

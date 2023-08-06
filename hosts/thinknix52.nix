@@ -10,6 +10,8 @@
 #    ../common/oldnvidia.nix
   ];
 
+  system.stateVersion = "22.05";
+
   # override optimus default offload mode to deal with external monitor
   #hardware.nvidia.prime.offload.enable = false;
   #hardware.nvidia.prime.sync.enable = true;
