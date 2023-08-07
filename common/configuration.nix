@@ -1,7 +1,6 @@
 { config, pkgs, pkgs-r2211, modulesPath, ... }:
 
 {
-  # qemu-vm.nix is imported to allow virtualisation.memorySize and virtualisation.cores to work
   imports = [ ./cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -136,8 +135,8 @@
   # virtualization
   virtualisation.libvirtd.enable = true;
 
-  # vmVariant configuration is added only when building VM with nixos-rebuild build-vm (doesnt seem
-  # to work)
+  # vmVariant configuration is added only when building VM with nixos-rebuild
+  # build-vm
   virtualisation.vmVariant = {
     virtualisation = {
       memorySize = 8192; # Use 8GB memory (value is in MB)
@@ -170,9 +169,6 @@
     };
   };
   services.fstrim.enable = true;
-  services.zfs.autoScrub.enable = true;
-  services.zfs.autoScrub.interval = "quarterly";
-  services.zfs.trim.enable = true;
 
   programs.steam.enable = true;
 
