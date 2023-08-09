@@ -64,6 +64,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ steam-overlay ]; })
       ];
     in {
       nixosConfigurations = {
