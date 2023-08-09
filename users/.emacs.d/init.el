@@ -532,6 +532,8 @@
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
+;;(load-theme 'vscode-dark-plus t)
+
 (autoload 'smart-tabs-mode "smart-tabs-mode"
   "Intelligently indent with tabs, align with spaces!")
 (autoload 'smart-tabs-mode-enable "smart-tabs-mode")
@@ -539,6 +541,11 @@
 (autoload 'smart-tabs-insinuate "smart-tabs-mode")
 
 (smart-tabs-insinuate 'c 'c++)
+
+(setq inihibit-compating-font-caches t)
+
+(require 'doom-modeline)
+(doom-modeline-mode 1)
 
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))

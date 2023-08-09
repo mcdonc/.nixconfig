@@ -1,14 +1,17 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixos-hardware, ... }:
 
 {
   imports = [
+    "${nixos-hardware}/lenovo/thinkpad/p51"
     ../common/pseries.nix
     ../common/encryptedzfs.nix
-    ../common/configuration.nix
     ../common/sessile.nix
     ../common/rc505.nix
+    ../common/configuration.nix
 #    ../common/oldnvidia.nix
   ];
+  system.stateVersion = "22.05";
+
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 

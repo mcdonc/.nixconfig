@@ -1,4 +1,4 @@
-{ config, pkgs, nixpkgs, ...}:
+{ config, pkgs, nixpkgs, pkgs-r2211, ...}:
 
  {
 
@@ -12,8 +12,8 @@
 
 
 # let
-#   pinnedKernelPackages = pkgs.r2211.linuxPackages_latest;
-#   x11Packages = pkgs.r2211.nvidia_x11;
+#   pinnedKernelPackages = pkgs-r2211.linuxPackages_latest;
+#   x11Packages = pkgs-r2211.nvidia_x11;
 
 # in
 

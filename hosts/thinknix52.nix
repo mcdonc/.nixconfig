@@ -1,13 +1,16 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixos-hardware, ... }:
 
 {
   imports = [
+    "${nixos-hardware}/lenovo/thinkpad/p52"
     ../common/pseries.nix
     ../common/encryptedzfs.nix
     ../common/configuration.nix
     #    ../common/rc505.nix
 #    ../common/oldnvidia.nix
   ];
+
+  system.stateVersion = "22.05";
 
   # override optimus default offload mode to deal with external monitor
   #hardware.nvidia.prime.offload.enable = false;

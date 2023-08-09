@@ -1,9 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-r2211, nix-gaming, ... }:
 
 {
   imports = [ ./cachix.nix ];
-
-  system.stateVersion = "22.05";
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
@@ -35,21 +33,6 @@
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
-
-  # Use GRUB, assume UEFI
-  boot.loader.grub.enable = true;
-  boot.loader.grub.devices = [ "nodev" ];
-  boot.loader.grub.efiInstallAsRemovable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.splashImage = ./grub/alwaysnix.png;
-  boot.loader.grub.splashMode = "stretch"; # "normal"
-  boot.loader.grub.useOSProber = true;
-  boot.loader.timeout = 60;
-  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
-  # copyKernels: "Using NixOS on a ZFS root file system might result in the
-  # boot error external pointer tables not supported when the number of
-  # hardlinks in the nix store gets very high.
-  boot.loader.grub.copyKernels = true;
 
   ## obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -91,6 +74,9 @@
     '';
   };
 
+  # unknown
+  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
     overrideStrategy = "asDropin";
@@ -104,6 +90,20 @@
 
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
+
+  # encrypt dns (both networking.nameservers and services.resolved)
+  networking.nameservers =
+    [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
+  };
 
   time.timeZone = "America/New_York";
 
@@ -136,6 +136,16 @@
 
   # virtualization
   virtualisation.libvirtd.enable = true;
+
+  # vmVariant configuration is added only when building VM with nixos-rebuild
+  # build-vm
+  virtualisation.vmVariant = {
+    virtualisation = {
+      memorySize = 8192; # Use 8GB memory (value is in MB)
+      cores = 4;
+    };
+  };
+
   programs.dconf.enable = true;
 
   # printing
@@ -161,11 +171,15 @@
     };
   };
   services.fstrim.enable = true;
-  services.zfs.autoScrub.enable = true;
-  services.zfs.autoScrub.interval = "quarterly";
-  services.zfs.trim.enable = true;
 
+  # steam-related
   programs.steam.enable = true;
+  nix.settings = {
+    substituters = [ "https://nix-gaming.cachix.org" ];
+    trusted-public-keys = [
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
+  };
 
   # enable docker
   virtualisation.docker.enable = true;
@@ -189,8 +203,6 @@
 
   environment.systemPackages = with pkgs; [
     vim_configurable
-    #pkgs.allthepythons.packages.x86_64-linux."2.7.18"
-    #pkgs.allthepythons.packages.x86_64-linux."3.9.16"
     wget
     (wrapOBS { plugins = with obs-studio-plugins; [ obs-backgroundremoval ]; })
     thermald
@@ -238,7 +250,7 @@
     konversation
     nixfmt
     wakeonlan
-    r2211.olive-editor # use 0.1.2 (see flake.nix overlay-r2211)
+    pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
     cachix
     gptfdisk # "sgdisk"
     ardour
@@ -303,5 +315,7 @@
     lolcat
     fortune
     file
+    wireshark
+    ruby
   ];
 }

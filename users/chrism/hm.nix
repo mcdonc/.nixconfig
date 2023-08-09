@@ -1,4 +1,4 @@
-{ config, pkgs, home-manager, ... }:
+{ config, pkgs, nix-gaming, ... }:
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
@@ -11,12 +11,18 @@ let
          ${gterm-change-profile} $1 > /dev/null 2>&1
       fi
     }
+    function bye (){
+       chcolor 1
+       exit
+    }
     chcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
-       read -p "SSH exited unexpectedly... hit any key to continue"
+       trap 'bye' SIGINT
+       echo -e "\e[31mSSH exited unexpectedly, hit enter to continue\e[0m"
+       read -p ""
     fi
-    chcolor 1
+    bye
   '';
   defaultpalette = [
     "#171421"
@@ -55,12 +61,16 @@ let
   };
 
 in {
+  imports = [ ./plasma.nix ];
+
   home.packages = with pkgs; [
     keybase-gui
     ssh-chcolor
     xdotool
-    fd  # fd is an unnamed dependency of fzf
+    fd # fd is an unnamed dependency of fzf
     shell-genie
+    nushell
+    oh-my-posh # not enabled via programs.xxx cuz dont want it enabled in zsh
   ];
   home.stateVersion = "22.05";
 
@@ -277,6 +287,14 @@ in {
     epkgs.smart-tabs-mode
     epkgs.whitespace-cleanup-mode
     epkgs.flycheck-pyflakes
+    epkgs.nord-theme
+    epkgs.nordless-theme
+    epkgs.vscode-dark-plus-theme
+    epkgs.doom-modeline
+    epkgs.all-the-icons
+    epkgs.all-the-icons-dired
+    epkgs.magit
+    pkgs.emacs-all-the-icons-fonts
   ];
 
   services.emacs.enable = true;
@@ -296,6 +314,10 @@ in {
     source = ../.p10k.zsh;
     executable = true;
   };
+
+  xdg.configFile."nushell/oh-my-posh.nu" = { source = ./oh-my-posh.nu; };
+
+  xdg.configFile."nushell/config.nu" = { source = ./config.nu; };
 
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
@@ -321,7 +343,7 @@ in {
         "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
       LADSPA_PATH =
         "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
-      LV2_PATH = 
+      LV2_PATH =
         "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
       LXVST_PATH =
         "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
@@ -332,9 +354,9 @@ in {
     };
 
     shellAliases = {
-      swnix = "sudo nixos-rebuild switch --verbose";
-      drynix = "sudo nixos-rebuild dry-build --verbose";
-      bootnix = "sudo nixos-rebuild boot --verbose";
+      swnix = "sudo nixos-rebuild switch --verbose --show-trace";
+      drynix = "sudo nixos-rebuild dry-build --verbose --show-trace";
+      bootnix = "sudo nixos-rebuild boot --verbose --show-trace";
       ednix = "emacsclient -nw /etc/nixos/flake.nix";
       schnix = "nix search nixpkgs";
       rbnix = "sudo nixos-rebuild build --rollback";
@@ -343,7 +365,7 @@ in {
       restartemacs = "systemctl --user restart emacs";
       open = "kioclient exec";
       edit = "emacsclient -n -c";
-      sgrep = "rg";
+      sgrep = "rg -M 200"; # dont display lines > 200 chars long
       ls = "ls --color=auto";
       greyterm = "${gterm-change-profile} 1";
       blueterm = "${gterm-change-profile} 2";
@@ -352,6 +374,7 @@ in {
       yellowterm = "${gterm-change-profile} 5";
       ssh = "${ssh-chcolor}/bin/ssh-chcolor";
       ai = "shell-genie ask";
+      diff = "${pkgs.colordiff}/bin/colordiff";
     };
 
     completionInit = ""; # speed up zsh start time

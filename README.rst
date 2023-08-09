@@ -7,6 +7,26 @@ systems I own.
 Usage
 -----
 
+- Edit the https://github.com/mcdonc/.nixconfig/blob/master/flake.nix file,
+  adding the new system to ``nixosConfigurations``, referencing the right
+  ``nixos-hardware`` module and a file we intend to create in the repo's
+  ``hosts`` fdir (e.g. ``hosts/mynewsystem.nix``) in a subsequent step::
+
+        mynewsystem = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
+            nixos-hardware.nixosModules.lenovo-thinkpad-p51
+            ./hosts/mynewsystem.nix
+            ./users/chrism/user.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useUserPackages = true;
+              home-manager.users.chrism = import ./users/chrism/hm.nix;
+            }
+          ];
+        };
+
 - Check out this repository into ``~/.nixconfig`` within the NixOS installer on
   the new system::
 
@@ -40,11 +60,6 @@ Usage
 
     cat /etc/machine-id | head -c 8
 
-- Link the nixfile representing the new system into (XXX probably wont work
-  with new flakes stuff) ``/mnt/etc/nixos/configuration.nix``::
-
-    sudo ln -s /mnt/etc/nixos/hosts/thinknix51.nix /mnt/etc/nixos/configuration.nix
-
 - Install the system::
 
      sudo nixos-install
@@ -71,5 +86,5 @@ Post-Reboot
   git@github.com:mcdonc/.nixconfig.git`` in the ``[remote "origin"]`` section
   of ``/etc/nixos/.git/config``.
 
-- Commit the new system to the repo.
+- Commit the new file in ``hosts`` to the repo.
   
