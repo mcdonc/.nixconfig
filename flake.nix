@@ -7,15 +7,24 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
-    plasma-manager.url = "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
+    plasma-manager.url =
+      "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
+    nix-gaming.url = "github:fufexan/nix-gaming";
     agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, plasma-manager, agenix }@inputs:
+    , nixpkgs-unstable, plasma-manager, nix-gaming, agenix }@inputs:
     let
+      steam-overlay = (_: prev: {
+        steam = prev.steam.override {
+          extraProfile = "export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${
+              nix-gaming.packages.${system}.proton-ge
+            }'";
+        };
+      });
       system = "x86_64-linux";
       specialArgs = {
         pkgs-unstable = import nixpkgs-unstable {
@@ -28,6 +37,7 @@
         };
         inherit nixos-hardware;
         inherit plasma-manager;
+        inherit nix-gaming;
         inherit system;
         inherit inputs;
       };
@@ -42,6 +52,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ steam-overlay ]; })
       ];
       larry-modules = [
         ./users/larry/user.nix
