@@ -4,7 +4,7 @@
   imports =
     [
       ./vm-hardware-config.nix
-      ../common/configuration.nix
+      ../common.nix
     ];
   
   boot.loader.grub.enable = true;
