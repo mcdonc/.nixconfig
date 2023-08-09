@@ -3,10 +3,10 @@
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/t420"
-    ../common/tseries.nix
-    ../common/encryptedzfs.nix
-    ../common/configuration.nix
-#    ../common/rc505.nix
+    ../tseries.nix
+    ../encryptedzfs.nix
+    ../common.nix
+#    ../rc505.nix
   ];
   system.stateVersion = "22.05";
 
