@@ -75,6 +75,9 @@
     '';
   };
 
+  # unknown
+  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
     overrideStrategy = "asDropin";
