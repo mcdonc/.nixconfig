@@ -317,6 +317,5 @@
     wireshark
     ruby
     colordiff
-    nix-gaming.packages.${pkgs.system}.proton-ge
   ];
 }
