@@ -34,7 +34,6 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
 
-
   ## obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
@@ -77,7 +76,7 @@
 
   # unknown
   boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
-  
+
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
     overrideStrategy = "asDropin";
@@ -176,10 +175,12 @@
   # steam-related
   programs.steam.enable = true;
   nix.settings = {
-    substituters = ["https://nix-gaming.cachix.org"];
-    trusted-public-keys = ["nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
+    substituters = [ "https://nix-gaming.cachix.org" ];
+    trusted-public-keys = [
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
   };
-  
+
   # enable docker
   virtualisation.docker.enable = true;
 
@@ -316,6 +317,5 @@
     file
     wireshark
     ruby
-    colordiff
   ];
 }

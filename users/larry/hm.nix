@@ -150,6 +150,7 @@
       sgrep = "rg";
       ls = "ls --color=auto";
       ai = "shell-genie ask";
+      diff = "${pkgs.colordiff}/bin/colordiff";
     };
 
     completionInit = ""; # speed up zsh start time
