@@ -18,7 +18,7 @@
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
     , nixpkgs-unstable, plasma-manager, nix-gaming, agenix }@inputs:
     let
-      steam-overlay = (_: prev: {
+      overlays = (_: prev: {
         steam = prev.steam.override {
           extraProfile = "export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${
               nix-gaming.packages.${system}.proton-ge
@@ -52,7 +52,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ steam-overlay ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
       larry-modules = [
         ./users/larry/user.nix
@@ -64,7 +64,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ steam-overlay ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
     in {
       nixosConfigurations = {
