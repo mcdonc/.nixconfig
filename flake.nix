@@ -35,11 +35,7 @@
           inherit system;
           config.allowUnfree = true;
         };
-        inherit nixos-hardware;
-        inherit plasma-manager;
-        inherit nix-gaming;
-        inherit system;
-        inherit inputs;
+        inherit nixos-hardware plasma-manager nix-gaming system inputs;
       };
 
       chris-modules = [
@@ -69,33 +65,27 @@
     in {
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix512.nix ];
         };
         thinknix50 = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix50.nix ];
         };
         thinknix52 = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix52.nix ];
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = larry-modules ++ [ ./hosts/thinknix51.nix ];
         };
         thinknix420 = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix420.nix ];
         };
         nixos = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit specialArgs;
+          inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
         };
       };
