@@ -317,5 +317,6 @@
     file
     wireshark
     ruby
+    nix-tree
   ];
 }
