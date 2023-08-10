@@ -74,13 +74,16 @@ in {
   ];
   home.stateVersion = "22.05";
 
-  gtk = {
-    enable = true;
-    theme = {
-      name = "Breeze-Dark";
-      package = pkgs.libsForQt5.breeze-gtk;
-    };
-  };
+  # commented out due to issues with home-manager not being able to overwrite
+  # $HOME/.gtkrc-2.0 on a rebuild
+  #
+  # gtk = {
+  #   enable = true;
+  #   theme = {
+  #     name = "Breeze-Dark";
+  #     package = pkgs.libsForQt5.breeze-gtk;
+  #   };
+  # };
 
   programs.gnome-terminal = {
     enable = true;
