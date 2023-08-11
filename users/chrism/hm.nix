@@ -321,6 +321,7 @@ in {
     extensions = with pkgs.vscode-extensions ; [
       ms-python.python
       bbenoist.nix
+      mattn.lisp
       micropico-vscode-ext
     ];
   };
