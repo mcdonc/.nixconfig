@@ -279,7 +279,7 @@
     cutecom
     rshell
     mplayer
-    #vscode # using home-manager config at the moment, reenable if abandoned
+    vscode.fhs
     gnome.cheese
     sqlite
     tldr

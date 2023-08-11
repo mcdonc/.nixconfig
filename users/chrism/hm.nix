@@ -317,7 +317,7 @@ in {
   };
 
   programs.vscode = {
-    enable = true;
+    enable = false; # use global for now
     extensions = with pkgs.vscode-extensions ; [
       ms-python.python
       ms-python.vscode-pylance
