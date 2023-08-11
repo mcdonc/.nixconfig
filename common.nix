@@ -319,5 +319,7 @@
     wireshark
     ruby
     nix-tree
+    fdupes
+    dupe-krill
   ];
 }
