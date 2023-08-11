@@ -320,9 +320,11 @@ in {
     enable = true;
     extensions = with pkgs.vscode-extensions ; [
       ms-python.python
+      ms-python.vscode-pylance
       bbenoist.nix
       mattn.lisp
-      micropico-vscode-ext
+      tuttieee.emacs-mcx # "Awesome Emacs"
+      micropico-vscode-ext # "MicroPico"
     ];
   };
 
