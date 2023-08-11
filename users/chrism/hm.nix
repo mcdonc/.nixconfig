@@ -60,7 +60,16 @@ let
     };
   };
 
+  micropico-vscode-ext = pkgs.vscode-utils.extensionFromVscodeMarketplace {
+      name = "pico-w-go";
+      publisher = "paulober";
+      version = "3.2.1";
+      sha256 = "sha256-8i5g+gg5EeMM7IcULoWSipAcf767ASqNOxpV9vgkY4U=";
+    };
+
 in {
+  nixpkgs.config.allowUnfree = true;
+  
   imports = [ ./plasma.nix ];
 
   home.packages = with pkgs; [
@@ -305,6 +314,18 @@ in {
   home.file.".emacs.d" = {
     source = ../.emacs.d;
     recursive = true;
+  };
+
+  programs.vscode = {
+    enable = false; # use global for now
+    extensions = with pkgs.vscode-extensions ; [
+      ms-python.python
+      ms-python.vscode-pylance
+      bbenoist.nix
+      mattn.lisp
+      tuttieee.emacs-mcx # "Awesome Emacs"
+      micropico-vscode-ext # "MicroPico"
+    ];
   };
 
   programs.git = {
