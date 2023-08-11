@@ -233,6 +233,7 @@
       with p; [
         python310Packages.pyserial # for pico-w-go in vscode
         python310Packages.pyflakes # for emacs
+        python310Packages.flake8 # for vscode
         python310Packages.black # for cmdline and vscode
       ]))
     xz
@@ -278,7 +279,7 @@
     cutecom
     rshell
     mplayer
-    vscode
+    #vscode # using home-manager config at the moment, reenable if abandoned
     gnome.cheese
     sqlite
     tldr
