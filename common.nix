@@ -321,5 +321,6 @@
     nix-tree
     fdupes
     dupe-krill
+    dupeguru
   ];
 }
