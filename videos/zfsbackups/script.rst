@@ -156,11 +156,11 @@ Doing Backups
 - ``syncoid`` works in its default mode by managing a single ZFS snapshot on
   each the source dataset and the target dataset.::
   
-   $zfs list -t snap -r NIXROOT/test|cut -f1 -d' '
+   $ zfs list -t snap -r NIXROOT/test|cut -f1 -d' '
    NAME
    NIXROOT/test@syncoid_thinknix512_2023-08-13:14:10:27-GMT-04:00
 
-   $ zfs list -t snap -r b/test-thinknix512|cut -f1 -d' '
+   $ zfs list -t snap -r b/thinknix512-test|cut -f1 -d' '
    NAME
    b/thinknix512-test@syncoid_thinknix512_2023-08-13:14:12:08-GMT-04:00
 

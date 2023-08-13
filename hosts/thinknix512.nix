@@ -12,37 +12,21 @@
   ];
   system.stateVersion = "22.05";
 
-  # boot.zfs.extraPools = [ "b" ];
+  boot.zfs.extraPools = [ "b" ];
   
-  # services.syncoid = {
-  #   enable = true;
-  #   interval = "*:0/1";
-  #   commands = {
-  #     "NIXROOT/test" = {
-  #       target = "b/thinknix512-test";
-  #       sendOptions = "raw";
-  #       extraArgs = [ "--debug" ];
-  #     };
-  #   };
-  #   localSourceAllow = options.services.syncoid.localSourceAllow.default ++ [ "mount" ];
-  #   localTargetAllow = options.services.syncoid.localTargetAllow.default ++ [ "destroy" ];
-  # };
-
-  # services.sanoid = {
-  #   enable = true;
-  #   interval = "*:0/1";
-  #   templates.backup = {
-  #     autoprune = true;
-  #     autosnap = true;
-  #     hourly = 24;
-  #     daily = 30;
-  #     monthly = 6;
-  #   };
-  #   datasets."b/thinknix512-test" = {
-  #     useTemplate = ["backup"];
-  #   };
-  #   extraArgs = [ "--debug" ];
-  # };
+  services.syncoid = {
+    enable = true;
+    interval = "daily";
+    commands = {
+      "NIXROOT/test" = {
+        target = "b/thinknix512-test";
+        sendOptions = "w";
+        extraArgs = [ "--debug" ];
+      };
+    };
+    localSourceAllow = options.services.syncoid.localSourceAllow.default ++ [ "mount" ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default ++ [ "destroy" ];
+  };
 
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
