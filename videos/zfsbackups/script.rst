@@ -16,7 +16,7 @@ Overview
 - Because I use NixOS, there isn't much point in backing up their root
   datasets, but backing up their home datasets is critical.
 
-- I'll use ```syncoid`` to do this; it is a ZFS-specific backup tool written by
+- I'll use ``syncoid`` to do this; it is a ZFS-specific backup tool written by
   Jim Salter that uses ``zfs send`` and ``zfs receive`` under the hood.  Jim
   gave a talk about the project that contains ``syncoid`` a while back which
   was recorded at https://www.youtube.com/watch?v=cDWiZwMqAxI&t=846s
