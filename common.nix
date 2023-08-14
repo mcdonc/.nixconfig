@@ -324,5 +324,6 @@
     dupeguru
     pv
     fio
+    tmux
   ];
 }
