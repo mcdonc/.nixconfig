@@ -322,5 +322,7 @@
     fdupes
     dupe-krill
     dupeguru
+    pv
+    fio
   ];
 }
