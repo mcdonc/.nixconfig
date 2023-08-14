@@ -8,24 +8,26 @@
     ../sessile.nix
     ../rc505
     ../common.nix
-#    ../oldnvidia.nix
+    #    ../oldnvidia.nix
   ];
   system.stateVersion = "22.05";
 
   boot.zfs.extraPools = [ "b" ];
-  
+
   services.syncoid = {
     enable = true;
     interval = "daily";
     commands = {
-      "NIXROOT/test" = {
-        target = "b/thinknix512-test";
+      "NIXROOT/home" = {
+        target = "b/thinknix512-home";
         sendOptions = "w";
         extraArgs = [ "--debug" ];
       };
     };
-    localSourceAllow = options.services.syncoid.localSourceAllow.default ++ [ "mount" ];
-    localTargetAllow = options.services.syncoid.localTargetAllow.default ++ [ "destroy" ];
+    localSourceAllow = options.services.syncoid.localSourceAllow.default
+      ++ [ "mount" ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default
+      ++ [ "destroy" ];
   };
 
   networking.hostId = "deadbeef";
@@ -41,6 +43,6 @@
   # why must I do this?  I have no idea.  But if I don't, swnix pauses then
   # "fails" (really just prints an error) when it switches configurations.
   systemd.services.NetworkManager-wait-online.enable = false;
-  
+
   #services.cachix-agent.enable = true;
 }
