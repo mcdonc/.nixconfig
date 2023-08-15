@@ -15,7 +15,7 @@
   boot.zfs.extraPools = [ "b" ];
 
   services.syncoid = {
-    enable = true;
+    enable = false;
     interval = "daily";
     commands = {
       "NIXROOT/home" = {
