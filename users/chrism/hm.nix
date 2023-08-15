@@ -399,6 +399,8 @@ in {
       ssh = "${ssh-chcolor}/bin/ssh-chcolor";
       ai = "shell-genie ask";
       diff = "${pkgs.colordiff}/bin/colordiff";
+      python3 = "python3.11";
+      python = "python3.11";
     };
 
     completionInit = ""; # speed up zsh start time

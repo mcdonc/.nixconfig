@@ -147,10 +147,12 @@
       restartemacs = "systemctl --user restart emacs";
       open = "kioclient exec";
       edit = "emacsclient -n -c";
-      sgrep = "rg";
+      sgrep = "rg -M 200"; # dont display lines > 200 chars long
       ls = "ls --color=auto";
       ai = "shell-genie ask";
       diff = "${pkgs.colordiff}/bin/colordiff";
+      python3 = "python3.11";
+      python = "python3.11";
     };
 
     completionInit = ""; # speed up zsh start time

@@ -242,6 +242,7 @@
         python310Packages.flake8 # for vscode
         python310Packages.black # for cmdline and vscode
     ]))
+    pypy3
     xz
     libreoffice
     ffmpeg-full
