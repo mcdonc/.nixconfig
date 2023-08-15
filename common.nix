@@ -32,7 +32,10 @@
 
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "electron-12.2.3" ]; # etcher
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+    "python-2.7.18.6"
+  ]; # etcher and unmaintained python
 
   ## obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -229,13 +232,16 @@
     baobab
     signal-desktop
     virtualbox
-    (python310.withPackages (p:
-      with p; [
+    python27
+    python38
+    python39
+    python310
+    (python311.withPackages (p: with p; [
         python310Packages.pyserial # for pico-w-go in vscode
         python310Packages.pyflakes # for emacs
         python310Packages.flake8 # for vscode
         python310Packages.black # for cmdline and vscode
-      ]))
+    ]))
     xz
     libreoffice
     ffmpeg-full
