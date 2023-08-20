@@ -331,5 +331,6 @@
     dupeguru
     pv
     fio
+    mbuffer
   ];
 }
