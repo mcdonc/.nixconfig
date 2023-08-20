@@ -12,23 +12,23 @@
   ];
   system.stateVersion = "22.05";
 
-  # boot.zfs.extraPools = [ "b" ];
+  boot.zfs.extraPools = [ "b" ];
 
-  # services.syncoid = {
-  #   enable = false;
-  #   interval = "daily";
-  #   commands = {
-  #     "NIXROOT/home" = {
-  #       target = "b/thinknix512-home";
-  #       sendOptions = "w";
-  #       extraArgs = [ "--debug" ];
-  #     };
-  #   };
-  #   localSourceAllow = options.services.syncoid.localSourceAllow.default
-  #     ++ [ "mount" ];
-  #   localTargetAllow = options.services.syncoid.localTargetAllow.default
-  #     ++ [ "destroy" ];
-  # };
+  services.syncoid = {
+    enable = true;
+    interval = "daily";
+    commands = {
+      "NIXROOT/home" = {
+        target = "b/thinknix512-home";
+        sendOptions = "w c";
+        extraArgs = [ "--debug" ];
+      };
+    };
+    localSourceAllow = options.services.syncoid.localSourceAllow.default
+      ++ [ "mount" ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default
+      ++ [ "destroy" ];
+  };
 
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";

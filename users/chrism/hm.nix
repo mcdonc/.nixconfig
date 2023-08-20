@@ -385,7 +385,7 @@ in {
       schnix = "nix search nixpkgs";
       rbnix = "sudo nixos-rebuild build --rollback";
       replnix = "nix repl '<nixpkgs>'";
-      mountzfs = "sudo zfs load-key z/storage; sudo zfs mount z/storage";
+      mountzfs = "sudo zfs load-key b/storage; sudo zfs mount b/storage";
       restartemacs = "systemctl --user restart emacs";
       open = "kioclient exec";
       edit = "emacsclient -n -c";
