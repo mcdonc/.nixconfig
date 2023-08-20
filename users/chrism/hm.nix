@@ -70,7 +70,7 @@ let
 in {
   nixpkgs.config.allowUnfree = true;
   
-  imports = [ ./plasma.nix ];
+  #imports = [ ./plasma.nix ];
 
   home.packages = with pkgs; [
     keybase-gui
