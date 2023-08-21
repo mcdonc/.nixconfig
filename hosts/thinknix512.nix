@@ -14,6 +14,9 @@
 
   boot.zfs.extraPools = [ "b" ];
 
+  # dont ask for "b/storage" credentials
+  boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
+
   services.syncoid = {
     enable = true;
     interval = "daily";
