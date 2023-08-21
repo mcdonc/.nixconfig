@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-py36.url =
+      "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
+    nixpkgs-py37.url =
+      "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
@@ -16,7 +20,8 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, plasma-manager, nix-gaming, agenix }@inputs:
+    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, plasma-manager, nix-gaming
+    , agenix }@inputs:
     let
       overlays = (_: prev: {
         steam = prev.steam.override {
@@ -32,6 +37,14 @@
           config.allowUnfree = true;
         };
         pkgs-r2211 = import nixpkgs-r2211 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-py36 = import nixpkgs-py36 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-py37 = import nixpkgs-py37 {
           inherit system;
           config.allowUnfree = true;
         };

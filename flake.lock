@@ -220,6 +220,38 @@
         "type": "github"
       }
     },
+    "nixpkgs-py36": {
+      "locked": {
+        "lastModified": 1634763423,
+        "narHash": "sha256-4vvyW8+iXLuOr50KeE9WR/YlODvHal6n9a2sDOlh7dI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "407f8825b321617a38b86a4d9be11fd76d513da2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "407f8825b321617a38b86a4d9be11fd76d513da2",
+        "type": "github"
+      }
+    },
+    "nixpkgs-py37": {
+      "locked": {
+        "lastModified": 1671056470,
+        "narHash": "sha256-rrcDHjRX9R8qXvkcGvKunsw3mf7zyPJzx1y8TPqjWdM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a",
+        "type": "github"
+      }
+    },
     "nixpkgs-r2211": {
       "locked": {
         "lastModified": 1688392541,
@@ -364,6 +396,8 @@
         "nix-gaming": "nix-gaming",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
+        "nixpkgs-py36": "nixpkgs-py36",
+        "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager"

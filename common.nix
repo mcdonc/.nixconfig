@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-r2211, nix-gaming, ... }:
+{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, nix-gaming, ... }:
 
 {
   imports = [ ./cachix.nix ];
@@ -233,6 +233,8 @@
     signal-desktop
     virtualbox
     python27
+    pkgs-py36.python36
+    pkgs-py37.python37
     python38
     python39
     python310
