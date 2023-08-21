@@ -332,5 +332,6 @@
     pv
     fio
     mbuffer
+    qjournalctl
   ];
 }
