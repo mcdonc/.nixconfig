@@ -239,10 +239,11 @@
     python39
     python310
     (python311.withPackages (p: with p; [
-        python310Packages.pyserial # for pico-w-go in vscode
-        python310Packages.pyflakes # for emacs
-        python310Packages.flake8 # for vscode
-        python310Packages.black # for cmdline and vscode
+        python311Packages.pyserial # for pico-w-go in vscode
+        python311Packages.pyflakes # for emacs
+        python311Packages.flake8 # for vscode
+        python311Packages.black # for cmdline and vscode
+        python311Packages.tox # for... tox
     ]))
     pypy3
     xz
