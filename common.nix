@@ -336,5 +336,6 @@
     fio
     mbuffer
     qjournalctl
+    gnumake
   ];
 }
