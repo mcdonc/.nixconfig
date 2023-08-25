@@ -8,7 +8,6 @@
     ../sessile.nix
     ../rc505
     ../common.nix
-    #    ../oldnvidia.nix
   ];
   system.stateVersion = "22.05";
 
