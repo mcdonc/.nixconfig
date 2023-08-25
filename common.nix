@@ -337,5 +337,6 @@
     mbuffer
     qjournalctl
     gnumake
+    bat
   ];
 }
