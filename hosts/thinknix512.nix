@@ -34,7 +34,7 @@
 
   services.sanoid = {
     enable = true;
-    interval = "hourly";
+    interval = "daily";
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;
