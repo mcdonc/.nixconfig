@@ -39,7 +39,7 @@
       "NIXROOT/home" = {
         autoprune = true;
         autosnap = true;
-        daily = 1;
+        weekly = 1;
         monthly = 1;
         yearly = 1;
       };
