@@ -338,5 +338,7 @@
     qjournalctl
     gnumake
     bat
+    ethtool
+    wol
   ];
 }
