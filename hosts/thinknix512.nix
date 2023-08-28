@@ -47,6 +47,8 @@
     extraArgs = [ "--debug" ];
   };
 
+  services.locate.prunePaths = [ "/b" ];
+
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 
