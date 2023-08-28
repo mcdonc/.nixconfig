@@ -43,6 +43,7 @@
         weekly = 1;
         monthly = 1;
         yearly = 1;
+        hourly = 0;
       };
     };
     extraArgs = [ "--debug" ];
