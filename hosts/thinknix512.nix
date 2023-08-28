@@ -32,6 +32,21 @@
       ++ [ "destroy" ];
   };
 
+  services.sanoid = {
+    enable = true;
+    interval = "hourly";
+    datasets = {
+      "NIXROOT/home" = {
+        autoprune = true;
+        autosnap = true;
+        daily = 1;
+        monthly = 1;
+        yearly = 1;
+      };
+    };
+    extraArgs = [ "--debug" ];
+  };
+
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 
