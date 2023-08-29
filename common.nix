@@ -44,7 +44,9 @@
   # https://askubuntu.com/questions/1081128/usb-3-0-ethernet-adapter-not-working-ubuntu-18-04
   # disables link power management for this usb ethernet adapter; won't work
   # otherwise
-  boot.kernelParams = ["usbcore.quirks=2357:0601:k"];
+  boot.kernelParams = [
+    "usbcore.quirks=2357:0601:k,0bda:5411:k" # ethernet, hub
+  ];
 
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
@@ -172,11 +174,18 @@
       PermitRootLogin = "no";
     };
   };
+
+  # can't use tlp if this is enabled
+  services.power-profiles-daemon.enable = false;
+
   services.tlp = {
+    enable = true;
     settings = {
       # only charge up to 80% of the battery capacity
       START_CHARGE_THRESH_BAT0 = "75";
       STOP_CHARGE_THRESH_BAT0 = "80";
+      # rtl8153 / tp-link ue330 quirk for USB ethernet
+      USB_DENYLIST = "2357:0601 0bda:5411";
     };
   };
   services.fstrim.enable = true;
