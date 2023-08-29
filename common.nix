@@ -37,8 +37,14 @@
     "python-2.7.18.6"
   ]; # etcher and unmaintained python
 
-  ## obs
+  # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+
+  # rtl8153 / tp-link ue330 quirk for USB ethernet, see
+  # https://askubuntu.com/questions/1081128/usb-3-0-ethernet-adapter-not-working-ubuntu-18-04
+  # disables link power management for this usb ethernet adapter; won't work
+  # otherwise
+  boot.kernelParams = ["usbcore.quirks=2357:0601:k"];
 
   # realtime audio priority (initially for JACK2)
   security.pam.loginLimits = [
