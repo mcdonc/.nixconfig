@@ -110,10 +110,10 @@
 ; don't show autocomplete dropdown (replace nul with 2 for 2 seconds later)
 (setq ac-auto-show-menu nil)
 
-; use ctrl-E for accepting completion rather than return
+; use alt-E for accepting completion rather than return
 (define-key ac-completing-map (kbd "RET") nil)
 (define-key ac-completing-map [return] nil)
-(define-key ac-completing-map (kbd "C-e") 'ac-complete)
+(define-key ac-completing-map (kbd "M-e") 'ac-complete)
 
 ; dont ask if we should follow symlinks
 (setq vc-follow-symlinks t)
