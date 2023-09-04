@@ -1,4 +1,5 @@
-{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, nix-gaming, ... }:
+{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-bgremoval,
+  nix-gaming, ... }:
 
 {
   imports = [ ./cachix.nix ];
@@ -223,7 +224,8 @@
   environment.systemPackages = with pkgs; [
     vim_configurable
     wget
-    (wrapOBS { plugins = with obs-studio-plugins; [ obs-backgroundremoval ]; })
+    (wrapOBS { plugins = with pkgs-bgremoval.obs-studio-plugins;
+                 [ obs-backgroundremoval ]; })
     thermald
     powertop
     libsForQt5.kdeconnect-kde

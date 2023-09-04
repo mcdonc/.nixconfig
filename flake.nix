@@ -8,6 +8,7 @@
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url =
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
+    nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
@@ -20,7 +21,8 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, plasma-manager, nix-gaming
+            , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-bgremoval,
+              plasma-manager, nix-gaming
     , agenix }@inputs:
     let
       overlays = (_: prev: {
@@ -45,6 +47,10 @@
           config.allowUnfree = true;
         };
         pkgs-py37 = import nixpkgs-py37 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-bgremoval = import nixpkgs-bgremoval {
           inherit system;
           config.allowUnfree = true;
         };

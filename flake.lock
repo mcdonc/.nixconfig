@@ -202,6 +202,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-bgremoval": {
+      "locked": {
+        "lastModified": 1693821900,
+        "narHash": "sha256-9/NOmoEdExqK7hwxsV9X+6AIgvfXjY3y0suwc+uFKsI=",
+        "owner": "mcdonc",
+        "repo": "nixpkgs",
+        "rev": "a6b4ef0de85c5ca464695929eef097abec37cfe2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mcdonc",
+        "ref": "newer-obs-bgremoval",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
@@ -396,6 +412,7 @@
         "nix-gaming": "nix-gaming",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
+        "nixpkgs-bgremoval": "nixpkgs-bgremoval",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",
