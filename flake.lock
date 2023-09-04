@@ -204,11 +204,11 @@
     },
     "nixpkgs-bgremoval": {
       "locked": {
-        "lastModified": 1693848962,
-        "narHash": "sha256-ptIcXmIqa0R8DWOoC+zXQiiFh498De6TX9Yt9hosaAI=",
+        "lastModified": 1693849795,
+        "narHash": "sha256-errcPvW5RPF5R8/AryKat4ozF0xgPHZ39yKQTJN9RQ0=",
         "owner": "mcdonc",
         "repo": "nixpkgs",
-        "rev": "6cbcb37cc7256efd6d82969f9f9616f57c059a32",
+        "rev": "5e86c23ce83518cc4688cc7db8962d52e4a92ec2",
         "type": "github"
       },
       "original": {
