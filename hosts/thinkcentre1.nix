@@ -3,7 +3,7 @@
 {
   imports = [
     #"${nixos-hardware}/lenovo/thinkpad/p51"
-    # generated hardware config goes here
+    ../thinkcentre.nix
     ../encryptedzfs.nix
     ../sessile.nix
     ../common.nix
