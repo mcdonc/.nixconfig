@@ -10,7 +10,7 @@
   ];
   system.stateVersion = "23.05";
 
-  networking.hostId = "eeabbeed";
+  networking.hostId = "eeabbced";
   networking.hostName = "thinkcentre1";
 
   hardware.nvidia.prime.offload.enable = false;
