@@ -101,6 +101,10 @@
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
         };
+        thinkcentre1 = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = chris-modules ++ [ ./hosts/thinkcentre1.nix ];
+        };
       };
     };
 }
