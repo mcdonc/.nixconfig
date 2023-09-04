@@ -185,6 +185,7 @@ in {
 
       "win10" = { user = "user"; };
       "thinknix*" = { forwardAgent = true; };
+      "thinkcentre*" = { forwardAgent = true; };
       "bouncer.repoze.org" = { forwardAgent = true; };
       "lock802.repoze.org" = { forwardAgent = true; };
       "192.168.1.1" = { user = "root"; };
