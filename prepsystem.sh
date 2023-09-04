@@ -43,7 +43,6 @@ zpool create -f \
     -O relatime=on \
     -O normalization=formD \
     -O dnodesize=auto \
-    -O sync=disabled \
     -O encryption=aes-256-gcm \
     -O keylocation=prompt \
     -O keyformat=passphrase \
