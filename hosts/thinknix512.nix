@@ -45,6 +45,7 @@
         yearly = 1;
         hourly = 0;
       };
+      # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
       "b/thinknix512-home" = {
         autoprune = true;
         autosnap = false;
