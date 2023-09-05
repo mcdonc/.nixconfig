@@ -45,6 +45,15 @@
         yearly = 1;
         hourly = 0;
       };
+      "b/thinknix512-home" = {
+        autoprune = true;
+        autosnap = false;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 1;
+        hourly = 0;
+      };
     };
     extraArgs = [ "--debug" ];
   };
