@@ -358,5 +358,6 @@
     bat
     ethtool
     wol
+    imagemagick
   ];
 }
