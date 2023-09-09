@@ -21,9 +21,8 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-            , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-bgremoval,
-              plasma-manager, nix-gaming
-    , agenix }@inputs:
+    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-bgremoval
+    , plasma-manager, nix-gaming, agenix }@inputs:
     let
       overlays = (_: prev: {
         steam = prev.steam.override {
