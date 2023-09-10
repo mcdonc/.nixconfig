@@ -61,15 +61,15 @@ let
   };
 
   micropico-vscode-ext = pkgs.vscode-utils.extensionFromVscodeMarketplace {
-      name = "pico-w-go";
-      publisher = "paulober";
-      version = "3.2.1";
-      sha256 = "sha256-8i5g+gg5EeMM7IcULoWSipAcf767ASqNOxpV9vgkY4U=";
-    };
+    name = "pico-w-go";
+    publisher = "paulober";
+    version = "3.2.1";
+    sha256 = "sha256-8i5g+gg5EeMM7IcULoWSipAcf767ASqNOxpV9vgkY4U=";
+  };
 
 in {
   nixpkgs.config.allowUnfree = true;
-  
+
   #imports = [ ./plasma.nix ];
 
   home.packages = with pkgs; [
@@ -319,7 +319,7 @@ in {
 
   programs.vscode = {
     enable = false; # use global for now
-    extensions = with pkgs.vscode-extensions ; [
+    extensions = with pkgs.vscode-extensions; [
       ms-python.python
       ms-python.vscode-pylance
       bbenoist.nix
@@ -457,5 +457,9 @@ in {
         tags = [ "as:theme" "depth:1" ];
       }];
     };
+    plugins = [{
+      name = "fast-syntax-highlighting";
+      src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
+    }];
   };
 }
