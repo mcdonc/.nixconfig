@@ -361,5 +361,6 @@
     wol
     imagemagick
     audiowaveform
+    element-desktop
   ];
 }
