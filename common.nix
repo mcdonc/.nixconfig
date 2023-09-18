@@ -1,5 +1,5 @@
 { config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-bgremoval,
-  nix-gaming, ... }:
+  pkgs-unstable, nix-gaming, ... }:
 
 {
   imports = [ ./cachix.nix ];
@@ -231,7 +231,7 @@
     libsForQt5.kdeconnect-kde
     libsForQt5.krdc
     libsForQt5.breeze-gtk
-    libsForQt5.kdenlive
+    pkgs-unstable.libsForQt5.kdenlive
     gnome.gnome-disk-utility
     openvpn
     unzip
