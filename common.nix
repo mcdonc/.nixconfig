@@ -231,6 +231,7 @@
     libsForQt5.kdeconnect-kde
     libsForQt5.krdc
     libsForQt5.breeze-gtk
+    libsForQt5.kdenlive
     gnome.gnome-disk-utility
     openvpn
     unzip
@@ -359,5 +360,6 @@
     ethtool
     wol
     imagemagick
+    audiowaveform
   ];
 }
