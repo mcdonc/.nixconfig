@@ -362,5 +362,7 @@
     imagemagick
     audiowaveform
     element-desktop
+    speech-denoiser
+    rnnoise-plugin
   ];
 }
