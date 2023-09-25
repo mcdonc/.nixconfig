@@ -364,5 +364,6 @@
     element-desktop
     speech-denoiser
     rnnoise-plugin
+    clementine
   ];
 }
