@@ -11,7 +11,7 @@ NixOS 54: Get Started With MicroPython on a Raspberry Pi Pico In NixOS
 Script
 ------
 
-- Steps to get
+- Steps to get up and running with the Pi Pico under NixOS.
 
 - Put your user in the ``dialout`` UNIX group.  This gives you permission to
   read-from/write-to ``/dev/ttyACM0``, which will be the default "serial" port
