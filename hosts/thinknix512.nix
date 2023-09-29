@@ -16,6 +16,9 @@
   # dont ask for "b/storage" credentials
   boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
 
+  # see a workaround for prunes not working:
+  # https://discourse.nixos.org/t/syncoid-questions/26411/2?u=chrism
+
   services.syncoid = {
     enable = true;
     interval = "daily";
