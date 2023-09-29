@@ -16,8 +16,12 @@
   # dont ask for "b/storage" credentials
   boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
 
+  # Sep 17 00:00:05 thinknix512 sanoid[2534870]: INFO: pruning b/thinknix512-home@autosnap_2023-09-05_04:00:25_daily ...
+  #Sep 17 00:00:06 thinknix512 sanoid[2534870]: INFO: deferring pruning of b/thinknix512-home@autosnap_2023-09-05_04:00:25_daily - b/thinknix512-home is currently in zfs send or receive.
   # see a workaround for prunes not working:
   # https://discourse.nixos.org/t/syncoid-questions/26411/2?u=chrism
+  # sanoid service definition:
+  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
 
   services.syncoid = {
     enable = true;
@@ -37,7 +41,7 @@
 
   services.sanoid = {
     enable = true;
-    interval = "daily";
+    interval = "hourly"; # run this hourly, run syncoid daily
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;
