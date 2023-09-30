@@ -365,5 +365,6 @@
     speech-denoiser
     rnnoise-plugin
     clementine
+    minicom
   ];
 }
