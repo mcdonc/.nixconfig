@@ -1,7 +1,7 @@
 NixOS 56: NixOS vs Fedora Silverblue (why NixOS both is and *isn't* an "immutable" distro)
 ==========================================================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/4wXF6CcHNwc
 
 - This text script available via link in the video description.
 
