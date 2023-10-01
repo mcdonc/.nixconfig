@@ -1,7 +1,20 @@
 { config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-bgremoval,
   pkgs-unstable, nix-gaming, ... }:
 
-{
+let
+  # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
+  # because that is only true when offload mode is turned on (see
+  # pseries.nix where it's turned off for isolation from nixos-hardware
+  # upstream changes)
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec "$@"
+  '';
+in
+  {
   imports = [ ./cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -222,6 +235,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    nvidia-offload
     vim_configurable
     wget
     (wrapOBS { plugins = with pkgs-bgremoval.obs-studio-plugins;
@@ -366,5 +380,7 @@
     rnnoise-plugin
     clementine
     minicom
+    nvtop-nvidia
+    pkgs-unstable.davinci-resolve
   ];
 }

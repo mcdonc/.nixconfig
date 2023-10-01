@@ -259,6 +259,16 @@ in {
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
+    davinci-resolve = {
+      name = "DaVinci Resolve (via nvidia-offload)";
+      genericName = "Video Editor";
+      exec = "nvidia-offload davinci-resolve %u";
+      terminal = false;
+      categories = ["AudioVideo" "AudioVideoEditing" "Video" "Graphics"];
+      mimeType = ["application/x-resolveproj"];
+      # /nix/store/i4jnb3jrlqyb9b763gnjrhdik7grnd4z-davinci-resolve-18.5.1/graphics/DV_Resolve.png
+      icon = "utilities-terminal"; # replace with real icon
+    };
   };
 
   # thanks to tejing on IRC for clueing me in to .force here: it will
