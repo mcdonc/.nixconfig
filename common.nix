@@ -382,5 +382,6 @@ in
     minicom
     nvtop-nvidia
     pkgs-unstable.davinci-resolve
+    glaxnimate # for kdenlive
   ];
 }
