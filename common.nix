@@ -245,7 +245,6 @@ in
     libsForQt5.kdeconnect-kde
     libsForQt5.krdc
     libsForQt5.breeze-gtk
-    pkgs-unstable.libsForQt5.kdenlive
     gnome.gnome-disk-utility
     openvpn
     unzip
@@ -382,6 +381,7 @@ in
     minicom
     nvtop-nvidia
     pkgs-unstable.davinci-resolve
+    pkgs-unstable.libsForQt5.kdenlive
     glaxnimate # for kdenlive
   ];
 }
