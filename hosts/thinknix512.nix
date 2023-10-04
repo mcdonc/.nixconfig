@@ -48,7 +48,7 @@
         daily = 1;
         weekly = 1;
         monthly = 1;
-        yearly = 1;
+        yearly = 0;
         hourly = 0;
       };
       # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
@@ -58,7 +58,7 @@
         daily = 7;
         weekly = 4;
         monthly = 12;
-        yearly = 1;
+        yearly = 0;
         hourly = 0;
       };
     };
