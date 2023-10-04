@@ -45,21 +45,30 @@
       "NIXROOT/home" = {
         autoprune = true;
         autosnap = true;
+        hourly = 0;
         daily = 1;
         weekly = 1;
         monthly = 1;
         yearly = 0;
+      };
+      "b/storage" = {
+        autoprune = true;
+        autosnap = true;
         hourly = 0;
+        daily = 0;
+        weekly = 2;
+        monthly = 0;
+        yearly = 0;
       };
       # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
       "b/thinknix512-home" = {
         autoprune = true;
         autosnap = false;
+        hourly = 0;
         daily = 7;
         weekly = 4;
         monthly = 12;
         yearly = 0;
-        hourly = 0;
       };
     };
     extraArgs = [ "--debug" ];
