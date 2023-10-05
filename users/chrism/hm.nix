@@ -422,8 +422,7 @@ in {
 
     initExtra = ''
       # be more bashy
-      setopt interactive_comments bashautolist nobeep nomenucomplete noautolist
-
+      setopt interactive_comments bashautolist nobeep nomenucomplete noautolist extended_glob
 
       ## include config generated via "p10k configure" manually;
       ## zplug cannot edit home manager's zshrc file.
@@ -459,6 +458,11 @@ in {
       # delete previous word with ctrl+backspace
       bindkey '^H' backward-kill-word
       #zprof
+
+      findup () {
+        # uses zsh extended globbing, see https://unix.stackexchange.com/a/64164
+        echo (../)#$1(:a)
+      }
     '';
     zplug = {
       enable = true;
