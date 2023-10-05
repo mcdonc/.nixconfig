@@ -380,7 +380,6 @@ in
     clementine
     minicom
     nvtop-nvidia
-    pkgs-unstable.davinci-resolve
     pkgs-unstable.libsForQt5.kdenlive
     glaxnimate # for kdenlive
   ];
