@@ -383,5 +383,6 @@ in
     pkgs-unstable.libsForQt5.kdenlive
     glaxnimate # for kdenlive
     nix-index # for nix-locate
+    bitwarden
   ];
 }
