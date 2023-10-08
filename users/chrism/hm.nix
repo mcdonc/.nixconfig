@@ -2,19 +2,9 @@
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
+
   ssh-chcolor = pkgs.writeShellScriptBin "ssh-chcolor" ''
-    function chcolor(){
-      # emulates right-clicking and selecting a numbered gnome-terminal profile.
-      # hide output if it fails.  --clearmodifiers ignores any modifier keys
-      # you're physically holding before sending the command
-      if [ -n "$GNOME_TERMINAL_SERVICE" ]; then
-         ${gterm-change-profile} $1 > /dev/null 2>&1
-      fi
-    }
-    function bye (){
-       chcolor 1
-       exit
-    }
+    source ${gterm-color-funcs}/bin/gterm-color-funcs
     chcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
@@ -22,8 +12,25 @@ let
        echo -e "\e[31mSSH exited unexpectedly, hit enter to continue\e[0m"
        read -p ""
     fi
-    bye
+    colorbye
   '';
+
+  gterm-color-funcs = pkgs.writeShellScriptBin "gterm-color-funcs" ''
+    function chcolor() {
+      # emulates right-clicking and selecting a numbered gnome-terminal
+      # profile. hide output if it fails.  --clearmodifiers ignores any
+      # modifier keys you're physically holding before sending the command
+      if [ -n "$GNOME_TERMINAL_SERVICE" ]; then
+         ${gterm-change-profile} $1 > /dev/null 2>&1
+      fi
+    }
+
+    function colorbye () {
+       chcolor 1
+       exit
+    }
+  '';
+
   defaultpalette = [
     "#171421"
     "#ED1515"
@@ -438,10 +445,19 @@ in {
       #zprof
 
       findup () {
-        # uses zsh extended globbing, see https://unix.stackexchange.com/a/64164
+        # uses zsh extended globbing, https://unix.stackexchange.com/a/64164
         echo (../)#$1(:a)
       }
+
       any-nix-shell zsh --info-right | source /dev/stdin
+
+      function nix-shell () {
+         # turn term color blue
+         source ${gterm-color-funcs}/bin/gterm-color-funcs
+         chcolor 2
+         ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
+         chcolor 1
+      }
     '';
     zplug = {
       enable = true;
