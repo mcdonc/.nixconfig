@@ -400,7 +400,8 @@ in {
 
     initExtra = ''
       # be more bashy
-      setopt interactive_comments bashautolist nobeep nomenucomplete noautolist extended_glob
+      setopt interactive_comments bashautolist nobeep nomenucomplete \
+             noautolist extended_glob
 
       ## include config generated via "p10k configure" manually;
       ## zplug cannot edit home manager's zshrc file.
