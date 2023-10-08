@@ -441,6 +441,7 @@ in {
         # uses zsh extended globbing, see https://unix.stackexchange.com/a/64164
         echo (../)#$1(:a)
       }
+      any-nix-shell zsh --info-right | source /dev/stdin
     '';
     zplug = {
       enable = true;

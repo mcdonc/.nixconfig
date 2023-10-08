@@ -384,5 +384,6 @@ in
     glaxnimate # for kdenlive
     nix-index # for nix-locate
     bitwarden
+    any-nix-shell
   ];
 }
