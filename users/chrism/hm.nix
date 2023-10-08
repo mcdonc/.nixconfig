@@ -67,13 +67,6 @@ let
     };
   };
 
-  micropico-vscode-ext = pkgs.vscode-utils.extensionFromVscodeMarketplace {
-    name = "pico-w-go";
-    publisher = "paulober";
-    version = "3.2.1";
-    sha256 = "sha256-8i5g+gg5EeMM7IcULoWSipAcf767ASqNOxpV9vgkY4U=";
-  };
-
 in {
   nixpkgs.config.allowUnfree = true;
 
