@@ -8,11 +8,11 @@ let
     chcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
-       trap 'bye' SIGINT
+       trap 'colorbye' SIGINT
        echo -e "\e[31mSSH exited unexpectedly, hit enter to continue\e[0m"
        read -p ""
     fi
-    colorbye
+    chcolor 1
   '';
 
   gterm-color-funcs = pkgs.writeShellScriptBin "gterm-color-funcs" ''
