@@ -385,5 +385,7 @@ in
     nix-index # for nix-locate
     bitwarden
     any-nix-shell
+    pico-sdk
+    sdcc
   ];
 }
