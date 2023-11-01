@@ -389,5 +389,6 @@ in
     any-nix-shell
     pico-sdk
     sdcc
+    dstat
   ];
 }
