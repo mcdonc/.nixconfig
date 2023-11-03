@@ -80,6 +80,20 @@
         }
         ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
+      larry-and-chris-modules = [
+        ./users/larry/user.nix
+        ./users/chrism/user.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useUserPackages = true;
+            users.larry = import ./users/larry/hm.nix;
+            users.chrism = import ./users/chrism/hm.nix;
+            extraSpecialArgs = specialArgs;
+          };
+        }
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
+      ];
     in {
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
@@ -96,7 +110,7 @@
         };
         thinknix51 = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = larry-modules ++ [ ./hosts/thinknix51.nix ];
+          modules = larry-and-chris-modules ++ [ ./hosts/thinknix51.nix ];
         };
         thinknix420 = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
