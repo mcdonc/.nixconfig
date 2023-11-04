@@ -278,6 +278,7 @@ in
         python311Packages.flake8 # for vscode
         python311Packages.black # for cmdline and vscode
         python311Packages.tox # for... tox
+        python311Packages.matplotlib # for speedtest graphing
     ]))
     pypy3
     xz
@@ -390,5 +391,6 @@ in
     pico-sdk
     sdcc
     dstat
+    speedtest-cli
   ];
 }

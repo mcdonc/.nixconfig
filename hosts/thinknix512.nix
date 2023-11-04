@@ -88,4 +88,21 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #services.cachix-agent.enable = true;
+
+  systemd.services.speedtest = {
+    serviceConfig.Type = "oneshot";
+    path = with pkgs; [ speedtest-cli ];
+    script = ''
+    speedtest-cli --server 14229 --csv >> /home/chrism/speedtest.csv
+  '';
+  };
+
+  systemd.timers.speedtest = {
+    wantedBy = [ "timers.target" ];
+    partOf = [ "speedtest.service" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 08,20:00:00"; # 8 am and 8 pm every day
+      Unit = "speedtest.service";
+    };
+  };
 }
