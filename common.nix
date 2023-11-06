@@ -392,5 +392,6 @@ in
     sdcc
     dstat
     speedtest-cli
+    fast-cli
   ];
 }

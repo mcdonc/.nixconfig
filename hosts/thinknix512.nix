@@ -91,10 +91,12 @@
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ speedtest-cli ];
+    path = with pkgs; [ fast-cli ];
     script = ''
-    speedtest-cli --server 14229 --csv >> /home/chrism/speedtest.csv
-  '';
+      #!/bin/sh
+      date '+%Y-%m-%d %H:%M:%S'|tr -d '\n' >> /home/chrism/fast.jsons 2>&1
+      fast --json|tr -d '[:space:]'|sed -e '$a\' >> /home/chrism/fast.jsons 2>&1
+    '';
   };
 
   systemd.timers.speedtest = {
