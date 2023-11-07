@@ -94,8 +94,8 @@
     path = with pkgs; [ fast-cli ];
     script = ''
       #!/bin/sh
-      date '+%Y-%m-%d %H:%M:%S'|tr -d '\n' >> /home/chrism/fast.jsons 2>&1
-      fast --json|tr -d '[:space:]'|sed -e '$a\' >> /home/chrism/fast.jsons 2>&1
+      date '+%Y-%m-%d %H:%M:%S'|tr -d '\n' >> /var/log/fast.log 2>&1
+      fast --json|tr -d '[:space:]'|sed -e '$a\' >> /var/log/fast.log 2>&1
     '';
   };
 
