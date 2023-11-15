@@ -13,6 +13,7 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
+
 in
   {
   imports = [ ./cachix.nix ];
@@ -393,5 +394,6 @@ in
     dstat
     speedtest-cli
     fast-cli
+    nmap
   ];
 }
