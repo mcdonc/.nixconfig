@@ -163,6 +163,14 @@ in {
         user = "pi";
         forwardAgent = true;
       };
+      "lock802.local" = {
+        user = "pi";
+        forwardAgent = true;
+      };
+      "192.168.1.139" = {
+        user = "pi";
+        forwardAgent = true;
+      };
       "testlock802" = {
         user = "pi";
         forwardAgent = true;
