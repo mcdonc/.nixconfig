@@ -1,5 +1,14 @@
 { config, pkgs, lib, nixos-hardware, options, ... }:
 
+let
+  fastlog = pkgs.stdenv.mkDerivation {
+    name = "fastlog";
+    dontUnpack = true;
+    installPhase = "install -Dm755 ${../etc/fastlog.py} $out/bin/fastlog";
+  };
+  
+in
+
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
@@ -87,15 +96,23 @@
   # "fails" (really just prints an error) when it switches configurations.
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  # # pixiecore quick xyz --dhcp-no-bind
+  # services.pixiecore = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   dhcpNoBind = true;
+  #   kernel = "https://boot.netboot.xyz";
+  #   port = 98; # default is 80
+  # };
+
   #services.cachix-agent.enable = true;
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ fast-cli ];
+    path = with pkgs; [ fastlog fast-cli ];
     script = ''
       #!/bin/sh
-      date '+%Y-%m-%d %H:%M:%S'|tr -d '\n' >> /var/log/fast.log 2>&1
-      fast --json|tr -d '[:space:]'|sed -e '$a\' >> /var/log/fast.log 2>&1
+      fastlog
     '';
   };
 
@@ -103,8 +120,9 @@
     wantedBy = [ "timers.target" ];
     partOf = [ "speedtest.service" ];
     timerConfig = {
-      OnCalendar = "*-*-* 08,20:00:00"; # 8 am and 8 pm every day
+      OnCalendar = "*-*-* 00,04,08,12,16,20:00:00"; # every four hours
       Unit = "speedtest.service";
     };
   };
+
 }
