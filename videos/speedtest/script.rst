@@ -29,8 +29,8 @@ Script
   absurdly low.
 
 - The ``fast-cli`` NixOS package provides a ``fast`` command that measures
-  download speed.  It can also output JSON.  Demo it via ``fast --json|grep -v
-  userIp``.
+  download speed.  It can also output JSON.  Demo it via
+  ``fast --json|grep -v userIp``.
 
 - I could have just outputted the JSON and appended it to a file, but I decided
   to write a small Python program that ran ``fast-cli --json``, parsed the
