@@ -10,11 +10,10 @@ keymap = {
     "speed":"downloadSpeed",
     "dled":"downloaded",
     "ltcy":"latency",
-    "ip":"userIp",
     "timestamp":"timestamp",
     }
 
-order = [ "timestamp", "speed", "ltcy", "dled", "bloat", "ip" ]
+order = [ "timestamp", "speed", "ltcy", "dled", "bloat" ]
 default_fname = "/var/log/fast.csv"
 
 if __name__== "__main__":

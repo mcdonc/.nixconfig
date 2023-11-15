@@ -29,7 +29,8 @@ Script
   absurdly low.
 
 - The ``fast-cli`` NixOS package provides a ``fast`` command that measures
-  download speed.  It can also output JSON.  Demo it.
+  download speed.  It can also output JSON.  Demo it via ``fast --json|grep -v
+  userIp``.
 
 - I could have just outputted the JSON and appended it to a file, but I decided
   to write a small Python program that ran ``fast-cli --json``, parsed the
@@ -54,7 +55,7 @@ Script
     in
       systemd.services.speedtest = {
         serviceConfig.Type = "oneshot";
-        path = with pkgs; [ fastlog fast-cli ];
+        path = with pkgs; [ fastlog fast-cli python311 ];
         script = ''
           #!/bin/sh
           fastlog
@@ -65,11 +66,12 @@ Script
         wantedBy = [ "timers.target" ];
         partOf = [ "speedtest.service" ];
         timerConfig = {
-          OnCalendar = "*-*-* 00,04,08,12,16,20:00:00"; # every four hours
+          # every four hours
+          OnCalendar = "*-*-* 00,04,08,12,16,20:00:00";
           Unit = "speedtest.service";
         };
       };
 
 - Now, every four hours an entry is written to ``/var/log/fast.csv`` that
-  includes the download speed and a timestamp.
+  includes the download speed and a timestamp.  Demonstrate manually.
   

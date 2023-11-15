@@ -6,7 +6,6 @@ let
     dontUnpack = true;
     installPhase = "install -Dm755 ${../etc/fastlog.py} $out/bin/fastlog";
   };
-  
 in
 
 {
@@ -109,7 +108,7 @@ in
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ fastlog fast-cli ];
+    path = with pkgs; [ fastlog fast-cli python311 ];
     script = ''
       #!/bin/sh
       fastlog
@@ -120,7 +119,9 @@ in
     wantedBy = [ "timers.target" ];
     partOf = [ "speedtest.service" ];
     timerConfig = {
-      OnCalendar = "*-*-* 00,04,08,12,16,20:00:00"; # every four hours
+      # every four hours
+      OnCalendar = "*-*-* 00,04,08,12,16,20:00:00";
+      #OnCalendar = "*:0/5";
       Unit = "speedtest.service";
     };
   };
