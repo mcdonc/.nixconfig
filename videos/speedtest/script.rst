@@ -1,7 +1,7 @@
 NixOS 57: Speedtesting Your Internet Connection Over Time
 =========================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/m63JrESRuJ8
 
 - This text script available via link in the video description.
 
