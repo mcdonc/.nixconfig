@@ -14,7 +14,7 @@ in
     ../pseries.nix
     ../encryptedzfs.nix
     ../sessile.nix
-    ../rc505
+#    ../rc505
     ../common.nix
   ];
   system.stateVersion = "22.05";
