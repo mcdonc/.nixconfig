@@ -119,7 +119,7 @@ in
     wantedBy = [ "timers.target" ];
     partOf = [ "speedtest.service" ];
     timerConfig = {
-      # every four hours
+      # every two hours
       OnCalendar = "*-*-* 00,02,04,06,08,10,12,14,16,18,20,22:00:00";
       #OnCalendar = "*:0/5";
       Unit = "speedtest.service";
