@@ -6,6 +6,11 @@ let
     dontUnpack = true;
     installPhase = "install -Dm755 ${../etc/fastlog.py} $out/bin/fastlog";
   };
+  fasthtml = pkgs.stdenv.mkDerivation {
+    name = "fasthtml";
+    dontUnpack = true;
+    installPhase = "install -Dm755 ${../etc/fasthtml.py} $out/bin/fasthtml";
+  };
 in
 
 {
@@ -108,10 +113,11 @@ in
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ fastlog fast-cli python311 ];
+    path = with pkgs; [ fastlog fasthtml fast-cli python311 ];
     script = ''
       #!/bin/sh
       fastlog
+      fasthtml
     '';
   };
 
@@ -138,6 +144,13 @@ in
     extraConfig = ''
       DNSOverTLS=yes
     '';
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts."192.168.1.212" = {
+      root = "/var/www/speedtest";
+    };
   };
 
 }
