@@ -1,5 +1,5 @@
 { config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-bgremoval,
-  pkgs-unstable, nix-gaming, ... }:
+  pkgs-unstable, pkgs-oldfirefox, nix-gaming, ... }:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -245,7 +245,7 @@ in
     mpv
     vlc
     google-chrome
-    firefox
+    pkgs-oldfirefox.firefox
     audacity
     gimp
     transmission-qt

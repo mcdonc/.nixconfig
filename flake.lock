@@ -253,6 +253,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-oldfirefox": {
+      "locked": {
+        "lastModified": 1700519004,
+        "narHash": "sha256-6SrdAGOthMuFyoeTqxPL1WmN6GvK2qmc4SIspN/w4Zk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "cfe01551540042983152c147bb158a69cbd48462",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "cfe01551540042983152c147bb158a69cbd48462",
+        "type": "github"
+      }
+    },
     "nixpkgs-py36": {
       "locked": {
         "lastModified": 1634763423,
@@ -430,6 +446,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-bgremoval": "nixpkgs-bgremoval",
+        "nixpkgs-oldfirefox": "nixpkgs-oldfirefox",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",

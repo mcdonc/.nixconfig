@@ -9,6 +9,8 @@
     nixpkgs-py37.url =
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
+    nixpkgs-oldfirefox.url =
+      "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
@@ -22,7 +24,7 @@
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
     , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-bgremoval
-    , plasma-manager, nix-gaming, agenix }@inputs:
+    , nixpkgs-oldfirefox, plasma-manager, nix-gaming, agenix }@inputs:
     let
       overlays = (_: prev: {
         steam = prev.steam.override {
@@ -50,6 +52,10 @@
           config.allowUnfree = true;
         };
         pkgs-bgremoval = import nixpkgs-bgremoval {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-oldfirefox = import nixpkgs-oldfirefox {
           inherit system;
           config.allowUnfree = true;
         };
