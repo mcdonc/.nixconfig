@@ -10,7 +10,7 @@ if __name__ == '__main__':
     inlist = []
     outlist = []
     max = 30
-    order = ['Timestamp', 'Speed (Mbps)', 'Latency', 'Downloaded', 'Bloat']
+    order = ['Timestamp', 'Speed (Mbps)', 'Latency (ms)', 'Downloaded', 'Bloat']
     reader = csv.reader(infile, delimiter='\t')
     reader.__next__() # header
     for row in reader:
