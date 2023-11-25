@@ -244,7 +244,7 @@ in
     mpv
     vlc
     google-chrome
-    pkgs-oldfirefox.firefox
+    firefox
     audacity
     gimp
     transmission-qt
