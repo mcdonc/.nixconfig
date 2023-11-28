@@ -380,5 +380,6 @@ in
     speedtest-cli
     fast-cli
     nmap
+    bottom
   ];
 }
