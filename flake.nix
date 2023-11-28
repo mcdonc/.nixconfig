@@ -2,7 +2,7 @@
   description = "Chris' Jawns";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-py36.url =
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
@@ -12,7 +12,7 @@
     nixpkgs-oldfirefox.url =
       "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     plasma-manager.url =
       "github:mcdonc/plasma-manager/enable-look-and-feel-settings";

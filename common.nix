@@ -49,8 +49,10 @@ in
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "electron-19.1.9"
     "electron-24.8.6"
     "python-2.7.18.6"
+    "python-2.7.18.7"
   ]; # etcher (12.2.3), something unknown (maybe matrix or signal desktop) and
      # unmaintained python
 
@@ -132,7 +134,7 @@ in
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
-  fonts.fonts = with pkgs; [ ubuntu_font_family nerdfonts ];
+  fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
 
   # sound
   sound.enable = true;
@@ -255,8 +257,8 @@ in
     python27
     pkgs-py36.python36
     pkgs-py37.python37
-    python38
-    python39
+    #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
+    #python39
     python310
     (python311.withPackages (p: with p; [
         python311Packages.pyserial # for pico-w-go in vscode

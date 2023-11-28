@@ -97,7 +97,10 @@
     epkgs.flycheck-pyflakes
   ];
 
-  services.emacs.enable = true;
+  services.emacs = {
+    enable = true;
+    startWithUserSession = "graphical";
+  };
 
   home.file.".emacs.d" = {
     source = ../.emacs.d;
