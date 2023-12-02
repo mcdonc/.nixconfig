@@ -22,6 +22,7 @@ in
 #    ../rc505
     ../common.nix
     ../oldnvidia.nix # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
+#    ../dnsovertls/resolvedonly.nix
   ];
   system.stateVersion = "22.05";
 
@@ -99,18 +100,7 @@ in
 
   # why must I do this?  I have no idea.  But if I don't, swnix pauses then
   # "fails" (really just prints an error) when it switches configurations.
-  systemd.services.NetworkManager-wait-online.enable = false;
-
-  # # pixiecore quick xyz --dhcp-no-bind
-  # services.pixiecore = {
-  #   enable = true;
-  #   openFirewall = true;
-  #   dhcpNoBind = true;
-  #   kernel = "https://boot.netboot.xyz";
-  #   port = 98; # default is 80
-  # };
-
-  #services.cachix-agent.enable = true;
+  # systemd.services.NetworkManager-wait-online.enable = false;
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
@@ -132,29 +122,6 @@ in
       Unit = "speedtest.service";
     };
   };
-
-  # alternate encrypted dns... https://mdleom.com/blog/2020/03/04/caddy-nixos-part-2/#DNS-over-TLS
-
-  # encrypt dns (both networking.nameservers and services.resolved)
-  # networking.nameservers =
-  #   [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
-
-  # services.resolved = {
-  #   # see https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/resolved.nix
-  #   enable = true;
-  #   dnssec = "true";
-  #   domains = [ "~." ];
-  #   fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
-  #   extraConfig = ''
-  #     DNSOverTLS=true
-  #     #MulticastDNS=false
-  #   '';
-  #   #llmnr = "false"; # let Avahi handle mDNS
-  # };
-
-  # let resolved handle mDNS
-  #services.avahi.enable = lib.mkForce false;
-  #services.avahi.nssmdns = lib.mkForce false;
 
   services.nginx = {
     enable = true;
