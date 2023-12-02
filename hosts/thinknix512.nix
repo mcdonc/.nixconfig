@@ -21,6 +21,8 @@ in
     ../sessile.nix
 #    ../rc505
     ../common.nix
+    ../oldnvidia.nix # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
+#    ../dnsovertls/resolvedonly.nix
   ];
   system.stateVersion = "22.05";
 
@@ -98,18 +100,7 @@ in
 
   # why must I do this?  I have no idea.  But if I don't, swnix pauses then
   # "fails" (really just prints an error) when it switches configurations.
-  systemd.services.NetworkManager-wait-online.enable = false;
-
-  # # pixiecore quick xyz --dhcp-no-bind
-  # services.pixiecore = {
-  #   enable = true;
-  #   openFirewall = true;
-  #   dhcpNoBind = true;
-  #   kernel = "https://boot.netboot.xyz";
-  #   port = 98; # default is 80
-  # };
-
-  #services.cachix-agent.enable = true;
+  # systemd.services.NetworkManager-wait-online.enable = false;
 
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
@@ -132,25 +123,16 @@ in
     };
   };
 
-  # encrypt dns (both networking.nameservers and services.resolved)
-  networking.nameservers =
-    [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
-
-  services.resolved = {
-    enable = true;
-    dnssec = "true";
-    domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
-    extraConfig = ''
-      DNSOverTLS=yes
-    '';
-  };
-
   services.nginx = {
     enable = true;
     virtualHosts."192.168.1.212" = {
       root = "/var/www/speedtest";
     };
   };
+
+  # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens
+  # services.xserver.displayManager.setupCommands = ''
+  #  xrandr --output DP-3 --mode 3840x2160 --pos 0x0 --output DP-4 --off 
+  # '';
 
 }

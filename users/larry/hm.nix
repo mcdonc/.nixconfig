@@ -67,13 +67,12 @@
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
     Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 keybase-gui --disable-gpu-sandbox
+    Exec=env KEYBASE_AUTOSTART=1 ${pkgs.keybase}/bin/keybase-gui --disable-gpu-sandbox
     GenericName[en_US]=
     GenericName=
     MimeType=
     Name[en_US]=Keybase
     Name=Keybase
-    Path=
     StartupNotify=true
     Terminal=false
     TerminalOptions=
@@ -97,7 +96,10 @@
     epkgs.flycheck-pyflakes
   ];
 
-  services.emacs.enable = true;
+  services.emacs = {
+    enable = true;
+    startWithUserSession = "graphical";
+  };
 
   home.file.".emacs.d" = {
     source = ../.emacs.d;
