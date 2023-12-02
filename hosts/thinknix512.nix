@@ -133,19 +133,28 @@ in
     };
   };
 
-  # encrypt dns (both networking.nameservers and services.resolved)
-  networking.nameservers =
-    [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+  # alternate encrypted dns... https://mdleom.com/blog/2020/03/04/caddy-nixos-part-2/#DNS-over-TLS
 
-  services.resolved = {
-    enable = true;
-    dnssec = "true";
-    domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
-    extraConfig = ''
-      DNSOverTLS=yes
-    '';
-  };
+  # encrypt dns (both networking.nameservers and services.resolved)
+  # networking.nameservers =
+  #   [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+
+  # services.resolved = {
+  #   # see https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/resolved.nix
+  #   enable = true;
+  #   dnssec = "true";
+  #   domains = [ "~." ];
+  #   fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+  #   extraConfig = ''
+  #     DNSOverTLS=true
+  #     #MulticastDNS=false
+  #   '';
+  #   #llmnr = "false"; # let Avahi handle mDNS
+  # };
+
+  # let resolved handle mDNS
+  #services.avahi.enable = lib.mkForce false;
+  #services.avahi.nssmdns = lib.mkForce false;
 
   services.nginx = {
     enable = true;
@@ -153,5 +162,10 @@ in
       root = "/var/www/speedtest";
     };
   };
+
+  # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens
+  # services.xserver.displayManager.setupCommands = ''
+  #  xrandr --output DP-3 --mode 3840x2160 --pos 0x0 --output DP-4 --off 
+  # '';
 
 }
