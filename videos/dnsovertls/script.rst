@@ -59,6 +59,9 @@ System-Wide
   something like ``systemd-networkd``).  It may work with ``systemd-networkd``
   instead, but I haven't tried it.
 
+- We make use of ``systemd-resolved`` in our system-wide configs, which is
+  a DNS resolver tha ships as part of systemd.
+
 System-Wide Config 1: Using ``systemd-resolved`` only
 #####################################################
 
