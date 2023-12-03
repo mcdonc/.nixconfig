@@ -2,7 +2,7 @@
  NixOS 58: Exploring Encrypted DNS (DNS-over-TLS/HTTPS)
 ========================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/8e4riM8HsEQ
 
 - This text script available via link in the video description.
 
