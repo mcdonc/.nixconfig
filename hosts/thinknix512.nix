@@ -22,7 +22,7 @@ in
 #    ../rc505
     ../common.nix
     ../oldnvidia.nix # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
-#    ../dnsovertls/resolvedonly.nix
+    ../dnsovertls/resolvedonly.nix
   ];
   system.stateVersion = "22.05";
 
