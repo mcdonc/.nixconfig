@@ -9,9 +9,11 @@
     enable = true;
     dnssec = "true";
     domains = [ "~." ]; # "use as default interface for all requests"
+    # (see man resolved.conf)
+    # let Avahi handle mDNS publication
     extraConfig = ''
-      DNSOverTLS=opportunistic # or "true" (see man resolved.conf)
-      MulticastDNS=resolve # let Avahi handle mDNS publication
+      DNSOverTLS=opportunistic
+      MulticastDNS=resolve
     '';
     llmnr = "true";
   };

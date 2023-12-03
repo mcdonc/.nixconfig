@@ -62,32 +62,41 @@ System-Wide
 - We make use of ``systemd-resolved`` in our system-wide configs, which is
   a DNS resolver tha ships as part of systemd.
 
+``systemd-resolved`` Troubleshooting Tools
+``````````````````````````````````````````
+
+``resolvectl status``
+
+``resolvectl query <hostname>``
+   
 System-Wide Config 1: Using ``systemd-resolved`` only
 #####################################################
 
 Here's the config::
 
-     services.resolved = {
-        enable = true;
-        dnssec = "true";
-        domains = [ "~." ]; # "use as default interface for all requests"
-        extraConfig = ''
-          DNSOverTLS=opportunistic # or "true" (see man resolved.conf)
-          MulticastDNS=resolve # let Avahi handle mDNS publication
-        '';
-        llmnr = "true";
-      };
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ]; # "use as default interface for all requests"
+    # (see man resolved.conf)
+    # let Avahi handle mDNS publication
+    extraConfig = ''
+      DNSOverTLS=opportunistic
+      MulticastDNS=resolve
+    '';
+    llmnr = "true";
+  };
 
-      networking.nameservers = [
-        "1.1.1.1#cloudflare-dns.com"
-        "8.8.8.8#dns.google"
-        "1.0.0.1#cloudflare-dns.com"
-        "8.8.4.4#dns.google"
-        "2606:4700:4700::1111#cloudflare-dns.com"
-        "2001:4860:4860::8888#dns.google"
-        "2606:4700:4700::1001#cloudflare-dns.com"
-        "2001:4860:4860::8844#dns.google"
-      ];
+  networking.nameservers = [
+    "1.1.1.1#cloudflare-dns.com"
+    "8.8.8.8#dns.google"
+    "1.0.0.1#cloudflare-dns.com"
+    "8.8.4.4#dns.google"
+    "2606:4700:4700::1111#cloudflare-dns.com"
+    "2001:4860:4860::8888#dns.google"
+    "2606:4700:4700::1001#cloudflare-dns.com"
+    "2001:4860:4860::8844#dns.google"
+  ];
 
 It means:
 
@@ -112,70 +121,71 @@ sends only DNS-over-TLS requests to the servers its configured to use (along
 with ``systemd-resolved`` to point at it and potentially give us local name
 resolution.  Here's the config::
 
-  services.resolved = {
-    enable = true;
-    domains = [ "~." ]; # use as default interface for all requests
-    extraConfig = ''
-      MulticastDNS=resolve; # let Avahi hadle mDNS publication
-    '';
-    llmnr = "true";
-  };
-  
-  networking = {
-    nameservers = [ "::1" "127.0.0.1"];
-  };
-
-  ## DNS-over-TLS
-  services.stubby = {
-    enable = true;
-    settings = {
-      # ::1 cause error, use 0::1 instead
-      listen_addresses = [ "127.0.0.1" "0::1" ];
-      # https://github.com/getdnsapi/stubby/blob/develop/stubby.yml.example
-      resolution_type = "GETDNS_RESOLUTION_STUB";
-      dns_transport_list = [ "GETDNS_TRANSPORT_TLS" ];
-      tls_authentication = "GETDNS_AUTHENTICATION_REQUIRED";
-      tls_query_padding_blocksize = 128;
-      idle_timeout = 10000;
-      round_robin_upstreams = 1;
-      tls_min_version = "GETDNS_TLS1_3";
-      dnssec = "GETDNS_EXTENSION_TRUE";
-      upstream_recursive_servers = [
-        {
-          address_data = "1.1.1.1";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "1.0.0.1";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "2606:4700:4700::1111";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "2606:4700:4700::1001";
-          tls_auth_name = "cloudflare-dns.com";
-        }
-        {
-          address_data = "9.9.9.9";
-          tls_auth_name = "dns.quad9.net";
-        }
-        {
-          address_data = "149.112.112.112";
-          tls_auth_name = "dns.quad9.net";
-       }
-        {
-          address_data = "2620:fe::fe";
-          tls_auth_name = "dns.quad9.net";
-        }
-        {
-          address_data = "2620:fe::9";
-          tls_auth_name = "dns.quad9.net";
-        }
-      ];
+    services.resolved = {
+      enable = true;
+      domains = [ "~." ]; # use as default interface for all requests
+      # let Avahi handle mDNS publication
+      extraConfig = ''
+        MulticastDNS=resolve
+      '';
+      llmnr = "true";
     };
-  };
+    
+    networking = {
+      nameservers = [ "::1" "127.0.0.1"];
+    };
+
+    ## DNS-over-TLS
+    services.stubby = {
+      enable = true;
+      settings = {
+        # ::1 cause error, use 0::1 instead
+        listen_addresses = [ "127.0.0.1" "0::1" ];
+        # https://github.com/getdnsapi/stubby/blob/develop/stubby.yml.example
+        resolution_type = "GETDNS_RESOLUTION_STUB";
+        dns_transport_list = [ "GETDNS_TRANSPORT_TLS" ];
+        tls_authentication = "GETDNS_AUTHENTICATION_REQUIRED";
+        tls_query_padding_blocksize = 128;
+        idle_timeout = 10000;
+        round_robin_upstreams = 1;
+        tls_min_version = "GETDNS_TLS1_3";
+        dnssec = "GETDNS_EXTENSION_TRUE";
+        upstream_recursive_servers = [
+          {
+            address_data = "1.1.1.1";
+            tls_auth_name = "cloudflare-dns.com";
+          }
+          {
+            address_data = "1.0.0.1";
+            tls_auth_name = "cloudflare-dns.com";
+          }
+          {
+            address_data = "2606:4700:4700::1111";
+            tls_auth_name = "cloudflare-dns.com";
+          }
+          {
+            address_data = "2606:4700:4700::1001";
+            tls_auth_name = "cloudflare-dns.com";
+          }
+          {
+            address_data = "9.9.9.9";
+            tls_auth_name = "dns.quad9.net";
+          }
+          {
+            address_data = "149.112.112.112";
+            tls_auth_name = "dns.quad9.net";
+          }
+          {
+            address_data = "2620:fe::fe";
+            tls_auth_name = "dns.quad9.net";
+          }
+          {
+            address_data = "2620:fe::9";
+            tls_auth_name = "dns.quad9.net";
+          }
+        ];
+      };
+    };
 
 This config is different from the ``systemd-resolved``-only configuration in
 these ways:
@@ -194,48 +204,54 @@ these ways:
 5. We configure Stubby to run and do both DNS-over-TLS and DNSSEC, feeding it
    some servers we know can handle DNS-over-TLS.
 
-Troubleshooting Tools
-`````````````````````
-
-``resolvectl status``
-
-``resolvectl query <hostname>``
-   
 Caveats for System-Wide Operation
 `````````````````````````````````
 
+- Note that things in ``extraConfig`` do not like comments via hashes following
+  a directive.  This won't work::
+
+      extraConfig = ''
+        MulticastDNS=resolve # comment
+      '';
+
+  It must be::
+
+      # comment
+      extraConfig = ''
+        MulticastDNS=resolve
+      '';
+  
+  It also won't refuse to start.  It will just show a warning in the log and
+  merrily proceeed.
+      
 - Regardless of which config you use above, resolution of "non-synthesized,
-  single-label" names won't work as expected (or doesn't for me).  Eg. if
-  ``ping anotherlocalmachine`` worked for you on the system that you configure
-  with systemwide DNS-over-TLS, it probably won't anymore.
+  single-label" names might not work as expected.  Eg. pay attention to ``ping
+  anotherlocalmachine`` and ``ping anotherlocalmachine.local`` and make sure
+  it's doing the right thing.
 
-  However!  ``ping anotherlocalmachine.local`` might!  This is because the
-  former tries to uses LLMNR ("Link-Local Multicast Name Resolution") while the
-  latter will try to use mDNS ("Multicast DNS") resolution.  This is highly
-  dependent on the machine you're attempting to contact participating in one or
-  the other or both.  In general, if a machine is running ``mDNSResponder``
-  (Apple) or Avahi (Linux), trying to contact it with a ``.local`` extesion
-  will work (not sure about Windows).
+  ``ping anotherlocalmachine`` tries to uses LLMNR ("Link-Local Multicast Name
+  Resolution") while ``ping another.localmachine.local`` will try to use mDNS
+  ("Multicast DNS") resolution.  This is highly dependent on the machine you're
+  attempting to contact participating in one or the other or both.  In general,
+  if a machine is running ``mDNSResponder`` (Apple) or Avahi (Linux), trying to
+  contact it with a ``.local`` extesion will work (not sure about Windows).  Or
+  if you have a router that is willing to translate single-label names into IP
+  addresses, and that router is consulted *only* for single-label or ``.local``
+  names, it will work.  I know, it's complicated.
 
-  Even if you set up the DNS search path to tack on ``.local`` during requests,
-  it just dosn't want to work.  I tried to make this work for many hours and
-  just gave up.
-
-- If you get your DNS server from DHCP, all the work that you did to enable
-  system wide DNS-over-TLS will be ignored, and that DNS server will be used.
-  See ``resolvectl status``.
-
-  You need to set your DHCP settings to ``Adresses only`` rather than
-  ``Automatic`` to avoid this.
+- If you get your DNS server from DHCP, all the work that you did to enable, in
+  certain cases, system wide DNS-over-TLS *may* be ignored, and the DNS server
+  obtained via DHCP will be used (unencrypted).  You may need to set your DHCP
+  settings to ``Adresses only`` rather than ``Automatic`` to debug this.  It's
+  fiddly.
 
 - Even if you think you have it working, it's best to check things with
-  Wireshark.  At one point, I ended up in a place where DNS requests were going
-  to both the DNS-over-TLS servers *and* a local unencrypted server somehow,
-  defeating the purpose totally.
+  Wireshark.  I often wound up in a place where DNS requests weren't being
+  encrypted at all, despite thinking they should be.  At one point, I ended up
+  in a place where DNS requests were going to both the DNS-over-TLS servers
+  *and* a local unencrypted server somehow, defeating the purpose totally.
 
 - These caveats are why I decided to abandon systemwide encrypted DNS, its just
-  too complicated and fiddly to make work reliably.
-
-- If anyone has made systemwide work reliably for them, please let me know!
-  
-
+  too complicated and fiddly to feel confident about working 100% all the time,
+  and too easy to get into a place where you think it's working but it may not
+  be.

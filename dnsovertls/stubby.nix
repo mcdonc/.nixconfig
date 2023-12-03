@@ -6,8 +6,9 @@
   services.resolved = {
     enable = true;
     domains = [ "~." ]; # use as default interface for all requests
+    # let Avahi handle mDNS publication
     extraConfig = ''
-      MulticastDNS=resolve; # let Avahi hadle mDNS publication
+      MulticastDNS=resolve
     '';
     llmnr = "true";
   };
