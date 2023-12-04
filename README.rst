@@ -104,7 +104,7 @@ Post-Reboot
 
    swapon -av
 
- Add the swap space to swapDevices in the host's Nix config::
+  Add the swap space to swapDevices in the host's Nix config::
 
    swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
  
