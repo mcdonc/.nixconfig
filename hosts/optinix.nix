@@ -3,7 +3,7 @@
     [ "${nixos-hardware}/common/cpu/intel" ../encryptedzfs.nix ../common.nix ];
 
   fileSystems."/nix" = {
-    device = "NIXROOT/home";
+    device = "NIXROOT/nix";
     fsType = "nix";
   };
   
