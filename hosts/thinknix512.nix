@@ -11,17 +11,16 @@ let
     dontUnpack = true;
     installPhase = "install -Dm755 ${../etc/fasthtml.py} $out/bin/fasthtml";
   };
-in
 
-{
+in {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
     ../pseries.nix
     ../encryptedzfs.nix
     ../sessile.nix
-#    ../rc505
     ../common.nix
-    ../oldnvidia.nix # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
+    # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
+    ../oldnvidia.nix
     ../dnsovertls/resolvedonly.nix
   ];
   system.stateVersion = "22.05";
@@ -98,10 +97,6 @@ in
   # is 4)
   boot.consoleLogLevel = 3;
 
-  # why must I do this?  I have no idea.  But if I don't, swnix pauses then
-  # "fails" (really just prints an error) when it switches configurations.
-  # systemd.services.NetworkManager-wait-online.enable = false;
-
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
     path = with pkgs; [ fastlog fasthtml fast-cli python311 ];
@@ -125,9 +120,7 @@ in
 
   services.nginx = {
     enable = true;
-    virtualHosts."192.168.1.212" = {
-      root = "/var/www/speedtest";
-    };
+    virtualHosts."192.168.1.212" = { root = "/var/www/speedtest"; };
   };
 
   # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens

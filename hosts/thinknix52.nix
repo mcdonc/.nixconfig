@@ -6,8 +6,6 @@
     ../pseries.nix
     ../encryptedzfs.nix
     ../common.nix
-    #    ../rc505.nix
-#    ../oldnvidia.nix
   ];
 
   system.stateVersion = "22.05";
@@ -24,8 +22,5 @@
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
 
-  # why must I do this?  I have no idea.  But if I don't, swnix pauses then "fails"
-  # (really just prints an error) when it switches configurations.
-  # systemd.services.NetworkManager-wait-online.enable = false;
 }
 
