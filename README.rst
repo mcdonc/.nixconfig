@@ -64,7 +64,12 @@ Usage
 
 - Copy the generated ``/mnt/etc/nixos_aside/hardware-configuration.nix`` to a
   safe place to capture what the scanner found (not reflected in the checked in
-  config).
+  config)::
+
+    passwd (change nixos user passwd)
+    ifconfig (see ip address)
+    ssh <ip address> and cut n paste hardware config, add as comment to
+      hosts/mynewsystem.nix
 
 - Reboot.
 
