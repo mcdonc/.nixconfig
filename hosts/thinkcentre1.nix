@@ -35,6 +35,4 @@
     };
   };
 
-  # required to make wireless work
-  hardware.enableAllFirmware = lib.mkDefault true;
 }

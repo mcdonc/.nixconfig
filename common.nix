@@ -124,6 +124,7 @@ in
   time.timeZone = "America/New_York";
 
   hardware.bluetooth.enable = true;
+  hardware.enableAllFirmware = true;
 
   # desktop stuff
   services.xserver.enable = true;
