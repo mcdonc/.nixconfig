@@ -389,5 +389,6 @@ in
     bottom
     wireshark
     openssl
+    geekbench
   ];
 }
