@@ -1,10 +1,16 @@
-{ config, pkgs, lib, nixos-hardware, ... }: {
+{ config, pkgs, lib, nixos-hardware, ... }:
+
+{
   imports = [
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/encryptedzfs.nix
+    ./profiles/dnsovertls/resolvedonly.nix
+    ./profiles/speedtest
     ../common.nix
   ];
+
+  powerManagement.cpuFreqGovernor = "performance";
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];

@@ -1,18 +1,6 @@
 { config, pkgs, lib, nixos-hardware, options, ... }:
 
-let
-  fastlog = pkgs.stdenv.mkDerivation {
-    name = "fastlog";
-    dontUnpack = true;
-    installPhase = "install -Dm755 ${../etc/fastlog.py} $out/bin/fastlog";
-  };
-  fasthtml = pkgs.stdenv.mkDerivation {
-    name = "fasthtml";
-    dontUnpack = true;
-    installPhase = "install -Dm755 ${../etc/fasthtml.py} $out/bin/fasthtml";
-  };
-
-in {
+{
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
     "${nixos-hardware}/common/pc/ssd"
@@ -26,11 +14,23 @@ in {
     ../common.nix
   ];
   system.stateVersion = "22.05";
+  networking.hostId = "deadbeef";
+  networking.hostName = "thinknix512";
+
+  hardware.nvidia.prime.offload.enable = false;
+  hardware.nvidia.prime.sync.enable = lib.mkForce true;
+
+  # silence ACPI "errors" at boot shown before NixOS stage 1 output
+  # (default is 4)
+  boot.consoleLogLevel = 3;
 
   boot.zfs.extraPools = [ "b" ];
 
   # dont ask for "b/storage" credentials
   boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
+
+  # don't run updatedb on /b
+  services.locate.prunePaths = [ "/b" ];
 
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
 
@@ -85,44 +85,6 @@ in {
       };
     };
     extraArgs = [ "--debug" ];
-  };
-
-  services.locate.prunePaths = [ "/b" ];
-
-  networking.hostId = "deadbeef";
-  networking.hostName = "thinknix512";
-
-  hardware.nvidia.prime.offload.enable = false;
-  hardware.nvidia.prime.sync.enable = lib.mkForce true;
-
-  # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
-  # is 4)
-  boot.consoleLogLevel = 3;
-
-  systemd.services.speedtest = {
-    serviceConfig.Type = "oneshot";
-    path = with pkgs; [ fastlog fasthtml fast-cli python311 ];
-    script = ''
-      #!/bin/sh
-      fastlog
-      fasthtml
-    '';
-  };
-
-  systemd.timers.speedtest = {
-    wantedBy = [ "timers.target" ];
-    partOf = [ "speedtest.service" ];
-    timerConfig = {
-      # every two hours
-      OnCalendar = "*-*-* 00,02,04,06,08,10,12,14,16,18,20,22:00:00";
-      #OnCalendar = "*:0/5";
-      Unit = "speedtest.service";
-    };
-  };
-
-  services.nginx = {
-    enable = true;
-    virtualHosts."192.168.1.212" = { root = "/var/www/speedtest"; };
   };
 
   # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens
