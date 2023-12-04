@@ -7,7 +7,7 @@
 
   services.resolved = {
     enable = true;
-    dnssec = "true";
+    dnssec = "false";
     domains = [ "~." ]; # "use as default interface for all requests"
     # (see man resolved.conf)
     # let Avahi handle mDNS publication
