@@ -15,9 +15,11 @@ let
 in {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
+    "${nixos-hardware}/common/pc/ssd"
     ./profiles/pseries.nix
     ./profiles/sessile.nix
     ./profiles/encryptedzfs.nix
+    ./profiles/tlp.nix
     # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
     ./profiles/oldnvidia.nix
     ./profiles/dnsovertls/resolvedonly.nix
