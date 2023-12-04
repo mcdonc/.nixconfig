@@ -13,7 +13,7 @@
 
   fileSystems."/nix" = {
     device = "NIXROOT/nix";
-    fsType = "nix";
+    fsType = "zfs";
   };
 
   system.stateVersion = "23.11";
