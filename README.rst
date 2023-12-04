@@ -68,7 +68,7 @@ Usage
 
     passwd (change nixos user passwd)
     ifconfig (see ip address)
-    ssh <ip address> and cut n paste hardware config, add as comment to
+    ssh nixos@<ip address> and cut n paste hardware config, add as comment to
       hosts/mynewsystem.nix
 
 - Reboot.
