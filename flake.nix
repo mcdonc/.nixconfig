@@ -8,23 +8,22 @@
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url =
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
-    nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
-    nixpkgs-oldfirefox.url =
-      "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
-    plasma-manager.url =
-      "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
-    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
-    plasma-manager.inputs.home-manager.follows = "home-manager";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    agenix.url = "github:ryantm/agenix";
+    # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
+    # nixpkgs-oldfirefox.url =
+    #   "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
+    # plasma-manager.url =
+    #  "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
+    # plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # plasma-manager.inputs.home-manager.follows = "home-manager";
+    # agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-bgremoval
-    , nixpkgs-oldfirefox, plasma-manager, nix-gaming, agenix }@inputs:
+    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nix-gaming }@inputs:
     let
       overlays = (_: prev: {
         steam = prev.steam.override {
@@ -51,15 +50,15 @@
           inherit system;
           config.allowUnfree = true;
         };
-        pkgs-bgremoval = import nixpkgs-bgremoval {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        pkgs-oldfirefox = import nixpkgs-oldfirefox {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        inherit nixos-hardware plasma-manager nix-gaming system inputs;
+        # pkgs-bgremoval = import nixpkgs-bgremoval {
+        #   inherit system;
+        #   config.allowUnfree = true;
+        # };
+        # pkgs-oldfirefox = import nixpkgs-oldfirefox {
+        #   inherit system;
+        #   config.allowUnfree = true;
+        # };
+        inherit nixos-hardware nix-gaming system inputs;
       };
 
       chris-modules = [

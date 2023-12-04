@@ -1,5 +1,5 @@
-{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-bgremoval,
-  pkgs-unstable, pkgs-oldfirefox, nix-gaming, ... }:
+{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable, nix-gaming, ...
+}:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -14,8 +14,7 @@ let
     exec "$@"
   '';
 
-in
-  {
+in {
   imports = [ ./cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -54,7 +53,7 @@ in
     "python-2.7.18.6"
     "python-2.7.18.7"
   ]; # etcher (12.2.3), something unknown (maybe matrix or signal desktop) and
-     # unmaintained python
+  # unmaintained python
 
   # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -186,7 +185,7 @@ in
   services.tlp = {
     enable = true;
     settings = {
-      CPU_SCALING_GOVERNOR_ON_AC="performance";
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
       # only charge up to 80% of the battery capacity
       START_CHARGE_THRESH_BAT0 = "75";
       STOP_CHARGE_THRESH_BAT0 = "80";
@@ -210,7 +209,7 @@ in
 
   # wireshark without sudo; note that still necessary to add
   # wireshark to systemPackages to get gui I think
-  programs.wireshark.enable= true;
+  programs.wireshark.enable = true;
 
   # default shell for all users
   users.defaultUserShell = pkgs.zsh;
@@ -233,8 +232,9 @@ in
     nvidia-offload
     vim_configurable
     wget
-    (wrapOBS { plugins = with pkgs.obs-studio-plugins;
-                 [ obs-backgroundremoval ]; })
+    (wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [ obs-backgroundremoval ];
+    })
     thermald
     powertop
     libsForQt5.kdeconnect-kde
@@ -265,14 +265,15 @@ in
     #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
     #python39
     python310
-    (python311.withPackages (p: with p; [
+    (python311.withPackages (p:
+      with p; [
         python311Packages.pyserial # for pico-w-go in vscode
         python311Packages.pyflakes # for emacs
         python311Packages.flake8 # for vscode
         python311Packages.black # for cmdline and vscode
         python311Packages.tox # for... tox
         python311Packages.matplotlib # for speedtest graphing
-    ]))
+      ]))
     pypy3
     xz
     libreoffice
