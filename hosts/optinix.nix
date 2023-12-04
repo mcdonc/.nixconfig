@@ -1,6 +1,10 @@
 { config, pkgs, lib, nixos-hardware, ... }: {
-  imports =
-    [ "${nixos-hardware}/common/cpu/intel" ../encryptedzfs.nix ../common.nix ];
+  imports = [
+    "${nixos-hardware}/common/cpu/intel"
+    "${nixos-hardware}/common/pc/ssd"
+    ../encryptedzfs.nix
+    ../common.nix
+  ];
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
@@ -16,6 +20,7 @@
     fsType = "zfs";
   };
 
+  swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
   system.stateVersion = "23.11";
 
   networking.hostId = "0a2c6440";

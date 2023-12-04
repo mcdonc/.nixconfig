@@ -55,7 +55,7 @@ zfs create -o mountpoint=legacy ${ROOTPLABEL}/home
 zfs create -o mountpoint=legacy ${ROOTPLABEL}/nix
 
 # swap
-#zfs create -V 8G -b $(getconf PAGESIZE) -o compression=zle \
+# zfs create -V 8G -b 16384 -o compression=zle \
 #      -o logbias=throughput -o sync=always \
 #      -o primarycache=metadata -o secondarycache=none \
 #      -o com.sun:auto-snapshot=false ${ROOTPLABEL}/swap
