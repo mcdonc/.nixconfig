@@ -92,4 +92,19 @@ Post-Reboot
   ``url = https://github.com/mcdonc/.nixconfig.git`` to ``url =
   git@github.com:mcdonc/.nixconfig.git`` in the ``[remote "origin"]`` section
   of ``/etc/nixos/.git/config``.
-  
+
+- Set up swap space if necessary (change 8GB to whatever)::
+
+   zfs create -V 8G -b 16384 -o compression=zle \
+      -o logbias=throughput -o sync=always \
+      -o primarycache=metadata -o secondarycache=none \
+      -o com.sun:auto-snapshot=false NIXROOT/swap
+
+   mkswap -f /dev/zvol/NXROOT/swap
+
+   swapon -av
+
+ Add the swap space to swapDevices in the host's Nix config::
+
+   swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
+ 

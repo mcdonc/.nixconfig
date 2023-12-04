@@ -54,13 +54,6 @@ zfs create -o mountpoint=legacy ${ROOTPLABEL}/root
 zfs create -o mountpoint=legacy ${ROOTPLABEL}/home
 zfs create -o mountpoint=legacy ${ROOTPLABEL}/nix
 
-# swap
-# zfs create -V 8G -b 16384 -o compression=zle \
-#      -o logbias=throughput -o sync=always \
-#      -o primarycache=metadata -o secondarycache=none \
-#      -o com.sun:auto-snapshot=false ${ROOTPLABEL}/swap
-#mkswap -f /dev/zvol/${ROOTPLABEL}/swap
-
 # reserved to cope with running out of disk space
 zfs create -o refreservation=1G -o mountpoint=none ${ROOTPLABEL}/reserved
 
