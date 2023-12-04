@@ -232,7 +232,7 @@ in
     nvidia-offload
     vim_configurable
     wget
-    (wrapOBS { plugins = with pkgs-bgremoval.obs-studio-plugins;
+    (wrapOBS { plugins = with pkgs.obs-studio-plugins;
                  [ obs-backgroundremoval ]; })
     thermald
     powertop
@@ -387,5 +387,6 @@ in
     nmap
     bottom
     wireshark
+    openssl
   ];
 }
