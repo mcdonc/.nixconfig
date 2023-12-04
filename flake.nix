@@ -130,6 +130,10 @@
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinkcentre1.nix ];
         };
+        optinix = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = chris-modules ++ [ ./hosts/optinix.nix ];
+        };
       };
     };
 }
