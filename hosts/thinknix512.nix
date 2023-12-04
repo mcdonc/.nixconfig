@@ -15,13 +15,13 @@ let
 in {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
-    ./pseries.nix
-    ./sessile.nix
-    ../encryptedzfs.nix
-    ../common.nix
+    ./profiles/pseries.nix
+    ./profiles/sessile.nix
+    ./profiles/encryptedzfs.nix
     # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
-    ../oldnvidia.nix
-    ../dnsovertls/resolvedonly.nix
+    ./profiles/oldnvidia.nix
+    ./profiles/dnsovertls/resolvedonly.nix
+    ../common.nix
   ];
   system.stateVersion = "22.05";
 

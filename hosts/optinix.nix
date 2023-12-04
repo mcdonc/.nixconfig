@@ -2,7 +2,7 @@
   imports = [
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
-    ../encryptedzfs.nix
+    ./profiles/encryptedzfs.nix
     ../common.nix
   ];
 

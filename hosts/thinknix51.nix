@@ -3,8 +3,8 @@
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
-    ./pseries.nix
-    ../encryptedzfs.nix
+    ./profiles/pseries.nix
+    ./profiles/encryptedzfs.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
