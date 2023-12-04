@@ -9,7 +9,7 @@
   
   system.stateVersion = "23.11";
 
-  networking.hostId = "0a2c6440b";
+  networking.hostId = "0a2c6440";
   networking.hostName = "optinix";
 
 }
