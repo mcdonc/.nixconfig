@@ -8,25 +8,30 @@ Usage
 -----
 
 - Edit the https://github.com/mcdonc/.nixconfig/blob/master/flake.nix file,
-  adding the new system to ``nixosConfigurations``, referencing the right
-  ``nixos-hardware`` module and a file we intend to create in the repo's
-  ``hosts`` fdir (e.g. ``hosts/mynewsystem.nix``) in a subsequent step::
+  adding the new system to ``nixosConfigurations``, referencing a file we
+  intend to create in the repo's ``hosts`` fdir
+  (e.g. ``hosts/mynewsystem.nix``) in a subsequent step::
 
         mynewsystem = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-nixpkgs ]; })
-            nixos-hardware.nixosModules.lenovo-thinkpad-p51
-            ./hosts/mynewsystem.nix
-            ./users/chrism/user.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useUserPackages = true;
-              home-manager.users.chrism = import ./users/chrism/hm.nix;
-            }
-          ];
+          inherit system specialArgs;
+          modules = chris-modules ++ [ ./hosts/mynewsystem.nix ];
         };
 
+- Add the ``hosts/mynewsystem.nix`` file, copying another host file to start
+  with.  Remember to change the ``hostId`` and ``hostName``.  Use this
+  for the hostId::
+
+    openssl rand -hex 4
+
+- Add the following to the ``hosts/mynewsystem.nix`` (bw compat issue)::
+
+     fileSystems."/nix" =
+       { device = "NIXROOT/nix";
+         fsType = "zfs";
+       };
+
+- Check in and push.
+    
 - Check out this repository into ``~/.nixconfig`` within the NixOS installer on
   the new system::
 
@@ -53,16 +58,13 @@ Usage
     cd
     sudo cp -r .nixconfig /mnt/etc/nixos
 
-- If necessary, copy one of the existing ``/mnt/etc/hosts/thinknix*.nix`` files
-  (or the ``/mnt/etc/hosts/vanilla.nix`` file) into another file within the
-  ``/mnt/etc/nixos/hosts`` directory, creating a new system.  Remember to
-  change the ``hostId`` and ``hostName``, if so.  Use this for the hostId::
-
-    cat /etc/machine-id | head -c 8
-
 - Install the system::
 
-     sudo nixos-install
+     sudo nixos-install  --flake /mnt/etc/nixos#mynewsystem
+
+- Copy the generated ``/mnt/etc/nixos_aside/hardware-configuration.nix`` to a
+  safe place to capture what the scanner found (not reflected in the checked in
+  config).
 
 - Reboot.
 
@@ -85,6 +87,4 @@ Post-Reboot
   ``url = https://github.com/mcdonc/.nixconfig.git`` to ``url =
   git@github.com:mcdonc/.nixconfig.git`` in the ``[remote "origin"]`` section
   of ``/etc/nixos/.git/config``.
-
-- Commit the new file in ``hosts`` to the repo.
   
