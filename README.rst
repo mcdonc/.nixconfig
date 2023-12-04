@@ -63,11 +63,12 @@ Usage
      sudo nixos-install  --flake /mnt/etc/nixos#mynewsystem
 
 - Copy the generated ``/mnt/etc/nixos_aside/hardware-configuration.nix`` to a
-  safe place to capture what the scanner found (not reflected in the checked in
-  config)::
+  safe place to capture what the scanner found that is not yet reflected in the
+  checked in config::
 
-    passwd (change nixos user passwd)
-    ifconfig (see ip address)
+    $ passwd   # (change nixos user passwd)
+    $ ifconfig # (see ip address)
+    
     ssh nixos@<ip address> and cut n paste hardware config, add as comment to
       hosts/mynewsystem.nix
 
