@@ -3,7 +3,7 @@
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p52"
-    ../pseries.nix
+    ./pseries.nix
     ../encryptedzfs.nix
     ../common.nix
   ];

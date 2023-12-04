@@ -15,9 +15,9 @@ let
 in {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
-    ../pseries.nix
+    ./pseries.nix
+    ./sessile.nix
     ../encryptedzfs.nix
-    ../sessile.nix
     ../common.nix
     # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
     ../oldnvidia.nix

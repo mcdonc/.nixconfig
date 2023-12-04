@@ -1,7 +1,7 @@
 { config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
-  imports = [ ../encryptedzfs.nix ../sessile.nix ../common.nix ];
+  imports = [ ../encryptedzfs.nix ./sessile.nix ../common.nix ];
   system.stateVersion = "23.05";
 
   networking.hostId = "eeabbced";

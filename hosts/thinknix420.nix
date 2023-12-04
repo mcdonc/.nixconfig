@@ -3,7 +3,7 @@
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/t420"
-    ../tseries.nix
+    ./tseries.nix
     ../encryptedzfs.nix
     ../common.nix
   ];
