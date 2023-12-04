@@ -52,7 +52,7 @@ zpool create -f \
 
 zfs create -o mountpoint=legacy ${ROOTPLABEL}/root
 zfs create -o mountpoint=legacy ${ROOTPLABEL}/home
-zfs create -i mountpoint=legacy ${ROOTPLABEL}/nix
+zfs create -o mountpoint=legacy ${ROOTPLABEL}/nix
 # reserved to cope with running out of disk space
 zfs create -o refreservation=1G -o mountpoint=none ${ROOTPLABEL}/reserved
 
