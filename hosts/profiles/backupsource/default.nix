@@ -4,13 +4,13 @@
   # Define a user account.
   users.users.backup = {
     isNormalUser = true;
-    shell = "/run/current-system/sw/bin/nologin";
+    #shell = "/run/current-system/sw/bin/nologin";
     createHome = false;
     home = "/var/empty";
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
+        ''command = "zfs" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
       ];
     };
   };
