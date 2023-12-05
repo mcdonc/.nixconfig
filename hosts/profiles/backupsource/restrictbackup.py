@@ -19,4 +19,4 @@ if __name__ == "__main__":
     print(original)
     for name in allowed:
         if original.startswith(name):
-            os.execvp(program, args)
+            os.execvp(program, args) # no need to break

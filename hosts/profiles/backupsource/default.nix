@@ -7,6 +7,23 @@ let
     installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
     buildInputs = [ pkgs.python311 ];
   };
+
+  restrictbackup2 = pkgs.writeShellScriptBin "restrictbackup" ''
+    echo "$SSH_ORIGINAL_COMMAND" >> /tmp/commands
+
+    declare -a arr=("exit" "echo" "command" "zpool" "zfs")
+
+    for a in "''${arr[@]}"
+    do
+       if [[ $SSH_ORIGINAL_COMMAND == "$a"* ]] ;
+       then
+          exec $SSH_ORIGINAL_COMMAND
+       fi
+    done
+
+    echo "Access denied to $SSH_ORIGINAL_COMMAND"
+  '';
+
  
 in {
   # Define a user account.
@@ -17,7 +34,7 @@ in {
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
-        ''command="${restrictbackup}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+        ''command="${restrictbackup2}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
       ];
     };
   };
