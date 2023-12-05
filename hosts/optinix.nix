@@ -33,31 +33,5 @@
   networking.hostId = "0a2c6440";
   networking.hostName = "optinix";
 
-  services.sanoid = {
-    enable = true;
-    interval = "*:0/1";
-    #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
-    datasets = {
-      "NIXROOT/home" = {
-        autoprune = true;
-        autosnap = true;
-        hourly = 0;
-        daily = 1;
-        weekly = 1;
-        monthly = 1;
-        yearly = 0;
-      };
-      "NIXROOT/root" = {
-        autoprune = true;
-        autosnap = true;
-        hourly = 0;
-        daily = 1;
-        weekly = 1;
-        monthly = 1;
-        yearly = 0;
-      };
-    };
-    extraArgs = [ "--debug" ];
-  };
 }
 

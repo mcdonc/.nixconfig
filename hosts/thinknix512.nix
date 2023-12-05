@@ -47,7 +47,7 @@
       };
       # sudo zfs allow backup compression,create,destroy,diff,hold,load-key,mount,mountpoint,receive,refreservation,release,rename,rollback,send,snapshot NIXROOT
       "optinix-home" = {
-        sshKey = "/var/lib/syncoid/optinix-chrism.key";
+        sshKey = "/var/lib/syncoid/backup.key";
         source = "backup@optinix.local:NIXROOT/home";
         target = "b/optinix-home";
         sendOptions = "w c";
@@ -85,6 +85,15 @@
       };
       # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
       "b/thinknix512-home" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 0;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
+      "b/optinix-home" = {
         autoprune = true;
         autosnap = false;
         hourly = 0;
