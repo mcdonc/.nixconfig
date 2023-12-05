@@ -9,7 +9,7 @@ let
   };
 
   restrictbackup2 = pkgs.writeShellScriptBin "restrictbackup" ''
-    if [[ $SSH_ORIGINAL_COMMAND == "exit" ]];
+    if [[ $SSH_ORIGINAL_COMMAND == "exit" ]]; then
        exit
     fi
 
