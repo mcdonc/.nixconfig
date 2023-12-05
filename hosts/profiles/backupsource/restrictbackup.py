@@ -10,6 +10,8 @@ zfs
 
 if __name__ == "__main__":
     original = os.environ['SSH_ORIGINAL_COMMAND']
+    args = original.split()
+    program, args = args[0], args[1:]
 
     f = open('/tmp/commands', 'a')
 
@@ -17,6 +19,4 @@ if __name__ == "__main__":
     print(original)
     for name in allowed:
         if original.startswith(name):
-            result = os.popen(original).read()
-            f.write(result+"\n")
-            print(result)
+            os.execvp(program, args)
