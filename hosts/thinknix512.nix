@@ -37,20 +37,20 @@
   services.syncoid = {
     enable = true;
     interval = "*:0/1";
+    commonArgs = [ "--debug" ];
     #interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {
       "thinknix512-home" = {
         source = "NIXROOT/home";
         target = "b/thinknix512-home";
         sendOptions = "w c";
-        extraArgs = [ "--debug" ];
       };
       "optinix-home" = {
-        sshKey = "/var/keys/optinix-chrism.key";
-        source = "chrism@optinix.local:NIXROOT/home";
+        sshKey = "/var/lib/syncoid/optinix-chrism.key";
+        source = "backup@optinix.local:NIXROOT/home";
         target = "b/optinix-home";
         sendOptions = "w c";
-        extraArgs = [ "--debug" ];
+        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
       };
     };
     localSourceAllow = options.services.syncoid.localSourceAllow.default

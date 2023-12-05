@@ -7,6 +7,7 @@
     ./profiles/encryptedzfs.nix
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/speedtest
+    ./profiles/backupsource
     ../common.nix
   ];
 
