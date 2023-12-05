@@ -2,7 +2,7 @@
  NixOS 59: Remote ZFS Backups Over SSH Using Syncoid
 =====================================================
 
-- Companion to video at
+- Companion to video at https://youtu.be/-AdppzPQuag
 
 - This text script available via link in the video description.
 
