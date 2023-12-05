@@ -9,11 +9,15 @@ let
   };
 
   restrictbackup2 = pkgs.writeShellScriptBin "restrictbackup" ''
+    if [[ $SSH_ORIGINAL_COMMAND == "exit" ]];
+       exit
+    fi
+
     exec $SSH_ORIGINAL_COMMAND
 
     echo "$SSH_ORIGINAL_COMMAND" >> /tmp/commands
 
-    declare -a arr=("exit" "echo" "command" "zpool" "zfs")
+    declare -a arr=("echo" "command" "zpool" "zfs")
 
     for a in "''${arr[@]}"
     do
