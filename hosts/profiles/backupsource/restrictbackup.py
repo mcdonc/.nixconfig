@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-import sys
+import os
+
 f = open('/tmp/commands', 'a')
-argv = ' '.join(sys.argv)
-f.write(argv+'\n')
-print(argv)
+original = os.environ['SSH_ORIGINAL_COMMAND']
+
+f.write(original + '\n')
+print(original)
+
 allowed = """exit
 echo -n
 command -v lzop
