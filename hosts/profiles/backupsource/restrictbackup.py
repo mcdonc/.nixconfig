@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 
-bash = "/run/current-system/sw/bin/bash"
+sh = "/run/current-system/sw/bin/sh"
 
 allowed = """exit
 echo
@@ -19,4 +19,4 @@ if __name__ == "__main__":
 
     for name in allowed:
         if original.startswith(name):
-            os.execvp(bash, [bash,  "-c", original]) # no need to break
+            os.execvp(sh, [sh, "-c", original]) # no need to break
