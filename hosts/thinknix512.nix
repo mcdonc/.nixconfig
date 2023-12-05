@@ -41,11 +41,11 @@
     commonArgs = [ "--debug" ];
     #interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {
-      "thinknix512-home" = {
-        source = "NIXROOT/home";
-        target = "b/thinknix512-home";
-        sendOptions = "w c";
-      };
+      # "thinknix512-home" = {
+      #   source = "NIXROOT/home";
+      #   target = "b/thinknix512-home";
+      #   sendOptions = "w c";
+      # };
       # sudo zfs allow backup compression,hold,send,snapshot NIXROOT
       "optinix-home" = {
         sshKey = "/var/lib/syncoid/backup.key";
