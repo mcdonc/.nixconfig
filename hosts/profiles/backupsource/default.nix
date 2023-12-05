@@ -1,17 +1,9 @@
 { config, pkgs, home-manager, ... }:
 
 let
-  # restricted bash; this mess is necessary to prevent e.g.
-  # ssh backup@optinix.local -t "bash --noprofile" by forcing the
-  # sourcing of ~/.bash_profile
   rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
-  '';
-  rbashwrapper = pkgs.writeScriptBin "rbashwrapper" ''
-    #!${pkgs.bashInteractive}/bin/bash --noprofile
-    . ~/.bash_profile
-    exec ${pkgs.bashInteractive}/bin/bash --restricted --noprofile --norc -c "$SSH_ORIGINAL_COMMAND"
   '';
 
 in {
@@ -20,7 +12,20 @@ in {
     home.stateVersion = "23.11";
     home.username = "backup";
     home.homeDirectory = "/home/backup";
+
     home.file.".bash_profile" = {
+      executable = true;
+      text = ''
+        export PATH=$HOME/bin
+      '';
+    };
+    home.file.".bashrc" = {
+      executable = true;
+      text = ''
+        export PATH=$HOME/bin
+      '';
+    };
+    home.file.".profile" = {
       executable = true;
       text = ''
         export PATH=$HOME/bin
@@ -52,7 +57,8 @@ in {
     shell = "${rbash}/bin/rbash";
     extraGroups = [ ];
     openssh = {
-      # https://stackoverflow.com/a/50400836
+      # https://stackoverflow.com/a/50400836 ; prevent
+      # ssh backup@optinix.local -t "bash --noprofile" via no-pty
       authorizedKeys.keys = [
         "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
       ];
