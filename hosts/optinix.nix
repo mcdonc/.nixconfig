@@ -32,23 +32,6 @@
   networking.hostId = "0a2c6440";
   networking.hostName = "optinix";
 
-  services.syncoid = {
-    enable = true;
-    user = "chrism";
-    interval = "daily"; # important that syncoid runs less often than sanoid
-    commands = {
-      "NIXROOT/home" = {
-        target = "chrism@thinknix512.local:b/optinix-home";
-        sendOptions = "w c";
-        extraArgs = [ "--debug" ];
-      };
-    };
-    localSourceAllow = options.services.syncoid.localSourceAllow.default
-      ++ [ "mount" ];
-    localTargetAllow = options.services.syncoid.localTargetAllow.default
-      ++ [ "destroy" ];
-  };
-
   services.sanoid = {
     enable = true;
     #interval = "*:0/1";
