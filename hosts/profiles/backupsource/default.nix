@@ -7,28 +7,6 @@ let
     installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
     buildInputs = [ pkgs.python311 ];
   };
-
-  restrictbackup2 = pkgs.writeShellScriptBin "restrictbackup" ''
-    if [[ $SSH_ORIGINAL_COMMAND == "exit" ]]; then
-       exit
-    fi
-
-    echo "$SSH_ORIGINAL_COMMAND" >> /tmp/commands
-
-    exec $SSH_ORIGINAL_COMMAND
-
-    declare -a arr=("echo" "command" "zpool" "zfs")
-
-    for a in "''${arr[@]}"
-    do
-       if [[ $SSH_ORIGINAL_COMMAND == "$a"* ]] ; then
-          exec $SSH_ORIGINAL_COMMAND
-       fi
-    done
-
-    echo "Access denied to $SSH_ORIGINAL_COMMAND"
-  '';
-
  
 in {
   # Define a user account.
@@ -46,8 +24,8 @@ in {
 
   services.sanoid = {
     enable = true;
-    interval = "*:0/5";
-    #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+    #interval = "*:0/5";
+    interval = "hourly"; # run this hourly, run syncoid daily to prune ok
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;

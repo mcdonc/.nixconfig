@@ -36,16 +36,15 @@
 
   services.syncoid = {
     enable = true;
-    #interval = "hourly";
-    interval = "*:0/1";
+    #interval = "*:0/1";
     commonArgs = [ "--debug" ];
-    #interval = "daily"; # important that syncoid runs less often than sanoid
+    interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {
-      # "thinknix512-home" = {
-      #   source = "NIXROOT/home";
-      #   target = "b/thinknix512-home";
-      #   sendOptions = "w c";
-      # };
+      "thinknix512-home" = {
+        source = "NIXROOT/home";
+        target = "b/thinknix512-home";
+        sendOptions = "w c";
+      };
       # sudo zfs allow backup compression,hold,send,snapshot,mount NIXROOT/home
       "optinix-home" = {
         sshKey = "/var/lib/syncoid/backup.key";
@@ -63,8 +62,8 @@
 
   services.sanoid = {
     enable = true;
-    interval = "*:0/5";
-    #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+    #interval = "*:0/5";
+    interval = "hourly"; # run this hourly, run syncoid daily to prune ok
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;
