@@ -2,7 +2,7 @@
 import sys
 f = open('/tmp/commands', 'a')
 argv = ' '.join(sys.argv)
-f.write(argv)
+f.write(argv+'\n')
 print(argv)
 allowed = """exit
 echo -n
