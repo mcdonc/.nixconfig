@@ -1,15 +1,17 @@
 { config, pkgs, home-manager, ... }:
 
 let
-  # restricted bash
+  # restricted bash; this mess is necessary to prevent e.g.
+  # ssh backup@optinix.local -t "bash --noprofile" by forcing the
+  # sourcing of ~/.bash_profile
   rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
-  # --rcfile=/home/backup/.bash_profile 
   rbashwrapper = pkgs.writeScriptBin "rbashwrapper" ''
-    #!${pkgs.bashInteractive}/bin/bash --restricted --noprofile --rcfile ~/.bash_profile --norc -i -l
-    true
+    #!${pkgs.bashInteractive}/bin/bash --noprofile
+    . ~/.bash_profile
+    exec ${pkgs.bashInteractive}/bin/bash --restricted --noprofile --norc -c "$SSH_ORIGINAL_COMMAND"
   '';
 
 in {
@@ -47,11 +49,12 @@ in {
     createHome = true;
     home = "/home/backup";
     group = "backup";
-    shell = "${rbashwrapper}/bin/rbashwrapper";
+    shell = "${rbash}/bin/rbash";
     extraGroups = [ ];
     openssh = {
+      # https://stackoverflow.com/a/50400836
       authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
+        "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
       ];
     };
   };
