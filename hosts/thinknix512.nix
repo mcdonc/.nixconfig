@@ -45,6 +45,7 @@
         target = "b/thinknix512-home";
         sendOptions = "w c";
       };
+      # sudo zfs allow backup compression,create,destroy,diff,hold,load-key,mount,mountpoint,receive,refreservation,release,rename,rollback,send,snapshot NIXROOT
       "optinix-home" = {
         sshKey = "/var/lib/syncoid/optinix-chrism.key";
         source = "backup@optinix.local:NIXROOT/home";
