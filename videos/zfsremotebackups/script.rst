@@ -202,10 +202,11 @@ A Weak Lockdown Attempt
   because syncoid indeed needs to execute the shell via SSH from the target to
   run commands.
 
-- I attempted to ameliorate this by using a ``command`` in the ssh key of the
-  backup user, which forces the machine to only run that command when it's
-  contacted via ssh.  When the machine is contacted, that command is run and
-  checked, and only if it's "allowed" will it run::
+- I attempted to ameliorate this by using a ``command=ascript`` stanza in the
+  beginning of the ssh key of the backup user, which forces the machine to run
+  that script when it's contacted via ssh.  When the machine is contacted, that
+  script is run and the original command checked, and only if it's permitted by
+  the script will the original command run::
 
     let
       restrictbackup = pkgs.stdenv.mkDerivation {
@@ -238,8 +239,9 @@ A Weak Lockdown Attempt
 
      allowed = ("exit", "echo", "command", "zpool", "zfs")
 
-     # This would require a lot more work to be truly secure (anticipate ";", "&",
-     # "&&", $(cmd), `cmd` injection).  It'd be a project.
+     # This would require a lot more work to be truly secure
+     # (anticipate ";", "&", "&&", $(cmd), `cmd` injection).
+     # It'd be a project.
 
      if __name__ == "__main__":
 
@@ -254,11 +256,15 @@ A Weak Lockdown Attempt
              for name in allowed:
                  if original.startswith(name):
                      os.execvp(sh, [sh, "-c", original]) # no need to break
-    
 
   This is terrible.  It's more of a recommendation to potential intruders
   please don't do this than a lockdown because of the potential for command
   separator (";", "&", etc) injection.
+
+- We also have problematic ZFS permissions granted to the ``backup``
+  user, but they are non-optional (e.g. ``destroy``).
+
+- See also https://github.com/jimsalterjrs/sanoid/issues/82
 
 - Hit me up if you have any ideas.
 
