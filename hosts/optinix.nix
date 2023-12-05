@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixos-hardware, ... }:
+{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
   imports = [
@@ -32,5 +32,39 @@
   networking.hostId = "0a2c6440";
   networking.hostName = "optinix";
 
+  services.syncoid = {
+    enable = true;
+    user = "chrism";
+    interval = "daily"; # important that syncoid runs less often than sanoid
+    commands = {
+      "NIXROOT/home" = {
+        target = "chrism@thinknix512.local:b/optinix-home";
+        sendOptions = "w c";
+        extraArgs = [ "--debug" ];
+      };
+    };
+    localSourceAllow = options.services.syncoid.localSourceAllow.default
+      ++ [ "mount" ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default
+      ++ [ "destroy" ];
+  };
+
+  services.sanoid = {
+    enable = true;
+    #interval = "*:0/1";
+    interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+    datasets = {
+      "NIXROOT/home" = {
+        autoprune = true;
+        autosnap = true;
+        hourly = 0;
+        daily = 1;
+        weekly = 1;
+        monthly = 1;
+        yearly = 0;
+      };
+    };
+    extraArgs = [ "--debug" ];
+  };
 }
 

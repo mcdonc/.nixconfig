@@ -36,10 +36,19 @@
 
   services.syncoid = {
     enable = true;
-    interval = "daily"; # important that syncoid runs less often than sanoid
+    interval = "*:0/1";
+    #interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {
-      "NIXROOT/home" = {
+      "thinknix512-home" = {
+        source = "NIXROOT/home";
         target = "b/thinknix512-home";
+        sendOptions = "w c";
+        extraArgs = [ "--debug" ];
+      };
+      "optinix-home" = {
+        sshKey = "/var/keys/optinix-chrism.key";
+        source = "chrism@optinix.local:NIXROOT/home";
+        target = "b/optinix-home";
         sendOptions = "w c";
         extraArgs = [ "--debug" ];
       };
