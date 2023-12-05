@@ -6,8 +6,9 @@ let
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
+  # --rcfile=/home/backup/.bash_profile 
   rbashwrapper = pkgs.writeScriptBin "rbashwrapper" ''
-    #!${pkgs.bashInteractive}/bin/bash --restricted --rcfile=/home/backup/.bash_profile --noprofile --norc -i -l
+    #!${pkgs.bashInteractive}/bin/bash --restricted --noprofile --rcfile ~/.bash_profile --norc -i -l
     true
   '';
 
