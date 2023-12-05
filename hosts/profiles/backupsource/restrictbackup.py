@@ -11,12 +11,15 @@ zfs
 """.split()
 
 if __name__ == "__main__":
-    original = os.environ['SSH_ORIGINAL_COMMAND'].strip()
 
-    f = open('/tmp/commands', 'a')
+    original = os.environ.get('SSH_ORIGINAL_COMMAND', '').strip()
 
-    f.write(original + '\n')
+    if original:
 
-    for name in allowed:
-        if original.startswith(name):
-            os.execvp(sh, [sh, "-c", original]) # no need to break
+        f = open('/tmp/commands', 'a')
+
+        f.write(original + '\n')
+
+        for name in allowed:
+            if original.startswith(name):
+                os.execvp(sh, [sh, "-c", original]) # no need to break
