@@ -1,14 +1,7 @@
 { config, pkgs, home-manager, ... }:
 
 let
-  restrictbackup = pkgs.stdenv.mkDerivation {
-    name = "restrictbackup";
-    dontUnpack = true;
-    installPhase =
-      "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
-    buildInputs = [ pkgs.python311 ];
-  };
-
+  # restricted bash
   rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
@@ -53,7 +46,6 @@ in {
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
-        #        ''command="${restrictbackup}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
       ];
     };
@@ -78,13 +70,5 @@ in {
     };
     extraArgs = [ "--debug" ];
   };
-
-  environment.systemPackages = with pkgs; [
-    # used by zfs send/receive
-    pv
-    mbuffer
-    lzop
-    zstd
-  ];
 
 }
