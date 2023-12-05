@@ -20,7 +20,7 @@ Overview
   of the machine local to the USB enclosure I'm using as a backup target.
 
 - Since then, I've set things up such that I am now backing up the home
-  directory of another remote machine also.
+  directory of a remote machine also.
 
 - Note that the source dataset and the target dataset in my case are encrypted.
 
@@ -259,3 +259,6 @@ A Weak Lockdown Attempt
   This is terrible.  It's more of a recommendation to potential intruders
   please don't do this than a lockdown because of the potential for command
   separator (";", "&", etc) injection.
+
+- Hit me up if you have any ideas.
+
