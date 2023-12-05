@@ -4,7 +4,8 @@
   # Define a user account.
   users.users.backup = {
     isNormalUser = true;
-    #initialPassword = "pw321";
+    shell = "/run/current-system/sw/bin/nologin";
+    createHome = false;
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
@@ -15,7 +16,7 @@
 
   services.sanoid = {
     enable = true;
-    interval = "*:0/1";
+    interval = "*:0/30";
     #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
     datasets = {
       "NIXROOT/home" = {
