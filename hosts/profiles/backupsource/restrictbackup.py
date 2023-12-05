@@ -3,12 +3,10 @@ import os
 
 sh = "/run/current-system/sw/bin/sh"
 
-allowed = """exit
-echo
-command
-zpool
-zfs
-""".split()
+allowed = ("exit", "echo", "command", "zpool", "zfs")
+
+# this will require a lot more work to be truly secure (anticipate ";", "&&",
+# etc).
 
 if __name__ == "__main__":
 
