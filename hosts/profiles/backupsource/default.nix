@@ -17,7 +17,7 @@
 
   services.sanoid = {
     enable = true;
-    interval = "*:0/30";
+    interval = "*:0/5";
     #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
     datasets = {
       "NIXROOT/home" = {

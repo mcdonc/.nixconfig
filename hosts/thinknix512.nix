@@ -36,7 +36,8 @@
 
   services.syncoid = {
     enable = true;
-    interval = "hourly";
+    #interval = "hourly";
+    interval = "*:0/10";
     commonArgs = [ "--debug" ];
     #interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {
@@ -62,7 +63,7 @@
 
   services.sanoid = {
     enable = true;
-    interval = "*:0/30";
+    interval = "*:0/5";
     #interval = "hourly"; # run this hourly, run syncoid daily to prune ok
     datasets = {
       "NIXROOT/home" = {
