@@ -14,9 +14,8 @@ if __name__ == "__main__":
 
     if original:
 
-        f = open('/tmp/commands', 'a')
-
-        f.write(original + '\n')
+        #f = open('/tmp/commands', 'a')
+        #f.write(original + '\n')
 
         for name in allowed:
             if original.startswith(name):
