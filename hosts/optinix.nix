@@ -19,8 +19,8 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # 500MB max ARC cache
-  boot.kernelParams = lib.mkForce [ "zfs.zfs_arc_max=536870912" ];
+  # 2GB max ARC cache
+  boot.kernelParams = lib.mkForce [ "zfs.zfs_arc_max=2147483648" ];
 
   fileSystems."/nix" = {
     device = "NIXROOT/nix";
