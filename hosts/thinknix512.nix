@@ -37,7 +37,7 @@
   services.syncoid = {
     enable = true;
     #interval = "hourly";
-    interval = "*:0/10";
+    interval = "*:0/1";
     commonArgs = [ "--debug" ];
     #interval = "daily"; # important that syncoid runs less often than sanoid
     commands = {

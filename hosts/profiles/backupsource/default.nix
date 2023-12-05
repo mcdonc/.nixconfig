@@ -1,15 +1,13 @@
 { config, pkgs, home-manager, ... }:
 
 let
-  restrictbackup = pkgs.writeShellScriptBin "restrictbackup" ''
-      if [[ $SSH_ORIGINAL_COMMAND == zfs* ]];
-      then
-         exec $SSH_ORIGINAL_COMMAND
-      else
-         echo "Access denied: $SSH_ORIGINAL_COMMAND"
-      fi
-  '';
-
+  restrictbackup = pkgs.stdenv.mkDerivation {
+    name = "restrictbackup";
+    dontUnpack = true;
+    installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
+    buildInputs = [ pkgs.python311 ];
+  };
+ 
 in {
   # Define a user account.
   users.users.backup = {
