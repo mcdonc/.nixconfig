@@ -4,7 +4,7 @@ let
   restrictbackup = pkgs.writeShellScriptBin "restrictbackup" ''
       if [[ $SSH_ORIGINAL_COMMAND == zfs* ]];
       then
-         `$SSH_ORIGINAL_COMMAND`
+         exec $SSH_ORIGINAL_COMMAND
       else
          echo "Access denied: $SSH_ORIGINAL_COMMAND"
       fi
