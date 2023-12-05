@@ -32,6 +32,8 @@ in {
       '';
     };
     # https://www.reddit.com/r/NixOS/comments/v0eak7/homemanager_how_to_create_symlink_to/
+    home.file."bin/ls".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.coreutils}/bin/ls";
     home.file."bin/lzop".source =
       config.lib.file.mkOutOfStoreSymlink "${pkgs.lzop}/bin/lzop";
     home.file."bin/mbuffer".source =
