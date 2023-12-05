@@ -20,8 +20,7 @@ Script
 - In that video I presented `a half-hearted half-solution in the form of a
   forced SSH command
   <https://github.com/mcdonc/.nixconfig/blob/master/videos/zfsremotebackups/script.rst#a-weak-lockdown-attempt>`_
-  that did some sanity checking of commands received via passphraseless SSH,
-  described at .
+  that did some sanity checking of commands received via passphraseless SSH.
 
 - It was trivially circumventable.
 
