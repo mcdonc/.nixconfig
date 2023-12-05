@@ -44,8 +44,9 @@ Script
 
 - ``rbash`` is almost as bad as my forced ssh command.  If you're not extremely
   careful (and even if you are), it is trivially circumventable too.  There is
-  a cottage industry of YouTube videos demonstrating how clever folks break out
-  of ``rbash``.
+  a `cottage industry of YouTube videos
+  <https://www.youtube.com/watch?v=xGvjq0DxZ9s>`_ demonstrating how clever
+  folks break out of ``rbash``.
 
 - If any of the commands you offer on the user's PATH can themselves execute
   arbitrary commands, it's easy to escape the ``rbash`` sandbox.
