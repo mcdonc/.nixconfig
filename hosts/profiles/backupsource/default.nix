@@ -2,7 +2,8 @@
 
 let
   restrictbackup = pkgs.writeShellScriptBin "restrictbackup" ''
-    echo Hello World
+      !/bin/sh
+      echo $SSH_ORIGINAL_COMMAND
   '';
 
 in {
