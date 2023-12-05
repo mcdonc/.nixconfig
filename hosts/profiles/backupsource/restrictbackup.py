@@ -11,7 +11,7 @@ zfs
 """.split()
 
 if __name__ == "__main__":
-    original = os.environ['SSH_ORIGINAL_COMMAND']
+    original = os.environ['SSH_ORIGINAL_COMMAND'].strip()
 
     f = open('/tmp/commands', 'a')
 

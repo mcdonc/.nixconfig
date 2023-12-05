@@ -46,7 +46,7 @@
       #   target = "b/thinknix512-home";
       #   sendOptions = "w c";
       # };
-      # sudo zfs allow backup compression,hold,send,snapshot NIXROOT
+      # sudo zfs allow backup compression,hold,send,snapshot,mount NIXROOT/home
       "optinix-home" = {
         sshKey = "/var/lib/syncoid/backup.key";
         source = "backup@optinix.local:NIXROOT/home";
@@ -107,6 +107,14 @@
     extraArgs = [ "--debug" ];
   };
 
+  environment.systemPackages = with pkgs; [
+    # used by zfs send/receive
+    pv
+    mbuffer
+    lzop
+    zstd
+  ];
+  
   # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens
   # services.xserver.displayManager.setupCommands = ''
   #  xrandr --output DP-3 --mode 3840x2160 --pos 0x0 --output DP-4 --off 

@@ -62,4 +62,12 @@ in {
     extraArgs = [ "--debug" ];
   };
 
+  environment.systemPackages = with pkgs; [
+    # used by zfs send/receive
+    pv
+    mbuffer
+    lzop
+    zstd
+  ];
+
 }
