@@ -1,6 +1,11 @@
 { config, pkgs, home-manager, ... }:
 
-{
+let
+  restrictbackup = pkgs.writeShellScriptBin "restrictbackup" ''
+    echo Hello World
+  '';
+
+in {
   # Define a user account.
   users.users.backup = {
     isNormalUser = true;
@@ -10,7 +15,7 @@
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
-        ''command = "zfs" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+        ''command = "${restrictbackup}" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
       ];
     };
   };
@@ -32,5 +37,6 @@
     };
     extraArgs = [ "--debug" ];
   };
-  
+
+  environment.systemPackages = [ restrictbackup ];
 }
