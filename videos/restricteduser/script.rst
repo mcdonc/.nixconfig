@@ -31,10 +31,11 @@ Script
 - Restricted bash is just bash executed as ``rbash`` or as ``bash -r``.  It
   allows execution of only executables found on the system user's $PATH; it
   won't allow, for example the execution of ``/bin/ls``
-  (``/run/current-system/sw/bin/ls`` in NixOS), but if the ``ls`` command is
-  on the user's ``$PATH``, it will be executable via plain old ``ls``.  Certain
+  (``/run/current-system/sw/bin/ls`` in NixOS), but if the ``ls`` command is on
+  the user's ``$PATH``, it will be executable via plain old ``ls``.  Certain
   other restrictions exist: the user can't change $PATH, ``exec`` doesn't work,
-  the user can't change directories, and other things.
+  the user can't change directories, no output redirection is permitted, and
+  other things.  Pipes do work, however.
 
 - I wanted to lock things down such that the only commands executable by the
   service user were ``lzop``, ``mbuffer``, ``pv``, ``zfs``, ``zpool``, and
