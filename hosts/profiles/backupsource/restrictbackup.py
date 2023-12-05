@@ -16,7 +16,7 @@ if __name__ == "__main__":
     f = open('/tmp/commands', 'a')
 
     f.write(original + '\n')
-    print(original)
+
     for name in allowed:
         if original.startswith(name):
-            os.execvp(bash, [bash,  "-c", f'"{original}"']) # no need to break
+            os.execvp(bash, [bash,  "-c", original]) # no need to break
