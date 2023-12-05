@@ -6,6 +6,10 @@ let
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
+  rbashwrapper = pkgs.writeScriptBin "rbashwrapper" ''
+    #!${pkgs.bashInteractive}/bin/bash --restricted --rcfile=/home/backup/.bash_profile --noprofile --norc -i -l
+    true
+  '';
 
 in {
   # https://github.com/nix-community/home-manager/issues/4433
@@ -42,7 +46,7 @@ in {
     createHome = true;
     home = "/home/backup";
     group = "backup";
-    shell = "${rbash}/bin/rbash";
+    shell = "${rbashwrapper}/bin/rbashwrapper";
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
