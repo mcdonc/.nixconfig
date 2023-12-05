@@ -149,6 +149,10 @@ Key Points
   user config is executed, adding to $PATH in some circumstances.  Just nuke em
   all, and set ``PATH=~/bin`` everwhere.
 
+- Note also that since the dotfiles it generates are linked into the Nix store,
+  they cannot be modified by any user (other than a nixos-rebuild), so the user
+  can't change his $PATH.
+
 - Without ``no-pty`` in the ssh authorized key, the following is a trivial
   escape of ``rbash``::
 
