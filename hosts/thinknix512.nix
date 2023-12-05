@@ -36,15 +36,15 @@
 
   services.syncoid = {
     enable = true;
-    interval = "*:0/1";
-    #interval = "daily"; # important that syncoid runs less often than sanoid
+    #interval = "*:0/1";
+    interval = "daily"; # important that syncoid runs less often than sanoid
     commonArgs = [ "--debug" ];
     commands = {
-      # "thinknix512-home" = {
-      #   source = "NIXROOT/home";
-      #   target = "b/thinknix512-home";
-      #   sendOptions = "w c";
-      # };
+      "thinknix512-home" = {
+        source = "NIXROOT/home";
+        target = "b/thinknix512-home";
+        sendOptions = "w c";
+      };
       # sudo zfs allow backup compression,hold,send,snapshot,mount NIXROOT/home
       "optinix-home" = {
         sshKey = "/var/lib/syncoid/backup.key";
@@ -114,9 +114,4 @@
     zstd
   ];
   
-  # https://www.kubuntuforums.net/forum/general/documentation/how-to-s/675259-sddm-and-multiple-monitors-x11-session-too-many-log-in-screens
-  # services.xserver.displayManager.setupCommands = ''
-  #  xrandr --output DP-3 --mode 3840x2160 --pos 0x0 --output DP-4 --off 
-  # '';
-
 }
