@@ -49,10 +49,12 @@ Script
   folks break out of ``rbash``.
 
 - If any of the commands you offer on the user's PATH can themselves execute
-  arbitrary commands, it's easy to escape the ``rbash`` sandbox.
+  arbitrary commands, it's easy to escape the ``rbash`` sandbox.  There are
+  also some ways to break out of it via an SSH command that will have you
+  rubbing your eyes.
 
-- But it's better than nothing, and marginally better than my forced ssh
-  command.
+- But it's better than nothing, and better than my forced ssh command because
+  it handles pipes, ampersands, etc in commands.
   
 The Nix File
 ============
@@ -145,7 +147,7 @@ Key Points
 - We add ``.bash_profile``, ``.profile``, and ``.bashrc`` dotfiles with the
   same content.  Without bashing the crap out of various dotfiles, the global
   user config is executed, adding to $PATH in some circumstances.  Just nuke em
-  all.
+  all, and set ``PATH=~/bin`` everwhere.
 
 - Without ``no-pty`` in the ssh authorized key, the following is a trivial
   escape of ``rbash``::
