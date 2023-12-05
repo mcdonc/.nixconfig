@@ -27,7 +27,6 @@
     fsType = "zfs";
   };
 
-  #swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
   system.stateVersion = "23.11";
 
   networking.hostId = "0a2c6440";
