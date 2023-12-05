@@ -5,14 +5,13 @@ let
     name = "restrictbackup";
     dontUnpack = true;
     installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
-    #buildInputs = [ pkgs.python311 ];
+    buildInputs = [ pkgs.python311 ];
   };
  
 in {
   # Define a user account.
   users.users.backup = {
     isNormalUser = true;
-    #shell = "/run/current-system/sw/bin/nologin";
     createHome = false;
     home = "/var/empty";
     extraGroups = [ ];
