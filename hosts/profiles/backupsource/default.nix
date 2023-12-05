@@ -11,10 +11,11 @@ let
 in {
   # Define a user account.
   users.users.backup = {
-    isNormalUser = true;
+    isSystemUser = true;
     createHome = false;
-    isHidden = true;
     home = "/var/empty";
+    group = "backup";
+    shell = pkgs.bashInteractive;
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
@@ -22,6 +23,8 @@ in {
       ];
     };
   };
+
+  users.groups.backup = {};
 
   services.sanoid = {
     enable = true;
