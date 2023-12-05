@@ -6,6 +6,7 @@
     isNormalUser = true;
     shell = "/run/current-system/sw/bin/nologin";
     createHome = false;
+    home = "/var/empty";
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
