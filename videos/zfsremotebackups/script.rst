@@ -24,6 +24,10 @@ Overview
 
 - Note that the source dataset and the target dataset in my case are encrypted.
 
+- You will be able to get the gist of things by watching this video only but
+  some ZFS knowledge is assumed.  I suggest that if you run into problems, you
+  watch the other two videos;
+
 Prerequisites
 =============
 
