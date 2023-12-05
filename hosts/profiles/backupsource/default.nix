@@ -13,16 +13,15 @@ let
        exit
     fi
 
-    exec $SSH_ORIGINAL_COMMAND
-
     echo "$SSH_ORIGINAL_COMMAND" >> /tmp/commands
+
+    exec $SSH_ORIGINAL_COMMAND
 
     declare -a arr=("echo" "command" "zpool" "zfs")
 
     for a in "''${arr[@]}"
     do
-       if [[ $SSH_ORIGINAL_COMMAND == "$a"* ]] ;
-       then
+       if [[ $SSH_ORIGINAL_COMMAND == "$a"* ]] ; then
           exec $SSH_ORIGINAL_COMMAND
        fi
     done
