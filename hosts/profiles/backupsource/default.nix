@@ -4,27 +4,62 @@ let
   restrictbackup = pkgs.stdenv.mkDerivation {
     name = "restrictbackup";
     dontUnpack = true;
-    installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
+    installPhase =
+      "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
     buildInputs = [ pkgs.python311 ];
   };
- 
+
+  rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
+    mkdir -p $out/bin
+    ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
+  '';
+
 in {
+  # https://github.com/nix-community/home-manager/issues/4433
+  home-manager.users.backup = { config, ... }: {
+    home.stateVersion = "23.11";
+    home.username = "backup";
+    home.homeDirectory = "/home/backup";
+    home.file.".bash_profile" = {
+      executable = true;
+      text = ''
+        export PATH=$HOME/bin
+      '';
+    };
+    # https://www.reddit.com/r/NixOS/comments/v0eak7/homemanager_how_to_create_symlink_to/
+    home.file."bin/ls".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.coreutils}/bin/ls";
+    home.file."bin/lzop".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.lzop}/bin/lzop";
+    home.file."bin/mbuffer".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.mbuffer}/bin/mbuffer";
+    home.file."bin/pv".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.pv}/bin/pv";
+    home.file."bin/zfs".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.zfs}/bin/zfs";
+    home.file."bin/zpool".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.zfs}/bin/zpool";
+    home.file."bin/zstd".source =
+      config.lib.file.mkOutOfStoreSymlink "${pkgs.zstd}/bin/zstd";
+  };
+
   # Define a user account.
   users.users.backup = {
     isSystemUser = true;
-    createHome = false;
-    home = "/var/empty";
+    createHome = true;
+    home = "/home/backup";
     group = "backup";
-    shell = pkgs.bashInteractive;
+    shell = "${rbash}/bin/rbash";
     extraGroups = [ ];
     openssh = {
       authorizedKeys.keys = [
-        ''command="${restrictbackup}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+        #        ''command="${restrictbackup}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
       ];
     };
   };
 
-  users.groups.backup = {};
+  users.groups.backup = { };
 
   services.sanoid = {
     enable = true;

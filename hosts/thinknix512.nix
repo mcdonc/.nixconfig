@@ -36,8 +36,8 @@
 
   services.syncoid = {
     enable = true;
-    #interval = "*:0/1";
-    interval = "daily"; # important that syncoid runs less often than sanoid
+    interval = "*:0/1";
+    #interval = "daily"; # important that syncoid runs less often than sanoid
     commonArgs = [ "--debug" ];
     commands = {
       "thinknix512-home" = {
