@@ -13,6 +13,7 @@ in {
   users.users.backup = {
     isNormalUser = true;
     createHome = false;
+    isHidden = true;
     home = "/var/empty";
     extraGroups = [ ];
     openssh = {
