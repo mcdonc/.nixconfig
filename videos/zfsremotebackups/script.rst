@@ -9,44 +9,253 @@
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
 
-Script
-------
+Overview
+========
 
 - A few months ago, I made two other videos about ZFS backups:
-  https://youtu.be/XRYAtldNvPo?si=T2FSG7iWdxfNdQpS
+  https://youtu.be/XRYAtldNvPo?si=T2FSG7iWdxfNdQpS (original) and
+  https://www.youtube.com/watch?v=csUXgtyZUGw (revisited).
 
-- In that video, I only configured ``syncoid`` to back up my home directory to
-  an external USB enclosure.
+- In those videos, I only configured ``syncoid`` to back up the home directory
+  of the machine local to the USB enclosure I'm using as a backup target.
 
-- The backups I made were not particularly good.  I showed how to only make one
-  backup generation, and if I wanted to restore from a backup older than that
-  generation, I would have been out of luck.
+- Since then, I've set things up such that I am now backing up the home
+  directory of another remote machine also.
 
-- In the meantime, I've come to understand more fully how I can use ZFS
-  snapshots in concert with ``sanoid`` to keep multiple generations of backups,
-  such that I can restore from a state more than one generation old.
+- Note that the source dataset and the target dataset in my case are encrypted.
 
-- ``sanoid`` is a snapshotting service by the same author.  It allows you to
-  every so often take snapshots of the source.  It also allows you to prune old
-  snapshots of the source and the target.
+Prerequisites
+=============
 
-- ``syncoid`` copies any snapshots on the source to the target.  No
-  configuration needed.
+- We need to create a passphraseless SSH public/private keypair (don't worry,
+  this isn't my actual backup key) and save it in our home directory as
+  ``backup.key`` and ``backup.key.pub``::
 
-- NixOS service packaging of ``syncoid`` and ``sanoid`` is not dummy-proof,
-  some consideration needed to use them together.
+    $ ssh-keygen
+    Generating public/private ed25519 key pair.
+    Enter file in which to save the key (/home/chrism/.ssh/id_ed25519): /home/chrism/backup.key
+    Enter passphrase (empty for no passphrase): 
+    Enter same passphrase again: 
+    Your identification has been saved in /home/chrism/backup.key
+    Your public key has been saved in /home/chrism/backup.key.pub
+    The key fingerprint is:
+    SHA256:+i0G1T38Bp7aFyKtsxZuGqZhc+Ooa/OGQe3rtELXrg0 chrism@thinknix512
+    The key's randomart image is:
+    +--[ED25519 256]--+
+    |                 |
+    |                 |
+    |     .   . o     |
+    |    . . . . =    |
+    |   . . oS  o =   |
+    |    o +.. o = +  |
+    |   . +E+=. * o . |
+    |    =oo&++B . .  |
+    |   .oOBo==oo .   |
+    +----[SHA256]-----+
+   
+- We are going our *pull* our backups from the remote machine.  This means that
+  the machine with the USB enclosure and lots of disk space will be our backup
+  *target* and it will attempt to contact the backup *source* machine via SSH.
 
-- There is a gotcha about using ``sanoid`` along with ``syncoid``.  In
-  particular, you want ``sanoid`` to run more often than ``syncoid`` because if
-  they continually run at the same time as each other, and at no other time,
-  ``sanoid`` may not be able to prune old snapshots.
+- On the *target* machine, take the ``backup.key`` we generated and copy it to
+  ``/var/lib/syncoid/backup.key`` and give it world-readable permission (it's
+  less bad than it sounds, the directory itself cannot be traversed by anyone
+  buut ``syncoid`` and ``root`` users)::
 
-- Bonus.  Don't ask for target credentials at startup::
+    $ sudo cp /home/chrism/backup.key /var/lib/syncoid
+    $ sudo chmod o+r /var/lib/syncoid/backup.key
 
-    # dont ask for "b/storage" credentials
-    boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
+  Note that the key cannot live anywhere else if you want to use it with
+  syncoid.  The ``syncoid`` user which it runs under seemingly can see nowhere
+  else.
+
+- If you don't have the ``var/lib/syncoid`` directory yet on your target
+  machine, I *think* it gets created when syncoid is either installed or maybe
+  when it attempts to sync at least one source.  This is what its permissions
+  are on my system::
+
+    $ cd /var/lib
+    $ ls -al|grep syncoid
+    drwx------  3 syncoid       syncoid         4 Dec  4 20:04 syncoid
+
+- In the Nix config of your *source* system, add configuration for a ``backup``
+  user that includes the public side of the authorized key (the contents of
+  ``backup.key.pub``)::
+
+    users.users.backup = {
+      isNormalUser = true;
+      createHome = false;
+      home = "/var/empty";
+      extraGroups = [ ];
+      openssh = {
+        authorizedKeys.keys = [
+          ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+        ];
+      };
+    };
     
-- Bonus 2: Don't try to use "c", "e", or "L" arguments to syncoid
-  ``sendOptions`` in concert with raw send ("w").  These were not problematic
-  under OpenZFS 0.8, but under OpenZFS 2.0, they cause kernel panics and
-  extremely high system usage.
+- Once you rebuild your source system using ``nixos-rebuild switch``, you
+  should be able to ssh from your target system to your source system.  My
+  source system is called ``optinix.local``::
+
+    $ sudo ssh -i /var/lib/syncoid/backup.key backup@optinix.local
+
+  Sudo is required here only to be able to read the key.  I'll try to provide
+  suggestions to lock this down a bit more in upcoming instructions, but it is
+  what it is.
+
+- On your *source* system, give some ZFS permissions to the backup user on the
+  dataset that you want to back up.  These are necessary for syncoid to do its
+  job::
+
+    sudo zfs allow backup compression,hold,send,snapshot,mount NIXROOT/home
+
+Making It Go
+============
+
+- On your target system, configure a ``services.syncoid`` command to pull from
+  the source system dataset (in my case, ``NIXROOT/home``, the dataset that has
+  my home directory data in it) in your Nix configuration, and a
+  ``services.sanoid`` dataset to keep around historical snapshots of the
+  dataset, which we can use to restore from if we have data loss. The dataset
+  that I'm backing up to is ``b/optinix-home`` (I have a ``b`` zpool that is my
+  big USB enclosure).
+
+  We'll also add a few programs to our system packages that syncoid uses to
+  better transfer data.::
+
+    services.syncoid = {
+      enable = true;
+      interval = "daily";
+      commonArgs = [ "--debug" ];
+      commands = {
+        "optinix-home" = {
+          sshKey = "/var/lib/syncoid/backup.key";
+          source = "backup@optinix.local:NIXROOT/home";
+          target = "b/optinix-home";
+          sendOptions = "w c";
+          extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
+        };
+      };
+    };
+
+    services.sanoid = {
+      enable = true;
+      interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+      datasets = {
+        "b/optinix-home" = {
+          autoprune = true;
+          autosnap = false;
+          hourly = 0;
+          daily = 7;
+          weekly = 4;
+          monthly = 12;
+          yearly = 0;
+        };
+      };
+      extraArgs = [ "--debug" ];
+    };
+
+    environment.systemPackages = with pkgs; [
+      # used by zfs send/receive
+      pv
+      mbuffer
+      lzop
+      zstd
+    ];
+    
+- On your source system, configure a ``services.sanoid`` dataset to keep around
+  a few historical datasets, and also add some system packages for use by
+  syncoid::
+
+      services.sanoid = {
+        enable = true;
+        interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+        datasets = {
+          "NIXROOT/home" = {
+            autoprune = true;
+            autosnap = true;
+            hourly = 0;
+            daily = 1;
+            weekly = 1;
+            monthly = 1;
+            yearly = 0;
+          };
+        };
+        extraArgs = [ "--debug" ];
+      };
+
+      environment.systemPackages = with pkgs; [
+        # used by zfs send/receive
+        pv
+        mbuffer
+        lzop
+        zstd
+      ];
+
+A Weak Lockdown Attempt
+=======================
+
+- Passphraseless SSH keys make me very nervous.
+
+- The UNIX user on the source system cannot have a ``/bin/nologin`` shell
+  because syncoid indeed needs to execute the shell via SSH from the target to
+  run commands.
+
+- I attempted to ameliorate this by using a ``command`` in the ssh key of the
+  backup user, which forces the machine to only run that command when it's
+  contacted via ssh.  When the machine is contacted, that command is run and
+  checked, and only if it's "allowed" will it run::
+
+    let
+      restrictbackup = pkgs.stdenv.mkDerivation {
+        name = "restrictbackup";
+        dontUnpack = true;
+        installPhase = "install -Dm755 ${./restrictbackup.py} $out/bin/restrictbackup";
+        buildInputs = [ pkgs.python311 ];
+      };
+
+    in
+      # Define a user account.
+      users.users.backup = {
+        isNormalUser = true;
+        createHome = false;
+        home = "/var/empty";
+        extraGroups = [ ];
+        openssh = {
+          authorizedKeys.keys = [
+            ''command="${restrictbackup}/bin/restrictbackup" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512''
+          ];
+        };
+      };
+
+  Where ``restrictbackup.py`` has these contents::
+
+     #!/usr/bin/env python3
+     import os
+
+     sh = "/run/current-system/sw/bin/sh"
+
+     allowed = ("exit", "echo", "command", "zpool", "zfs")
+
+     # This would require a lot more work to be truly secure (anticipate ";", "&",
+     # "&&", $(cmd), `cmd` injection).  It'd be a project.
+
+     if __name__ == "__main__":
+
+         original = os.environ.get('SSH_ORIGINAL_COMMAND', '').strip()
+
+         if original:
+
+             f = open('/tmp/commands', 'a')
+
+             f.write(original + '\n')
+
+             for name in allowed:
+                 if original.startswith(name):
+                     os.execvp(sh, [sh, "-c", original]) # no need to break
+    
+
+  This is terrible.  It's more of a recommendation to potential intruders
+  please don't do this than a lockdown because of the potential for command
+  separator (";", "&", etc) injection.
