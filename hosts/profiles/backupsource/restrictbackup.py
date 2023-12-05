@@ -5,8 +5,8 @@ sh = "/run/current-system/sw/bin/sh"
 
 allowed = ("exit", "echo", "command", "zpool", "zfs")
 
-# this will require a lot more work to be truly secure (anticipate ";", "&&",
-# etc).
+# This would require a lot more work to be truly secure (anticipate ";", "&",
+# "&&", $(cmd), `cmd` injection).  It'd be a project.
 
 if __name__ == "__main__":
 
