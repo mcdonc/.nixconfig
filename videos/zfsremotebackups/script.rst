@@ -112,7 +112,7 @@ Prerequisites
   dataset that you want to back up.  These are necessary for syncoid to do its
   job::
 
-    sudo zfs allow backup compression,hold,send,snapshot,mount NIXROOT/home
+    sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
 
 Making It Go
 ============
