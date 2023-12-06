@@ -2,7 +2,7 @@
  NixOS 60: rbash + ssh -  Restricting Commands a Service User Can Execute (Restricted Bash)
 ============================================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=Zm_gn9UlyVg
 
 - This text script available via link in the video description.
 
