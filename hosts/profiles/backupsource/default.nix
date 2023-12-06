@@ -9,7 +9,7 @@ let
     pkgs.runCommandNoCC "rbash-norc--${pkgs.bashInteractive.version}" { } ''
       mkdir -p $out/bin
       cat << EOF > $out/bin/rbash-norc
-      export PATH=~/bin
+      export PATH="~/bin"
       exec ${pkgs.bashInteractive}/bin/bash --norc --noprofile --login -r
       EOF
       chmod 755 $out/bin/rbash-norc
