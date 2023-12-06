@@ -121,10 +121,6 @@
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinknix420.nix ];
         };
-        nixos = nixpkgs.lib.nixosSystem {
-          inherit system specialArgs;
-          modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
-        };
         thinkcentre1 = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/thinkcentre1.nix ];
@@ -132,6 +128,10 @@
         optinix = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/optinix.nix ];
+        };
+        nixos = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
         };
       };
     };
