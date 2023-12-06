@@ -20,12 +20,14 @@ let
       chmod 755 $out/bin/rbash-norc
     '';
 
+  homedir = "/var/lib/backup";
+
 in {
   # https://github.com/nix-community/home-manager/issues/4433
   home-manager.users.backup = { config, ... }: {
     home.stateVersion = "23.11";
     home.username = "backup";
-    home.homeDirectory = "/home/backup";
+    home.homeDirectory = homedir;
 
     home.file.".bash_profile" = {
       executable = true;
@@ -70,7 +72,7 @@ in {
   users.users.backup = {
     isSystemUser = true;
     createHome = true;
-    home = "/home/backup";
+    home = homedir;
     group = "backup";
     shell = "${rbash}/bin/rbash";
     extraGroups = [ ];
