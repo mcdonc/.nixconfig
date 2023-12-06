@@ -5,6 +5,15 @@ let
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
+  rbash-norc =
+    pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
+      mkdir -p $out/bin
+      cat << EOF > $out/bin/rbash-norc
+      export PATH=$HOME/bin
+      exec ${rbash}/bin/rbash --norc --noprofile --login
+      EOF
+      chmod 755 $out/bin/rbash-norc
+    '';
 
 in {
   # https://github.com/nix-community/home-manager/issues/4433
@@ -52,7 +61,7 @@ in {
     createHome = true;
     home = "/home/backup";
     group = "backup";
-    shell = "${rbash}/bin/rbash --norc";
+    shell = "${rbash-norc}/bin/rbash-norc";
     extraGroups = [ ];
     openssh = {
       # https://stackoverflow.com/a/50400836 ; prevent
