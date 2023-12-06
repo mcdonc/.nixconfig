@@ -27,12 +27,10 @@
   networking.hostName = "nixos";
   system.stateVersion = "23.11";
 
+  services.spice-vdagentd.enable = true;
+  services.spice-autorandr.enable = true;
+
   services.xserver.desktopManager.plasma6.enable = true;
   services.xserver.desktopManager.plasma5.enable = lib.mkForce false;
-
-  environment.systemPackages = with pkgs; [
-    spice-vdagent
-    spice-autorandr
-  ];
 
 }
