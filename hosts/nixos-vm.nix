@@ -32,6 +32,7 @@
 
   environment.systemPackages = with pkgs; [
     spice-vdagent
+    spice-autorandr
   ];
 
 }
