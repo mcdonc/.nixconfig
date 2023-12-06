@@ -5,12 +5,17 @@ let
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
+
+  # XXX trying to simplify so I don't need all those dotfiles and to stop it
+  # from sourcing global rcfiles; works interactively but not when sending
+  # commands on ssh command line
   rbash-norc =
-    pkgs.runCommandNoCC "rbash-norc2-${pkgs.bashInteractive.version}" { } ''
+    pkgs.runCommandNoCC "rbash-norc-${pkgs.bashInteractive.version}" { } ''
       mkdir -p $out/bin
       cat << EOF > $out/bin/rbash-norc
-      export PATH=/home/backup/bin
-      exec ${pkgs.bashInteractive}/bin/bash --norc --noprofile --login -r
+      #!${pkgs.bashInteractive}/bin/bash
+      export PATH=\$HOME/bin
+      exec ${pkgs.bashInteractive}/bin/bash --norc --noprofile -r
       EOF
       chmod 755 $out/bin/rbash-norc
     '';
@@ -40,6 +45,12 @@ in {
         export PATH=$HOME/bin
       '';
     };
+    home.file.".bash_login" = {
+      executable = true;
+      text = ''
+        export PATH=$HOME/bin
+      '';
+    };
     # https://www.reddit.com/r/NixOS/comments/v0eak7/homemanager_how_to_create_symlink_to/
     home.file."bin/lzop".source =
       config.lib.file.mkOutOfStoreSymlink "${pkgs.lzop}/bin/lzop";
@@ -61,7 +72,7 @@ in {
     createHome = true;
     home = "/home/backup";
     group = "backup";
-    shell = "${rbash-norc}/bin/rbash-norc";
+    shell = "${rbash}/bin/rbash";
     extraGroups = [ ];
     openssh = {
       # https://stackoverflow.com/a/50400836 ; prevent
