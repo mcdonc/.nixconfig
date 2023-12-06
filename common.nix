@@ -13,6 +13,11 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
+  start-virsh = pkgs.writeShellScriptBin "start-virsh" ''
+    sudo virsh net-list --all
+    sudo virsh net-autostart default
+    sudo virsh net-start default
+  '';
 
 in {
   imports = [ ./cachix.nix ];
@@ -375,5 +380,6 @@ in {
     wireshark
     openssl
     geekbench
+    start-virsh
   ];
 }
