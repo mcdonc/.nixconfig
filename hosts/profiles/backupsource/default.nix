@@ -52,7 +52,7 @@ in {
     createHome = true;
     home = "/home/backup";
     group = "backup";
-    shell = "${rbash}/bin/rbash";
+    shell = "${rbash}/bin/rbash --norc";
     extraGroups = [ ];
     openssh = {
       # https://stackoverflow.com/a/50400836 ; prevent
