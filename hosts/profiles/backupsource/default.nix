@@ -6,11 +6,11 @@ let
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
   rbash-norc =
-    pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
+    pkgs.runCommandNoCC "rbash-norc--${pkgs.bashInteractive.version}" { } ''
       mkdir -p $out/bin
       cat << EOF > $out/bin/rbash-norc
-      export PATH=$HOME/bin
-      exec ${rbash}/bin/rbash --norc --noprofile --login
+      export PATH=~/bin
+      exec ${pkgs.bashInteractive}/bin/bash --norc --noprofile --login -r
       EOF
       chmod 755 $out/bin/rbash-norc
     '';
