@@ -12,6 +12,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    kde2nix.url = "github:nix-community/kde2nix";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # nixpkgs-oldfirefox.url =
     #   "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
@@ -23,7 +24,8 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nix-gaming }@inputs:
+    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nix-gaming, kde2nix
+    }@inputs:
     let
       overlays = (_: prev: {
         steam = prev.steam.override {
@@ -58,12 +60,13 @@
         #   inherit system;
         #   config.allowUnfree = true;
         # };
-        inherit nixos-hardware nix-gaming system inputs;
+        inherit nixos-hardware nix-gaming system inputs kde2nix;
       };
 
       chris-modules = [
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
+        kde2nix.nixosModules.plasma6
         {
           home-manager = {
             useUserPackages = true;
