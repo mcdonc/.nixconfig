@@ -97,9 +97,9 @@ error.
 Wtf?  It worked ok on Ubuntu!
 
 When the maintainers of NumPy created a wheel for distribution, the compiled
-version of one of the binaries that ships in the distribution expects the
-``libz.so.1`` shared library file to be resolved by the link-loader, or for it
-to be explicitly on the system library path (``LD_LIBRARY_PATH``).  On most
+version of at least one of the binaries that ships in the distribution expects
+the ``libz.so.1`` shared library file to be resolved by the link-loader, or for
+it to be explicitly on the system library path (``LD_LIBRARY_PATH``).  On most
 distributions, it will be found due to the nature of how their filesystems are
 laid out.
 
