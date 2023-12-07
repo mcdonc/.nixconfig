@@ -31,7 +31,7 @@ NixOS.  It's just Linux right?!  Should work fine.
    Successfully installed numpy-1.26.2
    
 Note that it installed a "manylinux" wheel for us.  Wheels are distribution
-units that can contain binaries.  As the name implies, these wheels work on
+units that can contain binaries.  As the name implies, the NumPy wheel works on
 many Linux distributions.
    
 But when we try to use the NumPy we just installed on NixOS, we'll get an
