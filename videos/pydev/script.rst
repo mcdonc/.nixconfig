@@ -254,12 +254,12 @@ put the setting of ``LD_LIBRARY_PATH`` in your ``.bash_profile``, the worst
 that can happen things might start going pear-shaped in exactly the same sort
 of DLL-hell that is de rigeur on other Linux systems.
 
-Here's a ``shell.nix`` nix-shell example that would allow someone to
-successfully run ``python -c "import numpy"`` after running ``nix-shell`` in
-its same directory after installing numpy via pip.  Note that this requires at
-least ``programs.nix-ld.enable = true;`` somewhere in your Nix config to work
-(but does not require any setting of ``programs.nix-ld.libraries`` nor any
-global setting of ``LD_LIBRARY_PATH``).
+Here's a ``shell.nix`` nix-shell example we can put in ``/tmp`` that would
+allow someone to successfully run ``npenv/bin/python -c "import numpy"`` after
+installing numpy via pip and then running ``nix-shell``.  Note that this
+requires at least ``programs.nix-ld.enable = true;`` somewhere in your Nix
+config to work (but does not require any setting of
+``programs.nix-ld.libraries`` nor any global setting of ``LD_LIBRARY_PATH``).
 
 .. code:: nix
 
