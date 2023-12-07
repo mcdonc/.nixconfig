@@ -254,6 +254,28 @@ put the setting of ``LD_LIBRARY_PATH`` in your ``.bash_profile``, the worst
 that can happen things might start going pear-shaped in exactly the same sort
 of DLL-hell that is de rigeur on other Linux systems.
 
+Here's a ``shell.nix`` nix-shell example that would allow someone to
+successfully run ``python -c "import numpy"`` after running ``nix-shell`` in
+its same directory after installing numpy via pip.  Note that this requires at
+least ``programs.nix-ld.enable = true;`` somewhere in your Nix config to work
+(but does not require any setting of ``programs.nix-ld.libraries``).
+
+.. code:: nix
+
+   with import <nixpkgs> {};
+
+   mkShell {
+     NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+       stdenv.cc.cc
+       zlib
+     ];
+     NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+     buildInputs = [ python311 ];
+     shellHook = ''
+       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+     '';
+   }
+
 Alternatives
 ============
 
