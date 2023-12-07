@@ -145,7 +145,7 @@ Nope!  Same error.  Why?
 
 .. code::
 
-   $ find env/lib/python3.11/site-packages/numpy -name "*.so"|xargs ldd|grep "not found"
+   $ find npenv/lib/python3.11/site-packages/numpy -name "*.so"|xargs ldd|grep "not found"
 	libz.so.1 => not found
 	libz.so.1 => not found
 	libz.so.1 => not found
