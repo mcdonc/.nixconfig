@@ -244,7 +244,7 @@ Now, finally things work:
 
 .. code:: shell
 
-   $ env/bin/python -c "import numpy"   
+   $ npenv/bin/python -c "import numpy"   
 
 It's maybe best practice to do all this work in a ``nix-shell`` environment
 rather than globally because setting ``LD_LIBRARY_PATH`` like that under NixOS
