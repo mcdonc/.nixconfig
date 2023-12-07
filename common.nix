@@ -209,6 +209,13 @@ in {
     hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
   };
 
+  # enable nix-ld for pip and friends
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib # numpy
+  ];
+
   users.groups.nixconfig = { };
 
   environment.etc."vimrc".text = ''
