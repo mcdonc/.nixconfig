@@ -2,7 +2,7 @@
 NixOS 61: Using non-Nix Python Packages with Binaries on NixOS
 ==============================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=7lVP4NJWJ9g
 
 - This text script available via link in the video description.
 
