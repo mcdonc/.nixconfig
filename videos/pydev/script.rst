@@ -227,8 +227,8 @@ So now that we've configured ``nix-ld``, surely things will work right?!
 Nope.  Same error.
 
 We need to do one more thing.  We need to set the ``LD_LIBRARY_PATH``
-environment variable to the value of the ``NIX_LD_LIBRARY_PATH``q environment
-variable.  The stub link-loader implmented by ``nix-ld`` is not interrogated by
+environment variable to the value of the ``NIX_LD_LIBRARY_PATH`` environment
+variable.  The stub link-loader implemented by ``nix-ld`` is not interrogated by
 NumPy (it is most often only interrogated by programs being run directly, not
 by shared libraries, I think, I'm a little fuzzy here).  We need to tell it
 statically where it can find the libraries it needs.
