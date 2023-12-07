@@ -18,6 +18,12 @@ let
     sudo virsh net-autostart default
     sudo virsh net-start default
   '';
+  nixos-repl = pkgs.writeShellScriptBin "nixos-repl" ''
+   cd /etc/nixos
+   echo "try legacyPackages.x86_64-linux.stdenv"
+   echo "try legacyPackages.x86_64-linux.writeShellScriptBin"
+   nix --extra-experimental-features repl-flake repl nixpkgs
+'';
 
 in {
   imports = [ ./cachix.nix ];
@@ -388,5 +394,6 @@ in {
     openssl
     geekbench
     start-virsh
+    nixos-repl
   ];
 }
