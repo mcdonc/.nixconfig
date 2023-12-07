@@ -258,7 +258,8 @@ Here's a ``shell.nix`` nix-shell example that would allow someone to
 successfully run ``python -c "import numpy"`` after running ``nix-shell`` in
 its same directory after installing numpy via pip.  Note that this requires at
 least ``programs.nix-ld.enable = true;`` somewhere in your Nix config to work
-(but does not require any setting of ``programs.nix-ld.libraries``).
+(but does not require any setting of ``programs.nix-ld.libraries`` nor any
+global setting of ``LD_LIBRARY_PATH``).
 
 .. code:: nix
 
