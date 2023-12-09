@@ -34,17 +34,6 @@
               nix-gaming.packages.${system}.proton-ge
             }'";
         };
-        # for NixThePlanet, see
-        # https://gist.github.com/mcdonc/872a16354d1cd8219a188bc443e0a997
-        # see https://stackoverflow.com/questions/70395839/how-to-globally-override-a-pythonpackage-in-nix
-        python311 = super.python311.override {
-          packageOverrides = pyself: pysuper: {
-            vncdo = pysuper.vncdo.overrideAttrs (_: {
-              setuptoolsCheckPhase = "true";
-              doCheck = false;
-            });
-          };
-        };
       });
       system = "x86_64-linux";
       specialArgs = {
