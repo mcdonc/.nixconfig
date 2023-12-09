@@ -13,6 +13,7 @@
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
     kde2nix.url = "github:nix-community/kde2nix";
+    nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # nixpkgs-oldfirefox.url =
     #   "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
@@ -25,13 +26,24 @@
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
     , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nix-gaming, kde2nix
-    }@inputs:
+    , nixtheplanet }@inputs:
     let
-      overlays = (_: prev: {
-        steam = prev.steam.override {
+      overlays = (self: super: {
+        steam = super.steam.override {
           extraProfile = "export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${
               nix-gaming.packages.${system}.proton-ge
             }'";
+        };
+        # for NixThePlanet, see
+        # https://gist.github.com/mcdonc/872a16354d1cd8219a188bc443e0a997
+        # see https://stackoverflow.com/questions/70395839/how-to-globally-override-a-pythonpackage-in-nix
+        python311 = super.python311.override {
+          packageOverrides = pyself: pysuper: {
+            vncdo = pysuper.vncdo.overrideAttrs (_: {
+              setuptoolsCheckPhase = "true";
+              doCheck = false;
+            });
+          };
         };
       });
       system = "x86_64-linux";
@@ -67,6 +79,7 @@
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
         kde2nix.nixosModules.plasma6
+        nixtheplanet.nixosModules.macos-ventura
         {
           home-manager = {
             useUserPackages = true;
