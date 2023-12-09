@@ -81,10 +81,10 @@ next.  Fun.
 
 .. image:: nixtheplanet.png
          
-You can stop the VM via ``systemctl stop macos-ventura``.  Note that it will be
-started again on the next reboot or ``nixos-rebuild``.  But you can disable the
-service in your config if you don't want it running all the time; it will not
-need to rebuild the image if you reenable it.
+You can stop the VM via ``sudo systemctl stop macos-ventura``.  Note that it
+will be started again on the next reboot or ``nixos-rebuild``.  But you can
+disable the service in your config if you don't want it running all the time;
+it will not need to rebuild the image if you reenable it.
 
 NixThePlanet also allows you to install various ancient Windows versions as
 well as DOS.
