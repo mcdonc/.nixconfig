@@ -136,7 +136,7 @@
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/optinix.nix ];
         };
-        nixos = nixpkgs.lib.nixosSystem {
+        nixos-vm = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
         };

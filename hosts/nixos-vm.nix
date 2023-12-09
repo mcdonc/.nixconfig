@@ -24,13 +24,13 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   networking.hostId = "fd244a99";
-  networking.hostName = "nixos";
+  networking.hostName = "nixos-vm";
   system.stateVersion = "23.11";
 
   services.spice-vdagentd.enable = true;
   services.spice-autorandr.enable = true;
 
-  services.xserver.desktopManager.plasma6.enable = true;
-  services.xserver.desktopManager.plasma5.enable = lib.mkForce false;
+  #services.xserver.desktopManager.plasma6.enable = true;
+  #services.xserver.desktopManager.plasma5.enable = lib.mkForce false;
 
 }
