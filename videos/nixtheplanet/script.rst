@@ -47,10 +47,7 @@ Then I added the ``macos-ventura`` service to my configuration:
   };
 
 and rebuilt.  It takes quite a while for the process to complete; on the order
-of an hour or two.  But once you rebuild sucessfully, the new VM can be
-contacted via VNC on ``localhost:5900``. I use the program KRDC to contact it.
-
-Once you contact it, the username and password is ``admin``, ``admin``.
+of an hour or two.
 
 .. code:: shell
 
@@ -81,6 +78,12 @@ next.  Fun.
 
 .. image:: nixtheplanet.png
          
+But once you rebuild sucessfully, the new VM can be contacted via VNC on
+``localhost:5900``. I use the program KRDC to contact it.  It can also be
+contacted via ssh on port 2222.
+
+Once you contact it, the username and password is ``admin``, ``admin``.
+
 You can stop the VM via ``sudo systemctl stop macos-ventura``.  Note that it
 will be started again on the next reboot or ``nixos-rebuild``.  But you can
 disable the service in your config if you don't want it running all the time;
