@@ -11,6 +11,7 @@
     # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
     ./profiles/oldnvidia.nix
     ./profiles/dnsovertls/resolvedonly.nix
+    ./profiles/steam.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
