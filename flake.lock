@@ -525,11 +525,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1702126810,
-        "narHash": "sha256-wqH6tIKpKYila0yEj6cfPZ9X1KYJjhIvmT8KFb9v1C0=",
+        "lastModified": 1702127495,
+        "narHash": "sha256-uKOZ0LSNSmD1TLRyQuIoX4ofvOd7BJigyjzEhfQqJUM=",
         "owner": "matthewcroughan",
         "repo": "NixThePlanet",
-        "rev": "e7cb99d48a178c9290f3487ec540f7e43ad0f922",
+        "rev": "71dfa2d7894067112b3be3dead6b6985b7d54490",
         "type": "github"
       },
       "original": {
