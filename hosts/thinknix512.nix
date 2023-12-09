@@ -12,7 +12,6 @@
     ./profiles/oldnvidia.nix
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/steam.nix
-    ./profiles/macos-ventura.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
