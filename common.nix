@@ -1,5 +1,5 @@
-{ config, pkgs, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable, nix-gaming, ...
-}:
+{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable
+, nix-gaming, ... }:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -18,12 +18,15 @@ let
     sudo virsh net-autostart default
     sudo virsh net-start default
   '';
-  nixos-repl = pkgs.writeShellScriptBin "nixos-repl" ''
-   cd /etc/nixos
-   echo "try legacyPackages.x86_64-linux.stdenv"
-   echo "try legacyPackages.x86_64-linux.writeShellScriptBin"
-   nix --extra-experimental-features repl-flake repl nixpkgs
-'';
+  nixos-repl = pkgs.writeScriptBin "nixos-repl" ''
+    #!/usr/bin/env ${pkgs.expect}/bin/expect
+    spawn -noecho nix --extra-experimental-features repl-flake repl nixpkgs
+    expect "nix-repl> " {
+      send ":a builtins\n"
+      send "pkgs = legacyPackages.${system}\n"
+      interact
+    }
+  '';
 
 in {
   imports = [ ./cachix.nix ];
