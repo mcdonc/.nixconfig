@@ -15,8 +15,6 @@
     kde2nix.url = "github:nix-community/kde2nix";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
-    # nixpkgs-oldfirefox.url =
-    #   "github:NixOS/nixpkgs/cfe01551540042983152c147bb158a69cbd48462";
     # plasma-manager.url =
     #  "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
     # plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -54,10 +52,6 @@
           config.allowUnfree = true;
         };
         # pkgs-bgremoval = import nixpkgs-bgremoval {
-        #   inherit system;
-        #   config.allowUnfree = true;
-        # };
-        # pkgs-oldfirefox = import nixpkgs-oldfirefox {
         #   inherit system;
         #   config.allowUnfree = true;
         # };
