@@ -9,7 +9,6 @@
     ./profiles/speedtest
     ./profiles/backupsource
     ../common.nix
-    ./profiles/macos-ventura.nix
   ];
 
   powerManagement.cpuFreqGovernor = "performance";
