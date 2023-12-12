@@ -166,31 +166,6 @@ Create ``/etc/nixos/flake.nix``.
         };
     }
 
-See "nixos = nixpkgs.lib.nixosSystem" there?  that says "use this configuration
-for a system with the *hostname* ``nixos``, which by default is the hostname
-given to a new system created by the installer (changeable in
-``/etc/nixos/configuration.nix``) .  If you want to add another machine to your
-configuration in the future, you can just give it a different hostname, and
-refer to slightly different configurations for different systems in
-``flake.nix``, e.g.:
-
-.. code:: nix
-
-      outputs = { self, nixpkgs }@inputs:
-        {
-          nixosConfigurations = {
-            nixos = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [ ./configuration.nix];
-            };
-            myothersystem = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [ ./configuration.nix ./moreconfig.nix];
-            };
-          };
-        };
-          
-  
 Try to run ``sudo nixos-rebuild switch``.  It will fail with an inscrutable
 error::
 
