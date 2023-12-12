@@ -130,7 +130,7 @@ Rebuild the system::
 
   $ sudo nixos-rebuild switch
 
-Do some configuration of Git so it works when we use it.
+Do some configuration of Git so it works when we use it::
 
   $ git config --global user.email "chrism@plope.com"
   $ git config --global user.name "Chris McDonough"
