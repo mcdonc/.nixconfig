@@ -2,7 +2,7 @@
  NixOS 63: Install NixOS 23.11 and Use Flakes Out Of the Box
 ============================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=hoB0pHZ0fpI
 
 - This text script available via link in the video description.
 
