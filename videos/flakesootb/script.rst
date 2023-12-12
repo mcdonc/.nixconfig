@@ -94,7 +94,7 @@ Change the ownership of the ``/etc/nixos`` directory and the files it contains
 such that your "normal" user can read and write to stuff within it::
 
   $ cd /etc/nixos
-  $ chown -R chrism:users .
+  $ sudo chown -R chrism:users .
 
 Set up the configuration hair that enables flakes-related commands in your
 ``configuration.nix`` using ``nano`` in a terminal (it's the only editor on the
