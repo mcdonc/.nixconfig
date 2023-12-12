@@ -2,7 +2,7 @@
  NixOS 62: Run MacOS X on NixOS With a Single Command (NixThePlanet)
 ====================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=fFIDf8ZWX2w
 
 - This text script available via link in the video description.
 
