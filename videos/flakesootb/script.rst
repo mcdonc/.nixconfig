@@ -241,6 +241,10 @@ worked ok or revert it if things went pear shaped after the rebuild.  If you
 revert it, just run ``sudo nixos-rebuild switch`` again and you will be back at
 the state the machine was at before you updated the flake and rebuilt.
 
+This replaces the legacy regime's command::
+
+  $ sudo nixos-rebuild switch --upgrade
+
 Let's revisit ``/etc/nixos/flake.nix``:
 
 .. code:: nix
