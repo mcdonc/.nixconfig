@@ -19,10 +19,10 @@ caching service.
 
 ``devenv`` allows you to distribute a set of files to a developer, which,
 hopefully, once he or she runs one or two commands, will get that developer set
-up with a UNIX-y development environment.  By that, I mean that it will run all
-the required support services (databases, web servers, your miserable
-microservice crap, etc) and the application, and allow the developer to use his
-own tools in his normal environment to edit the code and make changes to it.
+up with a development environment.  By that, I mean that it will run all the
+required support services (databases, web servers, your miserable microservice
+crap, etc) and the application, and allow the developer to use his own tools in
+his normal environment to edit the code and make changes to it.
 
 If the ``devenv`` code is written correctly, the developer will not need to
 follow some interminable checklist of fiddly chores to get set up to start
@@ -36,7 +36,9 @@ comfortable with.
 Because Nix is cross-platform (MacOS and Linux), it is theoretically practical
 to use the same set of configuration files to a developer, regardless of
 whether he uses one or the other platform.  In particular, a developer needn't
-run NixOS to use ``devenv``.
+run NixOS to use ``devenv``, and if the configuration scripts are written in a
+cross-plaform way, and the developer is on MacOS, he won't need to run the app
+in a VM or a container.
 
 ``devenv`` uses the concept of a "shell" to do its magic.  When the developer
 enters a shell, all of the required support libraries, the software required to
@@ -170,13 +172,16 @@ Now when we run ``devenv up``, it starts a service::
   04:45:35 system | run.1 stopped (rc=0)
   
 Hello world is nice but let's put some real code in ``flake.nix``.  I want to
-run a tiny web application I created just for the purpose of this demo.  The
-web application depends upon a Postgres database.  We will cause the
-appllication, its dependent libraries, and all the required database stuff to
-be installed within our devenv flake, and we will change it such that when we
-start the devenv, it starts the database and our web app.
+run a `tiny web application I created just for the purpose of this demo
+<https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv/myproj>`_ .
+It's the dumbest possible web app just connecting to Postgres to get its
+version number via ``SELECT version()`` and displaying it when you go to its
+port via a browser.
 
-The web app will be available within this directory in github.
+The web application obviously depends upon a running Postgres database.  We
+will cause the application, its dependent libraries, and all the required
+database stuff to be installed within our devenv flake, and we will change it
+such that when we start the devenv, it starts the database and our web app.
 
 We will make changes to the devenv flake to:
 
@@ -262,11 +267,7 @@ Here's the new flake file (in the video, I will compose this incrementally):
 
 Then I put the code that's in
 https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv/myproj into our
-``~/devenvtest`` directory; the new flake changes rely on that.  It's the
-`dumbest possible web app
-<https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv/myproj>`_ ,
-just connecting to Postgres to get its version number via ``SELECT version()``
-and displaying it.
+``~/devenvtest`` directory; the new flake changes rely on that.
 
 After our changes, running ``nix develop --impure`` to get us into a devenv
 shell does this::
@@ -318,10 +319,11 @@ Running ``devenv up`` within the resulting shell gives us this::
     04:56:58 myapp.1    | 2023-12-14 04:56:58,596 INFO  [waitress:486][MainThread] Serving on http://[::1]:6543
     04:56:58 myapp.1    | 2023-12-14 04:56:58,597 INFO  [waitress:486][MainThread] Serving on http://127.0.0.1:6543
   
-The app is now running on http://localhost:6543/
+The app is now running on http://localhost:6543/ .  Visiting it gives us this.
 
 .. image:: ./app.png
 
-The important bit: Python is talking to Postgres, and the database and the we
-app are indeed running.  If we press ctrl-C, postgres and the webapp stop.
-When we exit the devenv shell, we are back to our normal world.
+The webapp sucks but the important bit: Python is talking to Postgres, and the
+database and the we app are indeed running.  Conversely, If we press ctrl-C,
+postgres and the webapp stop.  When we exit the devenv shell, we are back to
+our normal world.
