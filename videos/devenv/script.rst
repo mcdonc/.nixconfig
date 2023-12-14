@@ -29,8 +29,8 @@ follow some interminable checklist of fiddly chores to get set up to start
 writing and testing code in a working environment.  If she is already running
 MacOS or any Linux distribution (even WSL on Windows), she will be able to use
 the tools already installed on her machine to edit the code, rather than being
-conscripted into using some foreign environment that he or she may not be
-comfortable with.
+conscripted into using some foreign coding environment that he or she may not
+be comfortable with.
 
 ``devenv`` is useful under NixOS but actually more useful under plain-old-Nix.
 Because Nix is cross-platform (MacOS and Linux), it is theoretically practical
