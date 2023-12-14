@@ -38,7 +38,8 @@ to use the same set of configuration files to a developer, regardless of
 whether he uses one or the other platform.  In particular, a developer needn't
 run NixOS to use ``devenv``, and if the configuration scripts are written in a
 cross-plaform way, and the developer is on MacOS, he won't need to run the app
-in a VM or a container.
+in a VM or a container.  As long as the production deployment target is Linux,
+your developers can use whatever they like.
 
 ``devenv`` uses the concept of a "shell" to do its magic.  When the developer
 enters a shell, all of the required support libraries, the software required to
