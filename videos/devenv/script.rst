@@ -2,7 +2,7 @@
  NixOS 64: Using ``devenv`` to Set Up A Python Development Environmnent
 =========================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=wPp2DJJpCAg
 
 - This text script available via link in the video description.
 
