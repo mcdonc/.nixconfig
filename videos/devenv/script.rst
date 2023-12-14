@@ -1,5 +1,5 @@
 =========================================================================
- NixOS 64: Using ``devenv`` to Set Up A Python Development Environmnent
+ NixOS 64: Using ``devenv`` to Set Up A Python Development Environment
 =========================================================================
 
 - Companion to video at https://www.youtube.com/watch?v=wPp2DJJpCAg
@@ -61,7 +61,7 @@ required changes.
 
 ``devenv`` has support for many languages; I'm going to concentrate in this
 video on Python.  I'm (probably inadvisably) also going to configure it using
-NixOS, rather than any of the other documented ways on devenv website.
+a flake, rather than any of the other documented ways on devenv website.
 
 ``devenv`` also purportedly allows you to containerize the environment implied
 by your configuration; I am not going to talk about that feature in this video,
