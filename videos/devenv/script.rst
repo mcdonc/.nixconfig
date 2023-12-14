@@ -94,8 +94,7 @@ project from a template::
 This causes a ``flake.nix`` (as well as some hidden files and dirs) to be put
 in the current diretory (``devenvtest``).
 
-In order to activate our development environment we use ``nix develop
---impure``::
+In order to activate our development environment we use ``nix develop --impure``::
 
   $ nix develop --impure
   warning: creating lock file '/home/chrism/devenvtest/flake.lock'
