@@ -328,11 +328,17 @@ database and the webapp are indeed running.  Conversely, If we press ctrl-C,
 postgres and the webapp stop.  When we exit the devenv shell, we are back to
 our normal world.
 
+Note that ``devenv`` is not a one-time setup script.  Making changes to the
+development environment is a matter of editing the devenv flake, checking it
+in, telling your teammates to update, and asking them to run ``nix develop
+--impure`` and ``devenv up`` again.  Nix will under the hood take care of
+adding new libraries, service instances, whatever over time.
+
 Why not use pure Nix instead of using ``devenv``?  Nix touts itself as a tool
 useful to developers, right?  Welp, to be honest, I've never really used bare
 Nix in anger.  But I know that replicating the convenience of what ``devenv``
-gave us in this video might be tricky in NixOS, so probably even trickier in
-bare Nix.  I think the question may be above my pay grade, because I'm frankly
-unwilling to put in the work to find out how hard this would be without devenv,
-cuz devenv exists.
+gave us in this video might be tricky in NixOS (particularly the services and
+processes stuff), so probably even trickier in bare Nix.  I think the question
+may be above my pay grade, because I'm frankly unwilling to put in the work to
+find out how hard this would be without devenv, cuz devenv exists.
 
