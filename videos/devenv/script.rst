@@ -14,8 +14,8 @@ Script
 
 `devenv <https://devenv.sh>`_ is a project created by Domen Kozar (there should
 be an accent on one of those letters in his last name because it's pronounced
-"ko-har", but I'm an American, sorry Domen).  Domen also runs the Cachix Nix
-caching service.
+"ko-har", but I'm an American, sorry Domen).  Domen also runs the `Cachix
+<https://cachix.org>`_ Nix caching service.
 
 ``devenv`` allows you to distribute a set of files to a developer, which,
 hopefully, once he or she runs one or two commands, will get that developer set
