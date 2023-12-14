@@ -260,6 +260,14 @@ Here's the new flake file (in the video, I will compose this incrementally):
         };
     }
 
+Then I put the code that's in
+https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv/myproj into our
+``~/devenvtest`` directory; the new flake changes rely on that.  It's the
+`dumbest possible web app
+<https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv/myproj>`_ ,
+just connecting to Postgres to get its version number via ``SELECT version()``
+and displaying it.
+
 After our changes, running ``nix develop --impure`` to get us into a devenv
 shell does this::
 
@@ -314,6 +322,6 @@ The app is now running on http://localhost:6543/
 
 .. image:: ./app.png
 
-It's the dumbest possible app, just connecting to postgres to get its version
-number and displaying it.  But Python is talking to Postgres, and the database
-and the we app are indeed running.
+The important bit: Python is talking to Postgres, and the database and the we
+app are indeed running.  If we press ctrl-C, postgres and the webapp stop.
+When we exit the devenv shell, we are back to our normal world.
