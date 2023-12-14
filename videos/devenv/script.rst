@@ -326,3 +326,12 @@ The webapp sucks but the important bit: Python is talking to Postgres, and the
 database and the we app are indeed running.  Conversely, If we press ctrl-C,
 postgres and the webapp stop.  When we exit the devenv shell, we are back to
 our normal world.
+
+Why not use pure Nix instead of using ``devenv``?  Nix touts itself as a tool
+useful to developers, right?  Welp, to be honest, I've never really used bare
+Nix in anger.  But I know that replicating the convenience of what ``devenv``
+gave us in this video might be tricky in NixOS, so probably even trickier in
+bare Nix.  I think the question may be above my pay grade, because I'm frankly
+unwilling to put in the work to find out how hard this would be without devenv,
+cuz devenv exists.
+
