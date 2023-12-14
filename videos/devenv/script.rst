@@ -34,7 +34,7 @@ be comfortable with.
 
 ``devenv`` is useful under NixOS but actually more useful under plain-old-Nix.
 Because Nix is cross-platform (MacOS and Linux), it is theoretically practical
-to use the same set of configuration files to a developer, regardless of
+to ship the same set of configuration files to a developer, regardless of
 whether he uses one or the other platform.  In particular, a developer needn't
 run NixOS to use ``devenv``, and if the configuration scripts are written in a
 cross-plaform way, and the developer is on MacOS, he won't need to run the app
