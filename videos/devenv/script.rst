@@ -323,7 +323,7 @@ The app is now running on http://localhost:6543/ .  Visiting it gives us this.
 .. image:: ./app.png
 
 The webapp sucks but the important bit: Python is talking to Postgres, and the
-database and the we app are indeed running.  Conversely, If we press ctrl-C,
+database and the webapp are indeed running.  Conversely, If we press ctrl-C,
 postgres and the webapp stop.  When we exit the devenv shell, we are back to
 our normal world.
 
