@@ -1,5 +1,5 @@
 ==========================================================
- NixOS 65: Using ``devenv`` on Ubuntu and Its Pain Points
+ NixOS 65: Using devenv on Ubuntu and devenv's Pain Points
 ==========================================================
 
 - Companion to video at 
