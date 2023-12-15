@@ -1,6 +1,6 @@
-=======================================================
- NixOS 65: Using ``devenv`` on Ubuntu (and a critique)
-=======================================================
+==========================================================
+ NixOS 65: Using ``devenv`` on Ubuntu and Its Pain Points
+==========================================================
 
 - Companion to video at 
 
@@ -60,6 +60,25 @@ Using Devenv
 
 In the last video, I created a Python development environment.  I will use the
 same application and configuration for this video.
+
+I ran "devenv init" inside of that package and the result is the set of files
+in https://github.com/mcdonc/.nixconfig/tree/master/videos/devenv-ubuntu/myproj .
+
+I changed ``devenv.nix`` and ``devenv.yaml`` inside there to get it working.
+
+I'll check the repository that contains the project out::
+
+  $ mkdir ~/tmp
+  $ cd ~/tmp
+  $ git clone git@github.com:mcdonc/.nixconfig.git
+
+Then I'll use devenv to get it running::
+
+  $ cd ~/tmp/.nixconfig/videos/devenv-ubuntu/myproj
+  $ devenv shell
+    ... ....
+  $ devenv up
+
 
 Pain Points
 ===========
