@@ -72,7 +72,7 @@ tests; haven't tried that either.
 Let's Go
 ========
 
-For purposes of this demo, I've gotten my NixOS set up in flake mode.  THis
+For purposes of this demo, I've gotten my NixOS set up in flake mode.  This
 requires the following somewhere in the NixOS config:
 
 .. code-block:: nix
