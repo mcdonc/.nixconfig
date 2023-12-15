@@ -330,9 +330,9 @@ our normal world.
 
 Note that ``devenv`` is not a one-time setup script.  Making changes to the
 development environment is a matter of editing the devenv flake, checking it
-in, telling your teammates to update, and asking them to run ``nix develop
---impure`` and ``devenv up`` again.  Nix will under the hood take care of
-adding new libraries, service instances, whatever over time.
+in, telling your teammates to update, and asking them to run
+``nix develop --impure`` and ``devenv up`` again.  Nix will under the hood
+take care of adding new libraries, service instances, whatever over time.
 
 Why not use pure Nix instead of using ``devenv``?  Nix touts itself as a tool
 useful to developers, right?  Welp, to be honest, I've never really used bare
