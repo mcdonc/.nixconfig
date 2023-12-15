@@ -24,10 +24,10 @@ a repository of around 80,000 packages.  Because it uses Nix, and because Nix
 itself is cross-platform, devenv is actually useful on basically any Linux
 platform (including under Windows' WSL) as well as MacOS.  It's pretty cool.
 
-While making my prior video was entertaining, I feel that it fell short of
-showing how devenv is actually useful, because I demonstrated it on NixOS
-rather than on a platform that normal people use, and I demonstrated it in a
-mode ("flakes" mode) that most people would not choose to use.
+While making my prior video was entertaining, it fell short of showing how
+devenv is actually useful, because I demonstrated it on NixOS rather than on a
+platform that normal people use, and I demonstrated it in a mode ("flakes"
+mode) that most people would not choose to use.
 
 In this video, I'd like to show you how to install devenv on Ubuntu, and spin
 up a Python development environment like a human (not a NixOS user) might.  I
@@ -68,13 +68,13 @@ I changed ``devenv.nix`` and ``devenv.yaml`` inside there to get it working.
 
 I'll check the repository that contains the project out::
 
-  $ mkdir ~/tmp
-  $ cd ~/tmp
+  $ mkdir ~/projects
+  $ cd ~/projects
   $ git clone git@github.com:mcdonc/.nixconfig.git
 
 Then I'll use devenv to get it running::
 
-  $ cd ~/tmp/.nixconfig/videos/devenv-ubuntu/myproj
+  $ cd ~/projects/.nixconfig/videos/devenv-ubuntu/myproj
   $ devenv shell
     ... ....
   $ devenv up
@@ -83,7 +83,8 @@ Then I'll use devenv to get it running::
 Pain Points
 ===========
 
-Devenv currently has a number of sharp edges (Dec. 2023).
+Devenv currently has a number of sharp edges (Dec. 2023).  These are not
+complaints, just realities, only fixed when people like you and me contribute.
 
 Long-Lived ``python-rewrite`` Branch
 ------------------------------------
@@ -95,8 +96,8 @@ so many issues that it has turned out, for me, at least, to be a must-use.  But
 is unfinished, and probably introduces some new bugs, and seems to be changing
 quicky.  There is no ETA for its completion.
 
-For example, ``languages.python.venv`` doesn't seem to work on the
-``python-rewrite`` branch at the moment (it did yesterday).
+As an example of the pain this causes, ``languages.python.venv`` doesn't seem
+to work on the ``python-rewrite`` branch at the moment (it did yesterday).
 
 ``languages.python.version`` Doesn't Really Work
 ------------------------------------------------
