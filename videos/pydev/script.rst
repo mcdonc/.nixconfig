@@ -125,6 +125,7 @@ out configuration and rebuild:
 Now the ``nix-locate`` command will be available, so we can figure out which
 Nix package provides the file::
 
+  $ nix-index # (will take a few minutes)
   $ nix-locate --top-level libz.so.1
   zlib.out                                              0 s /nix/store/69jpyha5zbll6ppqzhbihhp51lac1hrp-zlib-1.2.13/lib/libz.so.1
   ...
