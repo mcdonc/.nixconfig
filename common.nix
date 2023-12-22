@@ -384,5 +384,6 @@ in {
     geekbench
     start-virsh
     nixos-repl
+    lazygit
   ];
 }
