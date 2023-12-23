@@ -61,9 +61,7 @@ in {
   # NVIDIA requires nonfree
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-12.2.3"
     "electron-19.1.9"
-    "electron-24.8.6"
     "python-2.7.18.6"
     "python-2.7.18.7"
   ]; # etcher (12.2.3), something unknown (maybe matrix or signal desktop) and
