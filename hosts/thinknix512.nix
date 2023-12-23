@@ -17,6 +17,7 @@ in
     ./profiles/oldnvidia.nix
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/steam.nix
+    ./profiles/nixindex.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";

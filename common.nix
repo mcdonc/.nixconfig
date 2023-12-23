@@ -1,5 +1,4 @@
-{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable
-, nix-gaming, ... }:
+{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable, ... }:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -41,15 +40,18 @@ in {
   };
 
   nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      trusted-users = root @wheel
-      sandbox = relaxed
-    '';
+    # package = pkgs.nixUnstable;
+    # extraOptions = ''
+    #   experimental-features = nix-command flakes
+    #   trusted-users = root @wheel
+    #   sandbox = relaxed
+    # '';
     settings = {
       tarball-ttl = 300;
       auto-optimise-store = true;
+      experimental-features = "nix-command flakes";
+      trusted-users = ["root" "@wheel"];
+      sandbox = "relaxed";
     };
     gc = {
       automatic = true;

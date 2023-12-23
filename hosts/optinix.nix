@@ -8,6 +8,7 @@
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/speedtest
     ./profiles/backupsource
+    ./profiles/nixindex.nix
     ../common.nix
   ];
 
