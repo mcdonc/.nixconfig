@@ -385,5 +385,6 @@ in {
     start-virsh
     nixos-repl
     lazygit
+    envsubst
   ];
 }
