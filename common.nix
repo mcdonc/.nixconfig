@@ -110,7 +110,6 @@ in {
 
   # enable high precision timers if they exist
   # (https://gentoostudio.org/?page_id=420)
-  # flipper zero
   services.udev = {
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
