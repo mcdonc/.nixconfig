@@ -50,7 +50,7 @@ in {
       tarball-ttl = 300;
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
-      trusted-users = ["root" "@wheel"];
+      trusted-users = [ "root" "@wheel" ];
       sandbox = "relaxed";
     };
     gc = {
@@ -110,10 +110,16 @@ in {
 
   # enable high precision timers if they exist
   # (https://gentoostudio.org/?page_id=420)
+  # flipper zero
   services.udev = {
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
+
+      #Flipper Zero serial port
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", ATTRS{manufacturer}=="Flipper Devices Inc.", TAG+="uaccess", GROUP="dialout"
+      #Flipper Zero DFU
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", ATTRS{manufacturer}=="STMicroelectronics", TAG+="uaccess", GROUP="dialout"
     '';
   };
 
@@ -219,6 +225,16 @@ in {
     set mouse=
     set ttymouse=
   '';
+
+  # run appimages directly (see https://nixos.wiki/wiki/Appimage)
+  boot.binfmt.registrations.appimage = {
+    wrapInterpreterInShell = false;
+    interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+    recognitionType = "magic";
+    offset = 0;
+    mask = "\\xff\\xff\\xff\\xff\\x00\\x00\\x00\\x00\\xff\\xff\\xff";
+    magicOrExtension = "\\x7fELF....AI\\x02";
+  };
 
   environment.systemPackages = with pkgs; [
     nvidia-offload
