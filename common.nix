@@ -403,5 +403,6 @@ in {
     lazygit
     envsubst
     appimage-run
+    qFlipper
   ];
 }
