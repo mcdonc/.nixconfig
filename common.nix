@@ -115,11 +115,6 @@ in {
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
-
-      #Flipper Zero serial port
-      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", ATTRS{manufacturer}=="Flipper Devices Inc.", TAG+="uaccess", GROUP="dialout"
-      #Flipper Zero DFU
-      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", ATTRS{manufacturer}=="STMicroelectronics", TAG+="uaccess", GROUP="dialout"
     '';
   };
 
@@ -144,6 +139,8 @@ in {
 
   hardware.bluetooth.enable = true;
   hardware.enableAllFirmware = true;
+
+  hardware.flipperzero.enable = true;
 
   # desktop stuff
   services.xserver.enable = true;
@@ -403,6 +400,5 @@ in {
     lazygit
     envsubst
     appimage-run
-    qFlipper
   ];
 }
