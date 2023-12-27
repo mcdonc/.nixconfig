@@ -386,5 +386,6 @@ in {
     nixos-repl
     lazygit
     envsubst
+    appimage-run
   ];
 }
