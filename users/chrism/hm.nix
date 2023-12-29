@@ -305,6 +305,7 @@ in {
     epkgs.all-the-icons-dired
     epkgs.magit
     epkgs.markdown-mode
+    epkgs.markdown-preview-mode
     pkgs.emacs-all-the-icons-fonts
   ];
 
