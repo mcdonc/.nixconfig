@@ -304,6 +304,7 @@ in {
     epkgs.all-the-icons
     epkgs.all-the-icons-dired
     epkgs.magit
+    epkgs.markdown-mode
     pkgs.emacs-all-the-icons-fonts
   ];
 
