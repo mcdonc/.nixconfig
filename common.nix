@@ -212,7 +212,7 @@ in {
   };
 
   # enable nix-ld for pip and friends
-  programs.nix-ld.enable = true;
+  #programs.nix-ld.enable = true;
 
   users.groups.nixconfig = { };
 
