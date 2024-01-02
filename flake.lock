@@ -273,6 +273,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-keybase-bumpversion": {
+      "locked": {
+        "lastModified": 1704219016,
+        "narHash": "sha256-6SCpvSuGvEVXJm8HHF8sMh9xzynAsm5CRB/cgdON6M4=",
+        "owner": "mcdonc",
+        "repo": "nixpkgs",
+        "rev": "22e59380e980a1c4ed3e042ee49b0c43732ff6be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mcdonc",
+        "ref": "keybase-bumpversion",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
@@ -574,6 +590,7 @@
         "nix-gaming": "nix-gaming",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
+        "nixpkgs-keybase-bumpversion": "nixpkgs-keybase-bumpversion",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",

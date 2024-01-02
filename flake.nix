@@ -8,7 +8,10 @@
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url =
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
+    nixpkgs-keybase-bumpversion.url =
+      "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -23,8 +26,8 @@
   };
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nix-gaming, kde2nix
-    , nixtheplanet }@inputs:
+    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-keybase-bumpversion
+    , nix-gaming, kde2nix, nixtheplanet }@inputs:
     let
       overlays = (self: super: {
         steam = super.steam.override {
@@ -48,6 +51,10 @@
           config.allowUnfree = true;
         };
         pkgs-py37 = import nixpkgs-py37 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-keybase-bumpversion = import nixpkgs-keybase-bumpversion {
           inherit system;
           config.allowUnfree = true;
         };
