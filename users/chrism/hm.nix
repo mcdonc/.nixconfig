@@ -1,4 +1,4 @@
-{ config, pkgs, nix-gaming, ... }:
+{ config, pkgs, nix-gaming, pkgs-unstable, ... }:
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
@@ -73,7 +73,8 @@ in {
   #imports = [ ./plasma.nix ];
 
   home.packages = with pkgs; [
-    keybase-gui
+    pkgs-unstable.keybase
+    pkgs-unstable.keybase-gui
     ssh-chcolor
     xdotool
     fd # fd is an unnamed dependency of fzf
@@ -143,8 +144,41 @@ in {
     };
   };
 
-  services.keybase.enable = true;
-  services.kbfs.enable = true;
+  #services.keybase.enable = true;
+  #services.kbfs.enable = true;
+  
+  systemd.user.services.keybase = {
+    Unit.Description = "Keybase service";
+    
+    Service = {
+      ExecStart = "${pkgs-unstable.keybase}/bin/keybase service --auto-forked";
+      Restart = "on-failure";
+      PrivateTmp = true;
+    };
+    
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  systemd.user.services.kbfs = {
+    Unit = {
+      Description = "Keybase File System";
+      Requires = [ "keybase.service" ];
+      After = [ "keybase.service" ];
+    };
+
+    Service = let mountPoint = ''"%h/keybase"'';
+    in {
+      Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
+      ExecStart = "${pkgs-unstable.kbfs}/bin/kbfsfuse ${mountPoint}";
+      ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
+      Restart = "on-failure";
+      PrivateTmp = true;
+    };
+
+    Install.WantedBy = [ "default.target" ];
+  };
+
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 1800;
@@ -270,7 +304,7 @@ in {
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
     Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 ${pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
+    Exec=env KEYBASE_AUTOSTART=1 ${pkgs-unstable.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
     GenericName[en_US]=
     GenericName=
     MimeType=
