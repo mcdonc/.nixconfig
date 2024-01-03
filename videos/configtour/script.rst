@@ -16,7 +16,7 @@ Front Matter
 ============
 
 This describes, at a high level, the NixOS configuration I've come up with over
-the last year or so.  It is based on flakes.
+the last year or so.  It is based on flakes.  It configures multiple machines.
 
 It has undergone a level of factoring that you might call basic.
 
