@@ -91,7 +91,9 @@ The layout of my ``/etc/nixos`` directory looks something like::
      │   ├── hm.nix
      │   └── user.nix
         └── steam.desktop
- 
+
+Not exactly "one file configures everything" as many Nix videos describe.  This
+is mainly due to factoring.
 
 ``flake.nix``
 =============
