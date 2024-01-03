@@ -2,7 +2,7 @@
  NixOS 67: A Tour of My Nix Configuration
 ==========================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=cnL-yoFwK_w
 
 - This text script available via link in the video description.
 
