@@ -1,16 +1,15 @@
 { config, pkgs, home-manager, ... }:
 
 {
+  imports = [ ../keybase.nix ];
+
   home.packages = with pkgs; [
-    keybase-gui
     # fd is an unnamed dependency of fzf
     fd
     shell-genie
   ];
-  home.stateVersion = "22.05";
 
-  services.keybase.enable = true;
-  services.kbfs.enable = true;
+  home.stateVersion = "22.05";
 
   xdg.configFile."black".text = ''
     [tool.black]
@@ -56,32 +55,6 @@
       icon = "org.olivevideoeditor.Olive";
     };
   };
-
-  # thanks to tejing on IRC for clueing me in to .force here: it will
-  # overwrite any existing file.
-  xdg.configFile."autostart/keybase_autostart.desktop".force = true;
-
-  # default keybase_autostart.desktop doesn't run on NVIDIA in sync mode
-  # without --disable-gpu-sandbox.
-  xdg.configFile."autostart/keybase_autostart.desktop".text = ''
-    [Desktop Entry]
-    Comment[en_US]=Keybase Filesystem Service and GUI
-    Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 ${pkgs.keybase}/bin/keybase-gui --disable-gpu-sandbox
-    GenericName[en_US]=
-    GenericName=
-    MimeType=
-    Name[en_US]=Keybase
-    Name=Keybase
-    StartupNotify=true
-    Terminal=false
-    TerminalOptions=
-    Type=Application
-    X-DBUS-ServiceName=
-    X-DBUS-StartupType=
-    X-KDE-SubstituteUID=false
-    X-KDE-Username=
-  '';
 
   programs.emacs.enable = true;
   programs.emacs.extraPackages = epkgs: [
