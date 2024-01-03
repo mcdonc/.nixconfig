@@ -285,3 +285,7 @@ DNS-over-TLS only (no unencrypted DNS), and others.
 
 These are activated by including them in a host's ``imports`` list.
 
+Adding a New System
+===================
+
+See ``README.rst``.
