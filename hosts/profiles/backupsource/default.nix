@@ -89,13 +89,12 @@ in {
 
   services.sanoid = {
     enable = true;
-    #interval = "*:0/5";
-    interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+    interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;
         autosnap = true;
-        hourly = 0;
+        hourly = 1;
         daily = 1;
         weekly = 1;
         monthly = 1;

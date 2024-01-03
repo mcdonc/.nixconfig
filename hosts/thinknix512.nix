@@ -43,8 +43,7 @@ in
 
   services.syncoid = {
     enable = true;
-    #interval = "*:0/1";
-    interval = "daily"; # important that syncoid runs less often than sanoid
+    interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
     commonArgs = [ "--debug" ];
     commands = {
       "thinknix512-home" = {
@@ -69,13 +68,12 @@ in
 
   services.sanoid = {
     enable = true;
-    #interval = "*:0/5";
-    interval = "hourly"; # run this hourly, run syncoid daily to prune ok
+    interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
     datasets = {
       "NIXROOT/home" = {
         autoprune = true;
         autosnap = true;
-        hourly = 0;
+        hourly = 1;
         daily = 1;
         weekly = 1;
         monthly = 1;
@@ -94,7 +92,7 @@ in
       "b/thinknix512-home" = {
         autoprune = true;
         autosnap = false;
-        hourly = 0;
+        hourly = 4;
         daily = 7;
         weekly = 4;
         monthly = 12;
@@ -103,7 +101,7 @@ in
       "b/optinix-home" = {
         autoprune = true;
         autosnap = false;
-        hourly = 0;
+        hourly = 4;
         daily = 7;
         weekly = 4;
         monthly = 12;
