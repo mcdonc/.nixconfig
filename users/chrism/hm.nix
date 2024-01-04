@@ -275,6 +275,7 @@ in {
     epkgs.magit
     epkgs.markdown-mode
     epkgs.markdown-preview-mode
+    epkgs.gptel
     pkgs.emacs-all-the-icons-fonts
   ];
 
