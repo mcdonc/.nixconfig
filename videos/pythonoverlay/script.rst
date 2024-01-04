@@ -2,7 +2,7 @@
  NixOS 68: Overriding a Python Package
 ======================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=iIs26qRQsRk
 
 - This text script available via link in the video description.
 
