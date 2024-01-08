@@ -6,7 +6,7 @@
 
   home.packages = with pkgs-keybase-bumpversion; [
     keybase
-    pkgs.keybase-gui
+    pkgs-keybase-bumpversion.keybase-gui
   ];
 
   systemd.user.services.keybase = {
@@ -53,7 +53,7 @@
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
     Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 ${pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
+    Exec=env KEYBASE_AUTOSTART=1 ${pkgs-keybase-bumpversion.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
     GenericName[en_US]=
     GenericName=
     MimeType=
