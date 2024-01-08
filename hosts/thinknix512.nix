@@ -31,41 +31,6 @@ in
   # (default is 4)
   boot.consoleLogLevel = 3;
 
-  boot.zfs.extraPools = [ "b" ];
-
-  # dont ask for "b/storage" credentials
-  boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
-
-  # don't run updatedb on /b
-  services.locate.prunePaths = [ "/b" ];
-
-  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
-
-  services.syncoid = {
-    enable = true;
-    interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
-    commonArgs = [ "--debug" ];
-    commands = {
-      "thinknix512-home" = {
-        source = "NIXROOT/home";
-        target = "b/thinknix512-home";
-        sendOptions = "w c";
-      };
-      # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
-      "optinix-home" = {
-        sshKey = "/var/lib/syncoid/backup.key";
-        source = "backup@optinix.local:NIXROOT/home";
-        target = "b/optinix-home";
-        sendOptions = "w c";
-        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
-      };
-    };
-    localSourceAllow = options.services.syncoid.localSourceAllow.default
-      ++ [ "mount" ];
-    localTargetAllow = options.services.syncoid.localTargetAllow.default
-      ++ [ "destroy" ];
-  };
-
   services.sanoid = {
     enable = true;
     interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
@@ -79,45 +44,8 @@ in
         monthly = 1;
         yearly = 0;
       };
-      "b/storage" = {
-        autoprune = true;
-        autosnap = true;
-        hourly = 0;
-        daily = 0;
-        weekly = 2;
-        monthly = 0;
-        yearly = 0;
-      };
-      # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
-      "b/thinknix512-home" = {
-        autoprune = true;
-        autosnap = false;
-        hourly = 4;
-        daily = 7;
-        weekly = 4;
-        monthly = 12;
-        yearly = 0;
-      };
-      "b/optinix-home" = {
-        autoprune = true;
-        autosnap = false;
-        hourly = 4;
-        daily = 7;
-        weekly = 4;
-        monthly = 12;
-        yearly = 0;
-      };
     };
     extraArgs = [ "--debug" ];
   };
 
-  environment.systemPackages = with pkgs; [
-    # used by zfs send/receive
-    pv
-    mbuffer
-    lzop
-    zstd
-    monitor-sanoid-health
-  ];
-  
 }
