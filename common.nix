@@ -40,19 +40,12 @@ in {
   };
 
   nix = {
-    # package = pkgs.nixUnstable;
-    # extraOptions = ''
-    #   experimental-features = nix-command flakes
-    #   trusted-users = root @wheel
-    #   sandbox = relaxed
-    # '';
     settings = {
       tarball-ttl = 300;
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
       trusted-users = [ "root" "@wheel" ];
-#      sandbox = "relaxed";
-      sandbox = false;
+      sandbox = "relaxed";
     };
     gc = {
       automatic = true;
