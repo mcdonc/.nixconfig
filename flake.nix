@@ -15,7 +15,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    kde2nix.url = "github:nix-community/kde2nix";
+    #kde2nix.url = "github:nix-community/kde2nix";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # plasma-manager.url =
@@ -27,7 +27,7 @@
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
     , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-keybase-bumpversion
-    , nix-gaming, kde2nix, nixtheplanet }@inputs:
+    , nix-gaming, nixtheplanet }@inputs:
     let
       overlays = (self: super: {
         steam = super.steam.override {
@@ -62,13 +62,12 @@
         #   inherit system;
         #   config.allowUnfree = true;
         # };
-        inherit nixos-hardware nix-gaming system inputs kde2nix;
+        inherit nixos-hardware nix-gaming system inputs;
       };
 
       chris-modules = [
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
-        kde2nix.nixosModules.plasma6
         nixtheplanet.nixosModules.macos-ventura
         {
           home-manager = {
