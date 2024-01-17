@@ -277,6 +277,7 @@ in {
     epkgs.markdown-preview-mode
     epkgs.gptel
     pkgs.emacs-all-the-icons-fonts
+    epkgs.yaml-mode
   ];
 
   services.emacs = {
