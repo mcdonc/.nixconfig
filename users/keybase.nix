@@ -6,7 +6,7 @@
 
   home.packages = with pkgs-keybase-bumpversion; [
     keybase
-    pkgs-keybase-bumpversion.keybase-gui
+    keybase-gui
   ];
 
   systemd.user.services.keybase = {

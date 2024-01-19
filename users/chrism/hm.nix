@@ -1,4 +1,4 @@
-{ config, pkgs, nix-gaming, pkgs-keybase-bumpversion, ... }:
+{ pkgs, ... }:
 
 let
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
