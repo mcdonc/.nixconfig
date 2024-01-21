@@ -201,7 +201,7 @@ is the Nix code that the json file was generated from:
       };
     };
                 
-We use a custom container image (``ghcr.io/mcdonc/devenv:pyrewrite``), we
+We use a custom devcontainer image (``ghcr.io/mcdonc/devenv:pyrewrite``), we
 specify the command that should be run (``updateContentCommand``) directly
 after the container boots, which says we want to use a number of Cachix caches
 to prevent recompilation of various packages, and then run ``devenv ci`` which
@@ -233,8 +233,8 @@ After I checked that in and pushed, we are now ready to try to use this
 repository via an actual Codespace.
 
 The codespace takes a bit to get created, but once it's up and running, we can
-use it like we did locally.  ``devenv shell`` gets us a shell, and ``devenv
-up`` starts Postgres and MongoDB within the remote container.
+use it like we did locally.  ``devenv shell`` gets us a shell, and
+``devenv up`` starts Postgres and MongoDB within the remote container.
 
 .. image:: codespace.png
 
