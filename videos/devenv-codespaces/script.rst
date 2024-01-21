@@ -12,9 +12,9 @@
 Sources
 =======
 
-Devenv is a wrapper around Nix that makes it possible to create share
-development environment configuration and setup for a team in a cross-platform
-way (just about any Linux, MacOS, and WSL2 on Windows).
+`Devenv <http://devenv.sh>`_ is a wrapper around Nix that makes it possible to
+create share development environment configuration and setup for a team in a
+cross-platform way (just about any Linux, MacOS, and WSL2 on Windows).
 
 It also has a feature which automates the creation of a container compatible
 with `Github Codespaces <https://github.com/features/codespaces>`_, which makes
