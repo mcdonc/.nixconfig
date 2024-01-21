@@ -2,7 +2,7 @@
  NixOS 69: Using Github Codespaces via Devenv
 ==============================================
 
-- Companion to video at 
+- Companion to video at https://youtu.be/ZhwYh15a8Ls
 
 - This text script available via link in the video description.
 
