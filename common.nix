@@ -29,6 +29,8 @@ let
     }
   '';
 
+  gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
+
 in {
   imports = [ ./cachix.nix ];
 
@@ -317,7 +319,7 @@ in {
     cutecom
     rshell
     mplayer
-    vscode.fhs
+    pkgs-unstable.vscode.fhs
     gnome.cheese
     sqlite
     tldr
@@ -393,6 +395,9 @@ in {
     start-virsh
     nixos-repl
     lazygit
+    gittyup
+    github-desktop
+    gitkraken-wimpy
     envsubst
     appimage-run
     jq
