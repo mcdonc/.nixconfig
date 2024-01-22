@@ -11,6 +11,7 @@
     nixpkgs-keybase-bumpversion.url =
       "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nur.url = "github:nix-community/NUR";
 
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
@@ -27,7 +28,7 @@
 
   outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
     , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-keybase-bumpversion
-    , nix-gaming, nixtheplanet }@inputs:
+    , nix-gaming, nixtheplanet, nur }@inputs:
     let
       overlays = (self: super: {
         steam = super.steam.override {
@@ -35,6 +36,7 @@
               nix-gaming.packages.${system}.proton-ge
             }'";
         };
+        nur.overlay;
       });
       system = "x86_64-linux";
       specialArgs = {
@@ -58,6 +60,10 @@
           inherit system;
           config.allowUnfree = true;
         };
+        nurpkgs = import nur {
+          inherit system;
+          config.allowUnfree = true;
+        };
         # pkgs-bgremoval = import nixpkgs-bgremoval {
         #   inherit system;
         #   config.allowUnfree = true;
@@ -69,6 +75,7 @@
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
+        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;

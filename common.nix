@@ -1,4 +1,5 @@
-{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable, ... }:
+{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable
+, nurpkgs, ... }:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -395,5 +396,6 @@ in {
     envsubst
     appimage-run
     jq
+    nurpkgs.repos.wolfangaukang.vdhcoapp
   ];
 }
