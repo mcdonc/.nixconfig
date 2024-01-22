@@ -36,7 +36,6 @@
               nix-gaming.packages.${system}.proton-ge
             }'";
         };
-        nur.overlay;
       });
       system = "x86_64-linux";
       specialArgs = {
@@ -60,10 +59,6 @@
           inherit system;
           config.allowUnfree = true;
         };
-        nurpkgs = import nur {
-          inherit system;
-          config.allowUnfree = true;
-        };
         # pkgs-bgremoval = import nixpkgs-bgremoval {
         #   inherit system;
         #   config.allowUnfree = true;
@@ -83,7 +78,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
       ];
       larry-modules = [
         ./users/larry/user.nix
@@ -95,7 +90,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
       ];
       larry-and-chris-modules = [
         ./users/larry/user.nix
@@ -109,7 +104,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
       ];
     in {
       nixosConfigurations = {

@@ -430,6 +430,21 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1705888149,
+        "narHash": "sha256-+Lsx+x+2GEM53M6hnD8OY7kHBkRVKQGGX3C12LnbcOc=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "384ac71f725e53d3e2acf3a86cdd8d25ca7e2ae4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "osx-kvm": {
       "flake": false,
       "locked": {
@@ -458,7 +473,8 @@
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nixtheplanet": "nixtheplanet"
+        "nixtheplanet": "nixtheplanet",
+        "nur": "nur"
       }
     }
   },

@@ -396,6 +396,6 @@ in {
     envsubst
     appimage-run
     jq
-    nurpkgs.repos.wolfangaukang.vdhcoapp
+    config.nur.repos.wolfangaukang.vdhcoapp
   ];
 }
