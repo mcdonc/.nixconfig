@@ -294,6 +294,12 @@ in {
     enable = true;
     userName = "Chris McDonough";
     userEmail = "chrism@plope.com";
+    extraConfig = {
+      pull.rebase = "true";
+      diff.tool = "${pkgs.kdiff3}/bin/kdiff3";
+      merge.tool = "${pkgs.kdiff3}/bin/kdiff3";
+      difftool.prompt = "false";
+    };
   };
 
   home.file.".p10k.zsh" = {

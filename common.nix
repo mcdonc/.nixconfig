@@ -398,9 +398,13 @@ in {
     gittyup
     github-desktop
     gitkraken-wimpy
+    meld
+    kdiff3
     envsubst
     appimage-run
     jq
-    config.nur.repos.wolfangaukang.vdhcoapp
+    # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
+    # share/vdhcoapp/net.downloadhelper.coapp install --user
+    #config.nur.repos.wolfangaukang.vdhcoapp
   ];
 }
