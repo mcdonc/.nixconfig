@@ -8,10 +8,10 @@ else:
 
 home = os.path.expanduser(path)
 prevent = [
-    os.path.join('.', '.cache'),
-    os.path.join('.', '.local', 'share', 'Steam'),
-    os.path.join('.', '.local', 'share', 'keybase'),
-    os.path.join('.', '.local', 'share', 'baloo'),
+    os.path.join('.cache'),
+    os.path.join('.local', 'share', 'Steam'),
+    os.path.join('.local', 'share', 'keybase'),
+    os.path.join('.local', 'share', 'baloo'),
     ]
 for path in prevent:
     print(path)
@@ -21,7 +21,7 @@ for (root, dirs, files) in os.walk(home):
         if os.path.islink(full):
             real = os.path.realpath(full)
             if real.startswith('/nix'):
-                rel = '.' + full[len(home):]
+                rel = '.' + full[len(home)+2:]
                 for p in prevent:
                     if rel.startswith(p):
                         break
