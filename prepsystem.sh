@@ -41,7 +41,7 @@ zpool create -f \
     -O acltype=posixacl \
     -O xattr=sa \
     -O relatime=on \
-    -O normalization=formD \
+    -O normalization=formC \
     -O dnodesize=auto \
     -O encryption=aes-256-gcm \
     -O keylocation=prompt \
