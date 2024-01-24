@@ -231,6 +231,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    cachix
     nvidia-offload
     vim_configurable
     wget
@@ -266,146 +267,145 @@ in {
     pkgs-py37.python37
     #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
     #python39
-    # python310
-    # (python311.withPackages (p:
-    #   with p; [
-    #     python311Packages.pyserial # for pico-w-go in vscode
-    #     python311Packages.pyflakes # for emacs
-    #     python311Packages.flake8 # for vscode
-    #     python311Packages.black # for cmdline and vscode
-    #     python311Packages.tox # for... tox
-    #   ]))
-    # pypy3
-    # xz
-    # libreoffice
-    # ffmpeg-full
-    # iperf
-    # pciutils
-    # neofetch
-    # tmux
-    # s-tui
-    # stress-ng
-    # usbutils
-    # nmap
-    # zoom-us
-    # konversation
-    # nixfmt
-    # wakeonlan
-    # #pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
-    # cachix
-    # gptfdisk # "sgdisk"
-    # ardour
-    # qjackctl
-    # odin2
-    # freepats
-    # helm
-    # distrho
-    # calf
-    # x42-plugins
-    # tap-plugins
-    # zam-plugins
-    # sanoid
-    # hplip
-    # geteltorito
-    # argyllcms
-    # xcalib
-    # virt-manager
-    # rpi-imager
-    # dig
-    # s3cmd
-    # kaffeine
-    # pcmanfm-qt
-    # thonny
-    # cutecom
-    # rshell
-    # mplayer
-    # pkgs-unstable.vscode.fhs
-    # gnome.cheese
-    # sqlite
-    # tldr
-    # tree
-    # lha
-    # quickemu
-    # quickgui
-    # gnome.zenity # undeclared dep of quickgui
-    # nix-du
-    # graphviz
-    # zgrviewer
-    # bintools # "strings"
-    # thinkfan
-    # lm_sensors
-    # nvd # for nixos-rebuild diffing
-    # cntr # for build debugging
-    # gnupg
-    # pinentry # dep of gpg
-    # age # for flyingcircus
-    # lsof
-    # progress
-    # mc
-    # etcher
-    # pre-commit
-    # html-tidy
-    # dua
-    # duf
-    # ncdu
-    # inetutils # for telnet
-    # asciiquarium
-    # rig
-    # cowsay
-    # banner
-    # lolcat
-    # fortune
-    # file
-    # ruby
-    # nix-tree
-    # fdupes
-    # dupe-krill
-    # dupeguru
-    # pv
-    # fio
-    # mbuffer
-    # qjournalctl
-    # gnumake
-    # bat
-    # ethtool
-    # wol
-    # imagemagick
-    # audiowaveform
-    # element-desktop
-    # speech-denoiser
-    # rnnoise-plugin
-    # clementine
-    # minicom
-    # nvtop-nvidia
-    # pkgs-unstable.libsForQt5.kdenlive
-    # glaxnimate # for kdenlive
-    # nix-index # for nix-locate
-    # bitwarden
-    # any-nix-shell
-    # pico-sdk
-    # sdcc
-    # dstat
-    # speedtest-cli
-    # fast-cli
-    # nmap
-    # bottom
-    # wireshark
-    # openssl
-    # geekbench
-    # start-virsh
-    # nixos-repl
-    # lazygit
-    # gittyup
-    # github-desktop
-    # gitkraken-wimpy
-    # meld
-    # kdiff3
-    # envsubst
-    # appimage-run
-    # jq
-    # gnome.gucharmap
-    # # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
-    # # share/vdhcoapp/net.downloadhelper.coapp install --user
-    # #config.nur.repos.wolfangaukang.vdhcoapp
+    python310
+    (python311.withPackages (p:
+      with p; [
+        python311Packages.pyserial # for pico-w-go in vscode
+        python311Packages.pyflakes # for emacs
+        python311Packages.flake8 # for vscode
+        python311Packages.black # for cmdline and vscode
+        python311Packages.tox # for... tox
+      ]))
+    pypy3
+    xz
+    libreoffice
+    ffmpeg-full
+    iperf
+    pciutils
+    neofetch
+    tmux
+    s-tui
+    stress-ng
+    usbutils
+    nmap
+    zoom-us
+    konversation
+    nixfmt
+    wakeonlan
+    #pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
+    gptfdisk # "sgdisk"
+    ardour
+    qjackctl
+    odin2
+    freepats
+    helm
+    distrho
+    calf
+    x42-plugins
+    tap-plugins
+    zam-plugins
+    sanoid
+    hplip
+    geteltorito
+    argyllcms
+    xcalib
+    virt-manager
+    rpi-imager
+    dig
+    s3cmd
+    kaffeine
+    pcmanfm-qt
+    thonny
+    cutecom
+    rshell
+    mplayer
+    pkgs-unstable.vscode.fhs
+    gnome.cheese
+    sqlite
+    tldr
+    tree
+    lha
+    quickemu
+    quickgui
+    gnome.zenity # undeclared dep of quickgui
+    nix-du
+    graphviz
+    zgrviewer
+    bintools # "strings"
+    thinkfan
+    lm_sensors
+    nvd # for nixos-rebuild diffing
+    cntr # for build debugging
+    gnupg
+    pinentry # dep of gpg
+    age # for flyingcircus
+    lsof
+    progress
+    mc
+    etcher
+    pre-commit
+    html-tidy
+    dua
+    duf
+    ncdu
+    inetutils # for telnet
+    asciiquarium
+    rig
+    cowsay
+    banner
+    lolcat
+    fortune
+    file
+    ruby
+    nix-tree
+    fdupes
+    dupe-krill
+    dupeguru
+    pv
+    fio
+    mbuffer
+    qjournalctl
+    gnumake
+    bat
+    ethtool
+    wol
+    imagemagick
+    audiowaveform
+    element-desktop
+    speech-denoiser
+    rnnoise-plugin
+    clementine
+    minicom
+    nvtop-nvidia
+    pkgs-unstable.libsForQt5.kdenlive
+    glaxnimate # for kdenlive
+    nix-index # for nix-locate
+    bitwarden
+    any-nix-shell
+    pico-sdk
+    sdcc
+    dstat
+    speedtest-cli
+    fast-cli
+    nmap
+    bottom
+    wireshark
+    openssl
+    geekbench
+    start-virsh
+    nixos-repl
+    lazygit
+    gittyup
+    github-desktop
+    gitkraken-wimpy
+    meld
+    kdiff3
+    envsubst
+    appimage-run
+    jq
+    gnome.gucharmap
+    # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
+    # share/vdhcoapp/net.downloadhelper.coapp install --user
+    #config.nur.repos.wolfangaukang.vdhcoapp
   ];
 }
