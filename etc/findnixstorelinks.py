@@ -28,3 +28,4 @@ for (root, dirs, files) in os.walk(home):
                 else: # nobreak
                     print(rel)
 # tar cvzf /backup/location.tar.gz --exclude-from=<output of this script>
+# rsync -avzP --exclude-from=<outfile> /b/optinix-home/.zfs/autosnap_2024-01-24_06:02:03_hourly/chrism/ /home/chrism/
