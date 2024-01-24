@@ -1,0 +1,19 @@
+- nur
+
+- navigating documentation
+
+  - mynixos.com
+
+  - noogle
+
+  - official docs
+
+- derivations -> higher level build systems (cmake) (havoc)
+
+- explainer between old and new command gods
+
+- difference between containerization and Nix builds
+
+- building old software ("archive builds")
+
+- devbox
