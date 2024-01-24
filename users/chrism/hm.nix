@@ -109,6 +109,8 @@ let
       "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
   };
 
+  zshDotDir = ".config/zsh";
+
 in {
   imports = [ ../keybase.nix ];
 
@@ -118,8 +120,6 @@ in {
     xdotool
     fd # fd is an unnamed dependency of fzf
     shell-genie
-    nushell
-    oh-my-posh # not enabled via programs.xxx cuz dont want it enabled in zsh
   ];
   home.stateVersion = "22.05";
 
@@ -351,9 +351,10 @@ in {
     executable = true;
   };
 
-  xdg.configFile."nushell/oh-my-posh.nu" = { source = ./oh-my-posh.nu; };
-
-  xdg.configFile."nushell/config.nu" = { source = ./config.nu; };
+  home.file.".p10k-theme.zsh" = {
+    source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    executable = true;
+  };
 
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
@@ -375,7 +376,7 @@ in {
   };
 
   programs.starship = {
-    enable = true;
+    enable = false;
     settings = {
       format = ''
         [](#3B4252)\\
@@ -428,13 +429,34 @@ in {
     sessionVariables = sessionVariables;
     enableCompletion = true;
 
+    dotDir = zshDotDir;
     enableAutosuggestions = true;
-    dotDir = ".config/zsh";
 
-    completionInit = ""; # speed up zsh start time
+    # speed up zsh start time, see
+    # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
+    # (needs extended_glob)
+    completionInit = ''
+      # On slow systems, checking the cached .zcompdump file to see if it must be 
+      # regenerated adds a noticable delay to zsh startup.  This little hack restricts 
+      # it to once a day.  It should be pasted into your own completion file.
+      #
+      # The globbing is a little complicated here:
+      # - '#q' is an explicit glob qualifier that makes globbing work within zsh's [[ ]] construct.
+      # - 'N' makes the glob pattern evaluate to nothing when it doesn't match (rather than throw a globbing error)
+      # - '.' matches "regular files"
+      # - 'mh+24' matches files (or directories or whatever) that are older than 24 hours.
+      setopt extended_glob
+      autoload -Uz compinit
+      export ZDOTDIR=~/${zshDotDir}
+      if [[ -n ~/${zshDotDir}/.zcompdump(#qN.mh+24) ]]; then
+        compinit;
+      else
+        compinit -C;
+      fi;
+    '';
 
     #initExtraFirst = ''
-    # zmodload zsh/zprof
+    #  zmodload zsh/zprof
     #'';
 
     initExtra = ''
@@ -442,10 +464,8 @@ in {
       setopt interactive_comments bashautolist nobeep nomenucomplete \
              noautolist extended_glob
 
-      ## include config generated via "p10k configure" manually;
-      ## zplug cannot edit home manager's zshrc file.
-
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      source ~/.p10k.zsh
+      source ~/.p10k-theme.zsh
 
       ## Keybindings section
       bindkey -e
@@ -475,7 +495,6 @@ in {
       bindkey '^[[1;5C' forward-word
       # delete previous word with ctrl+backspace
       bindkey '^H' backward-kill-word
-      #zprof
 
       findup () {
         # uses zsh extended globbing, https://unix.stackexchange.com/a/64164
@@ -491,17 +510,13 @@ in {
          ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
          chcolor 1
       }
+      #zprof
     '';
-    zplug = {
-      enable = true;
-      plugins = [{
-        name = "romkatv/powerlevel10k";
-        tags = [ "as:theme" "depth:1" ];
-      }];
-    };
-    plugins = [{
-      name = "fast-syntax-highlighting";
-      src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
-    }];
+    plugins = [
+      {
+        name = "fast-syntax-highlighting";
+        src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
+      }
+    ];
   };
 }
