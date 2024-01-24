@@ -291,7 +291,7 @@ in {
     konversation
     nixfmt
     wakeonlan
-    pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
+    #pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
     cachix
     gptfdisk # "sgdisk"
     ardour
