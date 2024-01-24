@@ -390,7 +390,7 @@ in {
         [](fg:#86BBD8 bg:#06969A)\\
         $docker_context\\
         [](fg:#06969A bg:#33658A)\\
-        [ ](fg:#33658A) '';
+        [ ](fg:#33658A)'';
       add_newline = false;
       command_timeout = 5000;
       username = {
