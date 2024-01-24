@@ -67,6 +67,48 @@ let
     };
   };
 
+  shellAliases = {
+    swnix = "sudo nixos-rebuild switch --verbose --show-trace";
+    drynix = "sudo nixos-rebuild dry-build --verbose --show-trace";
+    bootnix = "sudo nixos-rebuild boot --verbose --show-trace";
+    ednix = "emacsclient -nw /etc/nixos/flake.nix";
+    schnix = "nix search nixpkgs";
+    rbnix = "sudo nixos-rebuild build --rollback";
+    replnix = "nix repl '<nixpkgs>'";
+    mountzfs = "sudo zfs load-key b/storage; sudo zfs mount b/storage";
+    restartemacs = "systemctl --user restart emacs";
+    open = "kioclient exec";
+    edit = "emacsclient -n -c";
+    sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
+    ls = "ls --color=auto";
+    greyterm = "${gterm-change-profile} 1";
+    blueterm = "${gterm-change-profile} 2";
+    blackterm = "${gterm-change-profile} 3";
+    purpleterm = "${gterm-change-profile} 4";
+    yellowterm = "${gterm-change-profile} 5";
+    ssh = "${ssh-chcolor}/bin/ssh-chcolor";
+    ai = "shell-genie ask";
+    diff = "${pkgs.colordiff}/bin/colordiff";
+    python3 = "python3.11";
+    python = "python3.11";
+  };
+
+  sessionVariables = {
+    EDITOR = "vi";
+    DSSI_PATH =
+      "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
+    LADSPA_PATH =
+      "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
+    LV2_PATH =
+      "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
+    LXVST_PATH =
+      "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+    VST_PATH =
+      "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
+    VST3_PATH =
+      "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
+  };
+
 in {
   imports = [ ../keybase.nix ];
 
@@ -325,53 +367,20 @@ in {
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
 
+  programs.bash = {
+    enable = true;
+    shellAliases = shellAliases;
+    sessionVariables = sessionVariables;
+  };
+
   programs.zsh = {
     enable = true;
+    shellAliases = shellAliases;
+    sessionVariables = sessionVariables;
+
     enableAutosuggestions = true;
     enableCompletion = true;
     dotDir = ".config/zsh";
-
-    sessionVariables = {
-      EDITOR = "vi";
-      DSSI_PATH =
-        "$HOME/.dssi:$HOME/.nix-profile/lib/dssi:/run/current-system/sw/lib/dssi";
-      LADSPA_PATH =
-        "$HOME/.ladspa:$HOME/.nix-profile/lib/ladspa:/run/current-system/sw/lib/ladspa";
-      LV2_PATH =
-        "$HOME/.lv2:$HOME/.nix-profile/lib/lv2:/run/current-system/sw/lib/lv2";
-      LXVST_PATH =
-        "$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
-      VST_PATH =
-        "$HOME/.vst:$HOME/.nix-profile/lib/vst:/run/current-system/sw/lib/vst";
-      VST3_PATH =
-        "$HOME/.vst3:$HOME/.nix-profile/lib/vst3:/run/current-system/sw/lib/vst3";
-    };
-
-    shellAliases = {
-      swnix = "sudo nixos-rebuild switch --verbose --show-trace";
-      drynix = "sudo nixos-rebuild dry-build --verbose --show-trace";
-      bootnix = "sudo nixos-rebuild boot --verbose --show-trace";
-      ednix = "emacsclient -nw /etc/nixos/flake.nix";
-      schnix = "nix search nixpkgs";
-      rbnix = "sudo nixos-rebuild build --rollback";
-      replnix = "nix repl '<nixpkgs>'";
-      mountzfs = "sudo zfs load-key b/storage; sudo zfs mount b/storage";
-      restartemacs = "systemctl --user restart emacs";
-      open = "kioclient exec";
-      edit = "emacsclient -n -c";
-      sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
-      ls = "ls --color=auto";
-      greyterm = "${gterm-change-profile} 1";
-      blueterm = "${gterm-change-profile} 2";
-      blackterm = "${gterm-change-profile} 3";
-      purpleterm = "${gterm-change-profile} 4";
-      yellowterm = "${gterm-change-profile} 5";
-      ssh = "${ssh-chcolor}/bin/ssh-chcolor";
-      ai = "shell-genie ask";
-      diff = "${pkgs.colordiff}/bin/colordiff";
-      python3 = "python3.11";
-      python = "python3.11";
-    };
 
     completionInit = ""; # speed up zsh start time
 
