@@ -44,6 +44,8 @@ in
     fsType = "zfs";
   };
 
+  swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
+
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
 
   services.syncoid = {
@@ -108,5 +110,5 @@ in
     zstd
     monitor-sanoid-health
   ];
-  
+
 }
