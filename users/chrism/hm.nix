@@ -374,53 +374,56 @@ in {
     sessionVariables = sessionVariables;
     enableCompletion = true;
   };
-
+  # https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
   programs.starship = {
-    enable = false;
+    enable = true;
     settings = {
-      format = ''
-        [](#3B4252)\\
-        $python\\
-        $username\\
-        [](bg:#434C5E fg:#3B4252)\\
-        $directory\\
-        [](fg:#434C5E bg:#4C566A)\\
-        $git_branch\\
-        $git_status\\
-        [](fg:#4C566A bg:#86BBD8)\\
-        [](fg:#86BBD8 bg:#06969A)\\
-        $docker_context\\
-        [](fg:#06969A bg:#33658A)\\
-        [ ](fg:#33658A)'';
       add_newline = false;
       command_timeout = 5000;
-      username = {
-        show_always = true;
-        style_root = "bg:#3B4252";
-        style_user = "bg:#3B4252";
-        format = "[$user ]($style)";
-      };
+      format = ''
+        [](bg:#1C2023 fg:#7DF9AA)\\
+        [ ](bg:#7DF9AA fg:#090c0c)\\
+        $directory\\
+        [](fg:#3B76F0 bg:#FCF392)\\
+        $git_branch\\
+        $git_status\\
+        $git_metrics\\
+        [](fg:#FCF392 bg:#1C2023)\\
+        $character'';
       directory = {
-        style = "bg:#434C5E";
         format = "[ $path ]($style)";
-        truncation_length = 3;
-        truncation_symbol = "…/";
-      };
-      python = {
-        style = "bg:#3B4252";
-        format = "[(\\($virtualenv\\) )]($style)";
+        style = "fg:#E4E4E4 bg:#3B76F0";
       };
       git_branch = {
-        symbol = "";
-        style = "bg:#4C566A";
-        format = "[ $symbol $branch ]($style)";
+        format = "[ $symbol$branch(:$remote_branch) ]($style)";
+        symbol = "  ";
+        style = "fg:#1C3A5E bg:#FCF392";
       };
       git_status = {
-        style = "bg:#4C566A";
-        format = "[$all_status$ahead_behind ]($style)";
+        format = "[$all_status]($style)";
+        style = "fg:#1C3A5E bg:#FCF392";
+      };
+      git_metrics = {
+        format = "([+$added]($added_style))[]($added_style)";
+        added_style = "fg:#1C3A5E bg:#FCF392";
+        deleted_style = "fg:bright-red bg:235";
+        disabled = false;
+      };
+      cmd_duration = {
+        format = "[  $duration ]($style)";
+        style = "fg:bright-white bg:18";
+      };
+      character = {
+        success_symbol = "[ ➜](bold green) ";
+        error_symbol = "[ ✗](#E84D44) ";
+      };
+      time = {
+        disabled = true;
+        time_format = "%R"; # Hour:Minute Format
+        style = "bg:#1d2230";
+        format = "[[ 󱑍 $time ](bg:#1C3A5E fg:#8DFBD2)]($style)";
       };
     };
-
   };
 
   programs.zsh = {
