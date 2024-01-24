@@ -296,9 +296,11 @@ in {
     userEmail = "chrism@plope.com";
     extraConfig = {
       pull.rebase = "true";
-      diff.tool = "${pkgs.kdiff3}/bin/kdiff3";
-      merge.tool = "${pkgs.kdiff3}/bin/kdiff3";
+      diff.guitool = "meld";
+      difftool.meld.path = "${pkgs.meld}/bin/meld";
       difftool.prompt = "false";
+      merge.tool = "meld";
+      mergetool.meld.path = "${pkgs.meld}/bin/meld";
     };
   };
 
