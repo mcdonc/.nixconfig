@@ -30,6 +30,10 @@
   services.spice-vdagentd.enable = true;
   services.spice-autorandr.enable = true;
 
+  virtualisation.virtualbox.guest = {
+    enable = true;
+    x11 = true;
+  };
   #services.xserver.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.plasma5.enable = lib.mkForce false;
 
