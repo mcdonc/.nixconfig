@@ -371,15 +371,16 @@ in {
     enable = true;
     shellAliases = shellAliases;
     sessionVariables = sessionVariables;
+    enableCompletion = true;
   };
 
   programs.zsh = {
     enable = true;
     shellAliases = shellAliases;
     sessionVariables = sessionVariables;
+    enableCompletion = true;
 
     enableAutosuggestions = true;
-    enableCompletion = true;
     dotDir = ".config/zsh";
 
     completionInit = ""; # speed up zsh start time
