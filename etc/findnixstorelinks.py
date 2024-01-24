@@ -1,5 +1,12 @@
+import sys
 import os
-home = os.path.expanduser('~')
+
+if len(sys.argv) > 1:
+    path = sys.argv[1]
+else:
+    path = "~"
+
+home = os.path.expanduser(path)
 prevent = [
     os.path.join('.', '.cache'),
     os.path.join('.', '.local', 'share', 'Steam'),
