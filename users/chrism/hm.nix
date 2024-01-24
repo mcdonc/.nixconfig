@@ -374,6 +374,7 @@ in {
     sessionVariables = sessionVariables;
     enableCompletion = true;
   };
+
   # https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
   programs.starship = {
     enable = true;
@@ -383,14 +384,19 @@ in {
       format = ''
         [](bg:#1C2023 fg:#7DF9AA)\\
         [ ](bg:#7DF9AA fg:#090c0c)\\
+        [](fg:#7DF9AA bg:#3B76F0)\\
         $directory\\
         [](fg:#3B76F0 bg:#FCF392)\\
         $git_branch\\
         $git_status\\
         $git_metrics\\
-        [](fg:#FCF392 bg:#1C2023)\\
+        [](fg:#FCF392 bg:#1C2023)\\
+
         $character'';
       directory = {
+        truncation_length = 4;
+        truncate_to_repo = false;
+        truncation_symbol = "…/";
         format = "[ $path ]($style)";
         style = "fg:#E4E4E4 bg:#3B76F0";
       };
@@ -414,8 +420,9 @@ in {
         style = "fg:bright-white bg:18";
       };
       character = {
-        success_symbol = "[ ➜](bold green) ";
-        error_symbol = "[ ✗](#E84D44) ";
+        #success_symbol = "[ ➜](bold green) ";
+        success_symbol = "[>](bold green)";
+        error_symbol = "[✗](#E84D44)";
       };
       time = {
         disabled = true;
@@ -439,8 +446,8 @@ in {
     # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
     # (needs extended_glob)
     completionInit = ''
-      # On slow systems, checking the cached .zcompdump file to see if it must be 
-      # regenerated adds a noticable delay to zsh startup.  This little hack restricts 
+      # On slow systems, checking the cached .zcompdump file to see if it must be
+      # regenerated adds a noticable delay to zsh startup.  This little hack restricts
       # it to once a day.  It should be pasted into your own completion file.
       #
       # The globbing is a little complicated here:
