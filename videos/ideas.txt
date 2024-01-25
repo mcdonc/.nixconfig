@@ -8,6 +8,10 @@
 
   - official docs
 
+  - nix.dev
+
+  - nix pills
+
 - derivations -> higher level build systems (cmake) (havoc)
 
 - explainer between old and new command gods
@@ -17,3 +21,10 @@
 - building old software ("archive builds")
 
 - devbox
+
+- virtual machine host
+
+  - can't be in environment.systemPackages https://discourse.nixos.org/t/virtualbox-kernel-driver-not-accessible/18629/4
+
+  - VBoxManage setextradata global GUI/SuppressMessages confirmGoingFullscreen,remindAboutMouseIntegration,remindAboutAutoCapture
+

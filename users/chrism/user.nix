@@ -14,6 +14,7 @@
       "dialout"
       "libvirtd"
       "wireshark"
+      "vboxusers"
     ];
     openssh = {
       authorizedKeys.keys = [
