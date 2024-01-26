@@ -53,9 +53,9 @@ in
     interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
     commonArgs = [ "--debug" ];
     commands = {
-      "optinix-home" = {
+      "optinix-home2" = {
         source = "NIXROOT/home";
-        target = "b/optinix-home";
+        target = "b/optinix-home2";
         sendOptions = "w c";
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
@@ -89,7 +89,7 @@ in
         yearly = 0;
       };
       # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
-      "b/optinix-home" = {
+      "b/optinix-home2" = {
         autoprune = true;
         autosnap = false;
         hourly = 4;
