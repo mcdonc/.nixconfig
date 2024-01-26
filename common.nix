@@ -188,7 +188,7 @@ in {
 
   # all other services
   services.fwupd.enable = true;
-  services.locate.enable = true;
+  services.locate.enable = false;
   services.openssh = {
     enable = true;
     settings = {
