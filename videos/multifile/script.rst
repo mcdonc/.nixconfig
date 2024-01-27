@@ -18,9 +18,10 @@ Unlike many other languages, functions in Nix can be themselves composed as a
 file.  This doesn't mean that the file *contains* a function, it means that the
 file *is* a function.
 
-Let's assume we have this stuff in our ``configuration.nix`` or some variant
-thereof.  We want to create a derivation using ``pkgs.writeTextFile`` and then
-we put its location in an environment variable.
+As a demonstration (before we split things across files), let's assume we have
+this stuff in our NixOS ``configuration.nix`` or some variant thereof.  We want
+to create a derivation using ``pkgs.writeTextFile`` and then we put its
+location in an environment variable.
 
 .. code-block:: nix
 
@@ -46,9 +47,11 @@ we put its location in an environment variable.
 derivation in the Nix store (``writeTextFile`` is a wrapper around
 ``mkDerivation``) once it's realized.
 
-In the above example, the thing that causes ``myfile`` to evaluate to anything
-at all is ``MYFILE = myfile;``.  If that stuff weren't there, the file is not
-even created.  This is the "lazy" bit of Nix.
+.. note::
+
+  In the above example, the thing that causes ``myfile`` to evaluate to anything
+  at all is ``MYFILE = myfile;``.  If that stuff weren't there, the file is not
+  been created.  This is the "lazy" bit of Nix.
 
 After a ``nixos-rebuild switch`` and a relogin, we can see this crap had an
 effect:
