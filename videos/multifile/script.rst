@@ -121,6 +121,8 @@ Package?  Module?  Nix file?  Who fucking knows?
 You may think that this idiom is somehow special and those latter curly braces
 mean "the stuff that's in here" or something:
 
+.. code-block:: nix
+
     {pkgs, ...}:
 
     {
