@@ -31,6 +31,10 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
+  mssql-odbc-driver = pkgs.unixODBCDrivers.msodbcsql17;
+
+  myfile = pkgs.callPackage ./myfile.nix {};
+
 in {
   imports = [ ./cachix.nix ];
 
@@ -41,6 +45,10 @@ in {
       ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
            /run/current-system "$systemConfig"
     '';
+  };
+
+  environment.sessionVariables = {
+    MYFILE = myfile;
   };
 
   nix = {
@@ -408,6 +416,7 @@ in {
     jq
     gnome.gucharmap
     loccount
+    mssql-odbc-driver
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
