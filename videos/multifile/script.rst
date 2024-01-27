@@ -2,7 +2,7 @@
  NixOS 70: Files as Functions
 =============================
 
-- Companion to video at 
+- Companion to video at https://youtu.be/CKHTLuijoqA
 
 - This text script available via link in the video description.
 

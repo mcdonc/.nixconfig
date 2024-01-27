@@ -31,9 +31,8 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
-  mssql-odbc-driver = pkgs.unixODBCDrivers.msodbcsql17;
-
 in {
+
   imports = [ ./cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
