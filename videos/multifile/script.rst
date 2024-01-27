@@ -47,11 +47,9 @@ location in an environment variable.
 derivation in the Nix store (``writeTextFile`` is a wrapper around
 ``mkDerivation``) once it's realized.
 
-..  note::
-
-  In the above example, the thing that causes ``myfile`` to evaluate to anything
-  at all is ``MYFILE = myfile;``.  If that stuff weren't there, the file is not
-  been created.  This is the "lazy" bit of Nix.
+Gratuitous aside: in the above example, the thing that causes ``myfile`` to
+evaluate to anything at all is ``MYFILE = myfile;``.  If that stuff weren't
+there, the file is not created.  This is the "lazy" bit of Nix.
 
 After a ``nixos-rebuild switch`` and a relogin, we can see this crap had an
 effect:
