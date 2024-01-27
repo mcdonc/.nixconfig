@@ -117,3 +117,22 @@ function that will pass along everything that was passed into
 function instead, which does the same thing without the magic.
 
 Package?  Module?  Nix file?  Who fucking knows?
+
+You may think that this idiom is somehow special and those latter curly braces
+mean "the stuff that's in here" or something:
+
+    {pkgs, ...}:
+
+    {
+
+       environment.systemPackages = [ curl ];
+
+    }
+
+But nope.  Any Nix file can be treated as a function.  The curly braces around
+the ``environment.systemPackages`` just means the return value is an "attribtue
+set" (aka a dictionary).  NixOS calls your ``configuration.nix`` and it's
+expected to "return" an attribute set.  It needn't be, as we saw in the earlier
+example.
+
+

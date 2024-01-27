@@ -33,8 +33,6 @@ let
 
   mssql-odbc-driver = pkgs.unixODBCDrivers.msodbcsql17;
 
-  myfile = pkgs.callPackage ./myfile.nix {};
-
 in {
   imports = [ ./cachix.nix ];
 
@@ -45,10 +43,6 @@ in {
       ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
            /run/current-system "$systemConfig"
     '';
-  };
-
-  environment.sessionVariables = {
-    MYFILE = myfile;
   };
 
   nix = {
