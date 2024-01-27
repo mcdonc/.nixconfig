@@ -79,7 +79,7 @@ a file named ``myfile.nix`` right next to our ``configuration.nix``:
     in
       myfile
 
-Then within your ``configuration.nix``::
+Then within your ``configuration.nix``:
 
 .. code-block:: nix
 
