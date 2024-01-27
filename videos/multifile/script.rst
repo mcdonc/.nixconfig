@@ -47,7 +47,7 @@ location in an environment variable.
 derivation in the Nix store (``writeTextFile`` is a wrapper around
 ``mkDerivation``) once it's realized.
 
-.. note::
+.. code-block::
 
   In the above example, the thing that causes ``myfile`` to evaluate to anything
   at all is ``MYFILE = myfile;``.  If that stuff weren't there, the file is not
