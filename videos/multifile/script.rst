@@ -68,6 +68,8 @@ a file named ``myfile.nix`` right next to our ``configuration.nix``:
 
     {pkgs, ...}:
 
+    # this is myfile.nix
+
     let
 
       myfile = pkgs.writeTextFile {
