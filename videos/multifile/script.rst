@@ -15,7 +15,7 @@ Overview
 This is independent of flakes or nonflakes.
 
 Unlike many other languages, functions in Nix can be themselves composed as a
-file.  This doesn't mean that the file *contain* a function, it means that the
+file.  This doesn't mean that the file *contains* a function, it means that the
 file *is* a function.
 
 Let's assume we have this stuff in our ``configuration.nix`` or some variant
