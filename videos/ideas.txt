@@ -12,6 +12,8 @@
 
   - nix pills
 
+  - search.nixos.org
+
 - derivations -> higher level build systems (cmake) (havoc)
 
 - explainer between old and new command gods

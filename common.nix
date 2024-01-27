@@ -248,6 +248,7 @@ in {
     libsForQt5.kdeconnect-kde
     libsForQt5.krdc
     libsForQt5.breeze-gtk
+    libsForQt5.konversation
     gnome.gnome-disk-utility
     openvpn
     unzip
