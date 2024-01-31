@@ -382,7 +382,7 @@ in {
     clementine
     minicom
     nvtop-nvidia
-    pkgs-unstable.libsForQt5.kdenlive
+    libsForQt5.kdenlive
     glaxnimate # for kdenlive
     nix-index # for nix-locate
     bitwarden
