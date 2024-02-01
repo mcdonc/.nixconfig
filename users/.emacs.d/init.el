@@ -554,3 +554,6 @@
 
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
+
+(setq nix-nixfmt-bin "nixpkgs-fmt")
+

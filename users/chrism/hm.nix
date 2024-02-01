@@ -77,6 +77,7 @@ let
     replnix = "nix repl '<nixpkgs>'";
     mountzfs = "sudo zfs load-key b/storage; sudo zfs mount b/storage";
     restartemacs = "systemctl --user restart emacs";
+    kbrestart = "systemctl --user restart keybase";
     open = "kioclient exec";
     edit = "emacsclient -n -c";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
@@ -120,6 +121,7 @@ in {
     xdotool
     fd # fd is an unnamed dependency of fzf
     shell-genie
+    nixpkgs-fmt # unnamed dependency of emacs package
   ];
   home.stateVersion = "22.05";
 
@@ -300,6 +302,7 @@ in {
   programs.emacs.enable = true;
   programs.emacs.extraPackages = epkgs: [
     epkgs.nix-mode
+    epkgs.nixpkgs-fmt
     epkgs.flycheck
     epkgs.json-mode
     epkgs.python-mode
