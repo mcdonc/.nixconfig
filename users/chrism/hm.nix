@@ -381,7 +381,7 @@ in {
 
   # https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
   programs.starship = {
-    enable = true;
+    enable = false;
     settings = {
       add_newline = false;
       command_timeout = 5000;
