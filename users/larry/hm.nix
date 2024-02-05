@@ -3,6 +3,8 @@
 {
   imports = [ ../hm-shared.nix ];
 
+  home.stateVersion = "22.05";
+
   programs.git = {
     enable = true;
     userName = "Larry";
