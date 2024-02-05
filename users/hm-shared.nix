@@ -2,11 +2,11 @@
 
 let
 
-  update-nixos = pkgs.writeShellScript "update-nixos" ''
+  nixos-update = pkgs.writeShellScript "nixos-update" ''
     cd /etc/nixos
     git pull
     nix flake update
-    nixos-rebuild switch --verbose
+    sudo nixos-rebuild switch --verbose
   '';
 
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
@@ -120,7 +120,7 @@ let
     diff = "${pkgs.colordiff}/bin/colordiff";
     python3 = "python3.11";
     python = "python3.11";
-    update-nixos = "${update-nixos}/update-nixos";
+    nixos-update = "${nixos-update}";
   };
 
 in
