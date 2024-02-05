@@ -1,8 +1,13 @@
-{ config, pkgs, nixpkgs, pkgs-r2211, ...}:
+{ config, lib, pkgs, nixpkgs, pkgs-r2211, ... }:
 
- {
+{
+  # turn off nvidia
+  services.xserver.videoDrivers = lib.mkForce [];
+  #nixpkgs.config.allowUnfree = true;
+  #nixpkgs.config.nvidia.acceptLicense = true;
+  #boot.kernelPackages = pkgs.linuxPackages_6_0; # fixes nvidia vs 6.1
 
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
   #hardware.nvidia.powerManagement.enable = true;
 
   # 6/7/2023 under 23.05: beta reports as 530.41.03, stable as 530.41.03, 
@@ -42,6 +47,6 @@
 #           "https://us.download.nvidia.com/XFree86/Linux-x86_64/NVIDIA-Linux-x86_64-${version}.run";
 #         sha256 = "sha256:0iiw25ngfhd3nrlr0lc59wihcfb9ip8q9jj17p26wxnnpq04nrsi";
 #       };
-     
+
 #     });
 # }
