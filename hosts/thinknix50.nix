@@ -6,7 +6,7 @@
     ./profiles/pseries.nix
     ./profiles/encryptedzfs.nix
     ./profiles/tlp.nix
-    ./profiles/macosx-ventura.nix
+    ./profiles/macos-ventura.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
