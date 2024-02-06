@@ -12,9 +12,11 @@
       "docker"
       "nixconfig"
       "dialout"
-      "libvirtd"
       "wireshark"
       "vboxusers"
+      "libvirtd"
+      "kvm"
+      "input"
     ];
     openssh = {
       authorizedKeys.keys = [
