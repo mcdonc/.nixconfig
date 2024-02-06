@@ -95,6 +95,8 @@
       larry-modules = [
         ./users/larry/user.nix
         home-manager.nixosModules.home-manager
+        nixtheplanet.nixosModules.macos-ventura
+        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;
@@ -108,6 +110,8 @@
         ./users/larry/user.nix
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
+        nixtheplanet.nixosModules.macos-ventura
+        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;
