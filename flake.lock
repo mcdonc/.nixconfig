@@ -417,15 +417,16 @@
         "osx-kvm": "osx-kvm"
       },
       "locked": {
-        "lastModified": 1704976837,
-        "narHash": "sha256-JRi/pI0MqysVh04yjylTwUn2nUUtYOlOSOqJcqFP1c8=",
-        "owner": "matthewcroughan",
+        "lastModified": 1707259737,
+        "narHash": "sha256-wHyDqb4qd0XpNO+nF7LbWX5Rt2/RMObJ1iuBUb1+eYY=",
+        "owner": "mcdonc",
         "repo": "NixThePlanet",
-        "rev": "c701c536210ed4afb0ae1da8e7a305f8366ae71d",
+        "rev": "c0be89b34ca7eca87225f69f1337e71c521a6086",
         "type": "github"
       },
       "original": {
-        "owner": "matthewcroughan",
+        "owner": "mcdonc",
+        "ref": "fix-ventura-download-url",
         "repo": "NixThePlanet",
         "type": "github"
       }

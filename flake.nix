@@ -16,8 +16,8 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    nixtheplanet.url = "github:mcdonc/NixThePlanet/fix-ventura-download-url";
     #kde2nix.url = "github:nix-community/kde2nix";
-    nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # plasma-manager.url =
     #  "github:mcdonc/plasma-manager/enable-look-and-feel-settings";
