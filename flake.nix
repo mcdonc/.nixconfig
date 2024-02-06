@@ -26,9 +26,21 @@
     # agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, nix, nixos-hardware, home-manager, nixpkgs-r2211
-    , nixpkgs-unstable, nixpkgs-py36, nixpkgs-py37, nixpkgs-keybase-bumpversion
-    , nix-gaming, nixtheplanet, nur }@inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nix
+    , nixos-hardware
+    , home-manager
+    , nixpkgs-r2211
+    , nixpkgs-unstable
+    , nixpkgs-py36
+    , nixpkgs-py37
+    , nixpkgs-keybase-bumpversion
+    , nix-gaming
+    , nixtheplanet
+    , nur
+    }@inputs:
     let
       overlays = (self: super: {
         steam = super.steam.override {
@@ -59,10 +71,10 @@
           inherit system;
           config.allowUnfree = true;
         };
-        # pkgs-bgremoval = import nixpkgs-bgremoval {
-        #   inherit system;
-        #   config.allowUnfree = true;
-        # };
+        bigger-darwin = nixtheplanet.legacyPackages.x86_64-linux.makeDarwinImage {
+          diskSizeBytes = 100000000000;
+        };
+
         inherit nixos-hardware nix-gaming system inputs;
       };
 
@@ -106,7 +118,8 @@
         }
         ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
       ];
-    in {
+    in
+    {
       nixosConfigurations = {
         thinknix512 = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
