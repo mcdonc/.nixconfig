@@ -15,6 +15,10 @@ in
     ./profiles/steam.nix
     ./profiles/nixindex.nix
     ../common.nix
+    (
+      import ./profiles/macos-ventura.nix (
+        args // {mem="8G"; cores=4;}
+      )
   ];
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6440";
