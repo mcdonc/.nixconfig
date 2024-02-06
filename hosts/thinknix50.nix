@@ -6,7 +6,6 @@
     ./profiles/pseries.nix
     ./profiles/encryptedzfs.nix
     ./profiles/tlp.nix
-    ./profiles/oldnvidia.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
