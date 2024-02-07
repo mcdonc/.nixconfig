@@ -3,8 +3,8 @@
   services.macos-ventura = {
     enable = enable;
     package = bigger-darwin;
-    openFirewall = true;
-    vncListenAddr = "0.0.0.0";
+    #openFirewall = true;
+    #vncListenAddr = "0.0.0.0";
     cores = cores;
     mem = mem;
   };
