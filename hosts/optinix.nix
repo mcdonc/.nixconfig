@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixos-hardware, options, ... }:
+args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
@@ -19,6 +19,7 @@ in
       import ./profiles/macos-ventura.nix (
         args // {mem="8G"; cores=4;}
       )
+    )
   ];
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6440";
