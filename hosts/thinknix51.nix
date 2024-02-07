@@ -7,13 +7,12 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./profiles/pseries.nix
     ./profiles/encryptedzfs.nix
     ./profiles/tlp.nix
-    ./profiles/macos-ventura.nix
     ../common.nix
-    # (
-    #   import ./profiles/macos-ventura.nix (
-    #     args // {mem="12G"; cores=4; enable=true;}
-    #   )
-    # )
+    (
+      import ./profiles/macos-ventura.nix (
+        args // {mem="12G"; cores=4; enable=true;}
+      )
+    )
   ];
   system.stateVersion = "22.05";
 
