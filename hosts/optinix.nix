@@ -17,12 +17,12 @@ in
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
-        args // {mem="8G"; cores=4;}
+        args // {mem="8G"; cores=4; enable=true;}
       )
     )
   ];
   system.stateVersion = "23.11";
-  networking.hostId = "0a2c6440";
+  networking.hostId = "0a2c6441";
   networking.hostName = "optinix";
 
   powerManagement.cpuFreqGovernor = "performance";
@@ -49,7 +49,7 @@ in
     fsType = "zfs";
   };
 
-  swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
+  #swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
 
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
 
@@ -58,9 +58,9 @@ in
     interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
     commonArgs = [ "--debug" ];
     commands = {
-      "optinix-home2" = {
+      "optinix-home" = {
         source = "NIXROOT/home";
-        target = "b/optinix-home2";
+        target = "b/optinix-home";
         sendOptions = "w c";
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
@@ -94,7 +94,7 @@ in
         yearly = 0;
       };
       # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
-      "b/optinix-home2" = {
+      "b/optinix-home" = {
         autoprune = true;
         autosnap = false;
         hourly = 4;
