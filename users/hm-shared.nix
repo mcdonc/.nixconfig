@@ -121,6 +121,7 @@ let
     python3 = "python3.11";
     python = "python3.11";
     nixos-update = "${nixos-update}";
+    disable-kvm = "sudo modprobe -r kvm-intel";
   };
 
 in
