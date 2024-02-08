@@ -17,7 +17,7 @@ in
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
-        args // {mem="8G"; cores=4; enable=true;}
+        args // {mem="8G"; cores=4; enable=false;}
       )
     )
   ];
