@@ -11,12 +11,11 @@
     nixpkgs-keybase-bumpversion.url =
       "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nur.url = "github:nix-community/NUR";
 
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nixpkgs-r2211.url = "github:NixOS/nixpkgs/nixos-22.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    nixtheplanet.url = "github:mcdonc/NixThePlanet/fix-ventura-download-url";
+    nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     #kde2nix.url = "github:nix-community/kde2nix";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # plasma-manager.url =
@@ -24,6 +23,7 @@
     # plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     # plasma-manager.inputs.home-manager.follows = "home-manager";
     # agenix.url = "github:ryantm/agenix";
+    # nur.url = "github:nix-community/NUR";
   };
 
   outputs =
@@ -39,7 +39,6 @@
     , nixpkgs-keybase-bumpversion
     , nix-gaming
     , nixtheplanet
-    , nur
     }@inputs:
     let
       overlays = (self: super: {
@@ -90,7 +89,6 @@
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
-        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;
@@ -98,13 +96,12 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
       larry-modules = [
         ./users/larry/user.nix
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
-        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;
@@ -112,14 +109,13 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
       larry-and-chris-modules = [
         ./users/larry/user.nix
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
-        nur.nixosModules.nur
         {
           home-manager = {
             useUserPackages = true;
@@ -128,7 +124,7 @@
             extraSpecialArgs = specialArgs;
           };
         }
-        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays nur.overlay ]; })
+        ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlays ]; })
       ];
     in
     {

@@ -135,11 +135,11 @@
         "nixpkgs-regression": "nixpkgs-regression"
       },
       "locked": {
-        "lastModified": 1707407639,
-        "narHash": "sha256-ByRHJjkJlSE5E4H0mwLhCLvQaKAkES9F8Zv38twgcZc=",
+        "lastModified": 1707418825,
+        "narHash": "sha256-94OgWBhmCw/5vsbbj2ZMJUvThiybI+HQolSXjAbya3I=",
         "owner": "NixOS",
         "repo": "nix",
-        "rev": "6563a5829410fea82034740d73a34f8b73b465d3",
+        "rev": "1ba9780cf5a99eb610775ab3c938141e65682196",
         "type": "github"
       },
       "original": {
@@ -315,11 +315,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1707092692,
-        "narHash": "sha256-ZbHsm+mGk/izkWtT4xwwqz38fdlwu7nUUKXTOmm4SyE=",
+        "lastModified": 1707268954,
+        "narHash": "sha256-2en1kvde3cJVc3ZnTy8QeD2oKcseLFjYPLKhIGDanQ0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "faf912b086576fd1a15fca610166c98d47bc667e",
+        "rev": "f8e2ebd66d097614d51a56a755450d4ae1632df1",
         "type": "github"
       },
       "original": {
@@ -363,11 +363,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1707238373,
-        "narHash": "sha256-WKxT0yLzWbFZwYi92lI0yWJpYtRaFSWHGX8QXzejapw=",
+        "lastModified": 1707347730,
+        "narHash": "sha256-0etC/exQIaqC9vliKhc3eZE2Mm2wgLa0tj93ZF/egvM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fb0c047e30b69696acc42e669d02452ca1b55755",
+        "rev": "6832d0d99649db3d65a0e15fa51471537b2c56a6",
         "type": "github"
       },
       "original": {
@@ -417,32 +417,16 @@
         "osx-kvm": "osx-kvm"
       },
       "locked": {
-        "lastModified": 1707259737,
+        "lastModified": 1707322286,
         "narHash": "sha256-wHyDqb4qd0XpNO+nF7LbWX5Rt2/RMObJ1iuBUb1+eYY=",
-        "owner": "mcdonc",
+        "owner": "matthewcroughan",
         "repo": "NixThePlanet",
-        "rev": "c0be89b34ca7eca87225f69f1337e71c521a6086",
+        "rev": "95a80036bf2e10c4507eeab4bc425d168898090e",
         "type": "github"
       },
       "original": {
-        "owner": "mcdonc",
-        "ref": "fix-ventura-download-url",
+        "owner": "matthewcroughan",
         "repo": "NixThePlanet",
-        "type": "github"
-      }
-    },
-    "nur": {
-      "locked": {
-        "lastModified": 1707417882,
-        "narHash": "sha256-p4i+PwyX1W5jZVhrbJgClkcbs+nD5bW/JOxfMUICc28=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "445e7ee7627e87a51fd1ba42f0407db8b2268d53",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
         "type": "github"
       }
     },
@@ -474,8 +458,7 @@
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-r2211": "nixpkgs-r2211",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nixtheplanet": "nixtheplanet",
-        "nur": "nur"
+        "nixtheplanet": "nixtheplanet"
       }
     }
   },

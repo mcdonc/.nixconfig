@@ -14,10 +14,12 @@ let
     exec "$@"
   '';
 
+  start-virsh = pkgs.writeShellScriptBin "start-virsh" ''
     sudo virsh net-list --all
     sudo virsh net-autostart default
     sudo virsh net-start default
   '';
+  
   nixos-repl = pkgs.writeScriptBin "nixos-repl" ''
     #!/usr/bin/env ${pkgs.expect}/bin/expect
     set timeout 120
