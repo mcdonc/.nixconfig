@@ -270,6 +270,7 @@ in {
     baobab
     signal-desktop
     python27
+    pkgs-unstable.vscode-fhs
     pkgs-py36.python36
     pkgs-py37.python37
     #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
@@ -280,6 +281,8 @@ in {
         python311Packages.pyserial # for pico-w-go in vscode
         python311Packages.pyflakes # for emacs
         python311Packages.flake8 # for vscode
+        python311Packages.docutils # for vscode
+        python311Packages.pygments # for vscode
         python311Packages.black # for cmdline and vscode
         python311Packages.tox # for... tox
       ]))
