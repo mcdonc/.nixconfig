@@ -1,9 +1,33 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
+
+let
+  code-client = pkgs.writeShellScript "code-client" ''
+    ${pkgs.procps}/bin/pgrep -x "code" > /dev/null
+    if [ $? -eq 1 ];
+    then
+        ${pkgs-unstable.vscode-fhs}/bin/code $HOME/vscoderoot/vscoderoot.code-workspace
+    fi
+    exec ${pkgs-unstable.vscode-fhs}/bin/code -r $@
+  '';
+
+  shellAliases = {
+    #edit = "emacsclient -n -c"
+    edit = lib.mkForce "${code-client}";
+  };
+in
 
 {
   imports = [ ../hm-shared.nix ];
 
   home.stateVersion = "22.05";
+
+  programs.zsh = {
+    shellAliases = shellAliases;
+  };
+
+  programs.bash = {
+    shellAliases = shellAliases;
+  };
 
   programs.git = {
     enable = true;
@@ -16,7 +40,7 @@
       difftool.prompt = "false";
       merge.tool = "meld";
       mergetool.meld.path = "${pkgs.meld}/bin/meld";
-      safe.directory = ["/etc/nixos"];
+      safe.directory = [ "/etc/nixos" ];
     };
   };
 

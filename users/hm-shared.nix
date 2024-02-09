@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, pkgs-unstable, ...}:
 
 let
 
@@ -106,8 +106,7 @@ let
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
     open = "kioclient exec";
-    #edit = "emacsclient -n -c";
-    edit = "${pkgs.vscode-fhs}/bin/code";
+    edit = "${pkgs-unstable.vscode-fhs}/bin/code -r";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
     ls = "ls --color=auto";
     greyterm = "${gterm-change-profile} 1";

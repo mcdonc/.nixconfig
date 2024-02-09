@@ -326,7 +326,6 @@ in {
     cutecom
     rshell
     mplayer
-    pkgs-unstable.vscode.fhs
     gnome.cheese
     sqlite
     tldr
@@ -412,6 +411,7 @@ in {
     jq
     gnome.gucharmap
     loccount
+    screenkey
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
