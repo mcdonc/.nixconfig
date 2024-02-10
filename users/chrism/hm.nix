@@ -2,7 +2,7 @@
 
 let
   homedir = "/home/chrism";
-  root-code-workspace = "${homedir}/.root-code-workspace";
+  root-code-workspace = "${homedir}/.root.code-workspace";
   code-client = pkgs.writeShellScript "code-client" ''
     ${pkgs.procps}/bin/pgrep -x "code" > /dev/null
     if [ $? -eq 1 ];
