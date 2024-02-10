@@ -1,11 +1,13 @@
 { pkgs, pkgs-unstable, lib, ... }:
 
 let
+  homedir = "/home/chrism";
+  root-code-workspace = "${homedir}/.root-code-workspace";
   code-client = pkgs.writeShellScript "code-client" ''
     ${pkgs.procps}/bin/pgrep -x "code" > /dev/null
     if [ $? -eq 1 ];
     then
-        ${pkgs-unstable.vscode-fhs}/bin/code $HOME/vscoderoot/vscoderoot.code-workspace
+        ${pkgs-unstable.vscode-fhs}/bin/code ${root-code-workspace}
     fi
     exec ${pkgs-unstable.vscode-fhs}/bin/code -r $@
   '';
@@ -28,6 +30,16 @@ in
   programs.bash = {
     shellAliases = shellAliases;
   };
+
+  home.file.".root.code-workspace" = {
+    source = ./root.code-workspace;
+  };
+
+  home.file.".root.code-workspace".force = true;
+
+  xdg.configFile."autostart/keybase_autostart.desktop".text = ''
+    [Desktop Entry]
+  '';
 
   programs.git = {
     enable = true;

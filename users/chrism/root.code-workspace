@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../etc/nixos"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "./projects"
+		},
+	],
+	"settings": {}
+}
