@@ -1,0 +1,36 @@
+- Changed my /etc/nixos/flake.nix's ``nixpkgs.url`` to
+  ``github:NixOS/nixpkgs/nixos-23.11`` and ``home-manager.url`` to
+  ``github:nix-community/home-manager/release-23.11``.
+
+- Ran ``nixos-rebuild`` and dealt with issues as they occurred:
+
+  - Added an electron and python version to permittedInsecurePackages
+
+  - Squashed a warning by renaming an NixOS option: changed fonts.fonts to
+    fonts.packages
+
+  - python38 and python39 failed to build with the same sort of Sphinx error so
+    temporarily disabled their builds until I have time to figure the issue out.
+
+- Once nixos-rebuild finished, and I restarted, had these issues:
+
+  - ``emacsclient`` would not open, giving this: ``*ERROR*: Display :0 can’t be
+    opened``.  I have emacs installed via home-manager, and after making
+    this change::
+
+      -  services.emacs.enable = true;
+      +  services.emacs = {
+      +    enable = true;
+      +    startWithUserSession = "graphical";
+      +  };
+
+    It worked.  This changes ``wantedBy=default.target`` to
+    ``wantedBy=graphical-session.target`` in the emacsclient systemd user
+    service file.
+
+    If you install the emacs service via nixpkgs rather than home-manager, a
+    similar option exists to services emacs something like
+    ``services.emacs.startWithGraphical = true'``.
+
+    Something must have changed with the systemd initalization order or the X
+    startup process under 23.11 for this to be necessary.
