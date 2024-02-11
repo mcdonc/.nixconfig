@@ -10,7 +10,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
-        args // { mem = "12G"; cores = 4; enable = true; }
+        args // { mem = "12G"; cores = 4; enable = false; }
       )
     )
   ];

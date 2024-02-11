@@ -260,6 +260,7 @@ in
     libsForQt5.krdc
     libsForQt5.breeze-gtk
     libsForQt5.konversation
+    libsForQt5.kmag
     gnome.gnome-disk-utility
     openvpn
     unzip
