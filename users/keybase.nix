@@ -29,15 +29,16 @@
       After = [ "keybase.service" ];
     };
 
-    Service = let mountPoint = ''"%h/keybase"'';
-    in {
-      Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
-      ExecStart = "${pkgs-keybase-bumpversion.kbfs}/bin/kbfsfuse ${mountPoint}";
-      ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
-      Restart = "on-failure";
-      PrivateTmp = true;
-    };
+    Service =
+      let mountPoint = ''"%h/keybase"'';
+      in {
+        Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
+        ExecStart = "${pkgs-keybase-bumpversion.kbfs}/bin/kbfsfuse ${mountPoint}";
+        ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
+        Restart = "on-failure";
+        PrivateTmp = true;
+      };
 
     Install.WantedBy = [ "default.target" ];
   };
@@ -69,5 +70,5 @@
     X-KDE-Username=
   '';
 
-  
+
 }

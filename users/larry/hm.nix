@@ -16,7 +16,7 @@
       difftool.prompt = "false";
       merge.tool = "meld";
       mergetool.meld.path = "${pkgs.meld}/bin/meld";
-      safe.directory = ["/etc/nixos"];
+      safe.directory = [ "/etc/nixos" ];
     };
   };
 
