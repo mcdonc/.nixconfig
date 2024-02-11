@@ -17,7 +17,7 @@ in
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
-        args // {mem="8G"; cores=4; enable=false;}
+        args // { mem = "8G"; cores = 4; enable = false; }
       )
     )
   ];
@@ -113,7 +113,7 @@ in
     mbuffer
     lzop
     zstd
-#    monitor-sanoid-health
+    #    monitor-sanoid-health
   ];
 
 }
