@@ -1,5 +1,13 @@
-{ config, pkgs, system, pkgs-r2211, pkgs-py36, pkgs-py37, pkgs-unstable
-, nurpkgs, ... }:
+{ config
+, pkgs
+, system
+, pkgs-r2211
+, pkgs-py36
+, pkgs-py37
+, pkgs-unstable
+, nurpkgs
+, ...
+}:
 
 let
   # prefer over using hardware.nvidia.prime.offload.enableOffloadCmd = true;
@@ -19,7 +27,7 @@ let
     sudo virsh net-autostart default
     sudo virsh net-start default
   '';
-  
+
   nixos-repl = pkgs.writeScriptBin "nixos-repl" ''
     #!/usr/bin/env ${pkgs.expect}/bin/expect
     set timeout 120
@@ -33,7 +41,8 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
-in {
+in
+{
 
   imports = [ ./cachix.nix ];
 
