@@ -1,4 +1,4 @@
-{ bigger-darwin, cores ? 4, mem ? "12G", enable ? true, ...}:
+{ bigger-darwin, cores ? 4, mem ? "12G", enable ? true, ... }:
 {
   services.macos-ventura = {
     enable = enable;

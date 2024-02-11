@@ -15,17 +15,20 @@
   services.zfs.trim.enable = true;
 
   fileSystems."/" =
-    { device = "NIXROOT/root";
+    {
+      device = "NIXROOT/root";
       fsType = "zfs";
     };
 
   fileSystems."/home" =
-    { device = "NIXROOT/home";
+    {
+      device = "NIXROOT/home";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-label/NIXBOOT";
+    {
+      device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
 

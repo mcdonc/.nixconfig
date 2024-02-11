@@ -22,7 +22,8 @@ let
 
   homedir = "/var/lib/backup";
 
-in {
+in
+{
   # https://github.com/nix-community/home-manager/issues/4433
   home-manager.users.backup = { config, ... }: {
     home.stateVersion = "23.11";

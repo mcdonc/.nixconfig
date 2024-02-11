@@ -2,7 +2,7 @@
 
 {
   # turn off nvidia
-  services.xserver.videoDrivers = lib.mkForce [];
+  services.xserver.videoDrivers = lib.mkForce [ ];
   #nixpkgs.config.allowUnfree = true;
   #nixpkgs.config.nvidia.acceptLicense = true;
   #boot.kernelPackages = pkgs.linuxPackages_6_0; # fixes nvidia vs 6.1

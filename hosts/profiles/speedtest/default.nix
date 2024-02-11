@@ -13,7 +13,8 @@ let
     installPhase = "install -Dm755 ${./fasthtml.py} $out/bin/fasthtml";
   };
 
-in {
+in
+{
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
     path = with pkgs; [ fastlog fasthtml fast-cli python311 ];

@@ -1,6 +1,6 @@
 { config, pkgs, lib, options, ... }:
 
-  # alternate encrypted dns... https://mdleom.com/blog/2020/03/04/caddy-nixos-part-2/#DNS-over-TLS
+# alternate encrypted dns... https://mdleom.com/blog/2020/03/04/caddy-nixos-part-2/#DNS-over-TLS
 
 {
   services.resolved = {
@@ -12,9 +12,9 @@
     '';
     llmnr = "true";
   };
-  
+
   networking = {
-    nameservers = [ "::1" "127.0.0.1"];
+    nameservers = [ "::1" "127.0.0.1" ];
   };
 
   ## DNS-over-TLS
