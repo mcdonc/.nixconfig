@@ -39,6 +39,12 @@ let
     }
   '';
 
+  thumbnail = pkgs.writeShellScript "thumbnail" ''
+    # writes to ./thumbnail.png
+    # thumbnail eyedrops2.mp4 00:01:07
+    ${pkgs.ffmpeg-full}/bin/ffmpeg -y -i "$1" -ss "$2" -vframes 1 thumbnail.png > /dev/null 2>&1
+  '';
+
   defaultpalette = [
     "#171421"
     "#ED1515"
@@ -121,6 +127,7 @@ let
     python = "python3.11";
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
+    thumbnail = "${thumbnail}";
   };
 
 in
