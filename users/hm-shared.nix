@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, nixgl-olive, ... }:
 
 let
 
@@ -129,6 +129,7 @@ let
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
+    olive-intel = "${nixgl-olive}/bin/nixGLIntel olive-editor";
   };
 
 in
@@ -308,10 +309,22 @@ in
 
   # add Olive for nvidia-offload (as installed per video)
   xdg.desktopEntries = {
-    olive = {
+    olive-nvidia = {
       name = "Olive Video Editor (via nvidia-offload)";
       genericName = "Olive Video Editor";
       exec = "nvidia-offload olive-editor";
+      terminal = false;
+      categories = [ "AudioVideo" "Recorder" ];
+      mimeType = [ "application/vnd.olive-project" ];
+      icon = "org.olivevideoeditor.Olive";
+    };
+  };
+
+  xdg.desktopEntries = {
+    olive-intel = {
+      name = "Olive Video Editor (via nixGLIntel)";
+      genericName = "Olive Video Editor";
+      exec = "${nixgl-olive}/bin/nixGLIntel olive-editor";
       terminal = false;
       categories = [ "AudioVideo" "Recorder" ];
       mimeType = [ "application/vnd.olive-project" ];

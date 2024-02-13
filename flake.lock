@@ -73,6 +73,21 @@
         "type": "indirect"
       }
     },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -166,6 +181,27 @@
         "type": "github"
       }
     },
+    "nixgl-olive": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs-olive"
+        ]
+      },
+      "locked": {
+        "lastModified": 1685908677,
+        "narHash": "sha256-E4zUPEUFyVWjVm45zICaHRpfGepfkE9Z2OECV9HXfA4=",
+        "owner": "guibou",
+        "repo": "nixGL",
+        "rev": "489d6b095ab9d289fe11af0219a9ff00fe87c7c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "guibou",
+        "repo": "nixGL",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1707211557,
@@ -249,6 +285,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-olive": {
+      "locked": {
+        "lastModified": 1677709272,
+        "narHash": "sha256-atB5/SIlOYcV8KExQ+i87cyoM9OhO8n+i/DZtPSjDkk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0aca8f43c8dba4a77aa0c16fb0130237c3da514c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0aca8f43c8dba4a77aa0c16fb0130237c3da514c",
+        "type": "github"
+      }
+    },
     "nixpkgs-py36": {
       "locked": {
         "lastModified": 1634763423,
@@ -294,22 +346,6 @@
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "fe7ab74a86d78ba00d144aa7a8da8c71a200c563",
-        "type": "github"
-      }
-    },
-    "nixpkgs-r2211": {
-      "locked": {
-        "lastModified": 1688392541,
-        "narHash": "sha256-lHrKvEkCPTUO+7tPfjIcb7Trk6k31rz18vkyqmkeJfY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.11",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -467,13 +503,14 @@
         "home-manager": "home-manager",
         "nix": "nix",
         "nix-gaming": "nix-gaming",
+        "nixgl-olive": "nixgl-olive",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-keybase-bumpversion": "nixpkgs-keybase-bumpversion",
+        "nixpkgs-olive": "nixpkgs-olive",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
         "nixpkgs-py39": "nixpkgs-py39",
-        "nixpkgs-r2211": "nixpkgs-r2211",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixtheplanet": "nixtheplanet"
       }

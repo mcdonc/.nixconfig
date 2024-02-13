@@ -1,12 +1,11 @@
 { config
 , pkgs
 , system
-, pkgs-r2211
+, pkgs-olive
 , pkgs-py36
 , pkgs-py37
 , pkgs-py39
 , pkgs-unstable
-, nurpkgs
 , ...
 }:
 
@@ -313,7 +312,7 @@ in
     konversation
     nixfmt
     wakeonlan
-    pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
+    pkgs-olive.olive-editor # use 0.1.2 (see flake.nix)
     gptfdisk # "sgdisk"
     ardour
     qjackctl
