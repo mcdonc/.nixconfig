@@ -281,6 +281,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-py39": {
+      "locked": {
+        "lastModified": 1671840784,
+        "narHash": "sha256-oo4we+9IO1D+QS1mOSNh08l9ABDPWLyqvNC0DD0QtZM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe7ab74a86d78ba00d144aa7a8da8c71a200c563",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe7ab74a86d78ba00d144aa7a8da8c71a200c563",
+        "type": "github"
+      }
+    },
     "nixpkgs-r2211": {
       "locked": {
         "lastModified": 1688392541,
@@ -456,6 +472,7 @@
         "nixpkgs-keybase-bumpversion": "nixpkgs-keybase-bumpversion",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
+        "nixpkgs-py39": "nixpkgs-py39",
         "nixpkgs-r2211": "nixpkgs-r2211",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixtheplanet": "nixtheplanet"

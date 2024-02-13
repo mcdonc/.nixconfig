@@ -4,6 +4,7 @@
 , pkgs-r2211
 , pkgs-py36
 , pkgs-py37
+, pkgs-py39
 , pkgs-unstable
 , nurpkgs
 , ...
@@ -283,8 +284,8 @@ in
     pkgs-unstable.vscode-fhs
     pkgs-py36.python36
     pkgs-py37.python37
-    #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
-    #python39
+    pkgs-py39.python38
+    pkgs-py39.python39
     python310
     (python311.withPackages (p:
       with p; [
@@ -312,7 +313,7 @@ in
     konversation
     nixfmt
     wakeonlan
-    #pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
+    pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
     gptfdisk # "sgdisk"
     ardour
     qjackctl

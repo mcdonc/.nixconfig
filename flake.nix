@@ -8,6 +8,8 @@
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url =
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
+    nixpkgs-py39.url =
+      "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
     nixpkgs-keybase-bumpversion.url =
       "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -36,6 +38,7 @@
     , nixpkgs-unstable
     , nixpkgs-py36
     , nixpkgs-py37
+    , nixpkgs-py39
     , nixpkgs-keybase-bumpversion
     , nix-gaming
     , nixtheplanet
@@ -71,6 +74,10 @@
           config.allowUnfree = true;
         };
         pkgs-py37 = import nixpkgs-py37 {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-py39 = import nixpkgs-py39 {
           inherit system;
           config.allowUnfree = true;
         };
