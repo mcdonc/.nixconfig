@@ -393,7 +393,7 @@ in
     element-desktop
     speech-denoiser
     rnnoise-plugin
-    clementine
+    pkgs-unstable.rhythmbox
     minicom
     nvtop-nvidia
     libsForQt5.kdenlive
