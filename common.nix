@@ -44,7 +44,7 @@ let
 in
 {
 
-  imports = [ ./cachix.nix ];
+  imports = [ ./pkgs/cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
