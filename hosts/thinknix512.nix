@@ -1,10 +1,5 @@
 { config, pkgs, lib, nixos-hardware, options, ... }:
 
-let
-  monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
-    ${config.systemd.services.sanoid.serviceConfig.ExecStart} --monitor-health
-  '';
-in
 {
   imports = [
     "${nixos-hardware}/lenovo/thinkpad/p51"
