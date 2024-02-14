@@ -14,6 +14,8 @@
 
   - search.nixos.org
 
+  - https://zaynetro.com/explainix
+
 - derivations -> higher level build systems (cmake) (havoc)
 
 - explainer between old and new command gods
