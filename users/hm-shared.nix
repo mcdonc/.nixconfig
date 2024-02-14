@@ -9,6 +9,10 @@ let
     sudo nixos-rebuild switch --verbose
   '';
 
+  nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
+    ${pkgs-unstable.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+  '';
+
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
@@ -144,6 +148,7 @@ in
     fd # fd is an unnamed dependency of fzf
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
+    nixfmt80
   ];
 
   programs.gnome-terminal = {

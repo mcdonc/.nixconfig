@@ -310,7 +310,7 @@ in
     nmap
     zoom-us
     konversation
-    nixfmt
+    pkgs-unstable.nixfmt-rfc-style
     wakeonlan
     pkgs-olive.olive-editor # use 0.1.2 (see flake.nix)
     gptfdisk # "sgdisk"
