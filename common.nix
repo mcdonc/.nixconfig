@@ -427,6 +427,8 @@ in
     screenkey
     gsmartcontrol
     smartmontools
+    dtc # milkv
+    zstd
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
