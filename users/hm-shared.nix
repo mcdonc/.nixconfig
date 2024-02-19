@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, nixgl-olive, ... }:
 
 let
 
@@ -9,10 +9,14 @@ let
     sudo nixos-rebuild switch --verbose
   '';
 
+  nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
+    ${pkgs-unstable.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+  '';
+
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
 
-  ssh-chcolor = pkgs.writeShellScriptBin "ssh-chcolor" ''
-    source ${gterm-color-funcs}/bin/gterm-color-funcs
+  ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
+    source ${gterm-color-funcs}
     chcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
@@ -23,7 +27,7 @@ let
     chcolor 1
   '';
 
-  gterm-color-funcs = pkgs.writeShellScriptBin "gterm-color-funcs" ''
+  gterm-color-funcs = pkgs.writeShellScript "gterm-color-funcs" ''
     function chcolor() {
       # emulates right-clicking and selecting a numbered gnome-terminal
       # profile. hide output if it fails.  --clearmodifiers ignores any
@@ -121,7 +125,7 @@ let
     blackterm = "${gterm-change-profile} 3";
     purpleterm = "${gterm-change-profile} 4";
     yellowterm = "${gterm-change-profile} 5";
-    ssh = "${ssh-chcolor}/bin/ssh-chcolor";
+    ssh = "${ssh-chcolor}";
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
     python3 = "python3.11";
@@ -129,6 +133,7 @@ let
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
+    olive-intel = "${nixgl-olive}/bin/nixGLIntel olive-editor";
   };
 
 in
@@ -143,6 +148,7 @@ in
     fd # fd is an unnamed dependency of fzf
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
+    nixfmt80
   ];
 
   programs.gnome-terminal = {
@@ -308,10 +314,22 @@ in
 
   # add Olive for nvidia-offload (as installed per video)
   xdg.desktopEntries = {
-    olive = {
+    olive-nvidia = {
       name = "Olive Video Editor (via nvidia-offload)";
       genericName = "Olive Video Editor";
       exec = "nvidia-offload olive-editor";
+      terminal = false;
+      categories = [ "AudioVideo" "Recorder" ];
+      mimeType = [ "application/vnd.olive-project" ];
+      icon = "org.olivevideoeditor.Olive";
+    };
+  };
+
+  xdg.desktopEntries = {
+    olive-intel = {
+      name = "Olive Video Editor (via nixGLIntel)";
+      genericName = "Olive Video Editor";
+      exec = "${nixgl-olive}/bin/nixGLIntel olive-editor";
       terminal = false;
       categories = [ "AudioVideo" "Recorder" ];
       mimeType = [ "application/vnd.olive-project" ];
@@ -470,7 +488,7 @@ in
 
       function nix-shell () {
          # turn term color blue
-         source ${gterm-color-funcs}/bin/gterm-color-funcs
+         source ${gterm-color-funcs}
          chcolor 2
          ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
          chcolor 1

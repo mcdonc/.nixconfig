@@ -113,7 +113,9 @@ in
     mbuffer
     lzop
     zstd
-    # monitor-sanoid-health
+
+    # health
+    monitor-sanoid-health
   ];
 
 }

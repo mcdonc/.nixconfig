@@ -1,11 +1,11 @@
 { config
 , pkgs
 , system
-, pkgs-r2211
+, pkgs-olive
 , pkgs-py36
 , pkgs-py37
+, pkgs-py39
 , pkgs-unstable
-, nurpkgs
 , ...
 }:
 
@@ -44,7 +44,7 @@ let
 in
 {
 
-  imports = [ ./cachix.nix ];
+  imports = [ ./pkgs/cachix.nix ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
@@ -283,8 +283,8 @@ in
     pkgs-unstable.vscode-fhs
     pkgs-py36.python36
     pkgs-py37.python37
-    #python38 # py38 and 39 fail to build in 23.11 due to sphinx error
-    #python39
+    pkgs-py39.python38
+    pkgs-py39.python39
     python310
     (python311.withPackages (p:
       with p; [
@@ -310,9 +310,9 @@ in
     nmap
     zoom-us
     konversation
-    nixfmt
+    pkgs-unstable.nixfmt-rfc-style
     wakeonlan
-    #pkgs-r2211.olive-editor # use 0.1.2 (see flake.nix)
+    pkgs-olive.olive-editor # use 0.1.2 (see flake.nix)
     gptfdisk # "sgdisk"
     ardour
     qjackctl
@@ -393,7 +393,7 @@ in
     element-desktop
     speech-denoiser
     rnnoise-plugin
-    clementine
+    pkgs-unstable.rhythmbox
     minicom
     nvtop-nvidia
     libsForQt5.kdenlive
@@ -427,6 +427,8 @@ in
     screenkey
     gsmartcontrol
     smartmontools
+    dtc # milkv
+    zstd
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
