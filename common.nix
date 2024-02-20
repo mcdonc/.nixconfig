@@ -146,6 +146,7 @@ in
 
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
+  networking.nftables.enable = true;
 
   time.timeZone = "America/New_York";
 
