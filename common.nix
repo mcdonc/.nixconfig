@@ -81,6 +81,9 @@ in
 
   # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
+  };
 
   # rtl8153 / tp-link ue330 quirk for USB ethernet, see
   # https://askubuntu.com/questions/1081128/usb-3-0-ethernet-adapter-not-working-ubuntu-18-04
