@@ -69,7 +69,8 @@ until now: Pi 3, Pi 3+, Pi 4, and Pi 5.  I haven't tried it on any of those
 other devices, but research indicates that there aren't any required
 configuration differences for basic functionality other than possibly needing to
 mess with ``linuxPackages.<otherlinux-version>`` to get some specific kernel
-features. Let me know if you find otherwise.
+features. Let me know if you try it and find otherwise before I release part 2
+of this series.
 
 The creation of an RPi-compatible ``aarch64`` ISO image took about two and a
 half hours on my system after I issued the command to build it.  There's
