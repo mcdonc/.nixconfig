@@ -40,22 +40,28 @@ NixOS ARM Architecture & Platform Support
 NixOS support from newest to oldest ARM architecture is as follows.
 
 ``aarch64``
+------------
 
-  Pi 3/4/5, Pi Zero 2/2W.  64-bit.  Supported by NixOS well.  The wiki claims
-  that normal cache.nixos.org binary cache has most Nix packages in it but I
-  found this to be false; lots of compiling must be done.
+Pi 3/4/5, Pi Zero 2/2W.  64-bit.  Supported by NixOS well.  The wiki claims that
+normal cache.nixos.org binary cache has most Nix packages in it but I found this
+to be false; lots of compiling must be done.
 
 ``armv7l``
+----------
 
-  Pi 2.  32-bit.  Supported pretty well by nixos-23.11 but nixpkgs-unstable
-  already has some incompatibilities that cause compilation to fail.
-  cache.nixos.org cdoesn't have any v7 packages in it, so you'll be compiling
-  everything.
+Pi 2.  32-bit.  Supported pretty well by nixos-23.11 but nixpkgs-unstable
+already has some incompatibilities that cause compilation to fail.
+cache.nixos.org cdoesn't have any v7 packages in it, so you'll be compiling
+everything.
 
 ``armv6l``
+---------
 
-  Pi 1, Pi Zero.  32 bit. Not supported anymore under NixOS as a compilation
-  target, at least not in the same way as newer Raspberry Pi architectures are.
+Pi 1, Pi Zero.  32 bit. Not supported anymore under NixOS as a compilation
+target, at least not in the same way as newer Raspberry Pi architectures are.
+
+The Test System
+===============
 
 I'm going to use a Raspberry Pi Zero 2 W as my target, but the image I build
 should be compatible with any ``aarch64`` Raspberry Pi that's been released up
@@ -68,7 +74,7 @@ features. Let me know if you find otherwise.
 The creation of an RPi-compatible ``arch64`` ISO image took about two and a half
 hours on my system after I issued the command to build it.  There's probably
 some set of third-party caches I could use to reduce the time. I didn't try very
-hard to look for them, but I did use `Cachix <https://cachix.org>` to cache the
+hard to look for them, but I did use `Cachix <https://cachix.org>`_ to cache the
 results of my builds, so I won't need to recompile next time I want to build an
 image.
 
