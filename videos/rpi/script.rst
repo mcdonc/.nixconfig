@@ -43,15 +43,15 @@ NixOS support from newest to oldest ARM architecture is as follows.
 ------------
 
 Pi 3/4/5, Pi Zero 2/2W.  64-bit.  Supported by NixOS well.  The wiki claims that
-normal cache.nixos.org binary cache has most Nix packages in it but I found this
-to be false; lots of compiling must be done.
+normal ``cache.nixos.org`` binary cache has most Nix packages in it but I found
+this to be false; lots of compiling must be done.
 
 ``armv7l``
 ----------
 
 Pi 2.  32-bit.  Supported pretty well by nixos-23.11 but nixpkgs-unstable
 already has some incompatibilities that cause compilation to fail.
-cache.nixos.org cdoesn't have any v7 packages in it, so you'll be compiling
+``cache.nixos.org`` cdoesn't have any v7 packages in it, so you'll be compiling
 everything.
 
 ``armv6l``
