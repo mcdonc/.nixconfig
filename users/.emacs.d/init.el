@@ -3,7 +3,7 @@
 ;; (setq default-frame-alist '((width . 80)
 ;;                             (height . 34)
 ;;                             (font-backend . "xft")
-;;                             (font . "Ubuntu Mono-22")))
+;;                             (font . "Ubuntu Nerd Font Mono-22")))
 
 ;;(set-face-attribute 'default nil :height 150)
 
@@ -14,23 +14,10 @@
                             (font-backend . "xft")
                             (font . "UbuntuMono Nerd Font Mono-18")))
 
-
+(setq initial-frame-alist default-frame-alist)
 
 ;; dont show the GNU splash screen
 (setq inhibit-startup-message t)
-
-;; (setq default-frame-alist '((width . 80)
-;;                             (height . 40)
-;;                             (font-backend . "xft")
-;;                             (font . "Monaco-11")))
-
-;; (set-default-font "Monaco-11")
-
-
-
-(setq initial-frame-alist default-frame-alist)
-
-;; (set-default-font "Ubuntu Mono-14")
 
 (set-frame-font "Ubuntu Mono-14" nil t)
 
@@ -67,9 +54,6 @@
 (require 'uniquify)
 (require 'nxml-mode)
 (require 'saveplace)
-;;(require 'multiple-cursors)
-;; (require 'redo+)
-;;(require 'flymake-cursor)
 (require 'auto-complete)
 (require 'auto-complete-config)
 (require 'ido)
@@ -145,6 +129,10 @@
 
 (require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
+
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
+
 
 ;; (setq mweb-default-major-mode 'html-mode)
 ;; (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
@@ -288,18 +276,8 @@
  '(ansi-color-names-vector
    ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(haskell-check-command "hlint")
- '(package-selected-packages
-   '(flycheck flymake yasnippet whitespace-cleanup-mode web-mode smart-tabs-mode redo+ rainbow-mode python-mode multiple-cursors multi-web-mode markdown-mode magit lua-mode less-css-mode json-mode go-mode fuzzy flymake-cursor fill-column-indicator expand-region auto-complete))
  '(paren-mode 'blink-paren nil (paren))
  '(safe-local-variable-values '((encoding . utf-8) (encoding . utf8))))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-constant-face ((t (:foreground "purple"))))
- '(font-lock-string-face ((t (:foreground "RosyBrown3")))))
 
 ;; Get dired to consider .pyc and .pyo files to be uninteresting
 (add-hook 'dired-load-hook
@@ -377,13 +355,6 @@
     (if (looking-at "\C-z")
         (delete-char 1))))
 
-;; used by ctrl-D
-
-(defun mark-next-like-this-and-scroll (arg)
-  (ignore-errors (mc/mark-next-like-this arg))
-  (mc/cycle-forward)
-)
-
 ; work like vi "J" (instead of the inverse of joining the current line to the
 ; previous, join the next line to the current)
 (defun join-next-line ()
@@ -439,8 +410,6 @@
 ; Integrate X clipboard and emacs copy/yank; see
 ; http://www.emacswiki.org/emacs/CopyAndPaste#toc2
 
-;; use pseudo-sublime-like ctrl-d for multiple cursor mode
-
 ; dick around with macros
 
 ;; Custom margin keys (useful for Python indentation)
@@ -448,11 +417,6 @@
 ;; bind ctrl-J to join next line (e.g. vi "J")
 
 (define-key my-keys-minor-mode-map (kbd "C-z") 'undo)
-(define-key my-keys-minor-mode-map (kbd "C-x z") 'redo)
-;(define-key my-keys-minor-mode-map (kbd "C-;") 'mc/edit-lines)
-;(define-key my-keys-minor-mode-map (kbd "C-.") 'mc/mark-next-like-this)
-;(define-key my-keys-minor-mode-map (kbd "C-,") 'mc/mark-previous-like-this)
-;(define-key my-keys-minor-mode-map (kbd "C-c C-d") 'mc/mark-all-like-this)
 (define-key my-keys-minor-mode-map [delete] 'delete-char)
 (define-key my-keys-minor-mode-map [kp-delete] 'delete-char)
 (define-key my-keys-minor-mode-map (kbd "M-g") 'goto-line)
@@ -487,10 +451,6 @@
 ;; (global-set-key "\M-t" 'pdb-set)
 ;; (global-set-key "\^q" 'query-replace)
 ;; (global-set-key "\C-o"  'call-last-kbd-macro)
-;; (global-set-key (kbd "C-;") 'mc/edit-lines)
-;; (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
-;; (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
-;; (global-set-key (kbd "C-c C-d") 'mc/mark-all-like-this)
 ;(define-key global-map "\C-h" 'backward-delete-char)
 ; rebind help key (was "C-h")
 ;(global-unset-key "\M-?")
@@ -517,6 +477,14 @@
     (abort-recursive-edit)))
 
 (add-hook 'mouse-leave-buffer-hook 'stop-using-minibuffer)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-constant-face ((t (:foreground "purple"))))
+ '(font-lock-string-face ((t (:foreground "RosyBrown3")))))
 
 (set-face-attribute 'web-mode-html-attr-name-face nil :foreground "sienna")
 (set-face-attribute 'web-mode-html-attr-value-face nil :foreground "RosyBrown3")
@@ -556,3 +524,21 @@
           (lambda () (setq indent-tabs-mode t)))
 
 (setq nix-nixfmt-bin "nixpkgs-fmt")
+
+;; flycheck-pos-tip font face, see
+
+;; https://www.reddit.com/r/emacs/comments/11f05kr/question_on_configuring_flycheckpostip/?rdt=43425
+
+;; https://github.com/flycheck/flycheck-pos-tip/issues/20
+
+(setq x-gtk-use-system-tooltips nil)
+
+;; (use-package faces
+;;              :ensure nil
+;;              :config
+;;              (set-face-attribute 'default
+;; 			         nil
+;; 			         :family "Ubuntu Nerd Font Mono"
+;; 			         :weight 'semi-light
+;; 			         :width 'semi-condensed
+;; 			         :height 130))

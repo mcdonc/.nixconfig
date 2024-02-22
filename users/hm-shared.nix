@@ -349,6 +349,7 @@ in
     epkgs.smart-tabs-mode
     epkgs.whitespace-cleanup-mode
     epkgs.flycheck-pyflakes
+    epkgs.flycheck-pos-tip
     epkgs.nord-theme
     epkgs.nordless-theme
     epkgs.vscode-dark-plus-theme
