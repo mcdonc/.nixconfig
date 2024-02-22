@@ -34,7 +34,7 @@
 
 (set-frame-font "Ubuntu Mono-14" nil t)
 
-;; (add-to-list 'load-path "/home/chrism/projects/python-mode/") 
+;; (add-to-list 'load-path "/home/chrism/projects/python-mode/")
 ;; (setq py-install-directory "/home/chrism/projects/python-mode/")
 ;; (require 'python-mode)
 
@@ -57,8 +57,8 @@
 
 (package-initialize)
 
-;;(add-to-list 'load-path "/home/chrism/projects/web-mode/") 
-;(add-to-list 'load-path "/home/chrism/projects/ws-butler/") 
+;;(add-to-list 'load-path "/home/chrism/projects/web-mode/")
+;(add-to-list 'load-path "/home/chrism/projects/ws-butler/")
 
 ;;(load "~/.emacs.d/manual/haskell-mode/haskell-site-file")
 
@@ -118,7 +118,7 @@
 ; dont ask if we should follow symlinks
 (setq vc-follow-symlinks t)
 
-(add-to-list 'ac-dictionary-directories 
+(add-to-list 'ac-dictionary-directories
              "~/.emacs.d/elpa/auto-complete-1.4/dict")
 
 (ac-config-default)
@@ -131,17 +131,17 @@
 ;; (global-set-key "\"" 'skeleton-pair-insert-maybe)
 
 ;; Just python
-(add-hook 'python-mode-hook 
-	  (lambda () 
-	    (define-key python-mode-map "'" 'skeleton-pair-insert-maybe)))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (define-key python-mode-map "'" 'skeleton-pair-insert-maybe)))
 
 (add-hook 'python-mode-hook 'whitespace-cleanup-mode)
 (add-hook 'web-mode-hook 'whitespace-cleanup-mode)
 (add-hook 'javascript-mode-hook 'whitespace-cleanup-mode)
 
 ;; for fgallina python-mode
-(add-hook 'python-mode-hook 
-	'(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
+(add-hook 'python-mode-hook
+        '(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
 
 (require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
@@ -209,7 +209,7 @@
 ;; give this a shot, althought it doesn't seem to work
 (setq font-lock-always-fontify-immediately t)
 
-;; Don't make me type out 'yes', 'y' is good enough. 
+;; Don't make me type out 'yes', 'y' is good enough.
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;from Georg Brandl
@@ -250,9 +250,9 @@
                 ("\\.rest$" . rst-mode)) auto-mode-alist))
 
 (add-hook 'c-mode-hook
-	(function (lambda ()
-		(setq c-basic-offset 4)
-		(setq c-indent-level 4))))
+        (function (lambda ()
+                (setq c-basic-offset 4)
+                (setq c-indent-level 4))))
 
 (autoload 'forth-mode "gforth.el")
 (setq auto-mode-alist
@@ -267,16 +267,16 @@
 ;; suitable for creation"
 ;;   (let ((root (expand-file-name "/")))
 ;;     (expand-file-name file
-;; 		      (loop 
-;; 			for d = default-directory then (expand-file-name ".." d)
-;; 			if (file-exists-p (expand-file-name file d))
-;; 			return d
-;; 			if (equal d root)
-;; 			return nil))))
+;;                    (loop
+;;                      for d = default-directory then (expand-file-name ".." d)
+;;                      if (file-exists-p (expand-file-name file d))
+;;                      return d
+;;                      if (equal d root)
+;;                      return nil))))
 
 ;; (add-hook 'python-mode-hook
-;;           (lambda () 
-;;             (set (make-local-variable 'compile-command) 
+;;           (lambda ()
+;;             (set (make-local-variable 'compile-command)
 ;;                  (format "tox -c %s" (get-closest-pathname)))))
 
 (custom-set-variables
@@ -314,7 +314,7 @@
      ))
 
 (load "dired")
-(setq dired-omit-extensions 
+(setq dired-omit-extensions
       (append '(".pyc" ".pyo" ".bak" ".cache" ".pt.py" "html.py")
               dired-omit-extensions))
 
@@ -466,7 +466,7 @@
 (define-key my-keys-minor-mode-map (kbd "M-w") 'clipboard-kill-ring-save)
 (define-key my-keys-minor-mode-map (kbd "M-q") 'fill-paragraph)
 (define-key my-keys-minor-mode-map (kbd "C-y") 'clipboard-yank)
-(define-key my-keys-minor-mode-map [(control ?,)] 'call-last-kbd-macro) 
+(define-key my-keys-minor-mode-map [(control ?,)] 'call-last-kbd-macro)
 (define-key my-keys-minor-mode-map [(control ?9)] 'start-kbd-macro)
 (define-key my-keys-minor-mode-map [(control ?0)] 'end-kbd-macro)
 (define-key my-keys-minor-mode-map [?\M-\C-+] 'increase-left-margin)
@@ -526,7 +526,7 @@
 
 (put 'dired-find-alternate-file 'disabled nil)
 
-;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph    
+;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
     (defun unfill-paragraph (&optional region)
       "Takes a multi-line paragraph and makes it into a single line of text."
       (interactive (progn (barf-if-buffer-read-only) '(t)))
@@ -556,4 +556,3 @@
           (lambda () (setq indent-tabs-mode t)))
 
 (setq nix-nixfmt-bin "nixpkgs-fmt")
-
