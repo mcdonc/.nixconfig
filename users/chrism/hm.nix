@@ -13,8 +13,7 @@ let
   '';
 
   shellAliases = {
-    #edit = "emacsclient -n -c"
-    edit = lib.mkForce "${code-client}";
+    code-client = "${code-client}";
   };
 in
 

@@ -117,7 +117,7 @@ let
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
     open = "kioclient exec";
-    edit = "${pkgs-unstable.vscode-fhs}/bin/code -r";
+    edit = "emacsclient -n -c";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
     ls = "ls --color=auto";
     greyterm = "${gterm-change-profile} 1";

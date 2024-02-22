@@ -107,6 +107,23 @@ in
     extraArgs = [ "--debug" ];
   };
 
+  networking.nftables = {
+    enable = true;
+    ruleset = ''
+      table ip duo_table {
+        chain duo_nat {
+          type nat hook postrouting priority filter; policy accept;
+          oifname "enp1s0" masquerade
+        }
+
+        chain duo_forward {
+          type filter hook forward priority filter; policy accept;
+          iifname "enp0s20f0u7u2" oifname "enp1s0" accept
+        }
+      }
+  '';
+  };
+
   environment.systemPackages = with pkgs; [
     # used by zfs send/receive
     pv
