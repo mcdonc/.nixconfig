@@ -13,7 +13,7 @@ trainwreck of a wiki page.
 
 I'll be using a NixOS system to build my RPi image, but I don't think it's
 strictly necessary.  It is reportedly possible to use Nix running on Ubuntu or
-Mac OS to do the compilation, although I've not tried that myself.
+MacOS to do the compilation, although I'll need to wait until part 2 of this series to try it.
 
 Strategy
 ========
