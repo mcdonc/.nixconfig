@@ -71,12 +71,12 @@ configuration differences for basic functionality other than possibly needing to
 mess with ``linuxPackages.<otherlinux-version>`` to get some specific kernel
 features. Let me know if you find otherwise.
 
-The creation of an RPi-compatible ``arch64`` ISO image took about two and a half
-hours on my system after I issued the command to build it.  There's probably
-some set of third-party caches I could use to reduce the time. I didn't try very
-hard to look for them, but I did use `Cachix <https://cachix.org>`_ to cache the
-results of my builds, so I won't need to recompile next time I want to build an
-image.
+The creation of an RPi-compatible ``aarch64`` ISO image took about two and a
+half hours on my system after I issued the command to build it.  There's
+probably some set of third-party caches I could use to reduce the time. I didn't
+try very hard to look for them, but I did use `Cachix <https://cachix.org>`_ to
+cache the results of my builds, so I won't need to recompile next time I want to
+build an image.
 
 I had also intended to get NixOS working on an original Pi Zero, but I punted.
 Modern NixOS has largely ditched ``armv6``.  I could probably get it running by
