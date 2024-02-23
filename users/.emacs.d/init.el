@@ -296,6 +296,13 @@
 
 (setq nix-nixfmt-bin "nixpkgs-fmt")
 
+;; hide the options menu
+(defun hide-emacs-options-menu ()
+  "Hide the Emacs 'Options' menu."
+  (define-key global-map [menu-bar options] nil))
+
+(add-hook 'after-init-hook 'hide-emacs-options-menu)
+
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20
 
