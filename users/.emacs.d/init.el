@@ -10,20 +10,20 @@
 (tool-bar-mode 0)
 (menu-bar-mode 1)
 
-;; Presentation font sizing
+;;;; Presentation font sizing (emacsclient)
 ;; (setq default-frame-alist '((width . 80)
 ;;                             (height . 34)
 ;;                             (font-backend . "xft")
 ;;                             (font . "Ubuntu Nerd Font Mono-22")))
 ;;(set-face-attribute 'default nil :height 150)
 
-;; Normal font sizing
+;; Normal font sizing (emacsclient)
 (setq default-frame-alist '((width . 80)
                             (height . 34)
                             (font-backend . "xft")
                             (font . "UbuntuMono Nerd Font Mono-18")))
 
-(set-frame-font "Ubuntu Mono-14" nil t)
+;; (set-frame-font "Ubuntu Mono-14" nil t)
 
 (setq show-trailing-whitespace t)
 (setq-default indent-tabs-mode nil)
@@ -59,19 +59,6 @@
             (when server-buffer-clients
               (local-set-key (kbd "C-x k") 'server-edit))))
 
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ange-ftp-ftp-program-name "/usr/bin/ftp")
- '(ansi-color-names-vector
-   ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(haskell-check-command "hlint")
- '(paren-mode 'blink-paren nil (paren))
- '(safe-local-variable-values '((encoding . utf-8) (encoding . utf8))))
-
 ; Integrate X clipboard and emacs copy/yank; see
 ; http://www.emacswiki.org/emacs/CopyAndPaste#toc2
 
@@ -96,7 +83,8 @@
 (add-hook 'dired-mode-hook
     (lambda ()
       (setq dired-omit-files-p t)
-      (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$\\|__pycache__"))
+      (setq dired-omit-files
+            (concat dired-omit-files "\\|^\\..+$\\|__pycache__"))
      ))
 
 ;; Get dired to consider .pyc and .pyo files to be uninteresting
@@ -303,33 +291,15 @@
 
 (add-hook 'mouse-leave-buffer-hook 'stop-using-minibuffer)
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-constant-face ((t (:foreground "purple"))))
- '(font-lock-string-face ((t (:foreground "RosyBrown3")))))
-
-(set-face-attribute 'web-mode-html-attr-name-face nil :foreground "sienna")
-(set-face-attribute 'web-mode-html-attr-value-face nil :foreground "RosyBrown3")
-(set-face-attribute 'web-mode-html-tag-face nil :foreground "Blue1")
-(set-face-attribute 'web-mode-doctype-face nil :foreground "Purple")
-
-
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
 
 (setq nix-nixfmt-bin "nixpkgs-fmt")
 
-;; flycheck-pos-tip font face, see
+;; ;; flycheck-pos-tip font face, see
+;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20
 
-;; https://www.reddit.com/r/emacs/comments/11f05kr/question_on_configuring_flycheckpostip/?rdt=43425
-
-;; https://github.com/flycheck/flycheck-pos-tip/issues/20
-
-(setq x-gtk-use-system-tooltips nil)
-
+;; (setq x-gtk-use-system-tooltips nil)
 
 (provide 'init)
-;;;; init.el ends here
+;;; init.el ends here
