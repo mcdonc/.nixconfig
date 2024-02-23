@@ -74,6 +74,8 @@
 (require 'ido)
 (require 'compile)
 (require 'web-mode)
+(require 'doom-modeline)
+(require 'auth-source-kwallet)
 
 (add-hook 'dired-load-hook
     (lambda ()
@@ -107,11 +109,12 @@
         (ispell-buffer)))
     (message nil)))
 
+;; https://emacs.stackexchange.com/questions/66541/git-track-flag-in-dired
+;(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 
 ; dont ask if we should follow symlinks
 (setq vc-follow-symlinks t)
 
-(require 'doom-modeline)
 (doom-modeline-mode 1)
 
 (setq save-place-file "~/.emacs.d/saved-places")
@@ -302,6 +305,10 @@
   (define-key global-map [menu-bar options] nil))
 
 (add-hook 'after-init-hook 'hide-emacs-options-menu)
+
+(setq kwallet-auth-source "kdewallet")
+(setq kwallet-auth-source-folder "emacs")
+(setq gptel-api-key (auth-source-pick-first-password :host "openai.com"))
 
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20

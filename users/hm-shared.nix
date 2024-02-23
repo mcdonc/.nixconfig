@@ -360,6 +360,7 @@ in
     epkgs.markdown-mode
     epkgs.markdown-preview-mode
     epkgs.gptel
+    epkgs.auth-source-kwallet
     pkgs.emacs-all-the-icons-fonts
     epkgs.yaml-mode
   ];
