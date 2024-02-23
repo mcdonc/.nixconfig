@@ -37,27 +37,18 @@
 ;; Don't make me type out 'yes', 'y' is good enough.
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq column-number-mode t)
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox")
 ; override default 72 column fill
 (setq-default fill-column 79)
-;; tab width
-(setq default-tab-width 4)
 (setq indent-tabs-mode nil)
+;; tab width
 (setq tab-width 4)
-(setq inihibit-compating-font-caches t)
 (add-hook 'after-init-hook 'hide-emacs-options-menu)
+;; Turn on font-lock in all modes that support it
+(if (fboundp 'global-font-lock-mode)
+    (global-font-lock-mode t))
+;; "maximum gaudiness"
+(setq font-lock-maximum-decoration t)
 
-; your fingers are wired to using C-x k to kill off buffers (and you
-; dont like having to type C-x #)
-; http://www.emacswiki.org/emacs/EmacsClient#toc32
-
-(add-hook 'server-switch-hook
-          (lambda ()
-            (when (current-local-map)
-              (use-local-map (copy-keymap (current-local-map))))
-            (when server-buffer-clients
-              (local-set-key (kbd "C-x k") 'server-edit))))
 
 ; Integrate X clipboard and emacs copy/yank; see
 ; http://www.emacswiki.org/emacs/CopyAndPaste#toc2
@@ -69,13 +60,34 @@
 (require 'uniquify)
 (require 'nxml-mode)
 (require 'saveplace)
-(require 'auto-complete)
 (require 'auto-complete-config)
-(require 'ido)
+(require 'auto-complete)
 (require 'compile)
 (require 'web-mode)
-(require 'doom-modeline)
 (require 'auth-source)
+(require 'server)
+(require 'font-core)
+(require 'dired)
+(require 'browse-url)
+
+; your fingers are wired to using C-x k to kill off buffers (and you
+; dont like having to type C-x #)
+; http://www.emacswiki.org/emacs/EmacsClient#toc32
+
+; requires server.el
+(add-hook 'server-switch-hook
+          (lambda ()
+            (when (current-local-map)
+              (use-local-map (copy-keymap (current-local-map))))
+            (when server-buffer-clients
+              (local-set-key (kbd "C-x k") 'server-edit))))
+
+
+;; from font-core package
+(setq inihibit-compacting-font-caches t)
+
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "firefox")
 
 (add-hook 'dired-load-hook
     (lambda ()
@@ -99,6 +111,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (defun dired-do-ispell (&optional arg)
+  "Do ispell from Dired.  Takes ARG."
   (interactive "P")
   (dolist (file (dired-get-marked-files
                  nil arg
@@ -115,6 +128,7 @@
 ; dont ask if we should follow symlinks
 (setq vc-follow-symlinks t)
 
+(require 'doom-modeline)
 (doom-modeline-mode 1)
 
 (setq save-place-file "~/.emacs.d/saved-places")
@@ -129,9 +143,11 @@
 (make-directory autosave-dir t)
 
 (defun auto-save-file-name-p (filename)
+  "Save file.  Takes FILENAME."
   (string-match "^#.*#$" (file-name-nondirectory filename)))
 
 (defun make-auto-save-file-name()
+  "Make filename."
   (concat autosave-dir
    (if buffer-file-name
       (concat "#" (file-name-nondirectory buffer-file-name) "")
@@ -232,7 +248,8 @@
 ; work like vi "J" (instead of the inverse of joining the current line to the
 ; previous, join the next line to the current)
 (defun join-next-line ()
-  (interactive)
+  "Join next line."
+   (interactive)
   (join-line 1))
 
 (setq ispell-process-directory (expand-file-name "~/"))
@@ -276,14 +293,17 @@
 
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my key settings override annoying major modes."
-  t " my-keys" 'my-keys-minor-mode-map)
+  :init-value t
+  :lighter " my-keys"
+  :keymp 'my-keys-minor-mode-map)
 
 (my-keys-minor-mode 1)
 
 ;; but turn that off in minibuffer
 
 (defun my-minibuffer-setup-hook ()
-  (my-keys-minor-mode 0))
+  "Setup minbuffer."
+   (my-keys-minor-mode 0))
 
 (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 
@@ -325,4 +345,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  ;; (this is to fix markdown mode preformatted text font size)
- '(fixed-pitch ((t (:family "Ubuntu Nerd Font Mono")))))
+ '(fixed-pitch ((t (:family "Ubuntu Nerd Font Mono"))))
+ '(font-lock-constant-face ((t (:foreground "purple"))))
+ '(font-lock-string-face ((t (:foreground "RosyBrown3")))))
+
+(set-face-attribute 'web-mode-html-attr-name-face nil :foreground "sienna")
+(set-face-attribute 'web-mode-html-attr-value-face nil :foreground "RosyBrown3")
+(set-face-attribute 'web-mode-html-tag-face nil :foreground "Blue1")
+(set-face-attribute 'web-mode-doctype-face nil :foreground "Purple")
