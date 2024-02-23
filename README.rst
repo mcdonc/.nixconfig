@@ -9,7 +9,7 @@ Usage
 
 - Edit the https://github.com/mcdonc/.nixconfig/blob/master/flake.nix file,
   adding the new system to ``nixosConfigurations``, referencing a file we
-  intend to create in the repo's ``hosts`` fdir
+  intend to create in the repo's ``hosts`` dir
   (e.g. ``hosts/mynewsystem.nix``) in a subsequent step::
 
         mynewsystem = nixpkgs.lib.nixosSystem {
