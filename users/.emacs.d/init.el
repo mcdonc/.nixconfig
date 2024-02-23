@@ -4,7 +4,6 @@
 ;;; Code:
 
 ;; uncopied: auto-complete-mode, any font-lock
-
 (setq inhibit-startup-message t)
 (set-scroll-bar-mode nil)
 (tool-bar-mode 0)
@@ -47,6 +46,7 @@
 (setq indent-tabs-mode nil)
 (setq tab-width 4)
 (setq inihibit-compating-font-caches t)
+(add-hook 'after-init-hook 'hide-emacs-options-menu)
 
 ; your fingers are wired to using C-x k to kill off buffers (and you
 ; dont like having to type C-x #)
@@ -75,7 +75,7 @@
 (require 'compile)
 (require 'web-mode)
 (require 'doom-modeline)
-(require 'auth-source-kwallet)
+(require 'auth-source)
 
 (add-hook 'dired-load-hook
     (lambda ()
@@ -304,11 +304,7 @@
   "Hide the Emacs 'Options' menu."
   (define-key global-map [menu-bar options] nil))
 
-(add-hook 'after-init-hook 'hide-emacs-options-menu)
-
-(setq kwallet-auth-source "kdewallet")
-(setq kwallet-auth-source-folder "emacs")
-(setq gptel-api-key (auth-source-pick-first-password :host "openai.com"))
+(setq gptel-model "gpt-4")
 
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20
