@@ -69,6 +69,11 @@
 (require 'font-core)
 (require 'dired)
 (require 'browse-url)
+(require 'multiple-cursors)
+
+;; set up multiple cursor mode like vs code
+
+(global-set-key (kbd "C-S-l") 'mc/mark-all-dwim)
 
 ; your fingers are wired to using C-x k to kill off buffers (and you
 ; dont like having to type C-x #)

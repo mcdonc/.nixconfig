@@ -362,6 +362,7 @@ in
     epkgs.gptel
     pkgs.emacs-all-the-icons-fonts
     epkgs.yaml-mode
+    epkgs.multiple-cursors
   ];
 
   services.emacs = {
