@@ -3,11 +3,11 @@
 
 ;;; Code:
 
-;; uncopied: auto-complete-mode, any font-lock
+;; uncopied: auto-complete-mode
 (setq inhibit-startup-message t)
-(set-scroll-bar-mode nil)
 (tool-bar-mode 0)
 (menu-bar-mode 1)
+(set-scroll-bar-mode nil)
 
 ;;;; Presentation font sizing (emacsclient)
 ;; (setq default-frame-alist '((width . 80)
@@ -20,7 +20,8 @@
 (setq default-frame-alist '((width . 80)
                             (height . 34)
                             (font-backend . "xft")
-                            (font . "UbuntuMono Nerd Font Mono-18")))
+                            (font . "UbuntuMono Nerd Font Mono-18")
+                            (vertical-scroll-bars . nil)))
 
 ;; (set-frame-font "Ubuntu Mono-14" nil t)
 
