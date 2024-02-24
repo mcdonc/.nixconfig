@@ -363,6 +363,7 @@ in
     pkgs.emacs-all-the-icons-fonts
     epkgs.yaml-mode
     epkgs.multiple-cursors
+    epkgs.dts-mode
   ];
 
   services.emacs = {
