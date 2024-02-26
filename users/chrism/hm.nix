@@ -119,7 +119,7 @@ in
       Description = "Run nix-index.";
     };
     Service = {
-      Type = "simple";
+      Type = "oneshot";
       ExecStart = "${pkgs.nix-index}/bin/nix-index";
     };
     Install = {
