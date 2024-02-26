@@ -1,5 +1,0 @@
-./.local/share/kscreen
-./.config/kdeglobals
-./.config/systemsettingsrc
-./.config/kcmfonts
-./.config/session
