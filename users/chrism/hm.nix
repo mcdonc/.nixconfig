@@ -113,6 +113,7 @@ in
     };
   };
 
+  # systemctl --user status nix-index.service
   systemd.user.services.nix-index = {
     Unit = {
       Description = "Run nix-index.";
@@ -126,6 +127,7 @@ in
     };
   };
 
+  # systemctl --user status nix-index.timer
   systemd.user.timers.nix-index = {
     Unit = {
       Description = "Timer for nix-index.";
