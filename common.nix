@@ -6,6 +6,7 @@
 , pkgs-py37
 , pkgs-py39
 , pkgs-unstable
+, inputs
 , ...
 }:
 
@@ -67,6 +68,11 @@ in
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
+    };
+    # don't fetch nixpkgs-unstable for every "nix shell" / "nix run"
+    # https://dataswamp.org/~solene/2022-07-20-nixos-flakes-command-sync-with-system.html
+    registry = {
+      nixpkgs.flake = inputs.nixpkgs;
     };
   };
 
