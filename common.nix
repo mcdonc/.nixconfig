@@ -362,7 +362,6 @@ in
     bintools # "strings"
     thinkfan
     lm_sensors
-    nvd # for nixos-rebuild diffing
     cntr # for build debugging
     gnupg
     pinentry # dep of gpg
