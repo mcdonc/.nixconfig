@@ -13,7 +13,6 @@ in
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/speedtest
     ./profiles/steam.nix
-    ./profiles/nixindex.nix
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (

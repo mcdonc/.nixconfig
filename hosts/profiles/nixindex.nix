@@ -1,22 +1,18 @@
 { pkgs, ... }:
 
 {
-  systemd.services.nixindex = {
+  systemd.services.nix-index = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ nix-index ];
-    script = ''
-      #!/bin/sh
-      ${pkgs.nix-index}/bin/nix-index
-    '';
+    script = "${pkgs.nix-index}/bin/nix-index";
   };
 
-  systemd.timers.nixindex = {
+  systemd.timers.nix-index = {
     wantedBy = [ "timers.target" ];
-    partOf = [ "nixindex.service" ];
+    partOf = [ "nix-index.service" ];
     timerConfig = {
       # 4 am
-      OnCalendar = "*-*-* 4:00:00";
-      Unit = "nixindex.service";
+      OnCalendar = "*-*-* 04:00:00";
+      Unit = "nix-index.service";
     };
   };
 }

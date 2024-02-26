@@ -113,4 +113,31 @@ in
     };
   };
 
+  systemd.user.services.nix-index = {
+    Unit = {
+      Description = "Run nix-index.";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.nix-index}/bin/nix-index";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
+  systemd.user.timers.nix-index = {
+    Unit = {
+      Description = "Timer for nix-index.";
+    };
+    Timer = {
+      Unit = "nix-index.service";
+      #OnCalendar = "*:0/5";
+      OnCalendar = "*-*-* 04:00:00";
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+
 }
