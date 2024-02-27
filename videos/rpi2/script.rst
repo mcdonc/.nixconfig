@@ -5,9 +5,10 @@ NixOS 73: Building a NixOS Image for Raspberry Pi, Pt. 2 (Updating a Running Pi)
 Recap
 =====
 
-In `part 1 of this series <https://youtu.be/9W6znVpxn1c>`_, I got a Pi Zero 2 W
-booting to NixOS after using a Nix flake to generate an image file which I
-burned to an SD card.  I made sure wireless and HDMI worked.
+In `part 1 of this series <https://youtu.be/9W6znVpxn1c>`_ (talky script at
+https://github.com/mcdonc/.nixconfig/blob/master/videos/rpi/script.rst), I got
+a Pi Zero 2 W booting to NixOS after using a Nix flake to generate an image
+file which I burned to an SD card.  I made sure wireless and HDMI worked.
 
 In this video, I'll be solidifying the methods that we can use to update NixOS
 on a Pi after we get it running.
