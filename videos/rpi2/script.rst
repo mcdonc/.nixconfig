@@ -39,7 +39,7 @@ some tough times, but the issue actually turned out to be due to which devices
 I have plugged into which of its micro USB ports.  If I plug the keyboard into
 the micro USB closer to the HDMI, and the power into the the micro USB further
 away from the HDMI, it will not boot.  If I reverse those, it boots fine.  Here
-is the right orientation to allow a boot:
+is the right orientation to allow an automatic boot:
 
 .. image:: orientation.jpg
 
