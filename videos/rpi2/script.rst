@@ -5,6 +5,9 @@ NixOS 73: Building a NixOS Image for Raspberry Pi, Pt. 2 (Updating a Running Pi)
 Recap
 =====
 
+The talky-script for this video is available in a link in the description
+(https://github.com/mcdonc/.nixconfig/blob/master/videos/rpi2/script.rst).
+
 In `part 1 of this series <https://youtu.be/9W6znVpxn1c>`_ (talky-script at
 https://github.com/mcdonc/.nixconfig/blob/master/videos/rpi/script.rst), I got
 a Pi Zero 2 W booting to NixOS after using a Nix flake to generate an image
