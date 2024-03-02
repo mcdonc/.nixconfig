@@ -4,6 +4,13 @@ NixOS #75: Nix Tips and Tricks
 
 These are some tips 'n tricks related to Nix that I've learned over time.
 
+Companion to video at ....
+
+This text script available via link in the video description.
+
+See the other videos in this series by visiting the playlist at
+https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
+
 See a Summary of Changes After ``nixos-rebuild``
 ------------------------------------------------
 
