@@ -60,7 +60,7 @@ in
     settings = {
       tarball-ttl = 300;
       auto-optimise-store = true;
-      experimental-features = "nix-command flakes";
+      experimental-features = "nix-command flakes repl-flake";
       trusted-users = [ "root" "@wheel" ];
       sandbox = "relaxed";
     };
@@ -74,6 +74,7 @@ in
     registry = {
       nixpkgs.flake = inputs.nixpkgs;
     };
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   };
 
   # NVIDIA requires nonfree
@@ -444,7 +445,7 @@ in
     zstd
     pkgs-unstable.protonvpn-gui
     discord
-    sops
+    #sops
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
