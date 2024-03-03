@@ -17,6 +17,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixgl-olive.url = "github:guibou/nixGL";
     nixgl-olive.inputs.nixpkgs.follows = "nixpkgs-olive";
+    nixgl-unstable.url = "github:guibou/nixGL";
+    nixgl-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -46,6 +48,7 @@
     , nix-gaming
     , nixtheplanet
     , nixgl-olive
+    , nixgl-unstable
     }@inputs:
     let
       my_overlay = (self: super: {
@@ -96,6 +99,7 @@
           diskSizeBytes = 100000000000;
         };
         nixgl-olive = nixgl-olive.defaultPackage.x86_64-linux.nixGLIntel;
+        nixgl-unstable = nixgl-unstable.defaultPackage.x86_64-linux.nixGLIntel;
 
         inherit nixos-hardware nix-gaming system inputs;
       };
@@ -171,6 +175,10 @@
         optinix = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
           modules = chris-modules ++ [ ./hosts/optinix.nix ];
+        };
+        nixcentre = nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = chris-modules ++ [ ./hosts/nixcentre.nix ];
         };
         nixos-vm = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;

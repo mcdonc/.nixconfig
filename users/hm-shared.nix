@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, nixgl-olive, ... }:
+{ pkgs, pkgs-unstable, nixgl-olive, nixgl-unstable, ... }:
 
 let
 
@@ -335,6 +335,15 @@ in
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
+    # davinci-intel = {
+    #   name = "DaVinci Resolve (via nixGLIntel)";
+    #   genericName = "DaVinci Resolve Video Editor";
+    #   exec = "${nixgl-unstable}/bin/nixGLIntel davinci-resolve";
+    #   terminal = false;
+    #   categories = [ "AudioVideo" "Recorder" ];
+    #   mimeType = [ "application/x-resolveproj" ];
+    #   #icon = "org.olivevideoeditor.Olive";
+    # };
   };
 
   programs.emacs.enable = true;

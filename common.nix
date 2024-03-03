@@ -42,6 +42,40 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
+  transcodedir = pkgs.writeShellScript "transcodedir" ''
+    # Check if input and output directories are provided as arguments
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: $0 <input_directory> <output_directory>"
+        exit 1
+    fi
+
+    input_dir="$1"
+
+    output_dir="$2"
+
+    # Check if input directory exists and is a directory
+    if [ ! -d "$input_dir" ]; then
+        echo "Error: Input directory '$input_dir' does not exist."
+        exit 1
+    fi
+
+    if [ ! -d "$output_dir" ]; then
+    mkdir -p "$output_dir"
+    fi
+
+    # Loop through each file in the input directory
+    for file in "$input_dir"/*.mp4 "$input_dir"/*.mkv; do
+        # Check if the file exists and is a regular file
+        if [ -f "$file" ]; then
+            # Get the filename without extension
+            filename=$(basename -- "$file")
+            filename_no_ext="$${filename%.*}"
+            # Transcode the file to MP4 with H.264 video and MP3 audio
+            ffmpeg -i -y "$file" -c:v libx264 -c:a libmp3lame "$output_dir/$filename_no_ext.mp4"
+        fi
+    done
+  '';
+
 in
 {
 
@@ -446,6 +480,7 @@ in
     pkgs-unstable.protonvpn-gui
     discord
     sops
+    #pkgs-unstable.davinci-resolve
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
