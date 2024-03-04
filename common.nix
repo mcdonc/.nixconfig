@@ -42,15 +42,18 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
-  transcodedir = pkgs.writeShellScript "transcodedir" ''
+  transcodedir = pkgs.writeShellScriptBin "transcodedir" ''
+    set -ex
     # Check if input and output directories are provided as arguments
     if [ "$#" -ne 2 ]; then
         echo "Usage: $0 <input_directory> <output_directory>"
         exit 1
     fi
 
+    # Input directory
     input_dir="$1"
 
+    # Output directory
     output_dir="$2"
 
     # Check if input directory exists and is a directory
@@ -59,19 +62,26 @@ let
         exit 1
     fi
 
+    # Create output directory if it doesn't exist
     if [ ! -d "$output_dir" ]; then
-    mkdir -p "$output_dir"
+        mkdir -p "$output_dir"
+    fi
+
+    # Check if NVIDIA GPU is detected
+    if lspci | grep -qi nvidia; then
+        encoder="-c:v h264_nvenc"
+    else
+        encoder="-c:v libx264"
     fi
 
     # Loop through each file in the input directory
-    for file in "$input_dir"/*.mp4 "$input_dir"/*.mkv; do
+    for file in "$input_dir"/*.mp4 "$input_dir"/*.MP4 "$input_dir"/*.mkv "$input_dir"/*.MKV; do
         # Check if the file exists and is a regular file
         if [ -f "$file" ]; then
             # Get the filename without extension
             filename=$(basename -- "$file")
-            filename_no_ext="$${filename%.*}"
-            # Transcode the file to MP4 with H.264 video and MP3 audio
-            ffmpeg -i -y "$file" -c:v libx264 -c:a libmp3lame "$output_dir/$filename_no_ext.mp4"
+            filename_no_ext="''${filename%.*}"
+            ffmpeg -y -i "$file" $encoder -c:a libmp3lame "$output_dir/$filename_no_ext.mp4"
         fi
     done
   '';
@@ -480,7 +490,8 @@ in
     pkgs-unstable.protonvpn-gui
     discord
     sops
-    #pkgs-unstable.davinci-resolve
+    pkgs-unstable.davinci-resolve
+    transcodedir
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
