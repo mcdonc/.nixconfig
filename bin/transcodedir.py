@@ -9,8 +9,12 @@ def transcode_directory(
         recurse=False,
         yes=False
     ):
+
+    input_dir = os.path.abspath(input_dir)
+
+    hidden_dir = ".transcoded"
     # Output directory for transcoded files
-    output_dir = os.path.join(input_dir, ".transcoded")
+    output_dir = os.path.join(input_dir, hidden_dir)
 
     # Create output directory if it doesn't exist
     if os.path.exists(output_dir):
@@ -55,29 +59,32 @@ def transcode_directory(
 
     encoder.extend(['-c:a', 'pcm_s16le'])
 
-    for root, dirs, files in os.walk(input_dir):
-
-        for file in files:
-            input_file = os.path.join(root, file)
+    for file in os.listdir(input_dir):
+        input_file = os.path.join(input_dir, file)
+        subdirs = []
+        if os.path.islink(input_file):
+            continue
+        elif os.path.isdir(input_file):
+            subdirs.append(input_file)
+        else:
             lowered = file.lower()
             if lowered.endswith(".mp4") or lowered.endswith(".mkv"):
                 relative_path = os.path.relpath(input_file, input_dir)
                 no_ext = os.path.splitext(relative_path)[0]
                 output_file = os.path.join(output_dir,  no_ext + ".mkv")
                 cmd = command + [ '-i', input_file ] + encoder + [ output_file ]
-                print(cmd)
+                print(f"Running: {' '.join(cmd)}")
                 subprocess.run(cmd)
 
-        if recurse:
-            for dir in dirs:
-                if dir != ".transcoded":
-                    input_dir = os.path.join(root, dir)
-                    transcode_directory(input_dir, h264_encoding, recurse, yes)
-
+    if recurse:
+        for dir in subdirs:
+            if dir != hidden_dir:
+                input_subdir = os.path.join(input_dir, dir)
+                transcode_directory(input_subdir, h264_encoding, recurse, yes)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Transcode video files in a directory."
+        description="Transcode video files in a directory to AV1."
     )
     parser.add_argument(
         "input_dir",
