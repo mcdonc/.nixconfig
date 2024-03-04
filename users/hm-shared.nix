@@ -323,9 +323,6 @@ in
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
-  };
-
-  xdg.desktopEntries = {
     olive-intel = {
       name = "Olive Video Editor (via nixGLIntel)";
       genericName = "Olive Video Editor";
@@ -335,7 +332,7 @@ in
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
-    davinci-intel = {
+    davinci-nvidia = {
       name = "DaVinci Resolve (via nvidia-offload)";
       genericName = "DaVinci Resolve Video Editor";
       exec = "nvidia-offload davinci-resolve";

@@ -42,6 +42,21 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
+  av1-transcode = pkgs.writeShellScriptBin "av1-transcode" ''
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: $0 infile outfile"
+        exit 1
+    fi
+
+    infile="$1"
+    outfile="$2"
+    #encoder="-c:v libaom-av1 -strict -2"
+    encoder="-c:v libsvtav1 -preset 10 -crf 35"
+    #encoder="-c:v librav1e -b:v 500K -rav1e-params speed=5:low_latency=true"
+
+    ffmpeg -i "$infile" $encoder -c:a pcm_s16le "$outfile"
+  '';
+
   transcodedir = pkgs.writeShellScriptBin "transcodedir" ''
     set -ex
     # Check if input and output directories are provided as arguments
@@ -67,12 +82,15 @@ let
         mkdir -p "$output_dir"
     fi
 
+    # resolve studio can decode h264
     # Check if NVIDIA GPU is detected
-    if lspci | grep -qi nvidia; then
-        encoder="-c:v h264_nvenc"
-    else
-        encoder="-c:v libx264"
-    fi
+    #if lspci | grep -qi nvidia; then
+    #    encoder="-c:v h264_nvenc"
+    #else
+    #    encoder="-c:v libx264"
+    #fi
+
+    encoder="-c:v libaom-av1"
 
     # Loop through each file in the input directory
     for file in "$input_dir"/*.mp4 "$input_dir"/*.MP4 "$input_dir"/*.mkv "$input_dir"/*.MKV; do
@@ -81,7 +99,7 @@ let
             # Get the filename without extension
             filename=$(basename -- "$file")
             filename_no_ext="''${filename%.*}"
-            ffmpeg -y -i "$file" $encoder -c:a libmp3lame "$output_dir/$filename_no_ext.mp4"
+            ffmpeg -y -i "$file" $encoder -c:a pcm_s16le "$output_dir/$filename_no_ext.mkv"
         fi
     done
   '';
@@ -492,6 +510,7 @@ in
     discord
     sops
     pkgs-unstable.davinci-resolve
+    av1-transcode
     transcodedir
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
