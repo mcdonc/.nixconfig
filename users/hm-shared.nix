@@ -133,7 +133,7 @@ let
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
-    olive-intel = "${nixgl-olive}/bin/nixGLIntel olive-editor";
+    olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
   };
 
 in

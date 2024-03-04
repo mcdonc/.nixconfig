@@ -371,7 +371,8 @@ in
     konversation
     pkgs-unstable.nixfmt-rfc-style
     wakeonlan
-    pkgs-olive.olive-editor # use 0.1.2 (see flake.nix)
+    #pkgs-olive.olive-editor # 0.1.2
+    olive-editor # 0.2
     gptfdisk # "sgdisk"
     ardour
     qjackctl
