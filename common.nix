@@ -57,52 +57,14 @@ let
     ffmpeg -i "$infile" $encoder -c:a pcm_s16le "$outfile"
   '';
 
-  transcodedir = pkgs.writeShellScriptBin "transcodedir" ''
-    set -ex
-    # Check if input and output directories are provided as arguments
-    if [ "$#" -ne 2 ]; then
-        echo "Usage: $0 <input_directory> <output_directory>"
-        exit 1
-    fi
-
-    # Input directory
-    input_dir="$1"
-
-    # Output directory
-    output_dir="$2"
-
-    # Check if input directory exists and is a directory
-    if [ ! -d "$input_dir" ]; then
-        echo "Error: Input directory '$input_dir' does not exist."
-        exit 1
-    fi
-
-    # Create output directory if it doesn't exist
-    if [ ! -d "$output_dir" ]; then
-        mkdir -p "$output_dir"
-    fi
-
-    # resolve studio can decode h264
-    # Check if NVIDIA GPU is detected
-    #if lspci | grep -qi nvidia; then
-    #    encoder="-c:v h264_nvenc"
-    #else
-    #    encoder="-c:v libx264"
-    #fi
-
-    encoder="-c:v libaom-av1"
-
-    # Loop through each file in the input directory
-    for file in "$input_dir"/*.mp4 "$input_dir"/*.MP4 "$input_dir"/*.mkv "$input_dir"/*.MKV; do
-        # Check if the file exists and is a regular file
-        if [ -f "$file" ]; then
-            # Get the filename without extension
-            filename=$(basename -- "$file")
-            filename_no_ext="''${filename%.*}"
-            ffmpeg -y -i "$file" $encoder -c:a pcm_s16le "$output_dir/$filename_no_ext.mkv"
-        fi
-    done
-  '';
+  # disuse writePython3
+  pytranscodedir = pkgs.substituteAll ({
+    name = "pytranscodedir";
+    src = ./bin/transcodedir.py;
+    dir = "/bin";
+    isExecutable = true;
+    py = "${pkgs.python311}/bin/python";
+  });
 
 in
 {
@@ -511,7 +473,7 @@ in
     sops
     pkgs-unstable.davinci-resolve
     av1-transcode
-    transcodedir
+    pytranscodedir
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
