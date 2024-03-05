@@ -12,11 +12,9 @@ def transcode_directory(
 
     input_dir = os.path.abspath(input_dir)
 
-    hidden_dir = ".transcoded"
-    # Output directory for transcoded files
-    output_dir = os.path.join(input_dir, hidden_dir)
+    transcoded_dir = "transcoded"
+    output_dir = os.path.join(input_dir, transcoded_dir)
 
-    # Create output directory if it doesn't exist
     if os.path.exists(output_dir):
         if not os.path.isdir(output_dir):
             raise ValueError(f"cannot overwrite {output_dir}")
@@ -78,7 +76,7 @@ def transcode_directory(
 
     if recurse:
         for dir in subdirs:
-            if dir != hidden_dir:
+            if dir != transcoded_dir:
                 input_subdir = os.path.join(input_dir, dir)
                 transcode_directory(input_subdir, h264_encoding, recurse, yes)
 

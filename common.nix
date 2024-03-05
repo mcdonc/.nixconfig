@@ -470,7 +470,7 @@ in
     zstd
     pkgs-unstable.protonvpn-gui
     discord
-    sops
+    agebox
     pkgs-unstable.davinci-resolve
     av1-transcode
     pytranscodedir
