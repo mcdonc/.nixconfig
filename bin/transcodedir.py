@@ -18,8 +18,6 @@ def transcode_directory(
     if os.path.exists(output_dir):
         if not os.path.isdir(output_dir):
             raise ValueError(f"cannot overwrite {output_dir}")
-    else:
-        os.makedirs(output_dir)
 
     command = [
         'ffmpeg',
@@ -57,6 +55,8 @@ def transcode_directory(
 
     encoder.extend(['-c:a', 'pcm_s16le'])
 
+    made = False
+
     for file in os.listdir(input_dir):
         input_file = os.path.join(input_dir, file)
         subdirs = []
@@ -67,6 +67,9 @@ def transcode_directory(
         else:
             lowered = file.lower()
             if lowered.endswith(".mp4") or lowered.endswith(".mkv"):
+                if not made:
+                    os.makedirs(output_dir)
+                    made = True
                 relative_path = os.path.relpath(input_file, input_dir)
                 no_ext = os.path.splitext(relative_path)[0]
                 output_file = os.path.join(output_dir,  no_ext + ".mkv")
