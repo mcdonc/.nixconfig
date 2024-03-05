@@ -339,7 +339,7 @@ in
       terminal = false;
       categories = [ "AudioVideo" "Recorder" ];
       mimeType = [ "application/x-resolveproj" ];
-      #icon = "org.olivevideoeditor.Olive";
+      icon = ../static/DV_Resolve.png;
     };
   };
 
