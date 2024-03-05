@@ -53,6 +53,7 @@ def transcode_directory(
     encoder.extend(['-c:a', 'pcm_s16le'])
 
     transcoded_dir = ".transcoded"
+    ignore_dirs = [ transcoded_dir, "transcodes" ]
 
     input_dir = os.path.abspath(input_dir)
     output_dir = os.path.join(input_dir, transcoded_dir)
@@ -92,7 +93,7 @@ def transcode_directory(
 
     if recurse:
         for subdir in subdirs:
-            if subdir != transcoded_dir:
+            if subdir not in ignore_dirs:
                 input_subdir = os.path.join(input_dir, subdir)
                 transcode_directory(
                     input_subdir,
