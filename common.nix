@@ -66,6 +66,22 @@ let
     py = "${pkgs.python311}/bin/python";
   });
 
+  pycopytranscodes = pkgs.substituteAll ({
+    name = "pycopytranscodes";
+    src = ./bin/copytranscodes.py;
+    dir = "/bin";
+    isExecutable = true;
+    py = "${pkgs.python311}/bin/python";
+  });
+
+  findnixstorelinks = pkgs.substituteAll ({
+    name = "findnixstorelinks";
+    src = ./bin/findnixstorelinks.py;
+    dir = "/bin";
+    isExecutable = true;
+    py = "${pkgs.python311}/bin/python";
+  });
+  
 in
 {
 
@@ -474,6 +490,8 @@ in
     pkgs-unstable.davinci-resolve
     av1-transcode
     pytranscodedir
+    pycopytranscodes
+    findnixstorelinks
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
