@@ -81,6 +81,45 @@ let
     isExecutable = true;
     py = "${pkgs.python311}/bin/python";
   });
+
+  # # 1.
+  # mypyscript = pkgs.writers.writePython3Bin "mypyscript" {} ''
+  #   print("hello from a Python script")
+  # '';
+
+  # # 2.
+  # mypyscript = pkgs.writers.writePython3Bin "mypyscript" {}
+  #   (builtins.readFile ./bin/mypyscript.py);
+
+  # # 3.
+  # mypyscript = pkgs.writers.writePython3Bin "mypyscript"
+  #   { flakeIgnore=["E261"]; }
+  #   (builtins.readFile ./bin/mypyscript.py);
+
+  # # 4.
+  # mypyscript = pkgs.substituteAll ({
+  #   name = "mypyscript";
+  #   src = ./bin/mypyscript.py;
+  #   dir = "/bin";
+  #   isExecutable = true;
+  #   py = "${pkgs.python311}/bin/python";
+  # });
+
+  # # 5.
+  # mypyscript = pkgs.writers.writePython3Bin "mypyscript"
+  #   { libraries = with pkgs.python3.pkgs; [ pandas ]; }
+  #   (builtins.readFile ./bin/mypyscript.py);
+  
+  # # 6.
+  # python-for-mypyscript = (pkgs.python311.withPackages (p:
+  #   with p; [ pkgs.python311Packages.pandas]));
+  # mypyscript = pkgs.substituteAll ({
+  #   name = "mypyscript";
+  #   src = ./bin/mypyscript.py;
+  #   dir = "/bin";
+  #   isExecutable = true;
+  #   py = "${python-for-mypyscript}/bin/python";
+  # });
   
 in
 {
@@ -492,6 +531,7 @@ in
     pytranscodedir
     pycopytranscodes
     findnixstorelinks
+    mypyscript
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
