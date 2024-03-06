@@ -9,7 +9,7 @@ def touch(fname):
 
 def transcode_directory(
         input_dir,
-        h264_encoding=False,
+        av1_encoding=False,
         recurse=False,
         yes=False,
         dry_run=False,
@@ -23,16 +23,17 @@ def transcode_directory(
     if yes:
         command.append('-y')
 
-    encoder = [
-        '-c:v',
-        'libsvtav1',
-        '-preset',
-        '10',
-        '-crf',
-        '35',
-    ]
+    if av1_encoding:
+        encoder = [
+            '-c:v',
+            'libsvtav1',
+            '-preset',
+            '10',
+            '-crf',
+            '35',
+        ]
 
-    if h264_encoding:
+    else:
         lspci_output = subprocess.run(
             ['lspci'],
             stdout=subprocess.PIPE,
@@ -97,7 +98,7 @@ def transcode_directory(
                 input_subdir = os.path.join(input_dir, subdir)
                 transcode_directory(
                     input_subdir,
-                    h264_encoding,
+                    av1_encoding,
                     recurse,
                     yes,
                     dry_run,
@@ -106,16 +107,16 @@ def transcode_directory(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Transcode video files in a directory to AV1."
+        description="Transcode video files in a directory to H264+PCM."
     )
     parser.add_argument(
         "input_dir",
         help="Input directory containing video files to transcode"
     )
     parser.add_argument(
-        "--h264",
+        "--av1",
         action="store_true",
-        help="Encode resulting files to H.264 instead of AV1"
+        help="Encode resulting files to AVI1 instead of H264"
     )
     parser.add_argument(
         "--recurse",
@@ -142,7 +143,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     transcode_directory(
         args.input_dir,
-        args.h264,
+        args.av1,
         args.recurse,
         args.yes,
         args.dry_run,
