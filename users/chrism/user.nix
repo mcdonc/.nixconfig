@@ -29,6 +29,7 @@ in
       ];
     };
   };
+  # inotifywait -mr -e close_write -e moved_to -e moved_from -e delete .
 
   # # https://manpages.debian.org/testing/incron/incrontab.5.en.html
   # # IN_CREATE,IN_MODIFY,IN_CLOSE_WRITE,IN_MOVED_FROM,IN_MOVED_TO

@@ -15,6 +15,15 @@ let
   shellAliases = {
     code-client = "${code-client}";
   };
+  watchintake = pkgs.substituteAll ({
+    name = "watchintake";
+    src = ../../bin/watchintake.py;
+    dir = "/bin";
+    isExecutable = true;
+    py = "${pkgs.python311}/bin/python";
+    inotifywait = "${pkgs.inotify-tools}/bin/inotifywait";
+  });
+  
 in
 
 {
@@ -139,6 +148,20 @@ in
     };
     Install = {
       WantedBy = [ "timers.target" ];
+    };
+  };
+
+  systemd.user.services.watchintake = {
+    Unit = {
+      Description = "Run watchintake.";
+    };
+    Service = {
+      ExecStart = ''
+        ${watchintake}/bin/watchintake ${homedir}/intake
+      '';
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
     };
   };
 
