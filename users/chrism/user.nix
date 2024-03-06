@@ -33,6 +33,7 @@ in
   # # https://manpages.debian.org/testing/incron/incrontab.5.en.html
   # # IN_CREATE,IN_MODIFY,IN_CLOSE_WRITE,IN_MOVED_FROM,IN_MOVED_TO
   # # IN_ALL_EVENTS,dotdirs=true
+  # # segfault issue: https://github.com/ar-/incron/issues/11
   # services.incron.enable = true;
   # services.incron.extraPackages = [ pkgs.coreutils pkgs.incron ];
   # systemd.services.incron.serviceConfig.Restart = lib.mkForce "always";
