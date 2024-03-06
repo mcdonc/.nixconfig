@@ -7,6 +7,7 @@
     ./profiles/encryptedzfs.nix
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/sessile.nix
+    ./profiles/davinci-resolve.nix
     ../common.nix
   ];
 
