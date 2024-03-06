@@ -253,6 +253,11 @@ in
       "lock802.repoze.org" = { forwardAgent = true; };
       "192.168.1.1" = { user = "root"; };
       "optinix*" = { forwardAgent = true; };
+      "apex.firewall" = {
+        hostname = "apex.firewall";
+        proxyJump = "bouncer.palladion.com";
+        forwardAgent = true;
+      };
     };
   };
 
