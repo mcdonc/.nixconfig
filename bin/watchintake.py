@@ -78,37 +78,36 @@ class Monitor:
         parsed_line = next(csv_reader)
         return parsed_line
 
-    def get_transcode_file(self, event_dir, event_file):
+    def DELETE(self, event_dir, event_file):
         no_ext = os.path.splitext(event_file)[0]
         transcode_file = os.path.join(
             event_dir,
             TRANSCODED,
             no_ext + '.mkv'
         )
-        return transcode_file
-
-    def DELETE(self, event_dir, event_file):
-        transcode_file = self.get_transcode_file(event_dir, event_file)
-        print(f"deleting {transcode_file}")
-        try:
-            os.unlink(transcode_file)
-        except FileNotFoundError:
-            pass
+        temp_file = transcode_file + ".part"
+        for filename in temp_file, transcode_file:
+            print(f"deleting {filename}")
+            try:
+                os.unlink(filename)
+            except FileNotFoundError:
+                pass
         transcode_dir = os.path.join(event_dir, TRANSCODED)
         if os.path.isdir(transcode_dir):
             if not os.listdir(transcode_dir):
-                os.rmdir(transcode_dir)
+                try:
+                    os.rmdir(transcode_dir)
+                except FileNotFoundError:
+                    pass
 
     MOVED_FROM = DELETE
 
     def CLOSE_WRITE__CLOSE(self, event_dir, event_file):
-        fullpath = os.path.join(event_dir, event_file)
-        transcode_file = self.get_transcode_file(event_dir, event_file)
-        print(f"transcode {fullpath} to {transcode_file}")
         input_file = os.path.join(event_dir, event_file)
         output_dir = os.path.join(event_dir, TRANSCODED)
         no_ext = os.path.splitext(event_file)[0]
-        output_file = os.path.join(output_dir,  no_ext + ".mkv.part")
+        temp_file = os.path.join(output_dir, no_ext + ".mkv.part")
+        print(f"transcode {input_file} to {temp_file}")
 
         if os.path.exists(output_dir):
             if not os.path.isdir(output_dir):
@@ -120,17 +119,17 @@ class Monitor:
             command +
             [ '-i', input_file ] +
             encoder +
-            [ '-f', 'matroska', output_file ]
+            [ '-f', 'matroska', temp_file ]
         )
         print(' '.join(cmd))
         p = subprocess.run(cmd)
         if p.returncode:
             try:
-                os.unlink(output_file)
+                os.unlink(temp_file)
             except FileNotFoundError:
                 pass
         else:
-            os.rename(output_file, os.path.splitext(output_file)[0])
+            os.rename(temp_file, os.path.splitext(temp_file)[0])
 
     MOVED_TO = CLOSE_WRITE__CLOSE
 
