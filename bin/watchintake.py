@@ -11,9 +11,17 @@ from io import StringIO
 MEDIA = (".mp4", ".mkv", ".MP4", ".MKV")
 TRANSCODED = "transcoded"
 INOTIFYWAIT = "@inotifywait@"
+LSPCI = "@lspci@"
+FFMPEG = "@ffmpeg@"
 
 if INOTIFYWAIT.startswith("@"):
     INOTIFYWAIT = "inotifywait" # not text-replaced
+
+if LSPCI.startswith("@"):
+    LSPCI = "lspci"
+
+if FFMPEG.startswith("@"):
+    FFMPEG = "ffmpeg"
 
 class Monitor:
     def __init__(self, intake_dir):
@@ -53,7 +61,7 @@ class Monitor:
 
         else:
             lspci_output = subprocess.run(
-                ['lspci'],
+                [LSPCI],
                 stdout=subprocess.PIPE,
                 text=True
             )
