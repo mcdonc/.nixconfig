@@ -280,11 +280,14 @@ in
 
   users.groups.nixconfig = { };
 
-  environment.etc."vimrc".text = ''
-    " get rid of maddening mouseclick-moves-cursor behavior
-    set mouse=
-    set ttymouse=
-  '';
+  # # this causes weirdness when vim is exited, printing mouse movements
+  # # as ANSI sequences on any terminal; use shift to select text as a
+  # # workaround
+  # environment.etc."vimrc".text = ''
+  #   " get rid of maddening mouseclick-moves-cursor behavior
+  #   set mouse=
+  #   set ttymouse=
+  # '';
 
   # run appimages directly (see https://nixos.wiki/wiki/Appimage)
   boot.binfmt = {
