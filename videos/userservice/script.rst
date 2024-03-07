@@ -18,13 +18,14 @@ integration provides a mechanism to define `systemd user services
 services that run as a normal user, rather than the root user, although they
 are still managed by systemd.
 
-This feature works on NixOS and on non-NixOS systems that run systemd (like
-Ubuntu) with Nix installed.
-
 I never bothered to use this feature on non-Nix systems, it just seemed like
 too little gain for too much effort.  But in Nix, it feels like it's worth it,
 because the configuration is pretty simple, it's captured and replayable, and
 it's sharable between systems.
+
+This feature works on NixOS and on non-NixOS systems that run systemd (like
+Ubuntu) with Nix installed.
+
 
 Running A Program Every So Often
 ================================
@@ -219,4 +220,8 @@ and it will always be started at system boot.
 
 We can follow its output by doing::
 
-  journalctl --user -f
+  $ journalctl --user -u watchintake -f
+
+If this doesn't work, you may need to reboot once, or use::
+
+  $ journalctl --user -f
