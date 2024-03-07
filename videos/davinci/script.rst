@@ -5,15 +5,15 @@ DaVinci Resolve on Linux (NixOS)
 The state of open source NLE video editing on Linux is good if your needs are
 very basic.  Two reasonably good editors exist that I have a lot of experience
 with: Kdenlive and Olive.  These both work fine.  However, Kdenlive's UI is
-strange; it can also be crashy, and Olive is no longer maintained.  There are a
+strange and it can be crashy, and Olive is no longer maintained.  There are a
 number of other contenders, but they all have one fatal flaw or another.
 
-Of course, I knew about DaVinci Resolve, and I had even used it to produce one
-video a year or two ago on Linux, but my needs are incredibly basic, and its
-quirks around import and export turned me off to it.  But then when I saw the
-audio transcription / text editing feature of Resolve Studio 18.6 (the paid
-version), I knew I must re-investigate the quirks, and, if possible, circumvent
-them, and maybe possess it.
+I knew about DaVinci Resolve, and I had even used it to produce one video a
+year or two ago on Linux, but my needs are incredibly basic, and its quirks
+around import and export turned me off to it.  But then when I saw the audio
+transcription / text editing feature of Resolve Studio 18.6 (the paid version),
+I knew I must re-investigate the quirks, and, if possible, circumvent them, and
+maybe possess it.
 
 There has seemingly always been a barely-traversable minefield of gotchas
 around using DaVinci Resolve on Linux.  The minefield itself truly a work of
@@ -119,8 +119,11 @@ system packages, and it works.  The current version packaged for NixOS is
 
 I told you it was complicated.
 
-On the Other Side of the Minefield
-----------------------------------
+On the Other Side of the Minefield, Another Minefield
+-----------------------------------------------------
+
+While traipsing around in the previous minefield, you may have come to terms
+with the fact that we must transcode input footage.
 
 I use the Studio version of Resolve, so I transcode my input footage to H.264
 with PCM audio into a Matroska (mkv) container.  Resolve Studio is fine with
@@ -141,15 +144,18 @@ I would also want to use AV1 video if I didn't have hardware-accelerated H.264
 encoding.  The ``libsvtav1`` encoder is, surprisingly, faster than the software
 H.264 encoder, at least for the kinds of footage I'm transcoding.
 
+Hey, look what I found, some other hidden mines.
+
 Resolve badly wants to be used in a dual monitor setup.  It wants to consume an
 entire monitor for itself.  It always starts at full-screen size.  And it wants
 that monitor to be at least 4K resolution.  If it's not, bizarre shit happens,
 like at 1080p, where the menus are cut off at both sides and some UI elements
-are simply unclickable because they're off the screen.
+are simply unclickable because they're off the screen.  Fuck you and your
+2016-era resolutions.
 
-Which is fucking ironic on Linux at least, because when it's at 4K, it's
-utterly unreadable.  You must preferences / user / UI settings / UI display
-scale and change it to 150K.
+Which is ironic on Linux at least, because when it's at 4K, it's utterly
+unreadable.  You must preferences / user / UI settings / UI display scale and
+change it to 150%.  Fuck you.
 
 OK, so you have a 4K monitor.  And you've figured out how to scale the UI so
 it's readable.  But you only have one monitor.  You'll want to *resize* the
@@ -157,25 +163,54 @@ Resolve window.  Well fuck you.  Figure out that you need to drag it out of
 full-window mode by pressing the Super key and left dragging.  And figure out
 that after you snap it out of its fullscreen mode, you still need to use the
 super key while you try drag its window around.  And fuck you, the UI may or
-may not be usable due to inconsistent scaling.  I mean basically fuck you.
+may not be usable due to inconsistent scaling.  And fuck you, we won't respect
+your desktop's window decorations, you don't even get a close button.  I mean
+basically fuck you.
 
-I render to H.264/mp3 in a Matroska container because all my systems can
-accelerate H.264 rendering.  YouTube is fine with this, I have no need to
-transcode it before uploading.  YMMV, my needs are *very* basic (I don't even
-use stereo sound).
+And hey, do you want to record a voiceover right in Resolve?  Resolve has this
+awesome audio suite named Fairlight!  But on Linux, I hope you like all your
+audio inputs and outputs named "ALSA" with no way to distinguish them apart.
+We've renamed them, so they don't even bear a relationship to the output of
+``aplay -l``.  They're all just literally named ALSA with a number.  Fuck you.
+Try all of them.  What's that you say?  You've tried them all and none of them
+seem to be able to capture your mic input?  Fuck you, use Audacity, you loser.
+
+So we want to render our content for upload to YouTube.  YouTube is optimized
+for H.264 video and AAC audio in an MP4 container.  But remember that we can't
+use AAC on Linux because fuck you.  And we can't put MP3 or PCM in an MP4
+container, because fuck you again.  So I render to H.264/MP3 in a Matroska
+container because all my systems can accelerate H.264 rendering.  YouTube is
+fine with this, I have no need to transcode what Resolve shits out before
+uploading it.  YMMV, my needs are *very* basic (I don't even use stereo sound).
+Another option would be a QuickTime container with H.264 and MP3 or PCM audio.
+But Matroska/H.264/MP3 worked for me, so I'm sticking with it.
+
+Oh and by the way, once you have a render, if you were using Windows or MacOS,
+you could use Resolve itself to upload your video to YouTube.  That would be
+pretty cool.  But that doesn't work on Linux, because fuck you one last time.
+Use the web UI, you monkey.
+
+Was It Worth It?
+================
 
 The features I love:
 
-- Audio normalization for youtube on render / audio page 
+- Editing features.  They are really great.
 
-- Audio transcription and text editing.
+- Audio normalization for youtube on render / audio page.
+
+- Audio transcription and text editing, although a little crashy in my
+  configuration.
 
   Audio transcription on a 4GB Quadro P1000 GPU often runs out of GPU memory.
   For me, changing my desktop resolution to 1080p instead of 4K gives it enough
   headroom to finish.  You can then change back to 4K.  I've also *think* I've
   seen it get enough headroom to finish by changing the GPU processing mode to
   OpenCL (although it goes much, much slower), but it might have been a fluke.
+  It's clown cars to use Resolve in 1080p, it barely works, but fuck you.
 
+- A billion tutorials on YouTube by 20-somethings with bokeh backgrounds,
+  shitty USB mics and peppy copyright-free music trying to sell me garbage.
 
-
-  
+So yeah, it was worth it for me, only for the audio transcription and text
+editing features.  I feel shame, but it was worth it.
