@@ -1,3 +1,6 @@
+- input transcoding: h264 with PCM audio for studio version, av1 with PCM audio
+  for free version.  Matroska container works fine for both.
+
 - preferences / user / UI settings / UI display scale
   
 - audio normalization for youtube on render / audio page 
