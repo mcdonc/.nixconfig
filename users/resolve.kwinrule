@@ -9,24 +9,6 @@ types=1
 wmclass=resolve
 wmclassmatch=1
 
-# [DaVinci Resolve main window always with titlebar and frame]
-# Description=DaVinci Resolve main window always with titlebar and frame
-# clientmachinematch=0
-# noborder=false
-# noborderrule=2
-# titlematch=0
-# types=1
-# wmclass=resolve
-# wmclasscomplete=false
-# wmclassmatch=1
-
-# [97a1da4f-3d42-4e47-bf2b-04ef2ca789af]
-# Description=DaVinci Resolve main window always with titlebar and frame
-# ignoregeometry=true
-# ignoregeometryrule=2
-# ignoregeometry=true
-# ignoregeometryrule=2
-# noborderrule=2
-# types=1
-# wmclass=resolve
-# wmclassmatch=1
+# adapted from https://gist.github.com/Ashark/74034a4fa658e8af13bf91acc7b4ce2e
+# via https://forum.blackmagicdesign.com/viewtopic.php?=21&t=56878&p=456990#p456990
+# and https://wiki.archlinux.org/title/DaVinci_Resolve
