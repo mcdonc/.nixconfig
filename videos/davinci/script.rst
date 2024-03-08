@@ -75,6 +75,10 @@ container, and neither Resolve nor Resolve Studio can cope with it.
 If you produce footage with OBS, it can be convinced to use a Matroska (mkv)
 container instead of MP4, but it can only encode to AAC or Opus (ogg) audio.
 Resolve can't use AAC or Opus, so, like camera footage, transcode it you must.
+(Post-video production, I found out this was not true; OBS can encode to
+something directly importable by resolve (mkv/h.264/pcm) if you use its
+advanced output -> recording settings... see
+http://bouncer.repoze.org/misc/obs-settings-for-resolve.png).
 
 If you use AMD on Linux, you have to use the proprietary ``amdgpu-pro`` drivers
 for it to run at all, which are apparently crap for gaming.  As far as I can
