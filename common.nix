@@ -42,36 +42,14 @@ let
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
 
-  av1-transcode = pkgs.writeShellScriptBin "av1-transcode" ''
-    if [ "$#" -ne 2 ]; then
-        echo "Usage: $0 infile outfile"
-        exit 1
-    fi
-
-    infile="$1"
-    outfile="$2"
-    #encoder="-c:v libaom-av1 -strict -2"
-    encoder="-c:v libsvtav1 -preset 10 -crf 35"
-    #encoder="-c:v librav1e -b:v 500K -rav1e-params speed=5:low_latency=true"
-
-    ffmpeg -i "$infile" $encoder -c:a pcm_s16le "$outfile"
-  '';
-
-  # disuse writePython3
-  pytranscodedir = pkgs.substituteAll ({
-    name = "pytranscodedir";
-    src = ./bin/transcodedir.py;
+  dvtranscode = pkgs.substituteAll ({
+    name = "dvtranscode";
+    src = ./bin/dvtranscode.py;
     dir = "/bin";
     isExecutable = true;
     py = "${pkgs.python311}/bin/python";
-  });
-
-  pycopytranscodes = pkgs.substituteAll ({
-    name = "pycopytranscodes";
-    src = ./bin/copytranscodes.py;
-    dir = "/bin";
-    isExecutable = true;
-    py = "${pkgs.python311}/bin/python";
+    lspci = "${pkgs.pciutils}/bin/lspci";
+    ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
   });
 
   findnixstorelinks = pkgs.substituteAll ({
@@ -490,11 +468,9 @@ in
     pkgs-unstable.protonvpn-gui
     discord
     agebox
-    av1-transcode
-    pytranscodedir
-    pycopytranscodes
     findnixstorelinks
     inotify-tools
+    dvtranscode
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp

@@ -15,6 +15,7 @@ let
   shellAliases = {
     code-client = "${code-client}";
   };
+
   watchintake = pkgs.substituteAll ({
     name = "watchintake";
     src = ../../bin/watchintake.py;
