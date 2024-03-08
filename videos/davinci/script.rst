@@ -165,7 +165,9 @@ that after you snap it out of its fullscreen mode, you still need to use the
 super key while you try drag its window around.  And fuck you, the UI may or
 may not be usable due to inconsistent scaling.  And fuck you, we won't respect
 your desktop's window decorations, you don't even get a close button.  I mean
-basically fuck you.
+basically fuck you.  (Post-video-production, found a workaround for most of
+that rant using a KDE "window rule":
+https://github.com/mcdonc/.nixconfig/blob/master/users/resolve.kwinrule)
 
 And hey, do you want to record a voiceover right in Resolve?  Resolve has this
 awesome audio suite named Fairlight!  But on Linux, I hope you like all your
