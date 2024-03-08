@@ -153,18 +153,18 @@ in
     };
   };
 
-  systemd.user.services.watchintake = {
-    Unit = {
-      Description = "Run watchintake.";
-    };
-    Service = {
-      ExecStart = ''
-        ${watchintake}/bin/watchintake ${homedir}/intake
-      '';
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
+  # systemd.user.services.watchintake = {
+  #   Unit = {
+  #     Description = "Run watchintake.";
+  #   };
+  #   Service = {
+  #     ExecStart = ''
+  #       ${watchintake}/bin/watchintake ${homedir}/intake
+  #     '';
+  #   };
+  #   Install = {
+  #     WantedBy = [ "default.target" ];
+  #   };
+  # };
 
 }
