@@ -17,6 +17,11 @@
   networking.hostName = "nixcentre";
 
   powerManagement.cpuFreqGovernor = "performance";
+
+  # use pipewire for Resolve
+  sound.enable = lib.mkForce true;
+  hardware.pulseaudio.enable = lib.mkForce true;
+  services.pipewire.enable = lib.mkForce false;
   
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];

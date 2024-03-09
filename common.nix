@@ -190,8 +190,7 @@ in
   services.xserver.libinput.enable = true; # touchpad
   fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
 
-  # sound
-  sound.enable = true;
+  sound.enable = false; # not needed for pipewire
   hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;

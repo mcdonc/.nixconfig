@@ -180,6 +180,10 @@ We've renamed them, so they don't even bear a relationship to the output of
 ``aplay -l``.  They're all just literally named ALSA with a number.  Fuck you.
 Try all of them.  What's that you say?  You've tried them all and none of them
 seem to be able to capture your mic input?  Fuck you, use Audacity, you loser.
+(Post-video-production: I was able to record my mic by switching from Pipewire
+back to Pulseaudio... likely something to do with
+https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/2870 via
+https://forum.blackmagicdesign.com/viewtopic.php?f=21&t=126287&p=779093 ).
 
 So we want to render our content for upload to YouTube.  YouTube is optimized
 for H.264 video and AAC audio in an MP4 container.  But remember that we can't
