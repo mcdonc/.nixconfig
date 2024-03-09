@@ -471,6 +471,11 @@ in
     findnixstorelinks
     inotify-tools
     dvtranscode
+    beep
+    bastet # tetris
+    moon-buggy
+    pokete
+    blender
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
