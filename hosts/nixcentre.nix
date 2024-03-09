@@ -69,4 +69,22 @@
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "resolve" ];
+    enableTCPIP = true;
+    port = 5432;
+    dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
+    authentication = pkgs.lib.mkForce ''
+      # TYPE  DATABASE        USER            ADDRESS                 METHOD
+      local   all             all                                     trust
+      host    all             all             127.0.0.1/32            trust
+      host    all             all             192.168.1.0/24          trust
+    '';
+  initialScript = pkgs.writeText "backend-initScript" ''
+    CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
+    CREATE DATABASE resolve;
+    GRANT ALL PRIVILEGES ON DATABASE resolve TO resolve;
+  '';
+};
 }

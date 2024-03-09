@@ -21,6 +21,7 @@ in
       "libvirtd"
       "kvm"
       "input"
+      "postgres"
     ];
     openssh = {
       authorizedKeys.keys = [
