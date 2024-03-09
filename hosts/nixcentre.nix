@@ -8,6 +8,7 @@
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/sessile.nix
     ./profiles/davinci-resolve.nix
+    ./profiles/steam.nix
     ../common.nix
   ];
 
@@ -18,7 +19,7 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  # use pipewire for Resolve
+  # use pulseaudio instead of pipewire for Resolve
   sound.enable = lib.mkForce true;
   hardware.pulseaudio.enable = lib.mkForce true;
   services.pipewire.enable = lib.mkForce false;
@@ -52,7 +53,7 @@
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"]; # or "nvidiaLegacy470 etc.
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
 
@@ -71,7 +72,6 @@
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "resolve" ];
     enableTCPIP = true;
     port = 5432;
     dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
@@ -81,10 +81,8 @@
       host    all             all             127.0.0.1/32            trust
       host    all             all             192.168.1.0/24          trust
     '';
-  initialScript = pkgs.writeText "backend-initScript" ''
+  initialScript = pkgs.writeText "postgres-init-script" ''
     CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
-    CREATE DATABASE resolve;
-    GRANT ALL PRIVILEGES ON DATABASE resolve TO resolve;
   '';
   };
 
