@@ -22,7 +22,7 @@
   sound.enable = lib.mkForce true;
   hardware.pulseaudio.enable = lib.mkForce true;
   services.pipewire.enable = lib.mkForce false;
-  
+
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
@@ -86,5 +86,40 @@
     CREATE DATABASE resolve;
     GRANT ALL PRIVILEGES ON DATABASE resolve TO resolve;
   '';
-};
+  };
+
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    extraConfig = ''
+      workgroup = WORKGROUP
+      server string = resolve
+      netbios name = resolve
+      security = user
+      #use sendfile = yes
+      #max protocol = smb2
+      # note: localhost is the ipv6 localhost ::1
+      hosts allow = 192.168.1. 127.0.0.1 localhost
+      hosts deny = 0.0.0.0/0
+      guest account = nobody
+      map to guest = bad user
+    '';
+    shares = {
+      media = {
+        path = "/v/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "chrism";
+        "force group" = "users";
+      };
+    };
+  };
+
+  services.samba-wsdd = {
+    enable = true;
+  };
+
 }
