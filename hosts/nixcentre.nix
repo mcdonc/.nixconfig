@@ -39,6 +39,11 @@
     fsType = "zfs";
   };
 
+  boot.zfs.extraPools = [ "v" ];
+
+  # don't run updatedb on /v
+  services.locate.prunePaths = [ "/v" ];
+
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
