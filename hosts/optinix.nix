@@ -138,7 +138,13 @@ in
   fileSystems."/mnt/v" = {
     device = "//${nixcentre}/v";
     fsType = "cifs";
-    options = [ "username=guest" "x-systemd.automount" "noauto" ];
+    options = [
+      "username=guest"
+      "uid=chrism"
+      "gid=users"
+      "x-systemd.automount"
+      "noauto"
+    ];
   };
 
 }

@@ -106,6 +106,7 @@
       v = {
         path = "/v";
         browseable = "yes";
+        writeable = "yes";
         "read only" = "no";
         "guest ok" = "yes";
         "create mask" = "0644";
