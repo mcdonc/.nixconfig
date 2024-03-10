@@ -4,6 +4,7 @@ let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
     ${config.systemd.services.sanoid.serviceConfig.ExecStart} --monitor-health
   '';
+  nixcentre = "192.168.1.103";
 in
 {
   imports = [
@@ -133,5 +134,11 @@ in
     # health
     monitor-sanoid-health
   ];
+
+  fileSystems."/mnt/v" = {
+    device = "//${nixcentre}/v";
+    fsType = "cifs";
+    options = [ "username=guest" "x-systemd.automount" "noauto" ];
+  };
 
 }

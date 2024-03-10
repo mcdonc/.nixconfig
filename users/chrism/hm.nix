@@ -16,17 +16,6 @@ let
     code-client = "${code-client}";
   };
 
-  watchintake = pkgs.substituteAll ({
-    name = "watchintake";
-    src = ../../bin/watchintake.py;
-    dir = "/bin";
-    isExecutable = true;
-    py = "${pkgs.python311}/bin/python";
-    inotifywait = "${pkgs.inotify-tools}/bin/inotifywait";
-    lspci = "${pkgs.pciutils}/bin/lspci";
-    ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
-  });
-  
 in
 
 {

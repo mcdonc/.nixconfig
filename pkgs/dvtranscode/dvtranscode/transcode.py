@@ -1,23 +1,27 @@
-#!@py@
 import argparse
+import csv
 import os
-import select
 import subprocess
 import sys
+import traceback
 
-import csv
 from io import StringIO
 
-LSPCI = "@lspci@"
-FFMPEG = "@ffmpeg@"
+def parse_csv_line(self, line):
+    file_like_object = StringIO(line)
+    csv_reader = csv.reader(file_like_object)
+    parsed_line = next(csv_reader)
+    return parsed_line
 
-if LSPCI.startswith("@"):
-    LSPCI = "lspci"
+def detect_nvidia():
+    lspci_output = subprocess.run(
+        ["lspci"],
+        stdout=subprocess.PIPE,
+        text=True
+    )
+    return lspci_output.stdout.lower().find('nvidia') != -1
 
-if FFMPEG.startswith("@"):
-    FFMPEG = "ffmpeg"
-
-def get_encoder(av1, software):
+def get_encoder(av1, software, nvidia_detected):
     if av1:
         encoder = [
             '-c:v',
@@ -36,12 +40,6 @@ def get_encoder(av1, software):
             ]
 
     if not software:
-        lspci_output = subprocess.run(
-            [LSPCI],
-            stdout=subprocess.PIPE,
-            text=True
-        )
-        nvidia_detected = lspci_output.stdout.lower().find('nvidia') != -1
         if nvidia_detected:
             encoder = [
                 '-c:v',
@@ -51,25 +49,39 @@ def get_encoder(av1, software):
     encoder.extend(['-c:a', 'pcm_s16le'])
     return encoder
 
-def transcode(input_filename, output_filename, av1, software, yes, dry_run):
-    command = [
-        FFMPEG,
+def transcode(
+        input_file,
+        output_file,
+        av1=False,
+        software=False,
+        dry_run=False,
+        nvidia_detected=False,
+    ):
+
+    ff = [
+        "ffmpeg",
         '-hide_banner',
+        '-y',
     ]
 
-    if yes:
-        command.append('-y')
+    encoder = get_encoder(av1, software, nvidia_detected)
 
-    encoder = get_encoder(av1, software)
+    temp_file = output_file + ".part"
 
-    cmd = command + [ '-i', input_filename ] + encoder + [ output_filename ]
+    cmd = ff + ['-i', input_file] + encoder + ['-f', 'matroska', temp_file]
 
     if dry_run:
         print(' '.join(cmd))
     else:
-        subprocess.run(cmd)
+        subprocess.run(cmd, check=True)
+        try:
+            os.rename(temp_file, os.path.splitext(temp_file)[0])
+            return 0
+        except FileNotFoundError:
+            traceback.print_exc()
+            return 2
 
-if __name__ == "__main__":
+def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
         description="Transcode a video files to H264/PCM/MKV."
     )
@@ -94,22 +106,21 @@ if __name__ == "__main__":
         help="Use software rendering instead of hardware",
     )
     parser.add_argument(
-        "--yes",
-        "-y",
-        action="store_true",
-        help="Overwrite existing files"
-    )
-    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Print the ffmpeg commands that would be issued, do no encoding"
     )
     args = parser.parse_args()
-    transcode(
+    nvidia_detected = detect_nvidia()
+    return transcode(
         args.input_filename,
         args.output_filename,
         args.av1,
         args.software,
-        args.yes,
         args.dry_run,
+        nvidia_detected,
     )
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
+

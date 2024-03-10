@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>60"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dvtranscode"
+dynamic = ["version"] # see tool.setuptools.dynamic below
+description = "Transcoding tools for DaVinci resolve"
+requires-python = ">=3.11"
+
+[project.scripts]
+dvtranscode    = "dvtranscode.transcode:main"
+dvdirtranscode = "dvtranscode.dirtranscode:main"
+dvwatchmedia   = "dvtranscode.watchmedia:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "dvtranscode.__version__"}

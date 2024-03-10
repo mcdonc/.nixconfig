@@ -41,16 +41,7 @@ let
   '';
 
   gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
-
-  dvtranscode = pkgs.substituteAll ({
-    name = "dvtranscode";
-    src = ./bin/dvtranscode.py;
-    dir = "/bin";
-    isExecutable = true;
-    py = "${pkgs.python311}/bin/python";
-    lspci = "${pkgs.pciutils}/bin/lspci";
-    ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
-  });
+  dvtranscode = pkgs.callPackage ./pkgs/dvtranscode.nix { };
 
   findnixstorelinks = pkgs.substituteAll ({
     name = "findnixstorelinks";
@@ -325,7 +316,7 @@ in
       with p; [
         python311Packages.pyserial # for pico-w-go in vscode
         python311Packages.pyflakes # for emacs
-        python311Packages.flake8 # for vscode
+        python311Packages.flake8 # for emacs/vscode
         python311Packages.docutils # for vscode
         python311Packages.pygments # for vscode
         python311Packages.black # for cmdline and vscode
@@ -469,12 +460,12 @@ in
     agebox
     findnixstorelinks
     inotify-tools
-    dvtranscode
     beep
     bastet # tetris
     moon-buggy
     pokete
     blender
+    dvtranscode
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp

@@ -180,6 +180,23 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; (defun flycheck-python-setup ()
+;;   "Run flycheck."
+;;   (flycheck-mode))
+;; (add-hook 'python-mode-hook #'flycheck-python-setup)
+
+;; (setq flycheck-python-flake8-executable "/run/current-system/sw/bin/flake8")
+
+(require 'flycheck-pyflakes)
+(add-hook 'python-mode-hook 'flycheck-mode)
+
+;; If you want to use pyflakes you probably don't want pylint or
+;; flake8. To disable those checkers, add the following to your
+;; init.el:
+
+(add-to-list 'flycheck-disabled-checkers 'python-flake8)
+(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq web-mode-markup-indent-offset 2)

@@ -9,6 +9,7 @@
     ./profiles/sessile.nix
     ./profiles/davinci-resolve.nix
     ./profiles/steam.nix
+    ./profiles/watchmedia.nix
     ../common.nix
   ];
 
@@ -103,8 +104,8 @@
       map to guest = bad user
     '';
     shares = {
-      media = {
-        path = "/v/media";
+      v = {
+        path = "/v";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "yes";
