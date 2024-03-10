@@ -1,11 +1,12 @@
 import argparse
+import logging
 import os
 import subprocess
 import sys
 import traceback
 
-from . import MEDIA
-from .transcode import detect_nvidia, transcode
+from . import MEDIA, Logger
+from .transcode import detect_nvidia, Transcoder
 
 TRANSCODED = "transcoded"
 
@@ -15,9 +16,11 @@ def touch(fname):
 
 def dirtranscode(
         input_dir,
+        logger,
         recurse=False,
-        dry_run=False,
+        verbose=False,
         nvidia_detected=False,
+        overrides=(),
     ):
 
     ignore_dirs = [ TRANSCODED ]
@@ -52,20 +55,24 @@ def dirtranscode(
                 no_ext = os.path.splitext(relative_path)[0]
                 output_file = os.path.join(output_dir,  no_ext + ".mkv")
                 if os.path.exists(output_file):
-                    continue
+                    if input_file in overrides:
+                        logger.info(f"forced reencoding of {input_file}")
+                    else:
+                        logger.info(f"ignoring {input_file}, transcode exists")
+                        continue
                 if not made:
-                    if not dry_run:
-                        os.makedirs(output_dir, exist_ok=True)
+                    os.makedirs(output_dir, exist_ok=True)
+                    logger.info(f"making dir {output_dir}")
                     made = True
                 try:
-                    transcode(
-                        input_file,
-                        output_file,
-                        nvidia_detected=nvidia_detected, 
-                        dry_run=dry_run,
+                    transcoder = Transcoder(
+                        logger,
+                        verbose=verbose,
+                        nvidia_detected=nvidia_detected
                     )
+                    transcoder.transcode(input_file, output_file)
                 except subprocess.CalledProcessError:
-                    print(f"transcoding failed for {input_file}")
+                    logger.error(f"transcoding failed for {input_file}")
 
     if recurse:
         for subdir in subdirs:
@@ -73,12 +80,19 @@ def dirtranscode(
                 input_subdir = os.path.join(input_dir, subdir)
                 dirtranscode(
                     input_subdir,
+                    logger,
                     recurse,
-                    dry_run,
+                    verbose,
                     nvidia_detected,
+                    overrides = overrides,
                 )
 
 def main(argv=sys.argv):
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(message)s',
+    )
+    logger = Logger("dirtranscode")
     parser = argparse.ArgumentParser(
         description="Transcode video files in a directory to H264+PCM."
     )
@@ -93,17 +107,18 @@ def main(argv=sys.argv):
         help="Recurse into subdirs"
     )
     parser.add_argument(
-        "--dry-run",
+        "--verbose",
         action="store_true",
-        help="Print the ffmpeg commands that would be issued, do no encoding"
+        help="Print the commands being issued"
     )
     args = parser.parse_args()
     nvidia_detected = detect_nvidia()
     try:
         dirtranscode(
             args.input_dir,
+            logger,
             args.recurse,
-            args.dry_run,
+            args.verbose,
             nvidia_detected,
         )
     except KeyboardInterrupt:

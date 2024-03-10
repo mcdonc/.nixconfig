@@ -9,11 +9,17 @@ in
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     restartIfChanged = true;
+    unitConfig = {
+      RequiresMountsFor = "/v";
+    };
     serviceConfig = {
       ExecStart = ''
         ${dvtranscode}/bin/dvwatchmedia /v/media
       '';
       User = "chrism";
+      Group = "users";
+      StandardOutput = "journal";
+      StandardError = "journal";
     };
   };
 
