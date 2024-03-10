@@ -13,6 +13,7 @@ in
       ExecStart = ''
         ${dvtranscode}/bin/dvwatchmedia /v/media
       '';
+      User = "chrism";
     };
   };
 
