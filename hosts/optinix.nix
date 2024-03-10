@@ -14,6 +14,7 @@ in
     ./profiles/dnsovertls/resolvedonly.nix
     ./profiles/speedtest
     ./profiles/steam.nix
+    ./profiles/davinci-resolve.nix
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
@@ -24,6 +25,8 @@ in
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6441";
   networking.hostName = "optinix";
+
+  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
 
   powerManagement.cpuFreqGovernor = "performance";
 
