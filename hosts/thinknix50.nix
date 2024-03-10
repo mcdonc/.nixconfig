@@ -6,8 +6,9 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./profiles/pseries.nix
     ./profiles/encryptedzfs.nix
     ./profiles/tlp.nix
-    ../common.nix
+    ./profiles/vmount.nix
     ./profiles/davinci-resolve.nix
+    ../common.nix
     (
       import ./profiles/macos-ventura.nix (
         args // { mem = "16G"; cores = 4; enable = false; }

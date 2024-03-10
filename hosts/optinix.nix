@@ -4,7 +4,6 @@ let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
     ${config.systemd.services.sanoid.serviceConfig.ExecStart} --monitor-health
   '';
-  nixcentre = "192.168.1.103";
 in
 {
   imports = [
@@ -15,6 +14,7 @@ in
     ./profiles/speedtest
     ./profiles/steam.nix
     ./profiles/davinci-resolve.nix
+    ./profiles/vmount.nix
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
@@ -137,17 +137,5 @@ in
     # health
     monitor-sanoid-health
   ];
-
-  fileSystems."/mnt/v" = {
-    device = "//${nixcentre}/v";
-    fsType = "cifs";
-    options = [
-      "username=guest"
-      "uid=chrism"
-      "gid=users"
-      "x-systemd.automount"
-      "noauto"
-    ];
-  };
 
 }

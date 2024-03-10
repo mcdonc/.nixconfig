@@ -8,6 +8,7 @@
     ./profiles/encryptedzfs.nix
     ./profiles/tlp.nix
     ./profiles/sessile.nix
+    ./profiles/vmount.nix
     ../common.nix
   ];
 
