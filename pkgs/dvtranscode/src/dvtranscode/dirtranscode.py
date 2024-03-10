@@ -17,6 +17,7 @@ def touch(fname):
 def dirtranscode(
         input_dir,
         logger,
+        software=False,
         recurse=False,
         verbose=False,
         nvidia_detected=False,
@@ -39,9 +40,9 @@ def dirtranscode(
     try:
         input_files = os.listdir(input_dir)
     except FileNotFoundError:
-        traceback.print_exc()
+        logger.exception(f"trying to listdir {input_dir}")
         input_files = []
-    
+
     for filename in input_files:
         input_file = os.path.join(input_dir, filename)
         if os.path.islink(input_file):
@@ -56,13 +57,14 @@ def dirtranscode(
                 output_file = os.path.join(output_dir,  no_ext + ".mkv")
                 if os.path.exists(output_file):
                     if input_file in overrides:
-                        logger.info(f"forced reencoding of {input_file}")
+                        if verbose:
+                            logger.info(f"forced reencoding of {input_file}")
                     else:
-                        logger.info(f"ignoring {input_file}, transcode exists")
                         continue
                 if not made:
                     os.makedirs(output_dir, exist_ok=True)
-                    logger.info(f"making dir {output_dir}")
+                    if verbose:
+                        logger.info(f"making dir {output_dir}")
                     made = True
                 try:
                     transcoder = Transcoder(
@@ -72,7 +74,7 @@ def dirtranscode(
                     )
                     transcoder.transcode(input_file, output_file)
                 except subprocess.CalledProcessError:
-                    logger.error(f"transcoding failed for {input_file}")
+                    logger.exception(f"transcoding failed for {input_file}")
 
     if recurse:
         for subdir in subdirs:
@@ -81,10 +83,11 @@ def dirtranscode(
                 dirtranscode(
                     input_subdir,
                     logger,
-                    recurse,
-                    verbose,
-                    nvidia_detected,
-                    overrides = overrides,
+                    software=software,
+                    recurse=recurse,
+                    verbose=verbose,
+                    nvidia_detected=nvidia_detected,
+                    overrides=overrides,
                 )
 
 def main(argv=sys.argv):
@@ -103,7 +106,8 @@ def main(argv=sys.argv):
     parser.add_argument(
         "--recurse",
         "-r",
-        action="store_true",
+        action="store_false",
+        default=True,
         help="Recurse into subdirs"
     )
     parser.add_argument(
@@ -111,15 +115,22 @@ def main(argv=sys.argv):
         action="store_true",
         help="Print the commands being issued"
     )
+    parser.add_argument(
+        "--software",
+        "-s",
+        action="store_true",
+        help="Use software rendering instead of hardware",
+    )
     args = parser.parse_args()
     nvidia_detected = detect_nvidia()
     try:
         dirtranscode(
             args.input_dir,
             logger,
-            args.recurse,
-            args.verbose,
-            nvidia_detected,
+            software=args.software,
+            recurse=args.recurse,
+            verbose=args.verbose,
+            nvidia_detected=nvidia_detected,
         )
     except KeyboardInterrupt:
         pass

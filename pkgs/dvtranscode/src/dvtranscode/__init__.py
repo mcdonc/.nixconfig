@@ -20,3 +20,6 @@ class Logger:
 
     def warning(self, message):
         logging.warning(self.format(message))
+
+    def exception(self, message):
+        logging.exception(self.format(message))

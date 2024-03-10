@@ -9,7 +9,6 @@
     ./profiles/sessile.nix
     ./profiles/davinci-resolve.nix
     ./profiles/steam.nix
-    ./profiles/watchmedia.nix
     ../common.nix
   ];
 

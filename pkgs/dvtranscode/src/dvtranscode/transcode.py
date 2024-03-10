@@ -23,7 +23,7 @@ class Transcoder:
             logger,
             software=False,
             verbose=False,
-            nvidia_detected=False
+            nvidia_detected=False,
     ):
         self.logger = logger
         self.software = software
@@ -46,11 +46,12 @@ class Transcoder:
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=True
+                check=True,
+                text=True,
             )
 
             # Parse JSON output
-            output = json.loads(result.stdout.decode('utf-8'))
+            output = json.loads(result.stdout)
 
             # Check if video and audio codecs match criteria
             need = { 'h264', 'pcm_s16le'}
@@ -59,11 +60,8 @@ class Transcoder:
 
             return bool(need)
 
-        except subprocess.CalledProcessError as e:
-            self.logger.warning(
-                "Error running ffprobe:",
-                e.stderr.decode('utf-8').strip()
-            )
+        except subprocess.CalledProcessError:
+            self.logger.exception("ffprobe error")
             return True
 
     def get_encoder(self, input_file):
@@ -112,14 +110,7 @@ class Transcoder:
         if self.verbose:
             self.logger.info(f"running {' '.join(cmd)}")
 
-        try:
-            subprocess.run(cmd, check=True)
-        except subprocess.CalledProcessError as e:
-            self.logger.warning(
-                "Error running ffpeg:",
-                e.stderr.decode('utf-8').strip()
-            )
-            raise
+        subprocess.run(cmd, check=True, text=True)
 
         try:
             final = os.path.splitext(temp_file)[0]
@@ -128,7 +119,10 @@ class Transcoder:
                 self.logger.info(f"renamed {temp_file} to {final}")
             return 0
         except FileNotFoundError:
-            traceback.print_exc()
+            if self.verbose:
+                self.logger.exception(
+                    f"trying to rename {temp_file} to {final}"
+                )
             return 2
 
 def main(argv=sys.argv):
