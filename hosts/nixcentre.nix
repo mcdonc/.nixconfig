@@ -40,7 +40,7 @@
     fsType = "zfs";
   };
 
-  boot.zfs.extraPools = [ "v" ];
+  boot.zfs.extraPools = [ "vid" ];
 
   # don't run updatedb on /v
   services.locate.prunePaths = [ "/v" ];
