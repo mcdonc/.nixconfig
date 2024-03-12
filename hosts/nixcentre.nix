@@ -91,11 +91,9 @@
     securityType = "user";
     extraConfig = ''
       workgroup = WORKGROUP
-      server string = resolve
-      netbios name = resolve
+      server string = nixcentre
+      netbios name = nixcentre
       security = user
-      #use sendfile = yes
-      #max protocol = smb2
       # note: localhost is the ipv6 localhost ::1
       hosts allow = 192.168.1. 127.0.0.1 localhost
       hosts deny = 0.0.0.0/0
