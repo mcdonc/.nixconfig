@@ -174,8 +174,8 @@ in
   services.xserver.enable = true;
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
+  services.xserver.xkb.layout = "us";
+  services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.xserver.libinput.enable = true; # touchpad
@@ -214,7 +214,7 @@ in
   # printing
   services.printing.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
 
   # all other services
   services.fwupd.enable = true;
