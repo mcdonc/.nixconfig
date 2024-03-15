@@ -165,11 +165,11 @@
         "nixpkgs-regression": "nixpkgs-regression"
       },
       "locked": {
-        "lastModified": 1710482987,
-        "narHash": "sha256-bOw7KLpodTQwZHTV9jHqgRf0eFmbhV+cYzRjCDtHA8M=",
+        "lastModified": 1710522792,
+        "narHash": "sha256-P/JCIPlcHYJuRZDAiD7lT2wlIo441s9ygG3wkOzCDvU=",
         "owner": "NixOS",
         "repo": "nix",
-        "rev": "49e9efeaaaf4546f8daa2e33dd5191a2c288f737",
+        "rev": "0fb5024d8df46a47f5367c5b0a51f0b2f6d50032",
         "type": "github"
       },
       "original": {
@@ -321,6 +321,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-newer-intel-compute-runtime": {
+      "locked": {
+        "lastModified": 1710530384,
+        "narHash": "sha256-YBcSKkYz8MSDYWYN+/xnFTMgIbAvqcfUFxpP5SZbPwI=",
+        "owner": "mcdonc",
+        "repo": "nixpkgs",
+        "rev": "cacf6b383899ba184670d0840b89fa735b5f4fd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mcdonc",
+        "ref": "newer-intel-compute-runtime",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-olive": {
       "locked": {
         "lastModified": 1677709272,
@@ -403,11 +419,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1710272261,
-        "narHash": "sha256-g0bDwXFmTE7uGDOs9HcJsfLFhH7fOsASbAuOzDC+fhQ=",
+        "lastModified": 1710451336,
+        "narHash": "sha256-pP86Pcfu3BrAvRO7R64x7hs+GaQrjFes+mEPowCfkxY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0ad13a6833440b8e238947e47bea7f11071dc2b2",
+        "rev": "d691274a972b3165335d261cc4671335f5c67de9",
         "type": "github"
       },
       "original": {
@@ -544,6 +560,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-keybase-bumpversion": "nixpkgs-keybase-bumpversion",
+        "nixpkgs-newer-intel-compute-runtime": "nixpkgs-newer-intel-compute-runtime",
         "nixpkgs-olive": "nixpkgs-olive",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",

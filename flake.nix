@@ -14,6 +14,8 @@
       "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixpkgs-olive.url =
       "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
+    nixpkgs-newer-intel-compute-runtime.url =
+      "github:mcdonc/nixpkgs/newer-intel-compute-runtime";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixgl-olive.url = "github:guibou/nixGL";
     nixgl-olive.inputs.nixpkgs.follows = "nixpkgs-olive";
@@ -45,6 +47,7 @@
     , nixpkgs-py37
     , nixpkgs-py39
     , nixpkgs-keybase-bumpversion
+    , nixpkgs-newer-intel-compute-runtime
     , nix-gaming
     , nixtheplanet
     , nixgl-olive
@@ -92,6 +95,10 @@
           config.allowUnfree = true;
         };
         pkgs-keybase-bumpversion = import nixpkgs-keybase-bumpversion {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs-newer-intel-compute-runtime = import nixpkgs-newer-intel-compute-runtime {
           inherit system;
           config.allowUnfree = true;
         };

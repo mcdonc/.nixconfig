@@ -1,4 +1,4 @@
-args@{ config, pkgs, lib, nixos-hardware, options, ... }:
+args@{ config, pkgs, lib, nixos-hardware, options, pkgs-newer-intel-compute-runtime, ... }:
 
 let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
@@ -26,7 +26,8 @@ in
   networking.hostId = "0a2c6441";
   networking.hostName = "optinix";
 
-  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
+  hardware.opengl.extraPackages = with pkgs-newer-intel-compute-runtime; [
+    intel-compute-runtime ];
 
   powerManagement.cpuFreqGovernor = "performance";
 
