@@ -50,6 +50,12 @@ let
       -vframes 1 thumbnail.png > /dev/null 2>&1
   '';
 
+  yt-1080p = pkgs.writeShellScript "yt-1080p" ''
+    # assumes 4k input
+    ${pkgs.ffmpeg-full}/bin/ffmpeg -i $1 -c:v h264_nvenc -rc:v vbr -b:v 10M \
+       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart $2
+  '';
+
   defaultpalette = [
     "#171421"
     "#ED1515"
@@ -133,6 +139,7 @@ let
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
+    yt-1080p = "${yt-1080p}";
     olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
   };
 
