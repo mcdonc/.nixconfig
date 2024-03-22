@@ -16,15 +16,17 @@ In `part 1 of this series <https://youtu.be/e8vzW5Y8Gzg>`_ I created a
 flake-based NixOS configuration that is can configure three different hosts and
 I pushed it up to GitHub at https://github.com/mcdonc/peruserperhost .  As it
 stands, all hosts share a common set of globally-available programs and
-services; really the only difference between the host configurations of
-``host1``, ``host2`` and ``host3`` is their hostnames.
+services; really the only difference right now between the host configurations
+of ``host1``, ``host2`` and ``host3`` is their hostname.
 
-If you want more basic context about NixOS flakes, I'd suggest you watch `a
-video I made about flakes out of the box
+By the way, if you want more basic context about NixOS flakes, I'd suggest you
+watch `a video I made about flakes out of the box
 <https://www.youtube.com/watch?v=hoB0pHZ0fpI>`_ or read its `talky-script
-<https://github.com/mcdonc/.nixconfig/blob/master/videos/flakesootb/script.rst>`_
+<https://github.com/mcdonc/.nixconfig/blob/master/videos/flakesootb/script.rst>`_ .  Links will be available in the description.
 
-However, in part 2 of this series:
+However, in this continuing part of the series, we have important business to
+attend to. It presumes you've watched part 1, for better or worse.  Here's our
+intent:
 
 - We'll cause ``host1`` to have a Postgres service running on it that will
   not run on ``host2`` or ``host3``.
@@ -57,8 +59,12 @@ This is falling off a log easy.  While logged into ``host1``, in
 
 Then we must ``nixos-rebuild switch``.
 
-``host1`` is now running Postgres, but even if we run ``nixos-rebuild switch``
-on ``host2`` or ``host3``, they will not be running Postgres.
+``host1`` is now running Postgres, we can verify it with a ``systemctl status
+postgresql``, but even if we run ``nixos-rebuild switch`` on ``host2`` or
+``host3``, they will not be running Postgres, nor will they have any
+Postgres-related software installed.
+
+Let's make sure by logging in to ``host2`` and rebuilding.
 
 Dealing with Our Existing ``chrism`` User
 -----------------------------------------
@@ -164,8 +170,8 @@ is present on all of them by adding ``alice.nix`` to the imports list of each:
 
 I then need to git add ``alice.nix`` and try to rebuild.
 
-When we rebuild, we'll notice that some derivations are created for ``alice``,
-and we'll see that a ``/home/alice`` directory is created.
+When the rebuild completes, we'll see that a ``/home/alice`` directory has been
+created.
 
 Commit and push when it works.
 
@@ -301,7 +307,8 @@ Our final ``flake.nix`` should look like this:
    }
 
 
-Try to rebuild on ``host1``.  Commit and push once it works.
+Try to rebuild on ``host1``.  We'll see an input added for home-manager.
+Commit and push once it works.
 
 Giving ``alice`` and ``bob`` Home-Manager Configurations
 --------------------------------------------------------
@@ -343,10 +350,14 @@ We'll do something similar for Bob in ``bob.nix``.
      };
    };
 
-We also want Bob and Alice to share some home-manager configuration, so let's
-make a file named ``home.nix`` that contains configuration that will provide a
-``ll`` shell alias when either is in a ``bash`` interactive shell.  It will
-also set the baseline state version for home-manager.
+Rebuild to see that ``/home/alice/.config/git/config`` is a symlink into the
+Nix store and has the proper contents referring to Alice.  If we commit, push,
+and rebuild ``host3``, we will see something similar for Bob.
+
+We also want Bob and Alice to share some home-manager configuration, so on
+``host1``, let's make a file named ``home.nix`` that contains configuration
+that will provide a ``ll`` shell alias when either is in a ``bash`` interactive
+shell.  It will also set the baseline state version for home-manager.
 
 .. code-block:: nix
 
@@ -354,11 +365,16 @@ also set the baseline state version for home-manager.
 
   { pkgs, ...}:
 
-  programs.bash = {
-    shellAliases = {
-      ll = "${pkgs.coreutils}/bin/ls -al";
+  {
+    programs.bash = {
+      enable = true;
+      shellAliases = {
+        ll = "${pkgs.coreutils}/bin/ls -al";
+      };
     };
-  };
+   }
+
+Run ``git add home.nix``.
 
 Then we will add the following into ``users.alice`` within ``alice.nix`` and
 into ``users.bob`` within ``bob.nix`` to include the shared home-manager
@@ -404,9 +420,8 @@ And ``bob.nix`` becomes:
      };
    };
    
-Try to rebuild.  Once the rebuild works, ``su - alice`` and see that
-``/home/alice/.gitconfig`` is a symlink into the Nix store and has the proper
-contents referring to Alice.  Also, try running ``ll`` as ``alice`` and see
-that it works.  Do the same for ``bob``.
+Try to rebuild.  Once the rebuild works, ``su - alice`` and see that running
+``ll`` as ``alice`` produces the right output and ``type ll`` tells us it's a
+shell alias.  On ``host3``, this will also be the case for ``bob``.
 
 Commit and push when it all works.
