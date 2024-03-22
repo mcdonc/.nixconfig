@@ -55,7 +55,7 @@ This is falling off a log easy.  While logged into ``host1``, in
 
 .. code-block:: nix
 
-   service.postgresql.enable = true;
+   services.postgresql.enable = true;
 
 Then we must ``nixos-rebuild switch``.
 
@@ -373,7 +373,7 @@ and rebuild ``host3``, we will see something similar for Bob.
 We also want Bob and Alice to share some home-manager configuration, so on
 ``host1``, let's make a file named ``home.nix`` that contains configuration
 that will provide a ``ll`` shell alias when either is in a ``bash`` interactive
-shell.  It will also set the baseline state version for home-manager.
+shell.
 
 .. code-block:: nix
 
