@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/t420"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/tseries.nix

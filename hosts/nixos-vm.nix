@@ -3,9 +3,9 @@
 {
   imports =
     [
-      (modulesPath + "/profiles/qemu-guest.nix")
       ../users/chrism
       ../users/larry
+      (modulesPath + "/profiles/qemu-guest.nix")
       ../common.nix
       {
       }

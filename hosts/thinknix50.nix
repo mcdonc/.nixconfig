@@ -1,6 +1,7 @@
 args@{ config, pkgs, lib, nixos-hardware, ... }:
 {
   imports = [
+    ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p50"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/pseries.nix

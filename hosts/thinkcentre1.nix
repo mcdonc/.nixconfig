@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../users/chrism
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/encryptedzfs.nix

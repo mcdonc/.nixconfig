@@ -7,6 +7,7 @@ let
 in
 {
   imports = [
+    ../users/chrism
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/encryptedzfs.nix
@@ -22,6 +23,7 @@ in
       )
     )
   ];
+
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6441";
   networking.hostName = "optinix";

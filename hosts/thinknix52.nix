@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p52"
     "${nixos-hardware}/common/pc/ssd"
     ./profiles/pseries.nix
