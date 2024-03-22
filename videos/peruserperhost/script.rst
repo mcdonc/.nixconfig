@@ -1,6 +1,6 @@
-==============================================================================
- NixOS 79: Use Flakes and Home-Manager to get Per-User-Per-Host Configuration
-==============================================================================
+===========================================================================
+ NixOS 79: Use Flakes + Home-Manager to get Per-User-Per-Host Configuration
+===========================================================================
 
 - Companion to video at 
 
@@ -12,219 +12,209 @@
 Script
 ======
 
-I made a video not long ago that detailed how to get NixOS 23.11 configured in
-"flakes mode" right after it has first been installed.  The purpose of the
-video was to demonstrate that flakes are a layer on top of Nix legacy
-configuration.  In that video, I make a claim: using a flake to configure your
-NixOS systems really is better than using legacy (``configuration.nix``) mode.
+I made a `video not long ago
+<https://github.com/mcdonc/.nixconfig/blob/master/videos/flakesootb/script.rst>`_
+that detailed how to get NixOS 23.11 configured in "flakes mode" right after it
+has first been installed.  The purpose of the video was to demonstrate that a
+NixOS flake is just a layer on top of Nix legacy ``configuration.nix``
+configuration.  In that video, I made a claim: using a flake to configure your
+NixOS systems really is better than using legacy mode.  But I didn't much
+substantiate that claim except by hand-waving about how you could add another
+host as a named ``nixosConfigurations.nixosSystem`` to the ``outputs`` of your
+``flake.nix``, something like this:
 
-NixOS has a bit of a split personality.  Out of the box, when you install it
-fresh, it is configured in a mode that will soon become legacy.
-
-The "legacy" mode is the use of a single ``/etc/nixos/configuration.nix`` file
-that houses all the information about your system.  It's quite cool and it
-works, but pretty soon (probably within the next six months to a year), this
-mode of configuration will become deprecated.
-
-What will take its place?  A file named ``/etc/nixos/flake.nix``.  When this
-file exists on your system, and you put some ``nix``-the-command related hair
-in your configuration, it builds the system differently.  In particular,
-instead of using `channels <https://nixos.wiki/wiki/Nix_channels>`_, it becomes
-possible to use package inputs that you specify in the ``/etc/nixos/flake.nix``
-file instead.
-
-One of the cool features of NixOS is being able to totally repeatably build a
-system.  Want to deploy a similar configuration across two or twenty systems?
-Totally doable with NixOS.  But when you use channels, it's more difficult to
-repeat an older, woking build on one system, or repeat exactly the same build
-across a number of systems because once you update a channel, you can't easily
-un-update it, and you're stuck moving forward with package changes implied by
-the new channel data.  Channel data is updated over time, so the build you
-deploy to one system, due to the passage of time until you get around to the
-next one, may not be exactly the same as the first.
-
-With flakes, on the other hand, a ``flake.lock`` file controls which version of
-``nixpkgs`` (the huge software repository) you're using, and you can move back
-in time if something breaks, and you can ensure all your systems have exactly
-the same set of software.
-
-There are various ways around the update problem without using flakes, but
-flakes are the futureproof way to avoid it from the start.  The code that
-implements flakes is being written by the core NixOS team, and it is a *fait
-accompli* that it will eventually be the default configuration mechanism.
-
-One downside of using NixOS in flakes mode is a paucity of beginner
-documentation.  NixOS is hard to learn.  You have to learn a new language, and
-learn how to apply that language to get done the things that need to be done.
-Most beginner NixOS docs don't yet mention flakes, so you may get stuck.  If
-you use flakes out of the box, you'll need to be willing to visit the NixOS
-Matrix channel or its Discourse website to ask questions when this happens.
-But to be honest, this will be true even if you *don't* use flakes anyway, so
-why not?  Also, it's all just Nix-the-language anyway, so you won't miss out on
-much by deciding to use flakes; all the knowledge you gain will be applicable
-to both modes.
-
-Another downside of using NixOS in flakes mode is that you will have to know at
-least a few Git commands, and you'll have to be willing to use Git to version
-control your NixOS configuration files.
-
-So, while it may be a lot to take on board, especially as a new NixOS user, in
-this weird interregnum between the retiring of ``configuration.nix`` and the
-ascendance of ``flake.nix``, I'd suggest using flakes, if only because it truly
-is better than the legacy system, particularly if you want to reuse a
-configuration across multiple systems.
-
-I'm going to describe how to install NixOS for the first time, and get set up
-in a flakes regime right from the start, so you don't eventually need to
-convert your system to use flakes when it becomes the default.
-
-Demo
-====
-
-Using a `NixOS 23.11 ISO <https://nixos.org/download#nixos-iso>`_, install
-NixOS via the GUI installer.  There are two versions of the ISO, one that uses
-KDE Plasma, and the other that uses Gnome to present the installer GUI.  The
-existence of both is semi-pointless, because you can choose to install either
-KDE or Gnome (or a variety of other desktop environments) into your "real"
-environment using either install ISO.
-
-In this demo I'm using the Plasma version.
-
-.. image:: ./install.png
-
-Once the installer has finished, reboot.
-
-Start a terminal.
-
-Change the ownership of the ``/etc/nixos`` directory and the files it contains
-such that your "normal" user can read and write to stuff within it::
-
-  $ cd /etc/nixos
-  $ sudo chown -R chrism:users .
-
-Set up the configuration hair that enables flakes-related commands in your
-``configuration.nix`` using ``nano`` in a terminal (it's the only editor on the
-system right now).  Add this stanza anywhere before the final closing curly
-brace of the file, but after its paired opening brace.
-
-.. code:: nix
-
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-Add ``git`` and your favorite editor to ``environment.systemPackages`` within
-``configuration.nix``::
-
-  environment.systemPackages = with pkgs; [
-    git
-    emacs
-  ];
-
-If you are installing a virtual machine, this line will start a service that
-allows you to cut and paste between your host machine and the NixOS guest
-(requires a reboot of the guest after a rebuild)::
-
-  services.spice-vdagentd.enable = true;
-
-Make sure your system is connected to the internet (Wifi, whatever).
-
-Rebuild the system::
-
-  $ sudo nixos-rebuild switch
-
-Do some configuration of Git so it works when we use it::
-
-  $ git config --global user.email "chrism@plope.com"
-  $ git config --global user.name "Chris McDonough"
-
-You are now ready to convert this working installation to flakes.
-
-The flake regime requires that all of your configuration files live inside a
-version control repository.  Create a git repository within ``/etc/nixos``::
-
-  $ cd /etc/nixos
-  $ git init
-
-
-Create ``/etc/nixos/flake.nix``.
-
-.. code:: nix
-
-    {
-      description = "My flakes configuration";
-
-      inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-      };
+.. code-block:: nix
 
       outputs = { self, nixpkgs }@inputs:
         {
           nixosConfigurations = {
-            nixos = nixpkgs.lib.nixosSystem {
+            host1 = nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
-              modules = [ ./configuration.nix];
+              modules = [ ./configuration-host1.nix ];
+            };
+            host2 = nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [ ./configuration-host2.nix ];
             };
           };
         };
+          
+In this video, I'll dive in a little deeper and set up three NixOS machines,
+``host1``, ``host2``, and ``host3``.  They will be configured like this:
+
+- all hosts will share a common set of globally-available programs and
+  services.
+
+- all hosts will have the user environment and the home-manager configuration
+  (shell setup, ssh configuration, etc) of a user named ``alice``.
+
+- host3 will additionally have the user environment and the home-manager
+  configuration of a user named ``bob``.
+
+- ``alice`` and ``bob`` will share a common base set of home-manager
+  configuration stuff.
+
+- host1 will have a *system-level* systemd service running on it that is not
+  running on host2 or host3.
+
+- host2 will have special home-manager configuration for the ``alice`` user; in
+  particular, it will run a *user-level* systemd service as ``alice``.
+
+- host3 will have special home-manager configuration for the ``bob`` user; it
+  will add additional shell aliases for fred that aren't shared by ``alice``.
+
+That means that we will be able to deploy a host:
+
+- with some number of user environments.
+
+- those user environments can share a base pool of settings.
+
+- but we can specialize the user environments as necessary.
+
+And we can deploy multiple hosts:
+
+- each with a common set of programs and system-level configuration.
+
+- but specializable settings and system-level configuration can be tied to a
+  particular host.
+
+This will let us share the vast majority of host configuration between hosts
+and the vast majority of user configuration between users. But in a pinch, it
+will let us get very granular, letting us set up some service or program on one
+host that isn't on another, and letting us give some user some service or
+setting on one particular host, without needing to give that user the same
+setting on another host.
+
+Of course this is totally doable on other Linux systems using something like
+Ansible and some imperative per-host, per-user setup code, but we will do it
+all declaratively, within Nix files.
+
+Setting Up the First Host
+-------------------------
+
+We'll start out right after a reboot of the NixOS installer of the system that
+we want to call ``host1``. We need to modify the default configuration to put
+it into flakes mode, make some changes to the ``configuration.nix`` file, check
+in our ``/etc/nixos`` files into a Git repository, and push it all up to
+GitHub.
+
+If you want more context about flakes, watch `the flakes out of the box video
+<https://www.youtube.com/watch?v=hoB0pHZ0fpI>`_ or read its `talky-script
+<https://github.com/mcdonc/.nixconfig/blob/master/videos/flakesootb/script.rst>`_:
+
+First we change some permissions so we don't have to sudo all the time::
+
+  $ cd /etc/nixos
+  $ sudo chown -R chrism:users .
+
+In ``/etc/nixos/configuration.nix`` we're going to:
+
+- Change the hostname from ``nixos`` to ``host1``
+
+- Enable an ssh server
+
+- Enable git and our favorite editor so we don't lose our minds using nano.
+
+- Add some nix configuration that allows us to use flakes:
+
+  .. code-block:: nix
+
+    nix = {
+      settings = {
+        experimental-features = "nix-command flakes";
+      };
+    };
+
+- And for me only, since I'm using virtual machines for this video, I need to
+  add some VM hair that lets me cut and paste across the host and the ``host1``
+  VM:
+
+  .. code-block:: nix
+
+     virtualisation.virtualbox.guest = {
+       enable = true;
+       x11 = true;
+     };
+
+- Note our host's IP address via ifconfig
+
+Then we need to run ``nixos-rebuild switch`` and reboot.
+
+Once rebooted:
+
+- Copy our ssh configuration over to the new machine from another host:
+
+  scp -r ~/.ssh <hostip>:
+
+- Edit our ``/etc/nixos/configuration.nix`` so our ssh public key is associated
+  with our user:
+
+  .. code-block:: nix
+
+    users.users.chrism = {
+      # .. other config ..
+      openssh = {
+          authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLXUsGqUIEMfcXoIiiItmGNqOucJjx5D6ZEE3KgLKYV ednesia"
+          ];
+        };
+     };
+
+- Get git configured for first-time use::
+
+   git config --global user.email "chrism@plope.com"
+   git config --global user.name "Chris McDonough"
+
+- add an ``/etc/nixos/flake.nix`` file:
+
+  .. code-block:: nix
+
+    {
+    description = "My flakes configuration";
+
+    inputs = {
+      nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    };
+
+    outputs = { self, nixpkgs }@inputs:
+      {
+        nixosConfigurations = {
+          host1 = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [ ./configuration.nix];
+          };
+        };
+      };
     }
 
-Try to run ``sudo nixos-rebuild switch``.  It will fail with an inscrutable
-error::
+- Run ``git init`` within our ``/etc/nixos`` directory.
 
-  warning: Git tree '/etc/nixos' is dirty
-  error: getting status of '/nix/store/0ccnxa25whszw7mgbgyzdm4nqc0zwnm8-source/flake.nix': No such file or directory
+- Commit all of the files in the /etc/nixos directory to our local git
+  repository::
 
-But note that the *presence* of ``/etc/nixos/flake.nix`` means we are now
-attemting to build in flakes mode, and the error is an indication of that
-(legacy mode requires no version control).
+   git add flake.nix configuration.nix hardware-configuration.nix
 
-``flake.nix`` needs to be added to version control to be findable::
+- Rerun ``nixos-rebuild switch`` to test our config out.
 
-  $ git add flake.nix
+- Git add the generated ``flake.lock`` file when it all works::
 
-Try to run ``sudo nixos-rebuild switch``.  It will fail again with the same
-inscrutable error, but this time for ``configuration.nix``::
+   git add flake.lock
+   
+- Commit::
+    
+   git commit -a -m "first commit"
 
-     error: getting status of '/nix/store/2hxl17pfyqd6d86sv3cyvra2bfa7gr5p-source/configuration.nix': No such file or directory
+- Create a GitHub repository named ``peruserperhost`` that we can push our
+  changes to.  
 
-``configuration.nix`` was generated during our install process and wwe refer to
-it in our ``flake.nix``.  It needs to be added to version control.  It, in turn
-refers to ``hardware-configuration.nix``, which likewise needs to be added::
+- Push our local git commits to GitHub.  We'll use this repository to manage
+  all of our host configurations::
 
-  $ git add configuration.nix hardware-configuration.nix
+    git remote add origin git@github.com:mcdonc/peruserperhost.git
+    git push -u origin master
 
-Try to run ``sudo nixos-rebuild switch``.  It will succeed.
-
-You're now using NixOS in flakes mode.
-
-Check in all the files you added to version control::
-
-  $ git commit -a -m "convert to flakes"
-  
-If you like, you can `import your /etc/nixos Git repository into GitHub
-<https://www.wikihow.com/Import-a-Repository-on-Github>`_ to share it with
-other people, or just to keep it somewhere safe in case your hard disk crashes.
-You can of course revert to any commit in the repository and run
-``nixos-rebuild`` to get back to an older state.
-
-Over time, to update the software that's installed on your machine, we can use
-``nix flake update`` and a rerun of ``nixos-rebuild switch``::
-
-  $ nix flake update
-  $ sudo nixos-rebuild switch
-
-This will change ``flake.lock`` and you can choose to commit it if everything
-worked ok or revert it if things went pear shaped after the rebuild.  If you
-revert it, just run ``sudo nixos-rebuild switch`` again and you will be back at
-the state the machine was at before you updated the flake and rebuilt.
-
-This replaces the legacy regime's command::
-
-  $ sudo nixos-rebuild switch --upgrade
+The Second Host
+---------------
 
 Let's revisit ``/etc/nixos/flake.nix``:
 
@@ -300,4 +290,77 @@ For example, you can install a MacOS X Ventura virtual machine by doing::
   nix run github:matthewcroughan/NixThePlanet#macos-ventura
 
 Under the hood, that uses a flake.
+
+Demo
+----
+
+- Terminal font size
+
+- bridged networking
+
+- bidirectional shared clipboard
+
+- $ cd /etc/nixos
+  $ sudo chown -R chrism:users .
+
+- in configuration.nix:
+
+  - hostname
+
+  - enable ssh
+
+  - nixos-vm config
+
+  - git, emacs, vim
+
+  nix = {
+    settings = {
+      experimental-features = "nix-command flakes";
+    };
+  };
+
+  # replaces
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
+- Reboot
+  
+- scp -r ~/.ssh 192.168.1.153:
+
+  git config --global user.email "chrism@plope.com"
+  git config --global user.name "Chris McDonough"
+  git commit -a -m "first commit"
+  git push -u origin master
+
+- add flake.nix
+
+  {
+  description = "My flakes configuration";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+  };
+
+  outputs = { self, nixpkgs }@inputs:
+    {
+      nixosConfigurations = {
+        host1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./configuration.nix];
+        };
+      };
+    };
+}
+
+Modify configuration.nix
+
+  - hostname
+
+Rebuild
+
+Add, Commit and push
 
