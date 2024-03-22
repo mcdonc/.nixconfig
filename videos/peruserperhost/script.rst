@@ -334,5 +334,6 @@ specializations I promised in the introduction to this video.
 Denouement
 ----------
 
-In part 2, I will get ``alice`` and ``bob`` set up as well as specialize
-services per-host.
+You can take a look at the configuration we've created so far at
+https://github.com/mcdonc/peruserperhost .  In part 2, I will get ``alice`` and
+``bob`` set up as well as specialize services per-host.
