@@ -1,6 +1,6 @@
-===========================================================================
- NixOS 79: Use Flakes + Home-Manager to get Per-User-Per-Host Configuration
-===========================================================================
+=====================================================================================
+ NixOS 79: Use Flakes + Home-Manager to get Per-User-Per-Host Configuration (Part 1)
+=====================================================================================
 
 - Companion to video at 
 
@@ -39,11 +39,14 @@ host as a named ``nixosConfigurations.nixosSystem`` to the ``outputs`` of your
           };
         };
           
-In this video, I'll dive in a little deeper and set up three NixOS machines,
-``host1``, ``host2``, and ``host3``.  They will be configured like this:
+In part1 of this series, I'll dive in a little deeper and set up three NixOS
+machines, ``host1``, ``host2``, and ``host3``.  They will be configured like
+this:
 
 - all hosts will share a common set of globally-available programs and
   services.
+
+In part 2 of this series:
 
 - all hosts will have the user environment and the home-manager configuration
   (shell setup, ssh configuration, etc) of a user named ``alice``.
@@ -61,7 +64,7 @@ In this video, I'll dive in a little deeper and set up three NixOS machines,
   particular, it will run a *user-level* systemd service as ``alice``.
 
 - host3 will have special home-manager configuration for the ``bob`` user; it
-  will add additional shell aliases for fred that aren't shared by ``alice``.
+  will add additional shell aliases for bob that aren't shared by ``alice``.
 
 That means that we will be able to deploy a host:
 
@@ -131,6 +134,7 @@ In ``/etc/nixos/configuration.nix`` we're going to:
 
   .. code-block:: nix
 
+                  
      virtualisation.virtualbox.guest = {
        enable = true;
        x11 = true;
@@ -142,9 +146,9 @@ Then we need to run ``nixos-rebuild switch`` and reboot.
 
 Once rebooted:
 
-- Copy our ssh configuration over to the new machine from another host:
+- Copy our ssh configuration over to the new machine from another host::
 
-  scp -r ~/.ssh <hostip>:
+    scp -r ~/.ssh <hostip>:
 
 - Edit our ``/etc/nixos/configuration.nix`` so our ssh public key is associated
   with our user:
@@ -213,154 +217,122 @@ Once rebooted:
     git remote add origin git@github.com:mcdonc/peruserperhost.git
     git push -u origin master
 
-The Second Host
----------------
+Factoring our Configuration to Let Us Add a Second Host
+-------------------------------------------------------
 
-Let's revisit ``/etc/nixos/flake.nix``:
+In my `flakes OOTB video talky-script
+<https://github.com/mcdonc/.nixconfig/blob/master/videos/flakesootb/script.rst>`_,
+I handwaved about changing ``flake.nix`` so that we can use the same Git
+repository to manage not just one host, but two or more hosts.  Let's change
+things around so that we can actually do that now.
 
-.. code:: nix
+We want to leave most of the networking, services, desktop environment, user,
+and program configuration in ``configuration.nix`` alone so that we can share
+it with other hosts, but we don't want the ``hardware-configuration.nix`` to be
+shared between multiple hosts.  Each host will have its own hardware
+configuration in a nix file named after the host instead, and we'll move some
+configuration that isn't appropriate to share between hosts from
+``configuration.nix`` into that file too.
 
-    {
-      description = "My flakes configuration";
+We haven't got to factoring out our user configuration or adding in
+home-manager yet, we will do that in a little while.
 
-      inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-      };
+To do this, we will:
 
-      outputs = { self, nixpkgs }@inputs:
-        {
-          nixosConfigurations = {
-            nixos = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [ ./configuration.nix];
-            };
+- Rename ``hardware-configuration.nix`` to ``host1.nix``.
+
+- Remove the import of ``hardware-configuration.nix`` from
+  ``configuration.nix``.
+
+- Add an import of ``configuration.nix`` to ``host1.nix``.
+
+- Move the ``boot.loader.*`` directives from ``configuration.nix`` to
+  ``host1.nix``.
+
+- Move the ``networking.hostName`` from ``configuration.nix`` to ``host1.nix``.
+
+- Change modules of host1 nixConfiguration in ``flake.nix`` from
+  ``[ ./configuration.nix ]`` to ``[ ./host1.nix ]``.
+
+- Try to rebuild via ``nixos-rebuild switch``.  Nothing should have changed.
+
+Adding a Second Host
+--------------------
+
+We're now going to add a second host to our configuration.  I'll create a
+second VM by using the NixOS installer again, then I'll make some changes to
+the result.
+
+I will repeat some of the steps I took in the last stage.  I will:
+
+- Enable ssh server, add git emacs and vim, change hostname to "host2" like
+  last time.
+
+- Rebuild.
+
+- Reboot.
+
+- Copy my ssh keys over like last time.
+
+- Get git configured for first-time use like last time::
+
+   git config --global user.email "chrism@plope.com"
+   git config --global user.name "Chris McDonough"
+
+- I will not make further changes to anything in ``/etc/nixos``.  Instead
+  I'll move it aside, check out my GitHub repository and turn it into a new
+  ``/etc/nixos``::
+
+    cd ~
+    git clone git@github.com:mcdonc/peruserperhost.git
+    sudo mv /etc/nixos /etc/nixos_aside
+    sudo mv peruserperhost /etc/nixos
+
+- Copy the ``hardware-configuration.nix`` from ``/etc/nixos_aside`` into
+  ``/etc/nixos/host2.nix``.
+
+- Add ``./configuration.nix`` to the imports list of ``host2.nix``.
+
+- Copy the ``boot.loader.*`` directives and the hostname over from
+  ``/etc/nixos_aside/configuration.nix`` to ``host2.nix``.
+
+- Add a ``host2`` nixosSystem to ``nixosConfigurations`` in ``flake.nix``.
+
+  .. code-block:: nix
+
+          host2 = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [ ./host2.nix ];  
           };
-        };
-    }
 
-See "nixos = nixpkgs.lib.nixosSystem" there?  that says "use this configuration
-for a system with the *hostname* ``nixos``, which by default is the hostname
-given to a new system created by the installer, and which is changeable in
-``/etc/nixos/configuration.nix``.  If you want to add another machine to your
-configuration in the future, you can just give it a different hostname, and
-refer to slightly different configurations for different systems in
-``flake.nix``, e.g.:
+- Add ``host2.nix`` to the git staging area::
 
-.. code:: nix
+    git add host2.nix
 
-      outputs = { self, nixpkgs }@inputs:
-        {
-          nixosConfigurations = {
-            nixos = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [ ./configuration.nix];
-            };
-            myothersystem = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [ ./configuration.nix ./moreconfig.nix];
-            };
-          };
-        };
-          
-Then run nixos-rebuild on the host you named ``myothersystem`` and it will have
-all the configuration implied by both ``configuration.nix`` and
-``moreconfig.nix``.  Rinse and repeat for every system in your life.  Allowing
-systems to share the same configuration this way is one of the benefits of
-flakes-based configuration.
+- Rebuild.
 
-  
-Blather
-=======
+- Commit the changes to git and push::
 
-I'm not going to go into making other changes to ``flake.nix``.  Plenty of
-YouTube videos, blog entries, and other resources are available for that.  But
-we can see that flakes-based configuration is really just a layer on top of the
-legacy configuration service; one which can use files
-(e.g. ``configuration.nix`` and ``hardware-configuration.nix``) that were
-generated under the old configuration regime.
+    git commit -a -m "add host2"
+    git push
 
-I've been talking as if ``flake.nix`` is a feature only useful to configure
-NixOS.  It is actually a much more general system, and can be used to build
-projects other than NixOS.  Nix developers are, as we speak, busy creating
-registries of flakes that build software and services by just feeding a URL to
-the ``nix run`` command.
+We now have a second system which shares most of its configuration with the
+first system.  In fact, the only real difference between them is a hostname.
+But we now have a place to hang host-specific configuration.  If we want
+something special on host1, we can add stuff to ``host1.nix``, likewise if we
+want something special on host2, we can add it too ``host2.nix``.  Changes we
+make to a host-specific file won't be reflected in the configuration of any
+other host.
 
-For example, you can install a MacOS X Ventura virtual machine by doing::
+Adding a Third Host
+-------------------
 
-  nix run github:matthewcroughan/NixThePlanet#macos-ventura
+I'll repeat the dance I did for ``host2`` to make a ``host3``, at which point
+we will start to be able to make the host-specific and user-specific
+specializations I promised in the introduction to this video.
 
-Under the hood, that uses a flake.
+Denouement
+----------
 
-Demo
-----
-
-- Terminal font size
-
-- bridged networking
-
-- bidirectional shared clipboard
-
-- $ cd /etc/nixos
-  $ sudo chown -R chrism:users .
-
-- in configuration.nix:
-
-  - hostname
-
-  - enable ssh
-
-  - nixos-vm config
-
-  - git, emacs, vim
-
-  nix = {
-    settings = {
-      experimental-features = "nix-command flakes";
-    };
-  };
-
-  # replaces
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
-- Reboot
-  
-- scp -r ~/.ssh 192.168.1.153:
-
-  git config --global user.email "chrism@plope.com"
-  git config --global user.name "Chris McDonough"
-  git commit -a -m "first commit"
-  git push -u origin master
-
-- add flake.nix
-
-  {
-  description = "My flakes configuration";
-
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-  };
-
-  outputs = { self, nixpkgs }@inputs:
-    {
-      nixosConfigurations = {
-        host1 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./configuration.nix];
-        };
-      };
-    };
-}
-
-Modify configuration.nix
-
-  - hostname
-
-Rebuild
-
-Add, Commit and push
-
+In part 2, I will get ``alice`` and ``bob`` set up as well as specialize
+services per-host.
