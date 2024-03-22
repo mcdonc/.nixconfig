@@ -1,15 +1,18 @@
-{ config, lib, pkgs, modulesPath, kde2nix, ... }@inputs:
+{ lib, modulesPath, ... }:
 
 {
   imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix") ../common.nix ];
+    [
+      (modulesPath + "/profiles/qemu-guest.nix")
+      ../users/chrism/user.nix
+      ../common.nix
+      {
+      }
+    ];
 
   home-manager = {
-    useUserPackages = true;
     users.chrism = import ../users/chrism/hm.nix;
-    extraSpecialArgs = inputs;
   };
-  
   
   boot.initrd.availableKernelModules =
     [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];

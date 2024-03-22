@@ -108,6 +108,12 @@
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
         ({ config, pkgs, ... }: { nixpkgs.overlays = overlays; })
+        {
+          home-manager = {
+            useUserPackages = true;
+            extraSpecialArgs = specialArgs;
+          };
+        }
       ];
 
       chris-modules = [
@@ -187,7 +193,7 @@
           modules = chris-modules ++ [ ./hosts/nixcentre.nix ];
         };
         nixos-vm = nixpkgs.lib.nixosSystem {
-          inherit system specialArgs self;
+          inherit system specialArgs;
           modules = shared-modules ++ [ ./hosts/nixos-vm.nix ];
         };
       };
