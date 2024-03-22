@@ -1,8 +1,8 @@
-=====================================================================================
- NixOS 79: Use Flakes + Home-Manager to get Per-User-Per-Host Configuration (Part 1)
-=====================================================================================
+==========================================================================
+NixOS 79: Flakes + Home Manager Multiuser/Multihost Configuration (Part 1)
+==========================================================================
 
-- Companion to video at 
+- Companion to video at https://youtu.be/e8vzW5Y8Gzg
 
 - This text script available via link in the video description.
 
