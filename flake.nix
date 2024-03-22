@@ -104,6 +104,12 @@
         inherit nixos-hardware nix-gaming system inputs;
       };
 
+      shared-modules = [
+        home-manager.nixosModules.home-manager
+        nixtheplanet.nixosModules.macos-ventura
+        ({ config, pkgs, ... }: { nixpkgs.overlays = overlays; })
+      ];
+
       chris-modules = [
         ./users/chrism/user.nix
         home-manager.nixosModules.home-manager
@@ -181,8 +187,8 @@
           modules = chris-modules ++ [ ./hosts/nixcentre.nix ];
         };
         nixos-vm = nixpkgs.lib.nixosSystem {
-          inherit system specialArgs;
-          modules = chris-modules ++ [ ./hosts/nixos-vm.nix ];
+          inherit system specialArgs self;
+          modules = shared-modules ++ [ ./hosts/nixos-vm.nix ];
         };
       };
     };
