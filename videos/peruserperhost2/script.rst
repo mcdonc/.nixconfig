@@ -307,8 +307,24 @@ Our final ``flake.nix`` should look like this:
    }
 
 
-Try to rebuild on ``host1``.  We'll see an input added for home-manager.
-Commit and push once it works.
+Note that we could have spelled:
+
+.. code-block:: nix
+                
+       specialArgs = specialArgs;
+       system = system;
+
+instead as:
+
+.. code-block:: nix
+                
+       inherit specialArgs system;
+
+But the former is clearer, even though it's more to type.
+
+Now we'll try to rebuild on ``host1``.  If it works, we'll see an input added
+for home-manager in the output of ``nixos-rebuild``.  Commit and push once it
+works.
 
 Giving ``alice`` and ``bob`` Home-Manager Configurations
 --------------------------------------------------------
