@@ -1,19 +1,22 @@
-{ lib, modulesPath, ... }:
+{ lib, pkgs, modulesPath, ... }:
 
 {
   imports =
     [
       (modulesPath + "/profiles/qemu-guest.nix")
-      ../users/chrism/user.nix
+      ../users/chrism
+      ../users/larry
       ../common.nix
       {
       }
     ];
 
   home-manager = {
-    users.chrism = import ../users/chrism/hm.nix;
+    users.chrism.home.packages = with pkgs; [
+      gpu-viewer
+    ];
   };
-  
+
   boot.initrd.availableKernelModules =
     [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];

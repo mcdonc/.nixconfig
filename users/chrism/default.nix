@@ -5,6 +5,10 @@ let
   intake-events = "IN_CLOSE_WRITE,IN_MOVED_TO";
 in
 {
+  home-manager = {
+    users.chrism = import ./hm.nix;
+  };
+  
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;

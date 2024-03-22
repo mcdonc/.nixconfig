@@ -1,6 +1,10 @@
 { config, pkgs, home-manager, ... }:
 
 {
+  home-manager = {
+    users.larry = import ./hm.nix;
+  };
+  
   # Define a user account.
   users.users.larry = {
     isNormalUser = true;
