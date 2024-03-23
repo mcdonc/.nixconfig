@@ -56,12 +56,15 @@ Here's what is left to do:
   ``alice``, but this alias shouldn't be in Bob's environment on ``host1``
   or ``host``, only on ``host3``.
 
-Alice's ``host1`` Systemd Service
----------------------------------
+Alice's ``host2`` Systemd User Service
+--------------------------------------
 
 We want to run a simple HTTP server as the ``alice`` user on ``host2`` using a
 systemd user service.  The HTTP server will let anyone display/download files
 from its ``/etc/nixos`` directory.
+
+We'll add a systemd user service (I made a video about these a few weeks ago)
+using home-manager to do this.
 
 We'll add this within ``/etc/nixos/host2.nix`` .
 
