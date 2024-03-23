@@ -22,7 +22,7 @@ forces me to appear in an endurance episode against other old people.  A
 link to his channel will be in the description.
 
 On to business.  This is part 3, and the final part, of a series of videos
-about flakes and home manager.  It kinda presumes you've watched `part 1
+about flakes and home manager.  It will kinda presume you've watched `part 1
 <https://youtu.be/e8vzW5Y8Gzg>`_ and `part 2
 <https://www.youtube.com/watch?v=CA8V2hEIxCc&t=79s>`_.  In those videos, we
 shared OS-level configuration between systems, and we shared user-level
