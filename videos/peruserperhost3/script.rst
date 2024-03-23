@@ -13,13 +13,13 @@ Script
 ======
 
 A little housekeeping before we start: my friend `Hynek
-https://www.youtube.com/@The_Hynek`_ recently started a YouTube channel, and if
-you like Python stuff, you should go check him out.  He will soon crush me in
-YouTube ratings because he is completely shameless, but I have a few more
+<https://www.youtube.com/@The_Hynek>`_ recently started a YouTube channel, and
+if you like Python stuff, you should go check him out.  He will soon crush me
+in YouTube ratings because he is completely shameless, but I have a few more
 subsribers than he does, at least for the next few weeks, so this is kinda
-really the only time I can promote him before he goes Mister-Beast and
-forces me to appear in an endurance episode against other old people.  A
-link to his channel will be in the description.
+really the only time I can promote him before he goes Mister-Beast and forces
+me to appear in an endurance episode against other old people.  A link to his
+channel will be in the description.
 
 On to business.  This is part 3, and the final part, of a series of videos
 about flakes and home manager.  It will kinda presume you've watched `part 1
