@@ -63,7 +63,7 @@ We want to run a simple HTTP server as the ``alice`` user on ``host2`` using a
 systemd user service.  The HTTP server will let anyone display/download files
 from its ``/etc/nixos`` directory.
 
-We'll add this within ``/etc/nixos/host1.nix`` .
+We'll add this within ``/etc/nixos/host2.nix`` .
 
 .. code-block:: nix
 
@@ -92,7 +92,7 @@ And rebuild.
 
 Testing it:
 
-- SSH in as Alice: ``ssh alice@192.168.1.128`` (can't su due to dbus)
+- SSH in as Alice: ``ssh alice@192.168.1.XXX`` (can't su due to dbus)
 
 - ``systemctl --user status show-nixconfig``
 
