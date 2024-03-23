@@ -2,7 +2,7 @@
 NixOS 80: Flakes + Home Manager Multiuser/Multihost Configuration (Part 2)
 ==========================================================================
 
-- Companion to video at
+- Companion to video at https://www.youtube.com/watch?v=CA8V2hEIxCc
 
 - This text script available via link in the video description.
 
