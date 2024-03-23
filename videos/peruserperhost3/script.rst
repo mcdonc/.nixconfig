@@ -95,7 +95,7 @@ And rebuild.
 
 Testing it:
 
-- SSH in as Alice: ``ssh alice@192.168.1.XXX`` (can't su due to dbus)
+- SSH in as Alice: ``ssh alice@192.168.1.165`` (can't su due to dbus)
 
 - ``systemctl --user status show-nixconfig``
 
