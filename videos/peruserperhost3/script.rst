@@ -103,7 +103,7 @@ Testing it:
 
 - ``telnet localhost 6543``
 
-This service will only run on ``host1``, not on ``host2`` or ``host3``.  The
+This service will only run on ``host2``, not on ``host1`` or ``host3``.  The
 code for ``home-manager.users.alice.systemd.user.services.show-nixconfig`` was
 merged into Alice's other configuration in ``alice.nix`` and respected when we
 rebuilt.
@@ -116,7 +116,7 @@ Creating Bob-Specific Shell Aliases Only on ``host3``
 We want ``host3`` to have special home-manager configuration for the ``bob``
 user; it should add an additional shell alias for Bob that isn't shared by
 ``alice`` or any other user, but this alias shouldn't be in Bob's environment
-on ``host1`` or ``host``, it should only be on ``host3``.
+on ``host1`` or ``host2``, it should only be on ``host3``.
 
 To get there, we'll add this code to ``host3.nix`` :
 
@@ -138,7 +138,7 @@ machine.  It is only on ``host3`` and only ``bob`` that has the ``latr`` alias.
 
 Note also that ``bob`` can still invoke the ``ll`` shell alias defined within
 ``home.nix``, shared between ``bob`` and ``alice``.  Redefining it via our new
-code in ``host3` doesn't override the ``ll`` shell alias defined in
+code in ``host3`` doesn't override the ``ll`` shell alias defined in
 ``home.nix`` and imported via ``bob.nix``.  Instead, Nix attempts to merge all
 attribute sets imported that resolve to
 ``home-manager.users.bob.programs.bash.shellAliases``.  There are no conflicts,
