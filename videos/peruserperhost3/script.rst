@@ -63,30 +63,30 @@ We want to run a simple HTTP server as the ``alice`` user on ``host2`` using a
 systemd user service.  The HTTP server will let anyone display/download files
 from its ``/etc/nixos`` directory.
 
-We'll add this within ``/etc/nixos/host1.nix``.
+We'll add this within ``/etc/nixos/host1.nix`` .
 
 .. code-block:: nix
 
-   home-manager.users.alice = {
+    home-manager.users.alice = {
 
-     systemd.user.services.show-nixconfig = {
-       Unit = {
-         Description = ''
-           Run an HTTP server that displays the content of /etc/nixos on host2
-         '';
-       };
-       Service = {
-         Type = "simple";
-         ExecStart = ''
-           ${pkgs.python311}/bin/python -m http.server -d /etc/nixos 6543
-         '';
-       };
-       Install = {
-         WantedBy = [ "default.target" ];
-       };
-     };
+      systemd.user.services.show-nixconfig = {
+        Unit = {
+          Description = ''
+            Run an HTTP server that displays the content of /etc/nixos on host2
+          '';
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = ''
+            ${pkgs.python311}/bin/python -m http.server -d /etc/nixos 6543
+          '';
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+      };
 
-   };
+    };
 
 And rebuild.
 
@@ -115,15 +115,15 @@ user; it should add an additional shell alias for Bob that isn't shared by
 ``alice`` or any other user, but this alias shouldn't be in Bob's environment
 on ``host1`` or ``host``, it should only be on ``host3``.
 
-To get there, we'll add this code to ``host3.nix``:
+To get there, we'll add this code to ``host3.nix`` :
 
 .. code-block:: nix
 
-   home-manager.users.bob = {
-     programs.bash.shellAliases = {
-         latr = "${pkgs.coreutils}/bin/ls -latr";
-     };
-   };
+    home-manager.users.bob = {
+      programs.bash.shellAliases = {
+          latr = "${pkgs.coreutils}/bin/ls -latr";
+      };
+    };
    
 Try to rebuild.  Once the rebuild works, log into ``host3`` do ``su - bob`` and
 see that running ``latr`` as ``bob`` produces the right output and ``type
