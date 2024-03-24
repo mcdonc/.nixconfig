@@ -54,7 +54,7 @@ apologies, but you might take a look at a couple of my older videos that tell
 you how and why you might want to start using them to configure NixOS: `NixOS
 40: Converting an Existing NixOS Configuration To Flakes
 <https://youtu.be/Hox4wByw5pY>`_ and `NixOS 63: Install NixOS 23.11 and Use
-Flakes Out Of the Box <https://youtu.be/hoB0pHZ0fpI>`_ ,.
+Flakes Out Of the Box <https://youtu.be/hoB0pHZ0fpI>`_ .
 
 Be warned that this method doesn't work for *every* NixOS service, but it does
 for many of them.  And it definitely works for Pipewire.
@@ -252,8 +252,7 @@ Taking a look at the result of ``nixos-rebuild``, we see that it didn't just
 upgrade the pipewire package itself.  It upgraded all the *dependencies* of
 Pipewire too.  It added a number of dependencies (e.g. ``cracklib``,
 ``libcbor``) and added newer versions of dependency packages that already
-existed on the system (e.g. ``alsa-lib``, ``libGL``, ``libvorbis``). Dozens of
-them.
+existed on the system (e.g. ``alsa-lib``, ``libGL``, ``libvorbis``).
 
 Some of these libraries just came along for the ride because they are the
 version supplied by NixOS unstable, and the closure of dependencies just kinda
@@ -269,23 +268,23 @@ installed on the system at the same time, we are able to upgrade Pipewire and
 its dozens of dependencies without concern that it will break other
 applications on the system, and replace the *entire working Pipewire subsystem*
 with another *entirely working Pipewire subsystem* by adding, effectively, one
-line of configuration (``package = pkgs-unstable.pipewire``).
+meaningful line of configuration (``package = pkgs-unstable.pipewire``).
 
 A Shout-Out to The Skeptical
 ----------------------------
 
 "That's all well and good", you say.
 
-"But ``nixpkgs-unstable.pipewire`` doesn't solve my problem!  The bug I've
-encountered isn't fixed in a version of Pipewire packaged by NixOS.  The fix
-hasn't even made it out to a Pipewire release yet, or it's in a release so new
-that even NixOS unstable doesn't yet have it.  Meanwhile, this Nix stuff is
-hard and weird. I might as well be running Arch BTW if it's just a half
-solution."
+"But ``services.pipewire.package = nixpkgs-unstable.pipewire`` doesn't solve my
+problem!  The bug I've encountered isn't fixed in a version of Pipewire
+packaged by NixOS.  The fix hasn't even made it out to a Pipewire release yet,
+or it's in a release so new that even NixOS unstable doesn't yet have it.
+Meanwhile, this Nix stuff is hard and weird. I might as well be running Arch
+BTW if it's just a half solution."
 
 First of all, Nix is hard and weird and it's totally understandable and
-righteous that people bounce off it for these reasons.  I am suspicious of
-people who tell me arbitrarily hard problems can be solved with a ten-line
+righteous that people bounce off it for these reasons.  And I am suspicious of
+people who tell me arbitrarily hard problems can be solved with a one-line
 change to a config file too.
 
 NixOS is hard, and its quirky language syntax doesn't at all help the case
