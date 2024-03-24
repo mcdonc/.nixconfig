@@ -48,7 +48,7 @@ We're going to do the following:
 Before we start, please note that if you rely heavily on software to do some
 crucial part of your audio work that is not open source, and that software is
 distributed only as a binary blob from its distributor (an installer for it is
-not in ``nixpkgs`)`, it will be more difficult to get it running on NixOS than
+not in ``nixpkgs``), it will be more difficult to get it running on NixOS than
 to get it running on, say, Ubuntu.  Software that falls into this category
 includes Harrison Mixbus.  Mixbus is packaged in a proprietary distribution
 format, and an installer has not been created yet for NixOS.  That said,
