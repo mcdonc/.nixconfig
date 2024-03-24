@@ -1,0 +1,49 @@
+Master sliders
+--------------
+voiceover: 0 dbB
+music: -8.8 dB
+
+Listen dynamics
+---------------
+dynamics: on
+compressor: on
+  thresh: -47.6
+  ratio: 3.3:1
+  knee: 0
+  mix: 0
+  attack: 1.4
+  hold: 0
+  release: 93
+make-up gain: 0
+
+Send dynamics
+-------------
+dynamics: off?
+compressor: on
+  thresh: -21.4
+  ratio: 2.9:1
+  knee: 0
+  mix: 0
+  attack: 1.4
+  hold: 0
+  release: 93
+make-up gain: 1.6
+
+Voice isolation
+--------------------
+78
+
+Dialog leveler
+--------------
+Allow wider dynamics
+Reduce loud
+Lift soft
+Output gain: 6
+
+Voice equalizer
+---------------
+
+See resolv-voice-eq.png
+
+
+

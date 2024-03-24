@@ -2,7 +2,7 @@
 NixOS 82: Upgrading a NixOS Service (Pipewire) To Unstable Using Flakes
 =======================================================================
 
-Companion to video at ....
+Companion to video at https://youtu.be/AUNx1v__vCI
 
 This text script available via link in the video description.
 
