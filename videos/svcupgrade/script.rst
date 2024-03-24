@@ -275,7 +275,7 @@ A Shout-Out to The Skeptical
 
 "That's all well and good", you say.
 
-"But ``services.pipewire.package = nixpkgs-unstable.pipewire`` doesn't solve my
+"But ``services.pipewire.package = nixpkgs-unstable.pipewire`` wont't solve my
 problem!  The bug I've encountered isn't fixed in a version of Pipewire
 packaged by NixOS.  The fix hasn't even made it out to a Pipewire release yet,
 or it's in a release so new that even NixOS unstable doesn't yet have it.
