@@ -2,7 +2,7 @@
 NixOS 83: NixOS as a Music Production System
 ============================================
 
-Companion to video at
+Companion to video at https://youtu.be/_M_vSwGGVzY
 
 This text script available via link in the video description.
 
