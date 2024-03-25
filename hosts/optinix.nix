@@ -23,6 +23,7 @@ in
     ./profiles/steam.nix
     ./profiles/davinci-resolve.nix
     ./profiles/vmount.nix
+    ./profiles/rc505
     ../common.nix
     (
       import ./profiles/macos-ventura.nix (
