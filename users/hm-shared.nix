@@ -43,16 +43,22 @@ let
     }
   '';
 
+  ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
+
   thumbnail = pkgs.writeShellScript "thumbnail" ''
     # writes to ./thumbnail.png
     # thumbnail eyedrops2.mp4 00:01:07
-    ${pkgs.ffmpeg-full}/bin/ffmpeg -y -i "$1" -ss "$2" \
+    ${ffmpeg} -y -i "$1" -ss "$2" \
       -vframes 1 thumbnail.png > /dev/null 2>&1
+  '';
+
+  extractmonopcm = pkgs.writeShellScript "extractmonopcm" ''
+    ${ffmpeg} -i "$1" -map 0:a:0 -ac 1 -f s16le -acodec pcm_s16le "$2"
   '';
 
   yt-1080p = pkgs.writeShellScript "yt-1080p" ''
     # assumes 4k input
-    ${pkgs.ffmpeg-full}/bin/ffmpeg -i $1 -c:v h264_nvenc -rc:v vbr -b:v 10M \
+    ${ffmpeg} -i $1 -c:v h264_nvenc -rc:v vbr -b:v 10M \
        -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart $2
   '';
 
