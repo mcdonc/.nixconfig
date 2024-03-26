@@ -344,6 +344,12 @@ in
     x42-plugins
     tap-plugins
     zam-plugins
+    setbfree
+    x42-avldrums
+    zynaddsubfx
+    #vcv-rack # (uncached)
+    hydrogen
+    surge-XT
     sanoid
     hplip
     geteltorito
