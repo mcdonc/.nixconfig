@@ -17,6 +17,8 @@
 
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    musnix.url = "github:musnix/musnix";
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     #kde2nix.url = "github:nix-community/kde2nix";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
@@ -45,6 +47,7 @@
       nixtheplanet,
       nixgl-olive,
       nixgl-unstable,
+      musnix,
     }@inputs:
     let
       my_overlay = (
@@ -106,6 +109,7 @@
       shared-modules = [
         home-manager.nixosModules.home-manager
         nixtheplanet.nixosModules.macos-ventura
+        musnix.nixosModules.musnix
         (
           { config, pkgs, ... }:
           {

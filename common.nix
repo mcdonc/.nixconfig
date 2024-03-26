@@ -97,9 +97,6 @@ in
 
   # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = true;
-  };
 
   # rtl8153 / tp-link ue330 quirk for USB ethernet, see
   # https://askubuntu.com/questions/1081128/usb-3-0-ethernet-adapter-not-working-ubuntu-18-04
@@ -109,45 +106,41 @@ in
     "usbcore.quirks=2357:0601:k,0bda:5411:k" # ethernet, hub
   ];
 
-  # realtime audio priority (initially for JACK2)
-  security.pam.loginLimits = [
-    {
-      domain = "@audio";
-      item = "memlock";
-      type = "-";
-      value = "unlimited";
-    }
-    {
-      domain = "@audio";
-      item = "rtprio";
-      type = "-";
-      value = "99";
-    }
-    {
-      domain = "@audio";
-      item = "nofile";
-      type = "soft";
-      value = "99999";
-    }
-    {
-      domain = "@audio";
-      item = "nofile";
-      type = "hard";
-      value = "99999";
-    }
-  ];
-
-  # enable high precision timers if they exist
-  # (https://gentoostudio.org/?page_id=420)
-  services.udev = {
-    extraRules = ''
-      KERNEL=="rtc0", GROUP="audio"
-      KERNEL=="hpet", GROUP="audio"
-    '';
+  # behave as a router
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
   };
 
-  # unknown
-  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  # see https://github.com/musnix/musnix
+  # Activate the performance CPU frequency scaling governor.
+  # Set vm.swappiness to 10.
+  # Set the following udev rules (enable high-precision timers, if they exist):
+  #  KERNEL=="rtc0", GROUP="audio"
+  #  KERNEL=="hpet", GROUP="audio"
+  # Set the following PAM limits:
+  #  @audio  -       memlock unlimited
+  #  @audio  -       rtprio  99
+  #  @audio  soft    nofile  99999
+  #  @audio  hard    nofile  99999
+  # Set environment variables to default install locations in NixOS:
+  #  VST_PATH
+  #  VST3_PATH
+  #  LXVST_PATH
+  #  LADSPA_PATH
+  #  LV2_PATH
+  #  DSSI_PATH
+  # Allow users to install plugins in the following directories:
+  #  ~/.vst
+  #  ~/.vst3
+  #  ~/.lxvst
+  #  ~/.ladspa
+  #  ~/.lv2
+  #  ~/.dssi
+  # Musnix.alsaSql.enable does
+  #  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+
+  musnix.enable = true;
+  musnix.alsaSeq.enable = true;
 
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
