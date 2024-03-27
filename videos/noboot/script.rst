@@ -86,7 +86,7 @@ That means it's complaining that it can't install GRUB to your hard disk.
 Luckily, it doesn't have to; GRUB is already installed.  We can sidestep the
 problem by telling NixOS to use ``nodev`` as the boot device.  This causes
 NixOS to only change any existing GRUB menu files, but not to try to actually
-install the GRUB boot loader to any partition.
+install the GRUB boot loader to any partition.::
 
    # comment this out
    # boot.loader.grub.device = "/dev/sda";
