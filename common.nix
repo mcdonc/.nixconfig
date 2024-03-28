@@ -268,7 +268,7 @@ in
   environment.systemPackages = with pkgs; [
     cachix
     nvidia-offload
-    vim_configurable
+    vim-full
     wget
     (wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [ obs-backgroundremoval ];
