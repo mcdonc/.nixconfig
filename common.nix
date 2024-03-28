@@ -347,6 +347,7 @@ in
     setbfree
     x42-avldrums
     zynaddsubfx
+    sfizz
     #vcv-rack # (uncached)
     hydrogen
     surge-XT
