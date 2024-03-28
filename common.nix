@@ -351,7 +351,7 @@ in
     #vcv-rack # (uncached)
     hydrogen
     surge-XT
-    lsp-plugins
+    #lsp-plugins # (too many plugins)
     sanoid
     hplip
     geteltorito

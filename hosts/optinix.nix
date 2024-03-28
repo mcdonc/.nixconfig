@@ -11,6 +11,18 @@ let
   left-screen-4k = pkgs.writeShellScriptBin "left-screen-4k" ''
     ${kscreen-doctor} output.HDMI-1.mode.3840x2160@30
   '';
+
+  # presumes ASC has been installed in ~/.wine via e.g.
+  # "wine ~/Downloads/Arturia_Software_Center__2_7_1_2466.exe"
+  # then run arturia-software-center and install VSTS, then run
+  # arturia-add-vsts to sync yabridge with the installed VSTs
+  arturia-sw-center = pkgs.writeShellScriptBin "arturia-sw-center" ''
+    ${pkgs.wineWowPackages.stable}/bin/wine $HOME/.wine/drive_c/Program\ Files\ \(x86\)/Arturia/Arturia\ Software\ Center/Arturia\ Software\ Center.exe
+  '';
+  arturia-add-vsts = pkgs.writeShellScriptBin "arturia-add-vsts" ''
+    ${pkgs.yabridgectl}/bin/yabridgectl add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
+    ${pkgs.yabridgectl}/bin/yabridgectl sync
+  '';
 in
 {
   imports = [
@@ -146,8 +158,18 @@ in
 
     # health
     monitor-sanoid-health
+
+    # kscreendoctor
     left-screen-1080p
     left-screen-4k
+
+    # arturia
+    yabridge
+    yabridgectl
+    wineWowPackages.stable
+    winetricks
+    arturia-sw-center
+    arturia-add-vsts
   ];
 
 }
