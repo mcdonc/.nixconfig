@@ -6,7 +6,7 @@ let
 in
 {
   home-manager = {
-    users.chrism = import ./hm.nix;
+    users.chrism = import ./home.nix;
   };
   
   # Define a user account.

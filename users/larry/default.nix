@@ -2,7 +2,7 @@
 
 {
   home-manager = {
-    users.larry = import ./hm.nix;
+    users.larry = import ./home.nix;
   };
   
   # Define a user account.

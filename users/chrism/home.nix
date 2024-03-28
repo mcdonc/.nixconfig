@@ -19,7 +19,7 @@ let
 in
 
 {
-  imports = [ ../hm-shared.nix ];
+  imports = [ ../home.nix ];
 
   home.stateVersion = "22.05";
 
