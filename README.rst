@@ -14,7 +14,7 @@ Usage
 
         mynewsystem = nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = chris-modules ++ [ ./hosts/mynewsystem.nix ];
+          modules = shared-modules ++ [ ./hosts/mynewsystem.nix ];
         };
 
 - Add the ``hosts/mynewsystem.nix`` file, copying another host file to start
