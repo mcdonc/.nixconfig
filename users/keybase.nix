@@ -1,10 +1,10 @@
-{ pkgs, pkgs-keybase-bumpversion, ... }:
+{ pkgs, pkgs-kb-bumpversion, ... }:
 
 {
   #services.keybase.enable = true;
   #services.kbfs.enable = true;
 
-  home.packages = with pkgs-keybase-bumpversion; [
+  home.packages = with pkgs-kb-bumpversion; [
     keybase
     keybase-gui
   ];
@@ -14,7 +14,7 @@
 
     Service = {
       ExecStart =
-        "${pkgs-keybase-bumpversion.keybase}/bin/keybase service --auto-forked";
+        "${pkgs-kb-bumpversion.keybase}/bin/keybase service --auto-forked";
       Restart = "on-failure";
       PrivateTmp = true;
     };
@@ -34,7 +34,7 @@
       in {
         Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
-        ExecStart = "${pkgs-keybase-bumpversion.kbfs}/bin/kbfsfuse ${mountPoint}";
+        ExecStart = "${pkgs-kb-bumpversion.kbfs}/bin/kbfsfuse ${mountPoint}";
         ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
         Restart = "on-failure";
         PrivateTmp = true;
@@ -54,7 +54,7 @@
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
     Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 ${pkgs-keybase-bumpversion.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
+    Exec=env KEYBASE_AUTOSTART=1 ${pkgs-kb-bumpversion.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
     GenericName[en_US]=
     GenericName=
     MimeType=
