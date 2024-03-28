@@ -17,16 +17,16 @@ in
     ../users/chrism
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/encryptedzfs.nix
-    ./profiles/dnsovertls/resolvedonly.nix
-    ./profiles/speedtest
-    ./profiles/steam.nix
-    ./profiles/davinci-resolve.nix
-    ./profiles/vmount.nix
-    ./profiles/rc505
+    ./roles/encryptedzfs.nix
+    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/speedtest
+    ./roles/steam.nix
+    ./roles/davinci-resolve.nix
+    ./roles/vmount.nix
+    ./roles/rc505
     ../common.nix
     (
-      import ./profiles/macos-ventura.nix (
+      import ./roles/macos-ventura.nix (
         args // { mem = "8G"; cores = 4; enable = false; }
       )
     )

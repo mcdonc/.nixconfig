@@ -5,11 +5,11 @@
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p52"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/pseries.nix
-    ./profiles/encryptedzfs.nix
-    ./profiles/tlp.nix
-    ./profiles/sessile.nix
-    ./profiles/vmount.nix
+    ./roles/pseries.nix
+    ./roles/encryptedzfs.nix
+    ./roles/tlp.nix
+    ./roles/sessile.nix
+    ./roles/vmount.nix
     ../common.nix
   ];
 

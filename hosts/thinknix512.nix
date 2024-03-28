@@ -5,14 +5,14 @@
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p51"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/pseries.nix
-    ./profiles/sessile.nix
-    ./profiles/encryptedzfs.nix
-    ./profiles/tlp.nix
+    ./roles/pseries.nix
+    ./roles/sessile.nix
+    ./roles/encryptedzfs.nix
+    ./roles/tlp.nix
     # targeting 535.129.03, 545.29.02 backlightrestore doesn't work
-    ./profiles/dnsovertls/resolvedonly.nix
-    ./profiles/steam.nix
-    ./profiles/vmount.nix
+    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/steam.nix
+    ./roles/vmount.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";

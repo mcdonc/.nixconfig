@@ -5,11 +5,11 @@
     ../users/chrism
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/encryptedzfs.nix
-    ./profiles/dnsovertls/resolvedonly.nix
-    ./profiles/sessile.nix
-    ./profiles/davinci-resolve.nix
-    ./profiles/steam.nix
+    ./roles/encryptedzfs.nix
+    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/sessile.nix
+    ./roles/davinci-resolve.nix
+    ./roles/steam.nix
     ../common.nix
   ];
 

@@ -6,12 +6,12 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ../users/larry
     "${nixos-hardware}/lenovo/thinkpad/p51"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/pseries.nix
-    ./profiles/encryptedzfs.nix
-    ./profiles/tlp.nix
+    ./roles/pseries.nix
+    ./roles/encryptedzfs.nix
+    ./roles/tlp.nix
     ../common.nix
     (
-      import ./profiles/macos-ventura.nix (
+      import ./roles/macos-ventura.nix (
         args // { mem = "12G"; cores = 4; enable = false; }
       )
     )

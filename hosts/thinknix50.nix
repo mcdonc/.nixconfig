@@ -4,14 +4,14 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p50"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/pseries.nix
-    ./profiles/encryptedzfs.nix
-    ./profiles/tlp.nix
-    ./profiles/vmount.nix
-    ./profiles/davinci-resolve.nix
+    ./roles/pseries.nix
+    ./roles/encryptedzfs.nix
+    ./roles/tlp.nix
+    ./roles/vmount.nix
+    ./roles/davinci-resolve.nix
     ../common.nix
     (
-      import ./profiles/macos-ventura.nix (
+      import ./roles/macos-ventura.nix (
         args // { mem = "16G"; cores = 4; enable = false; }
       )
     )

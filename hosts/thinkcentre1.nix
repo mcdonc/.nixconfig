@@ -5,8 +5,8 @@
     ../users/chrism
     "${nixos-hardware}/common/cpu/intel"
     "${nixos-hardware}/common/pc/ssd"
-    ./profiles/encryptedzfs.nix
-    ./profiles/sessile.nix
+    ./roles/encryptedzfs.nix
+    ./roles/sessile.nix
     ../common.nix
   ];
 
