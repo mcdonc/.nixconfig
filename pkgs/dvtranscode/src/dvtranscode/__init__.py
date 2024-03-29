@@ -2,7 +2,7 @@ import logging
 
 __version__ = "0.0"
 
-MEDIA = (".mp4", ".mkv", ".MP4", ".MKV")
+MEDIA = (".mp4", ".mkv", ".MP4", ".MKV", ".webm", ".WEBM")
 TRANSCODED = "transcoded"
 
 class Logger:

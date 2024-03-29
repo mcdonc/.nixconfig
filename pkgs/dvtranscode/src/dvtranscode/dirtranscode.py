@@ -3,7 +3,6 @@ import logging
 import os
 import subprocess
 import sys
-import traceback
 
 from . import MEDIA, Logger
 from .transcode import detect_nvidia, Transcoder
