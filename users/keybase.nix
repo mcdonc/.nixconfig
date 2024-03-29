@@ -3,7 +3,7 @@
 let
   # switch to pkgs-kb-bumpversion and switch to explicit config
   # if kb-pkgs craps out
-  kb-pkgs = pkgs;
+  kb-pkgs = pkgs-kb-bumpversion;
 in
 
 {
@@ -39,42 +39,42 @@ in
     keybase
   ];
 
-  services.keybase.enable = true;
-  services.kbfs.enable = true;
+  #services.keybase.enable = true;
+  #services.kbfs.enable = true;
 
-  # systemd.user.services.keybase = {
-  #   Unit.Description = "Keybase service";
+  systemd.user.services.keybase = {
+    Unit.Description = "Keybase service";
 
-  #   Service = {
-  #     ExecStart =
-  #       "${kb-pkgs.keybase}/bin/keybase service --auto-forked";
-  #     Restart = "on-failure";
-  #     PrivateTmp = true;
-  #   };
+    Service = {
+      ExecStart =
+        "${kb-pkgs.keybase}/bin/keybase service --auto-forked";
+      Restart = "on-failure";
+      PrivateTmp = true;
+    };
 
-  #   Install.WantedBy = [ "default.target" ];
-  # };
+    Install.WantedBy = [ "default.target" ];
+  };
 
-  # systemd.user.services.kbfs = {
-  #   Unit = {
-  #     Description = "Keybase File System";
-  #     Requires = [ "keybase.service" ];
-  #     After = [ "keybase.service" ];
-  #   };
+  systemd.user.services.kbfs = {
+    Unit = {
+      Description = "Keybase File System";
+      Requires = [ "keybase.service" ];
+      After = [ "keybase.service" ];
+    };
 
-  #   Service =
-  #     let mountPoint = ''"%h/keybase"'';
-  #     in {
-  #       Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
-  #       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
-  #       ExecStart = "${kb-pkgs.kbfs}/bin/kbfsfuse ${mountPoint}";
-  #       ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
-  #       Restart = "on-failure";
-  #       PrivateTmp = true;
-  #     };
+    Service =
+      let mountPoint = ''"%h/keybase"'';
+      in {
+        Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
+        ExecStart = "${kb-pkgs.kbfs}/bin/kbfsfuse ${mountPoint}";
+        ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
+        Restart = "on-failure";
+        PrivateTmp = true;
+      };
 
-  #   Install.WantedBy = [ "default.target" ];
-  # };
+    Install.WantedBy = [ "default.target" ];
+  };
 
 
 }
