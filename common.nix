@@ -1,4 +1,5 @@
- { config
+{ config
+, lib
 , pkgs
 , system
 , pkgs-olive
@@ -264,6 +265,12 @@ in
     emulatedSystems = [ "aarch64-linux" ];
   };
 
+  environment.variables = {
+    # override musnix to add $HOME/.vst to LXVST_PATH (for yabridge)
+    LXVST_PATH =
+      lib.mkForce "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+    EDITOR = "vi";
+  };
 
   environment.systemPackages = with pkgs; [
     cachix
