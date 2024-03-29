@@ -146,6 +146,7 @@ let
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
     yt-1080p = "${yt-1080p}";
+    extractmonopcm = "${extractmonopcm}";
     olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
   };
 
