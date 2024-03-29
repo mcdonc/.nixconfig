@@ -139,8 +139,11 @@ in
   #  ~/.dssi
   # Musnix.alsaSql.enable does
   #  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  # misnix.rtirq.enable
+  #  see https://wiki.linuxaudio.org/wiki/system_configuration
 
   musnix.enable = true;
+  musnix.rtirq.enable = true;
   musnix.alsaSeq.enable = true;
 
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
