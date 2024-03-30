@@ -16,6 +16,8 @@
 
   - https://zaynetro.com/explainix
 
+- use nix-tree to track down out of date dependencies
+
 - derivations -> higher level build systems (cmake) (havoc)
 
 - explainer between old and new command gods
