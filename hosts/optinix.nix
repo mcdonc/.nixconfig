@@ -24,6 +24,7 @@ in
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
     ./roles/proaudio.nix
+    ./roles/forceperfgov.nix
     ./roles/rc505
     ../common.nix
     (
@@ -39,7 +40,7 @@ in
 
   hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
 
-  # music
+  # music, doesn't actually work for some reason
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
   boot.initrd.availableKernelModules =
