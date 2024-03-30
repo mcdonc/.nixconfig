@@ -10,7 +10,6 @@
     ./roles/sessile.nix
     ./roles/davinci-resolve.nix
     ./roles/steam.nix
-    ./roles/music.nix
     ../common.nix
   ];
 

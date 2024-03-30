@@ -13,7 +13,6 @@
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/steam.nix
     ./roles/vmount.nix
-    ./roles/music.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
