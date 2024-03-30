@@ -10,6 +10,7 @@
     ./roles/sessile.nix
     ./roles/davinci-resolve.nix
     ./roles/steam.nix
+    ./roles/music.nix
     ../common.nix
   ];
 
@@ -33,8 +34,12 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  # 2GB max ARC cache
-  boot.kernelParams = lib.mkForce [ "zfs.zfs_arc_max=2147483648" ];
+  boot.kernelParams = lib.mkForce [
+    # music
+    "threadirqs"
+    # 2GB max ARC cache
+    "zfs.zfs_arc_max=2147483648"
+  ];
 
   fileSystems."/nix" = {
     device = "NIXROOT/nix";

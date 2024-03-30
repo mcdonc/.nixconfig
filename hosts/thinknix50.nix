@@ -9,6 +9,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/tlp.nix
     ./roles/vmount.nix
     ./roles/davinci-resolve.nix
+    ./roles/music.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (

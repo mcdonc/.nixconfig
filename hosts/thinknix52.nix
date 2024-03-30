@@ -10,6 +10,7 @@
     ./roles/tlp.nix
     ./roles/sessile.nix
     ./roles/vmount.nix
+    ./roles/music.nix
     ../common.nix
   ];
 

@@ -11,23 +11,6 @@ let
   left-screen-4k = pkgs.writeShellScriptBin "left-screen-4k" ''
     ${kscreen-doctor} output.HDMI-1.mode.3840x2160@30
   '';
-
-  # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
-  # ~/.wine via e.g.  "wine
-  # ~/Downloads/Arturia_Software_Center__2_7_1_2466.exe" then run
-  # arturia-software-center and install VSTs, then run arturia-add-vsts to sync
-  # yabridge with the installed VSTs
-
-  wine = "${pkgs.wineWowPackages.stable}/bin/wine";
-  yabc = "${pkgs.yabridgectl}/bin/yabridgectl";
-
-  arturia-sw-center = pkgs.writeShellScriptBin "arturia-sw-center" ''
-    ${wine} $HOME/.wine/drive_c/Program\ Files\ \(x86\)/Arturia/Arturia\ Software\ Center/Arturia\ Software\ Center.exe
-  '';
-  arturia-add-vsts = pkgs.writeShellScriptBin "arturia-add-vsts" ''
-    ${yabc} add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
-    ${yabc} sync
-  '';
 in
 {
   imports = [
@@ -40,6 +23,7 @@ in
     ./roles/steam.nix
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
+    ./roles/music.nix
     ./roles/rc505
     ../common.nix
     (
@@ -55,7 +39,8 @@ in
 
   hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
 
-  powerManagement.cpuFreqGovernor = "performance";
+  # music
+  powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
@@ -71,8 +56,12 @@ in
   # don't run updatedb on /b
   services.locate.prunePaths = [ "/b" ];
 
-  # 2GB max ARC cache
-  boot.kernelParams = lib.mkForce [ "zfs.zfs_arc_max=2147483648" ];
+  boot.kernelParams = lib.mkForce [
+     # music
+    "threadirqs"
+    # 2GB max ARC cache
+    "zfs.zfs_arc_max=2147483648"
+  ];
 
   fileSystems."/nix" = {
     device = "NIXROOT/nix";
@@ -167,14 +156,6 @@ in
     # kscreendoctor
     left-screen-1080p
     left-screen-4k
-
-    # arturia
-    yabridge
-    yabridgectl
-    wineWowPackages.stable
-    winetricks
-    arturia-sw-center
-    arturia-add-vsts
   ];
 
 }
