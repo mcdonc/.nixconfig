@@ -134,6 +134,8 @@ let
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
     olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
+    stopx = "${pkgs.systemd}/bin/systemctl stop display-manager.service";
+    startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
   };
 
 in
