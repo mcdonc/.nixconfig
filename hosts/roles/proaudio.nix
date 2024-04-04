@@ -1,6 +1,5 @@
 {pkgs, lib, ...}:
 let
-  rtcqs = pkgs.callPackage ../../pkgs/rtcqs.nix { };
   xruncounter = pkgs.callPackage ../../pkgs/xruncounter.nix { };
 
   # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
@@ -22,7 +21,6 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    rtcqs
     xruncounter
     qpwgraph
     pavucontrol
@@ -66,19 +64,12 @@ in
 
   musnix.enable = true;
   musnix.rtirq.enable = true;
+  musnix.rtcqs.enable = true;
   musnix.alsaSeq.enable = true;
 
-  # additional udev stuff caught by rtcqs
-  # https://wiki.linuxaudio.org/wiki/system_configuration#quality_of_service_interface
-  services.udev = {
-    extraRules = ''
-      DEVPATH=="/devices/virtual/misc/cpu_dma_latency", OWNER="root", GROUP="audio", MODE="0660"
-    '';
-  };
   environment.variables = {
     # override musnix to add $HOME/.vst to LXVST_PATH (for yabridge)
-    LXVST_PATH =
-      lib.mkForce "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+    LXVST_PATH = "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
   };
 
   environment.etc = let
