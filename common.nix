@@ -136,6 +136,13 @@ in
   # desktop stuff
   services.xserver.enable = true;
   services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sessionCommands = let
+    # disable middle click
+    modmap = pkgs.writeText "modmap" ''
+      pointer 1 0 3 4 5
+    '';
+  in
+    "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
   services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
