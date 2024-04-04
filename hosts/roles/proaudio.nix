@@ -79,4 +79,24 @@ in
       lib.mkForce "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
   };
 
+  environment.etc = let
+    json= pkgs.formats.json {};
+  in {
+    "pipewire/pipewire.d/92-low-latency.conf".source = json.generate
+      "92-low-latency.conf" {
+        context.properties = {
+          default.clock.rate = 48000;
+          default.clock.quantum = 32;
+          default.clock.min-quantum = 32;
+          default.clock.max-quantum = 32;
+        };
+      };
+    # this doesn't work
+    # "pipewire/jack.conf".source = json.generate "jack.conf" {
+    #   jack.properties = {
+    #     rt.prio = 99;
+    #     node.latency = "32/48000";
+    #     };
+    #   };
+  };
 }
