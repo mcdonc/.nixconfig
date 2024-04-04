@@ -1,6 +1,7 @@
 {pkgs, lib, ...}:
 let
   rtcqs = pkgs.callPackage ../../pkgs/rtcqs.nix { };
+  xruncounter = pkgs.callPackage ../../pkgs/xruncounter.nix { };
 
   # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
   # ~/.wine via e.g.  "wine
@@ -22,6 +23,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     rtcqs
+    xruncounter
     yabridge
     yabridgectl
     wineWowPackages.stable
