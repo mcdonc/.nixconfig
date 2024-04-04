@@ -24,6 +24,8 @@ in
   environment.systemPackages = with pkgs; [
     rtcqs
     xruncounter
+    qpwgraph
+    pavucontrol
     yabridge
     yabridgectl
     wineWowPackages.stable
