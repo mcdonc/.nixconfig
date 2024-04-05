@@ -136,7 +136,7 @@ in
     Timer = {
       Unit = "nix-index.service";
       #OnCalendar = "*:0/5";
-      OnCalendar = "*-*-* 04:00:00";
+      OnCalendar = "*-*-* 10:00:00";
     };
     Install = {
       WantedBy = [ "timers.target" ];
