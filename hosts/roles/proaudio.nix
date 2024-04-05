@@ -102,7 +102,7 @@ in
           -- latency.internal.rate is same as ProcessLatency
           ["latency.internal.rate"] = 345,
            -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
-          ["api.alsa.period-size"]   = 256,
+          ["api.alsa.period-size"]   = 128,
           ["api.alsa.period-num"]   = 3,
           ["api.alsa.disable-batch"]   = true,
         },
