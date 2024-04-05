@@ -13,6 +13,7 @@
     ./roles/backupsource
     ./roles/steam.nix
     #./roles/vmount.nix
+    ./roles/proaudio.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";
