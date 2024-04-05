@@ -54,6 +54,23 @@ in
   # if ADVANCE is off (or presumably if set to 44.1K; ADVANCE off implies 44.1K)
   # there is crackling at quantums below 128, presumably due to the upscaling
   # that pipewire does to 48K.  Crackling at 32 no matter what.
+  #
+  # For UA-25, Ardour ALSA calibration reports with quantum at 64:
+  #
+  # Detected roundtrip latency: 473 samples (9.854ms)
+  # Systemic latency: 345 samples (7.188ms)
+  #
+  # see https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
+  #
+  # pw-cli
+  # set-param 55 ProcessLatency {rate: 345}
+  # set-param 56 ProcessLatency {rate: 345}
+  # enum-params 55 Spa:Enum:ParamId:Latency
+  # enum-params 55 Spa:Enum:ParamId:ProcessLatency
+  # enum-params 56 Spa:Enum:ParamId:Latency
+  # enum-params 56 Spa:Enum:ParamId:ProcessLatency
+  #
+  # pw-jack jack_lsp -l
 
   environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
     text = ''
@@ -68,28 +85,31 @@ in
     '';
   };
 
-  # No settings at all seems better than any setting I've tried below
+  environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
+    text = ''
+      rule = {
+        matches = {
+          {
+            -- Matches all sources.
+            { "node.name", "matches", "alsa_input.usb-Roland_EDIROL_UA-25-00.*" },
+          },
+          {
+            -- Matches all sinks.
+            { "node.name", "matches", "alsa_output.usb-Roland_EDIROL_UA-25-00.*" },
+          },
+        },
+        apply_properties = {
+          -- latency.internal.rate is same as ProcessLatency
+          ["latency.internal.rate"] = 345,
+           -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
+          ["api.alsa.period-size"]   = 256,
+          ["api.alsa.period-num"]   = 3,
+          ["api.alsa.disable-batch"]   = true,
+        },
+      }
 
-  # environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
-  #   text = ''
-  #     rule = {
-  #       matches = {
-  #         {
-  #           -- Matches all sources.
-  #           { "node.name", "matches", "alsa_input.usb-Roland_EDIROL_UA-25-00.*" },
-  #         },
-  #         {
-  #           -- Matches all sinks.
-  #           { "node.name", "matches", "alsa_output.usb-Roland_EDIROL_UA-25-00.*" },
-  #         },
-  #       },
-  #       apply_properties = {
-  #         ["api.alsa.period-size"]   = 256,
-  #         ["api.alsa.period-num"]    = 3,
-  #       },
-  #     }
+      table.insert(alsa_monitor.rules, rule)
+    '';
+  };
 
-  #     table.insert(alsa_monitor.rules, rule)
-  #   '';
-  # };
 }
