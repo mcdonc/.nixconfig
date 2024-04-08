@@ -21,6 +21,8 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
+    zita-alsa-pcmi # alsa_delay
+    jack-example-tools # jack_iodelay
     xruncounter
     qpwgraph
     pavucontrol
@@ -50,15 +52,26 @@ in
   # See https://alsa.opensrc.org/Edirol_UA-25#Advanced_Alsa_configuration
   # for info about what UA-25 switches do
   #
-  # Edirol UA-25 must be set to ADVANCE, 48K to support a quantum of 64;
+  # Edirol UA-25 must be set to ADVANCE, 48K to support a quantum of 64 & less;
   # if ADVANCE is off (or presumably if set to 44.1K; ADVANCE off implies 44.1K)
   # there is crackling at quantums below 128, presumably due to the upscaling
-  # that pipewire does to 48K.  Crackling at 32 no matter what.
+  # that pipewire does to 48K.  There is crackling at 32 no matter what.
+  #
+  # alsa_delay hw:3,0 hw:3,0 48000 48 2 1 1
+  #
+  #   344.811 frames      7.184 ms
   #
   # For UA-25, Ardour ALSA calibration reports with quantum at 64:
   #
-  # Detected roundtrip latency: 473 samples (9.854ms)
-  # Systemic latency: 345 samples (7.188ms)
+  #  Detected roundtrip latency: 473 samples (9.854ms)
+  #  Systemic latency: 345 samples (7.188ms)
+  #
+  # jack_iodelay (jd_out to playback, jd_in to capture)
+  #
+  #     424.810 frames      8.850 ms total roundtrip latency
+  #  extra loopback latency: 4294966774 frames
+  #  use 2147483387 for the backend arguments -I and -O
+
   #
   # see https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
   #
@@ -101,9 +114,9 @@ in
         apply_properties = {
           -- latency.internal.rate is same as ProcessLatency
           ["latency.internal.rate"] = 345,
-           -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
-          ["api.alsa.period-size"]   = 128,
-          ["api.alsa.period-num"]   = 3,
+          -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
+          ["api.alsa.period-size"]   = 64,
+          ["api.alsa.period-num"]   = 2,
           ["api.alsa.disable-batch"]   = true,
         },
       }
