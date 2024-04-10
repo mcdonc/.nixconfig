@@ -148,7 +148,7 @@ default while we do this; if we do, we will get misleading numbers.
   ``api.alsa.period-num`` is 2, also found via ``alsa_delay``.  I am also
   messing with ``api.alsa.disable-batch``, which does something I don't
   understand yet, caveat emptor::
-  
+
      environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
        text = ''
          rule = {
@@ -181,34 +181,96 @@ default while we do this; if we do, we will get misleading numbers.
 
 Now we need to configure JACK settings.
 
+- Note from here on in that every time we make a change to
+  ``92-low-latency.conf`` or ``52-usb-ua25-config.lua``, we need to restart
+  pipewire and wireplumber::
+
+   systemctl --user restart pipewire wireplumber
+
 - Run ``nix-shell -p jack-example-tools`` to put ``jack_iodelay`` on the path.
 
 - Connect cables on your sound card from input to output just like in the prior
   ALSA-configuration stuff.
 
-- run ``jack_iodelay``.
+- run ``jack_iodelay`` with no arguments.
 
 - Run QJackCtl and use the GUI to connect jack_delay's "in" port to an
   appropriate "capture" port on your sound card.  Connect jack_delay's "out"
   port to an appropriate "playback" on your sound card.  Mess with your sound
-  card's input and output volume knobs. When it works, you will see something
-  like this on the ``jack_iodelay`` console::
+  card's input and output volume knobs like a ZX Spectrum tape volume. When it
+  works, you will see something like this on the ``jack_iodelay`` console::
 
-   328.800 frames      6.850 ms total roundtrip latency
-	extra loopback latency: 200 frames
-	use 100 for the backend arguments -I and -O
+   2200.810 frames     45.850 ms total roundtrip latency
+        extra loopback latency: 152 frames
+        use 76 for the backend arguments -I and -O
 
-- XXX And do what with it?
+  Note that we are seeing absurd numbers for "extra loopback latency" because
+  we set ``latency.internal.rate`` via wireplumber and the computation of
+  device latency by ``jack_iodelay`` isn't taking that into account, and
+  appears to be overflowing.  If we disable the wireplumber
+  ``latency.internal.rate`` option, we see a more reasonable number (but
+  strangely, not the *same* number; we get 200 instead of 344).::
 
-- I've changed PipeWire's default, min, max, and JACK quantum settings.
+     328.800 frames      6.850 ms total roundtrip latency
+        extra loopback latency: 200 frames
+        use 100 for the backend arguments -I and -O
 
-I think I have just about the lowest recording monitoring latency I'm gonna get
-on this system.  It's not as immediate as my audio device's hardware
-monitoring, but if I didn't have the hardware monitoring to compare it to, I
-would believe it was realtime.  It's just a hair off.
+  If your numbers are also different, I'm not sure what the right thing to do
+  is.  I've gleaned most of what I've related so far from forum posts of
+  dubious provenance, and lots of interactive testing.  But I'll tell you how
+  I've decided to split the difference.  Since JACK is how I'm going to record,
+  I want to please ``jack_iodelay``.  How I've done that is to set
+  ``latency.internal.rate`` in the lua file such that the "extra loopback
+  latency" reported by ``jack_iodelay`` becomes 0.  In my case, that meant
+  ignoring the "344" reported by Ardour's ALSA calibration, and using *half* of
+  the "extra loopback latency" number reported by ``jack_iodelay`` instead.  So
+  I changed ``latency.internal.rate`` from 344 to 100.  Now when I restart
+  pipewire and wireplumber and rerun the ``jack_iodelay`` latency test, I get 0
+  extra loopback latency, which looks like this::
+
+   328.810 frames      6.850 ms total roundtrip latency
+        extra loopback latency: 0 frames
+        use 0 for the backend arguments -I and -O
+
+  Shrug.  I have no idea whether this is optimum, but frankly I cannot tell the
+  difference when using one vs. the other.  This is getting into undetectable
+  territory.
+
+Lastly, I've changed PipeWire's default, min, max, and JACK quantum settings to
+match my sound card's "period" (64).
+
+.. code-block:: nix
+
+    environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
+      text = ''
+        context.properties = {
+          default.clock.quantum = 64
+          default.clock.min-quantum = 64
+          default.clock.max-quantum = 64
+        }
+        jack.properties = {
+          node.quantum = 64/48000
+        }
+      '';
+    };
+
+I could not detect that this had much effect when listening in, to be honest,
+but the meters in the JACK software I was using (Ardour) dipped to 1.3ms vs
+20ms as a result (see the Audio/MIDI setup).  I think a quantum is largely
+equivalent to a ALSA "period", so having them be the same by default seems
+reasonable.  I think the more important of the two things there is
+jack.properties' node.quantum which tells things connected to JACK what the
+buffer size is.  It may be that as I add more devices or use different software
+that I need to mess around with the min and max quantum, so that everything
+sounds good together.  I'll have to find out.
+
+But as a result of all this, I think I have just about the lowest recording
+monitoring latency I'm gonna get on this system.  It's not as immediate as my
+audio device's hardware monitoring, but if I didn't have the hardware
+monitoring to compare it to, I would believe it was realtime.  It's just a hair
+off.
 
 To put the nail in the coffin of my Hackintosh, I've set up yabridge which
 allowed me to get Arturia Collection and EZDrummer running.  Then, I overrode
 the LXVST path to pick up changes made by yabridge.  Both have some weird
 graphical glitches, but they work.
-
