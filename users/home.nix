@@ -259,6 +259,27 @@ in
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";
         forwardAgent = true;
+        serverAliveInterval = 60;
+        localForwards = [
+          # windresource
+          {
+            bind.port = 56526;
+            host.port = 56526;
+            host.address = "apex-gis.ace.apexcleanenergy.com";
+          }
+          # 8760, techdash, gisproject
+          {
+            bind.port = 1433;
+            host.port = 1433;
+            host.address = "ace-ra-sql1.ace.apexcleanenergy.com";
+          }
+          # mongo
+          {
+            bind.port = 27017;
+            host.port = 27017;
+            host.address = "ace-web-test.ace.apexcleanenergy.com";
+          }
+        ];
       };
     };
   };
