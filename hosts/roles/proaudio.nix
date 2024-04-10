@@ -18,6 +18,8 @@ let
     ${yabc} add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
     ${yabc} sync
   '';
+  adevices = pkgs.writeShellScriptBin "adevices"
+    (builtins.readFile ./adevices.sh);
 in
 {
   environment.systemPackages = with pkgs; [
@@ -32,6 +34,7 @@ in
     winetricks
     arturia-sw-center
     arturia-add-vsts
+    adevices
   ];
 
   # see https://github.com/musnix/musnix
@@ -68,10 +71,9 @@ in
   #
   # jack_iodelay (jd_out to playback, jd_in to capture)
   #
-  #     424.810 frames      8.850 ms total roundtrip latency
-  #  extra loopback latency: 4294966774 frames
-  #  use 2147483387 for the backend arguments -I and -O
-
+  # 328.800 frames      6.850 ms total roundtrip latency
+  # 	extra loopback latency: 200 frames
+	#   use 100 for the backend arguments -I and -O
   #
   # see https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
   #
@@ -113,7 +115,7 @@ in
         },
         apply_properties = {
           -- latency.internal.rate is same as ProcessLatency
-          ["latency.internal.rate"] = 345,
+          ["latency.internal.rate"] = 100,
           -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
           ["api.alsa.period-size"]   = 64,
           ["api.alsa.period-num"]   = 2,
