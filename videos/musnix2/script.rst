@@ -55,10 +55,8 @@ reduce audio latency.
 I've set up a program named `xruncounter
 <https://github.com/Gimmeapill/xruncounter>`_ to try to generate xruns.  xruns
 happen when the operating system cannot supply the audio subsystem with data
-fast enough.  I haven't seen ``xruncounter`` generate any xruns under any
-configuration, so I'm not even sure it's working right.  It does display the
-JACK buffer size, which was useful. It is not in ``nixpkgs`` but I've created a
-`Nix derivation to compile it from source
+fast enough.  It is not in ``nixpkgs`` but I've created a `Nix derivation to
+compile it from source
 <https://github.com/mcdonc/.nixconfig/blob/master/pkgs/xruncounter.nix>`_.
 
 In my first video in this series, I used a realtime kernel.  But since then
@@ -71,20 +69,40 @@ is reduced and buffers are filled at the right times to keep the system audio
 bucket brigade happy.
 
 Making sure I've got the system configured to the satisfaction of ``rtcqs``,
-running ``xruncounter`` and setting up ``musnix.rtirq`` even without a
-realtime kernel were done to reduce the chance of xruns, but frankly I haven't
-seen any under any configuration, so I can't really tell you if they've had an
-effect for good or bad.
+running ``xruncounter`` and setting up ``musnix.rtirq`` even without a realtime
+kernel were done to reduce the chance of xruns, but there are so many knobs to
+turn (some that we haven't talked about yet, even) that might effect this that
+I can't really tell you if they've had an effect for good or bad at the moment.
+I think I'm going to have to use the thing for a while longer to see which
+knobs are best turned and which are left best alone.
 
-So we'll move on to monitoring latency.  To try to reduce audio monitoring
-latency below human perceptibility (10-20ms), we first need to determine the
-lowest possible settings we can use for the ALSA "period size" and "period
-number" that gives us a latency at least below 20ms, and ideally below 10ms.
-We can use the ``alsa_delay`` program to do this.  Note that it's important
-that we don't have any ALSA configuration changes from default while we do
-this; if we do, we will get misleading numbers.
+So we'll move on to realtime monitoring latency.  Human psychoacoustics are
+such that two distinct but similar sounds cannot be reliably distinguished
+apart if they are within somewhere between 10-20 milliseconds from each other.
+The sound of our voice or our guitar pluck is picked up by our microphone or
+guitar pickup, subsequently processed by our audio software, and then fed back
+into our ears via our monitoring headphones, particularly when using audio
+processing software like effects stacks.  We want the sound we make to get into
+our mic or pickup, through our computer rig, processed by our software and
+plugins and out of our headphones into our ears within this number of
+milliseconds.  Otherwise, we will hear *both* the original sound and the
+monitored sound phased slightly (or totally) out of sync, which will destroy
+our ability to concentrate on the instrument that we are monitoring.  This
+isn't an issue with straight up recording where we aren't listening back to the
+processed input in realtime, it only is a problem when we want to monitor it
+while we are actually making the noises.
 
-Let's run ``alsa_delay``.
+To start, we need to do some fooling around with hardware settings.  In
+particular, we need to determine the lowest possible settings we can use for
+the ALSA "period size" and "period number" that purports to give us a roundtrip
+latency for a test pattern sound (without any processing or effects) at least
+below 20ms, and ideally below 10ms.  We can use the ``alsa_delay`` program to
+do this.
+
+Note that it's important that we don't have any ALSA configuration changes from
+default while we do this; if we do, we will get misleading numbers.
+
+Let's run ``alsa_delay``.  
 
 - Set the hardware on your sound card to a sample rate of 48Khz and reset it.
 
@@ -120,22 +138,22 @@ Let's run ``alsa_delay``.
     $ alsa_delay hw:1 hw:1 48000 32  3 1 1
     $ alsa_delay hw:1 hw:1 48000 32  2 1 1
 
-  For me, "can't open ALSA device" first happens when I use ``alsa_delay hw:1
-  hw:1 48000 32 3 1 1``.  Thus, the lowest I can go is 64 for the period size
-  and 2 for the period number.  This equates, according to ``alsa_delay``, to
-  9.85ms of latency at the lowest possible settings that my hardware can
-  handle.
+  I start getting weirdness (pops and clicks and error/warning output from
+  alsa_delay) at "64/3"; past this point it's all either weirdness or "can't
+  open ALSA device".  This means that the best I can really do is 128 for the
+  period size and 2 for the period number, which equates to the lowest
+  roundtrip latency that my hardware can handle at 14.5ms or so.
 
 - I'll then use Ardour to try to figure out how much of that latency is due to
-  the DACs in my sound card itself, as opposed to in the rest of the chain
-  (known as "systemic latency").  Programs can do some recording-time
-  compensation for systemic latency (apprently most noticeable for punch-ins)
-  if we set it properly.  Audio/MIDI setup, ALSA audio system, choose the right
-  device, set the period size and number we found in the last step as "buffer
-  size" and "periods", respectively, go to Advanced Settings -> Calibrate Audio
-  and click "Measure".  Mine is 472 samples/9.833ms *roundtrip* latency, and *a
-  systemic latency* of 344 samples/7.166ms.  We care about the number of
-  systemic latency samples for the next step.
+  the DACs in my sound card and computer hardware itself, as opposed to in the
+  rest of the chain. This is known as "systemic latency".  Software can do some
+  recording-time compensation for systemic latency (apprently most noticeable
+  for punch-ins) if we set it properly.  Audio/MIDI setup, ALSA audio system,
+  choose the right device, set the period size and number we found in the last
+  step as "buffer size" (128) and "periods" (2), respectively, go to Advanced
+  Settings -> Calibrate Audio and click "Measure".  Mine is 472 samples/9.833ms
+  *roundtrip* latency, and *a systemic latency* of 344 samples/7.166ms.  We
+  care about the number of systemic latency samples for the next step.
 
 - Click "use results" and try to record to an audio track.  Make sure it works
   and there is no audio artifacting.  If there is artifacting, inside Ardour,
