@@ -1,6 +1,6 @@
-====================================================
-NixOS 85: NixOS as a Music Production System, Part 2
-====================================================
+====================================================================================
+NixOS 85: NixOS as a Music Production System, Part 2 (Optimizing Monitoring Latency)
+====================================================================================
 
 Companion to video at
 
@@ -14,15 +14,16 @@ Script
 
 In my video entitled `#83 NixOS as a Music Production System
 <https://www.youtube.com/watch?v=_M_vSwGGVzY>`_, I got PipeWire and Musnix set
-up for low latency recording and monitoring, and I got Ardour and Audacity
-working with some plugins.
+up for generic low latency recording and monitoring, and I got Ardour and
+Audacity working with some plugins.  This is the second video in this series,
+where we'll dive deeper into pro audio on NixOS by further optimizing
+monitoring latency and trying to ensure that we get the fewest number of
+"xruns" (errors that happen when our audio hardware can't feed our software
+fast enough).
 
-In this followup video, I will take you through some configuration steps to
-attempt to prevent xruns, further reduce monitoring latency, and we'll set up
-some commercial VST plugins.  I'll be using rtcqs, changing Musnix rtirq
-config, disusing the low-latency kernel, using a new Musnix feature for rtcqs,
-measuring sound card latency, and adding wireplumber, xruncounter, and yabridge
-for VSTs.
+I'll be using rtcqs, changing Musnix rtirq config, disusing the low-latency
+kernel, using a new Musnix feature for rtcqs, measuring sound card hardware
+latency, and adding programs called wireplumber, and xruncounter.
 
 I'm going to use a NixOS flake to configure our system.  If you haven't yet
 switched over to flakes, apologies, but you might want to check out one or both
@@ -30,12 +31,14 @@ of my videos entitled `NixOS 63: Install NixOS 23.11 and Use Flakes Out Of the
 Box <https://youtu.be/hoB0pHZ0fpI>`_ or `NixOS 40: Converting an Existing NixOS
 Configuration To Flakes <https://youtu.be/Hox4wByw5pY>`_.
 
-I'm going to start in a place that is close to where I left off in video #83.
-In that video, I used a virtual machine, so I couldn't really demonstrate what
-performance and monitoring latency was like in the real world.  But in this
-video, I'll be configuring NixOS on real hardware, a Thinkpad P51 laptop.  It's
-a six-year-old four-core 2.8Ghz Intel i7-7700HQ with 48MB of RAM.  It gets
-scores of about 1300 single-core and 4400 multi-core in Geekbench 6.
+I'm going to start in a place that is close to where I left off in my last
+video in the series.  In that video, I used a virtual machine, so I couldn't
+really demonstrate what performance and monitoring latency was like in the real
+world.  But in this video, I'll be configuring NixOS on real hardware, a Dell
+Optiplex 3070 micro (small form factor) desktop.  It's a four-year-old six-core
+2.2Ghz Intel i5-9500T with 32GB of RAM.  It gets scores of about 1300
+single-core and 4600 multi-core in Geekbench 6.  You can get one on eBay today
+for about $130.
 
 Stuff
 -----
@@ -57,6 +60,7 @@ JACK buffer size, which was useful. It is not in ``nixpkgs`` but I've created a
 `Nix derivation to compile it from source
 <https://github.com/mcdonc/.nixconfig/blob/master/pkgs/xruncounter.nix>`_.
 
+In my first video in this series, I used a realtime kernel.  But since then
 I've disused ``musnix.realtime.enable`` because not all software that works on
 non-realtime kernels will work on realtime kernels, and I use the same system
 for general purpose tasks.  But I have set up ``musnix.rtcirq``, which I've
@@ -68,14 +72,18 @@ bucket brigade happy.
 Making sure I've got the system configured to the satisfaction of ``rtcqs``,
 running ``xruncounter`` and setting up ``musnix.rtcirq`` even without a
 realtime kernel were done to reduce the chance of xruns, but frankly I haven't
-seen any, so I can't really tell you if they've had an effect for good or bad.
+seen any under any configuration, so I can't really tell you if they've had an
+effect for good or bad.
 
-To try to reduce audio monitoring latency below human perceptibility (10-20ms),
-we first need to determine the lowest possible settings we can use for the ALSA
-"period size" and "period number" that gives us a latency at least below 20ms,
-and ideally below 10ms.  We can use the ``alsa_delay`` program to do this.
-Note that it's important that we don't have any ALSA configuration changes from
-default while we do this; if we do, we will get misleading numbers.
+So we'll move on to monitoring latency.  To try to reduce audio monitoring
+latency below human perceptibility (10-20ms), we first need to determine the
+lowest possible settings we can use for the ALSA "period size" and "period
+number" that gives us a latency at least below 20ms, and ideally below 10ms.
+We can use the ``alsa_delay`` program to do this.  Note that it's important
+that we don't have any ALSA configuration changes from default while we do
+this; if we do, we will get misleading numbers.
+
+Let's run ``alsa_delay``.
 
 - Set the hardware on your sound card to a sample rate of 48Khz and reset it.
 
@@ -135,19 +143,17 @@ default while we do this; if we do, we will get misleading numbers.
   until there isn't.  The settings that produce no artifacting are your actual
   lowest settings for period size and number.
 
-- I'll enable and use ``wireplumber`` to do automatic configuration of PipeWire
-  when it starts, informing Pipewire of the preferred ALSA settings for my
-  audio interface.  I'll use the period size, number, and systemic latency I
-  just found.  You will need to change the ``node.name`` for both inputs and
-  outputs to match your sound card.  You'll have to consult the Wireplumber
-  docs for how to find the sound card ``alsa_input`` and ``alsa_output`` names
-  it needs in the format it wants.  I got lucky; someone else had already
-  figured them out for my sound card.  In any case, I plug numbers into this
-  snippet.  ``latency.internal.rate`` is my systemic latency of 344,
-  ``api.alsa.period-size`` is 64 found via ``alsa_delay`` and
-  ``api.alsa.period-num`` is 2, also found via ``alsa_delay``.  I am also
-  messing with ``api.alsa.disable-batch``, which does something I don't
-  understand yet, caveat emptor::
+Now that I've figured out the optimum period size, period number, and systemic
+latency for my audio card, I'll enable and use ``wireplumber`` to do automatic
+configuration of PipeWire with these settings when it starts.  Wireplumber is
+what notices audio devices as they're added to the system, and when it notices
+ours, we'd like it to remember that, for our audio card, it should interface at
+a low level with these settings.
+
+We will create a file in ``/etc/wireplumber/main.lua.d/52-usb-ua25-config.lua``
+to do this.  When wireplumber starts, it will run the code in this file to
+configure PipeWire's JACK and native APIs to use these particular ALSA settings
+when used against this card.::
 
      environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
        text = ''
@@ -176,14 +182,23 @@ default while we do this; if we do, we will get misleading numbers.
        '';
      };
 
-- Note that these values are used by *PipeWire*, they are not respected by any
-  application which talks to ALSA directly.
+You will need to change the ``node.name`` for both inputs and outputs to match
+your sound card.  You'll have to consult the Wireplumber docs for how to find
+the sound card ``alsa_input`` and ``alsa_output`` names it needs in the format
+it wants.  I got lucky; someone else had already figured them out for my sound
+card.  In any case, I plug numbers into this snippet.
+``latency.internal.rate`` is my systemic latency of 344,
+``api.alsa.period-size`` is 64 found via ``alsa_delay`` and
+``api.alsa.period-num`` is 2, also found via ``alsa_delay``.  I am also messing
+with ``api.alsa.disable-batch``, which does something I don't understand yet,
+caveat emptor.
 
-Now we need to configure JACK settings.
+Note again that these values are used by *PipeWire*, they are not respected by
+any application which talks to ALSA directly.
 
-- Note from here on in that every time we make a change to
-  ``92-low-latency.conf`` or ``52-usb-ua25-config.lua``, we need to restart
-  pipewire and wireplumber::
+Now we need to configure JACK settings related to latency.  Note from here on
+  in that every time we make a change to ``92-low-latency.conf`` or
+  ``52-usb-ua25-config.lua``, we need to restart pipewire and wireplumber::
 
    systemctl --user restart pipewire wireplumber
 
@@ -200,47 +215,48 @@ Now we need to configure JACK settings.
   card's input and output volume knobs like a ZX Spectrum tape volume. When it
   works, you will see something like this on the ``jack_iodelay`` console::
 
-   2200.810 frames     45.850 ms total roundtrip latency
-        extra loopback latency: 152 frames
-        use 76 for the backend arguments -I and -O
+    328.807 frames      6.850 ms total roundtrip latency
+	extra loopback latency: 4294966808 frames
+	use 2147483404 for the backend arguments -I and -O
 
-  Note that we are seeing absurd numbers for "extra loopback latency" because
-  we set ``latency.internal.rate`` via wireplumber and the computation of
-  device latency by ``jack_iodelay`` isn't taking that into account, and
-  appears to be overflowing.  If we disable the wireplumber
-  ``latency.internal.rate`` option, we see a more reasonable number (but
-  strangely, not the *same* number; we get 200 instead of 344).::
+We are seeing an absurd number for ``jack_iodelay`` "extra loopback latency"
+measurement because we set ``latency.internal.rate`` (systemic latency) via
+``52-usb-ua25-config.lua`` and the computation of device latency by
+``jack_iodelay`` isn't taking that into account, and appears to be overflowing.
+If we disable the wireplumber ``latency.internal.rate`` option and restart
+pipewire and wireplumber, we see a more reasonable number.  "Extra loopback
+latency" is the latency measured by ``jack_iodelay`` for "systemic latency."
+But strangely, not the *same* number that we measured via Ardour.  We get 200
+instead of 344.::
 
      328.800 frames      6.850 ms total roundtrip latency
         extra loopback latency: 200 frames
         use 100 for the backend arguments -I and -O
 
-  If your numbers are also different, I'm not sure what the right thing to do
-  is.  I've gleaned most of what I've related so far from forum posts of
-  dubious provenance, and lots of interactive testing.  But I'll tell you how
-  I've decided to split the difference.  Since JACK is how I'm going to record,
-  I want to please ``jack_iodelay``.  How I've done that is to set
-  ``latency.internal.rate`` in the lua file such that the "extra loopback
-  latency" reported by ``jack_iodelay`` becomes 0.  In my case, that meant
-  ignoring the "344" reported by Ardour's ALSA calibration, and using *half* of
-  the "extra loopback latency" number reported by ``jack_iodelay`` instead.  So
-  I changed ``latency.internal.rate`` from 344 to 100.  Now when I restart
-  pipewire and wireplumber and rerun the ``jack_iodelay`` latency test, I get 0
-  extra loopback latency, which looks like this::
+If your numbers are also different, I'm not sure what the right thing to do is.
+I've gleaned most of what I've related so far from forum posts of dubious
+provenance, and lots of interactive testing.  But I'll tell you how I've
+decided to arbitrarily split the difference.  Since JACK is how I'm going to
+record, I want to please ``jack_iodelay``.  How I've done that is to set
+``latency.internal.rate`` in the lua file such that the "extra loopback
+latency" reported by ``jack_iodelay`` becomes 0.  In my case, that meant
+ignoring the "344" reported by Ardour's ALSA calibration, and using *half* of
+the "extra loopback latency" number reported by ``jack_iodelay`` instead.  So I
+changed ``latency.internal.rate`` from 344 to 100.  Now when I restart pipewire
+and wireplumber and rerun the ``jack_iodelay`` latency test, I get 0 extra
+loopback latency, which looks like this::
 
    328.810 frames      6.850 ms total roundtrip latency
         extra loopback latency: 0 frames
         use 0 for the backend arguments -I and -O
 
-  Shrug.  I have no idea whether this is optimum, but frankly I cannot tell the
-  difference when using one vs. the other.  This is getting into undetectable
-  territory.
+I have no idea whether this is optimum, but frankly I cannot tell the
+difference when using one vs. the other.  This is getting into undetectable
+territory.
 
 Lastly, I've changed PipeWire's default, min, max, and JACK quantum settings to
-match my sound card's "period" (64).
-
-.. code-block:: nix
-
+match my sound card's "period" (64)::
+  
     environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
       text = ''
         context.properties = {
@@ -269,8 +285,3 @@ monitoring latency I'm gonna get on this system.  It's not as immediate as my
 audio device's hardware monitoring, but if I didn't have the hardware
 monitoring to compare it to, I would believe it was realtime.  It's just a hair
 off.
-
-To put the nail in the coffin of my Hackintosh, I've set up yabridge which
-allowed me to get Arturia Collection and EZDrummer running.  Then, I overrode
-the LXVST path to pick up changes made by yabridge.  Both have some weird
-graphical glitches, but they work.
