@@ -138,22 +138,26 @@ Let's run ``alsa_delay``.
     $ alsa_delay hw:1 hw:1 48000 32  3 1 1
     $ alsa_delay hw:1 hw:1 48000 32  2 1 1
 
-  I start getting weirdness (pops and clicks and error/warning output from
-  alsa_delay) at "64/3"; past this point it's all either weirdness or "can't
-  open ALSA device".  This means that the best I can really do is 128 for the
-  period size and 2 for the period number, which equates to the lowest
-  roundtrip latency that my hardware can handle at 14.5ms or so.
+I start getting weirdness (pops and clicks and error/warning output from
+alsa_delay) at "64/3"; past this point it's all either weirdness or "can't open
+ALSA device".  This means that the best I can really do is 128 for the period
+size and 2 for the period number, which equates to the lowest roundtrip latency
+that my hardware can handle at 14.5ms or so.
 
-- I'll then use Ardour to try to figure out how much of that latency is due to
-  the DACs in my sound card and computer hardware itself, as opposed to in the
-  rest of the chain. This is known as "systemic latency".  Software can do some
-  recording-time compensation for systemic latency (apparently most noticeable
-  for punch-ins) if we set it properly.  Audio/MIDI setup, ALSA audio system,
-  choose the right device, set the period size and number we found in the last
-  step as "buffer size" (128) and "periods" (2), respectively, go to Advanced
-  Settings -> Calibrate Audio and click "Measure".  Mine is 969 samples/14.5ms
-  *roundtrip* latency, and *a systemic latency* of 440 samples/9.16ms.  We
-  care about the number of systemic latency samples for the next step.
+I'll then use Ardour to try to figure out how much of that latency is due to
+the DACs in my sound card and computer hardware itself, as opposed to in the
+rest of the chain. This is known as "systemic latency".  Software can do some
+recording-time compensation for systemic latency (apparently most noticeable
+for punch-ins) if we set it properly.  Note also that the systemic latency
+result will depend on the period size and number.  Different period sizes and
+number produce different systemic latencies.
+
+- Go to Audio/MIDI setup, ALSA audio system, choose the right device, set the
+  period size and number we found in the last step as "buffer size" (mine
+  is 128) and "periods" (mine is 2), respectively, go to Advanced Settings ->
+  Calibrate Audio and click "Measure".  Mine is 969 samples/14.5ms *roundtrip*
+  latency, and *a systemic latency* of 440 samples/9.16ms.  We care about the
+  number of systemic latency samples for a future step.
 
 - If you're conservative, click "use results" and try to record to an audio
   track.  Make sure it works and there is no audio artifacting.  If there is
@@ -162,12 +166,13 @@ Let's run ``alsa_delay``.
   ``alsa_delay`` step above until there isn't.  The settings that produce no
   artifacting are your actual lowest settings for period size and number.
 
-Now that I've figured out the optimum period size, period number, and systemic
-latency for my audio card, I'll enable and use ``wireplumber`` to do automatic
-configuration of PipeWire with these settings when it starts.  Wireplumber is
-what notices audio devices as they're added to the system, and when it notices
-ours, we'd like it to remember that, for our audio card, it should interface at
-a low level with these settings.
+Now that I've figured out the optimum period size and period number, and the
+systemic latency for my audio card with that period size and number, I'll
+enable and use ``wireplumber`` to do automatic configuration of PipeWire with
+related settings when it starts.  Wireplumber is the process that notices audio
+devices as they're added to the system, and when it notices ours, we'd like it
+to remember that, for our audio card, it should interface at a low level using
+these settings.
 
 We will create a file in ``/etc/wireplumber/main.lua.d/52-usb-ua25-config.lua``
 to do this.  When wireplumber starts, it will run the code in this file to
@@ -189,11 +194,11 @@ when used against this card.::
            },
            apply_properties = {
              -- latency.internal.rate is same as ProcessLatency
-             ["latency.internal.rate"] = 344,
+             ["latency.internal.rate"] = 440,
              -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
-             ["api.alsa.period-size"]   = 64,
+             ["api.alsa.period-size"]   = 128,
              ["api.alsa.period-num"]   = 2,
-             ["api.alsa.disable-batch"]   = true,
+             -- ["api.alsa.disable-batch"]   = true,
            },
          }
 
@@ -206,7 +211,7 @@ your sound card.  You'll have to consult the Wireplumber docs for how to find
 the sound card ``alsa_input`` and ``alsa_output`` names it needs in the format
 it wants.  I got lucky; someone else had already figured them out for my sound
 card.  In any case, I plug numbers into this snippet.
-``latency.internal.rate`` is my systemic latency of 344,
+``latency.internal.rate`` is my systemic latency of 440 reported by Ardour,
 ``api.alsa.period-size`` is 64 found via ``alsa_delay`` and
 ``api.alsa.period-num`` is 2, also found via ``alsa_delay``.  I am also messing
 with ``api.alsa.disable-batch``, which does something I don't understand yet,
@@ -215,9 +220,9 @@ caveat emptor.
 Note again that these values are used by *PipeWire*, they are not respected by
 any application which talks to ALSA directly.
 
-Now we need to configure JACK settings related to latency.  Note from here on
-  in that every time we make a change to ``92-low-latency.conf`` or
-  ``52-usb-ua25-config.lua``, we need to restart pipewire and wireplumber::
+Now we need to configure *JACK* settings related to latency.  Note from here on
+in that every time we make a change to ``92-low-latency.conf`` or
+``52-usb-ua25-config.lua``, we need to restart PipeWire and Wireplumber::
 
    systemctl --user restart pipewire wireplumber
 
