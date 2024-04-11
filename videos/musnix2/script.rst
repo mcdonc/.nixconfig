@@ -166,13 +166,20 @@ number produce different systemic latencies.
   ``alsa_delay`` step above until there isn't.  The settings that produce no
   artifacting are your actual lowest settings for period size and number.
 
-Now that I've figured out the optimum period size and period number, and the
-systemic latency for my audio card with that period size and number, I'll
-enable and use ``wireplumber`` to do automatic configuration of PipeWire with
-related settings when it starts.  Wireplumber is the process that notices audio
-devices as they're added to the system, and when it notices ours, we'd like it
-to remember that, for our audio card, it should interface at a low level using
-these settings.
+Now that I've figured out the optimum period size and period number, let's see
+whether we can make our actual life better.
+
+First I'd like to try out Audacity software JACK monitoring *without* using the
+numbers we just got to configure PipeWire's JACK emulation.  We'll run Ardour
+without any configurtation changes and sort of just listen in on the realtime
+monitoring latency.  To do this, I'll start up Ardour and just configure things
+such that I can hear myself
+
+I'll enable and use ``wireplumber`` to do automatic configuration of PipeWire
+with related settings when it starts.  Wireplumber is the process that notices
+audio devices as they're added to the system, and when it notices ours, we'd
+like it to remember that, for our audio card, it should interface at a low
+level using these settings.
 
 We will create a file in ``/etc/wireplumber/main.lua.d/52-usb-ua25-config.lua``
 to do this.  When wireplumber starts, it will run the code in this file to
@@ -239,23 +246,23 @@ in that every time we make a change to ``92-low-latency.conf`` or
   card's input and output volume knobs like a ZX Spectrum tape volume. When it
   works, you will see something like this on the ``jack_iodelay`` console::
 
-    328.807 frames      6.850 ms total roundtrip latency
-	extra loopback latency: 4294966808 frames
-	use 2147483404 for the backend arguments -I and -O
+    408.806 frames      8.517 ms total roundtrip latency
+	extra loopback latency: 4294966568 frames
+	use 2147483284 for the backend arguments -I and -O
 
 "Extra loopback latency" is the latency measured by ``jack_iodelay`` for
 "systemic latency."  We are seeing an absurd number for "extra loopback
 latency" measurement because we set ``latency.internal.rate`` (systemic
 latency) via ``52-usb-ua25-config.lua`` and the computation of device latency
 by ``jack_iodelay`` isn't taking that into account, and appears to be
-overflowing.  If we disable the wireplumber ``latency.internal.rate`` option
-and restart pipewire and wireplumber, we see a more reasonable number.  But
-strangely, not the *same* number that we measured via Ardour.  We get 200
-instead of 344.::
+overflowing.  If we disable the Wireplumber ``latency.internal.rate`` option
+and restart PipeWire and Wireplumber and remeasure we see a more reasonable
+number.  But strangely, not the *same* number that we measured via Ardour.  We
+get 152 instead of 440.::
 
-     328.800 frames      6.850 ms total roundtrip latency
-        extra loopback latency: 200 frames
-        use 100 for the backend arguments -I and -O
+     408.806 frames      8.517 ms total roundtrip latency
+	extra loopback latency: 152 frames
+	use 76 for the backend arguments -I and -O
 
 If your numbers are also different, I'm not sure what the right thing to do is.
 I've gleaned most of what I've related so far from forum posts of dubious
@@ -264,32 +271,32 @@ decided to arbitrarily split the difference.  Since JACK is how I'm going to
 record, I want to please ``jack_iodelay``.  How I've done that is to set
 ``latency.internal.rate`` in the lua file such that the "extra loopback
 latency" reported by ``jack_iodelay`` becomes 0.  In my case, that meant
-ignoring the "344" reported by Ardour's ALSA calibration, and using *half* of
+ignoring the "440" reported by Ardour's ALSA calibration, and using *half* of
 the "extra loopback latency" number reported by ``jack_iodelay`` instead.  So I
-changed ``latency.internal.rate`` from 344 to 100.  Now when I restart pipewire
+changed ``latency.internal.rate`` from 440 to 76.  Now when I restart pipewire
 and wireplumber and rerun the ``jack_iodelay`` latency test, I get 0 extra
 loopback latency, which looks like this::
 
-   328.810 frames      6.850 ms total roundtrip latency
-        extra loopback latency: 0 frames
-        use 0 for the backend arguments -I and -O
+   408.806 frames      8.517 ms total roundtrip latency
+	extra loopback latency: 0 frames
+	use 0 for the backend arguments -I and -O
 
 I have no idea whether this is optimum, but frankly I cannot tell the
 difference when using one vs. the other.  This is getting into undetectable
 territory.
 
 Lastly, I've changed PipeWire's default, min, max, and JACK quantum settings to
-match my sound card's "period" (64)::
+match my sound card's ASLA "period" (128)::
   
     environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
       text = ''
         context.properties = {
-          default.clock.quantum = 64
-          default.clock.min-quantum = 64
-          default.clock.max-quantum = 64
+          default.clock.quantum = 128
+          default.clock.min-quantum = 128
+          default.clock.max-quantum = 128
         }
         jack.properties = {
-          node.quantum = 64/48000
+          node.quantum = 128/48000
         }
       '';
     };
