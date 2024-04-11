@@ -64,14 +64,14 @@ JACK buffer size, which was useful. It is not in ``nixpkgs`` but I've created a
 In my first video in this series, I used a realtime kernel.  But since then
 I've disused ``musnix.realtime.enable`` because not all software that works on
 non-realtime kernels will work on realtime kernels, and I use the same system
-for general purpose tasks.  But I have set up ``musnix.rtcirq``, which I've
+for general purpose tasks.  But I have set up ``musnix.rtirq``, which I've
 found works both with and without a realtime kernel.  It apparently can help
 the system keep the right hardware active at the right times such that latency
 is reduced and buffers are filled at the right times to keep the system audio
 bucket brigade happy.
 
 Making sure I've got the system configured to the satisfaction of ``rtcqs``,
-running ``xruncounter`` and setting up ``musnix.rtcirq`` even without a
+running ``xruncounter`` and setting up ``musnix.rtirq`` even without a
 realtime kernel were done to reduce the chance of xruns, but frankly I haven't
 seen any under any configuration, so I can't really tell you if they've had an
 effect for good or bad.
