@@ -52,9 +52,10 @@ reduce audio latency.
 
    musnix.rtcqs.enable = true;
 
-I've set up a program named ``xruncounter`` to try to generate xruns.  xruns
-happen when the operating system cannot supply audio software like Ardour with
-data fast enough.  I haven't seen ``xruncounter`` generate any xruns under any
+I've set up a program named `xruncounter
+<https://github.com/Gimmeapill/xruncounter>`_ to try to generate xruns.  xruns
+happen when the operating system cannot supply the audio subsystem with data
+fast enough.  I haven't seen ``xruncounter`` generate any xruns under any
 configuration, so I'm not even sure it's working right.  It does display the
 JACK buffer size, which was useful. It is not in ``nixpkgs`` but I've created a
 `Nix derivation to compile it from source
@@ -219,14 +220,14 @@ Now we need to configure JACK settings related to latency.  Note from here on
 	extra loopback latency: 4294966808 frames
 	use 2147483404 for the backend arguments -I and -O
 
-We are seeing an absurd number for ``jack_iodelay`` "extra loopback latency"
-measurement because we set ``latency.internal.rate`` (systemic latency) via
-``52-usb-ua25-config.lua`` and the computation of device latency by
-``jack_iodelay`` isn't taking that into account, and appears to be overflowing.
-If we disable the wireplumber ``latency.internal.rate`` option and restart
-pipewire and wireplumber, we see a more reasonable number.  "Extra loopback
-latency" is the latency measured by ``jack_iodelay`` for "systemic latency."
-But strangely, not the *same* number that we measured via Ardour.  We get 200
+"Extra loopback latency" is the latency measured by ``jack_iodelay`` for
+"systemic latency."  We are seeing an absurd number for "extra loopback
+latency" measurement because we set ``latency.internal.rate`` (systemic
+latency) via ``52-usb-ua25-config.lua`` and the computation of device latency
+by ``jack_iodelay`` isn't taking that into account, and appears to be
+overflowing.  If we disable the wireplumber ``latency.internal.rate`` option
+and restart pipewire and wireplumber, we see a more reasonable number.  But
+strangely, not the *same* number that we measured via Ardour.  We get 200
 instead of 344.::
 
      328.800 frames      6.850 ms total roundtrip latency
