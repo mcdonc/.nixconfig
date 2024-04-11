@@ -147,20 +147,20 @@ Let's run ``alsa_delay``.
 - I'll then use Ardour to try to figure out how much of that latency is due to
   the DACs in my sound card and computer hardware itself, as opposed to in the
   rest of the chain. This is known as "systemic latency".  Software can do some
-  recording-time compensation for systemic latency (apprently most noticeable
+  recording-time compensation for systemic latency (apparently most noticeable
   for punch-ins) if we set it properly.  Audio/MIDI setup, ALSA audio system,
   choose the right device, set the period size and number we found in the last
   step as "buffer size" (128) and "periods" (2), respectively, go to Advanced
-  Settings -> Calibrate Audio and click "Measure".  Mine is 472 samples/9.833ms
-  *roundtrip* latency, and *a systemic latency* of 344 samples/7.166ms.  We
+  Settings -> Calibrate Audio and click "Measure".  Mine is 969 samples/14.5ms
+  *roundtrip* latency, and *a systemic latency* of 440 samples/9.16ms.  We
   care about the number of systemic latency samples for the next step.
 
-- Click "use results" and try to record to an audio track.  Make sure it works
-  and there is no audio artifacting.  If there is artifacting, inside Ardour,
-  reconfigure Ardour's ALSA settings and re-record, working your way back up
-  the pairings of period size and number from the ``alsa_delay`` step above
-  until there isn't.  The settings that produce no artifacting are your actual
-  lowest settings for period size and number.
+- If you're conservative, click "use results" and try to record to an audio
+  track.  Make sure it works and there is no audio artifacting.  If there is
+  artifacting, inside Ardour, reconfigure Ardour's ALSA settings and re-record,
+  working your way back up the pairings of period size and number from the
+  ``alsa_delay`` step above until there isn't.  The settings that produce no
+  artifacting are your actual lowest settings for period size and number.
 
 Now that I've figured out the optimum period size, period number, and systemic
 latency for my audio card, I'll enable and use ``wireplumber`` to do automatic
