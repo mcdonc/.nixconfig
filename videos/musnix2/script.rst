@@ -2,7 +2,7 @@
 NixOS 85: NixOS as a Music Production System, Part 2 (Optimizing Monitoring Latency)
 ====================================================================================
 
-Companion to video at
+Companion to video at https://youtu.be/x4nXpMbq8RQ
 
 This text script available via link in the video description.
 
