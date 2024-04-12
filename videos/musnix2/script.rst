@@ -173,18 +173,20 @@ First I'd like to try out Audacity software JACK monitoring *without* using the
 numbers we just got to configure PipeWire's JACK emulation.  We'll run Ardour
 without any configurtation changes and sort of just listen in on the realtime
 monitoring latency.  To do this, I'll start up Ardour and just configure things
-such that I can hear myself
+such that I can hear myself and get a sense of what the default stack's
+monitoring latency is.
 
-I'll enable and use ``wireplumber`` to do automatic configuration of PipeWire
-with related settings when it starts.  Wireplumber is the process that notices
-audio devices as they're added to the system, and when it notices ours, we'd
-like it to remember that, for our audio card, it should interface at a low
+Then I'll enable and use ``wireplumber`` to do automatic configuration of
+PipeWire with related settings when it starts.  Wireplumber is the process that
+notices audio devices as they're added to the system, and when it notices ours,
+we'd like it to remember that, for our audio card, it should interface at a low
 level using these settings.
 
-We will create a file in ``/etc/wireplumber/main.lua.d/52-usb-ua25-config.lua``
-to do this.  When wireplumber starts, it will run the code in this file to
-configure PipeWire's JACK and native APIs to use these particular ALSA settings
-when used against this card.::
+To do so, we will create a file in
+``/etc/wireplumber/main.lua.d/52-usb-ua25-config.lua`` to do this.  When
+wireplumber starts, it will run the code in this file to configure PipeWire's
+JACK and native APIs to use these particular ALSA settings when used against
+this card.::
 
      environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
        text = ''
@@ -261,8 +263,8 @@ number.  But strangely, not the *same* number that we measured via Ardour.  We
 get 152 instead of 440.::
 
      408.806 frames      8.517 ms total roundtrip latency
-	extra loopback latency: 152 frames
-	use 76 for the backend arguments -I and -O
+       extra loopback latency: 152 frames
+       use 76 for the backend arguments -I and -O
 
 If your numbers are also different, I'm not sure what the right thing to do is.
 I've gleaned most of what I've related so far from forum posts of dubious
@@ -310,9 +312,3 @@ jack.properties' node.quantum which tells things connected to JACK what the
 buffer size is.  It may be that as I add more devices or use different software
 that I need to mess around with the min and max quantum, so that everything
 sounds good together.  I'll have to find out.
-
-But as a result of all this, I think I have just about the lowest recording
-monitoring latency I'm gonna get on this system.  It's not as immediate as my
-audio device's hardware monitoring, but if I didn't have the hardware
-monitoring to compare it to, I would believe it was realtime.  It's just a hair
-off.

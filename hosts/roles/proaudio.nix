@@ -60,7 +60,7 @@ in
   # there is crackling at quantums below 128, presumably due to the upscaling
   # that pipewire does to 48K.  There is crackling at 32 no matter what.
   #
-  # alsa_delay hw:3,0 hw:3,0 48000 48 2 1 1
+  # alsa_delay hw:3,0 hw:3,0 48000 128 2 1 1
   #
   #   344.811 frames      7.184 ms
   #
@@ -90,12 +90,12 @@ in
   environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
     text = ''
       context.properties = {
-        default.clock.quantum = 64
-        default.clock.min-quantum = 64
-        default.clock.max-quantum = 64
+        default.clock.quantum = 128
+        default.clock.min-quantum = 128
+        default.clock.max-quantum = 128
       }
       jack.properties = {
-        node.quantum = 64/48000
+        node.quantum = 128/48000
       }
     '';
   };
@@ -115,11 +115,10 @@ in
         },
         apply_properties = {
           -- latency.internal.rate is same as ProcessLatency
-          ["latency.internal.rate"] = 100,
-          -- see Robin Gareus' second post after https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
-          ["api.alsa.period-size"]   = 64,
+          ["latency.internal.rate"] = 77,
+          ["api.alsa.period-size"]   = 128,
           ["api.alsa.period-num"]   = 2,
-          ["api.alsa.disable-batch"]   = true,
+          -- ["api.alsa.disable-batch"]   = true,
         },
       }
 
