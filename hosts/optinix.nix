@@ -65,6 +65,7 @@ in
     "zfs.zfs_arc_max=2147483648"
     # run in performance mode, dammit
     "cpufreq.default_governor=performance"
+    "intel_pstate=disable"
   ];
 
   fileSystems."/nix" = {
