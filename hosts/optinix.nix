@@ -41,6 +41,7 @@ in
   hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
 
   # music, doesn't actually work for some reason
+  powerManagement.enable = lib.mkForce true;
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
   boot.initrd.availableKernelModules =
@@ -62,6 +63,8 @@ in
     "threadirqs"
     # 2GB max ARC cache
     "zfs.zfs_arc_max=2147483648"
+    # run in performance mode, dammit
+    "cpufreq.default_governor=performance"
   ];
 
   fileSystems."/nix" = {
