@@ -407,6 +407,7 @@ in
     epkgs.yaml-mode
     epkgs.multiple-cursors
     epkgs.dts-mode
+    epkgs.rust-mode
   ];
 
   services.emacs = {
