@@ -2,8 +2,7 @@
 
 {
   environment.systemPackages = [
-    pkgs.davinci-resolve-studio
-    pkgs.davinci-resolve
+    pkgs-unstable.davinci-resolve-studio
   ];
 }    
 
