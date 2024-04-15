@@ -20,7 +20,7 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  # use pulseaudio instead of pipewire for Resolve
+  # use pulseaudio instead of pipewire for Resolve farlight recording
   sound.enable = lib.mkForce true;
   hardware.pulseaudio.enable = lib.mkForce true;
   services.pipewire.enable = lib.mkForce false;
@@ -34,8 +34,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   boot.kernelParams = lib.mkForce [
-    # music
-    "threadirqs"
     # 2GB max ARC cache
     "zfs.zfs_arc_max=2147483648"
   ];
