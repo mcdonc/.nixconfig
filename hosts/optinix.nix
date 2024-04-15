@@ -24,7 +24,6 @@ in
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
     ./roles/proaudio.nix
-    ./roles/forceperfgov.nix
     ./roles/rc505
     ../common.nix
     (
