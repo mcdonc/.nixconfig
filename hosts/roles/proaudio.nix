@@ -90,12 +90,12 @@ in
   environment.etc."pipewire/pipewire.conf.d/92-low-latency.conf" = {
     text = ''
       context.properties = {
-        default.clock.quantum = 128
-        default.clock.min-quantum = 64
-        default.clock.max-quantum = 192
+        default.clock.quantum = 256
+        default.clock.min-quantum = 128
+        default.clock.max-quantum = 512
       }
       jack.properties = {
-        node.quantum = 128/48000
+        node.quantum = 256/48000
       }
     '';
   };
@@ -115,9 +115,9 @@ in
         },
         apply_properties = {
           -- latency.internal.rate is same as ProcessLatency
-          ["latency.internal.rate"] = 77,
-          ["api.alsa.period-size"]   = 128,
-          ["api.alsa.period-num"]   = 3,
+          ["latency.internal.rate"] = 76,
+          ["api.alsa.period-size"]   = 256,
+          ["api.alsa.period-num"]   = 2,
           -- ["api.alsa.disable-batch"]   = true,
         },
       }
