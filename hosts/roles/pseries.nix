@@ -2,10 +2,6 @@
 
 {
 
-  imports = [
-    ./davinci-resolve.nix
-  ];
-
   # manage nvidia-offload ourselves
   hardware.nvidia.prime.offload.enableOffloadCmd = lib.mkForce false;
   boot.initrd.availableKernelModules =

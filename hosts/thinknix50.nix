@@ -8,7 +8,6 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/vmount.nix
-    ./roles/davinci-resolve.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (

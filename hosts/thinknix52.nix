@@ -9,6 +9,7 @@
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     #./roles/sessile.nix
+    ./roles/davinci-resolve.nix
     ./roles/vmount.nix
     ../common.nix
   ];
