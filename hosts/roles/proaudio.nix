@@ -1,7 +1,5 @@
 {pkgs, lib, ...}:
 let
-  xruncounter = pkgs.callPackage ../../pkgs/xruncounter.nix { };
-
   # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
   # ~/.wine via e.g.  "wine
   # ~/Downloads/Arturia_Software_Center__2_7_1_2466.exe" then run
@@ -22,10 +20,13 @@ let
     (builtins.readFile ./adevices.sh);
 in
 {
+  imports = [
+    ../../pkgs/xruncounter.nix
+  ];
+  
   environment.systemPackages = with pkgs; [
     zita-alsa-pcmi # alsa_delay
     jack-example-tools # jack_iodelay
-    xruncounter
     qpwgraph
     pavucontrol
     yabridge

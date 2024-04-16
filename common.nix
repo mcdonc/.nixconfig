@@ -41,9 +41,6 @@ let
     }
   '';
 
-  gitkraken-wimpy = pkgs.callPackage ./pkgs/gitkraken.nix { };
-  dvtranscode = pkgs.callPackage ./pkgs/dvtranscode.nix { };
-
   findnixstorelinks = pkgs.substituteAll ({
     name = "findnixstorelinks";
     src = ./bin/findnixstorelinks.py;
@@ -55,7 +52,10 @@ let
 in
 {
 
-  imports = [ ./pkgs/cachix.nix ];
+  imports = [
+    ./pkgs/cachix.nix
+    ./pkgs/dvtranscode.nix
+  ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
@@ -423,7 +423,7 @@ in
     lazygit
     gittyup
     github-desktop
-    gitkraken-wimpy
+    pkgs-unstable.gitkraken
     meld
     kdiff3
     envsubst
@@ -446,7 +446,6 @@ in
     moon-buggy
     pokete
     blender
-    dvtranscode
     clinfo
     yt-dlp
     alsa-utils # aplay
