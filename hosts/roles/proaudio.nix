@@ -92,7 +92,7 @@ in
     text = ''
       context.properties = {
         default.clock.quantum = 256
-        default.clock.min-quantum = 128
+        default.clock.min-quantum = 256
         default.clock.max-quantum = 512
       }
       jack.properties = {
@@ -118,7 +118,7 @@ in
           -- latency.internal.rate is same as ProcessLatency
           ["latency.internal.rate"] = 76,
           ["api.alsa.period-size"]   = 256,
-          ["api.alsa.period-num"]   = 2,
+          ["api.alsa.period-num"]   = 3,
           -- ["api.alsa.disable-batch"]   = true,
         },
       }
