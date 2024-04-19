@@ -20,10 +20,10 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  # use pulseaudio instead of pipewire for Resolve farlight recording
-  sound.enable = lib.mkForce true;
-  hardware.pulseaudio.enable = lib.mkForce true;
-  services.pipewire.enable = lib.mkForce false;
+  # # use pulseaudio instead of pipewire for Resolve farlight recording
+  # sound.enable = lib.mkForce true;
+  # hardware.pulseaudio.enable = lib.mkForce true;
+  # services.pipewire.enable = lib.mkForce false;
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
