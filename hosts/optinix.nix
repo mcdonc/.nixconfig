@@ -23,7 +23,7 @@ in
     ./roles/steam.nix
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
-    ./roles/proaudio.nix
+#    ./roles/proaudio.nix
     ./roles/rc505
     ../common.nix
     (
