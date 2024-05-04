@@ -58,8 +58,8 @@ let
 
   yt-1080p = pkgs.writeShellScript "yt-1080p" ''
     # assumes 4k input
-    ${ffmpeg} -i $1 -c:v h264_nvenc -rc:v vbr -b:v 10M \
-       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart $2
+    ${ffmpeg} -i "$1" -c:v h264_nvenc -rc:v vbr -b:v 10M \
+       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart "$2"
   '';
 
   defaultpalette = [
