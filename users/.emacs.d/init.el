@@ -289,6 +289,11 @@
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
+(defun unfill-region ()
+  "Unfills a region."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-region (region-beginning) (region-end) nil)))
 
 ;; Use a minor mode for all my "override" key bindings:
 
