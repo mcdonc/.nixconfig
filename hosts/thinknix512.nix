@@ -20,8 +20,8 @@
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 
-  hardware.nvidia.prime.offload.enable = lib.mkForce true;
-  hardware.nvidia.prime.sync.enable = lib.mkForce false;
+  hardware.nvidia.prime.offload.enable = lib.mkForce false;
+  hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output
   # (default is 4)

@@ -11,3 +11,4 @@
 
 - Reenable ctrl-alt-T as gnome-terminal instead of Konsole.
 
+- Wayland finally works.
