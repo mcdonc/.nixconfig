@@ -1,0 +1,9 @@
+- Nix option changes
+
+- Upgraded to Plasma 6.
+
+- Run ssh-agent as a systemd user service (via programs.ssh.startAgent)
+  rather than as Plasma 6 autostart.
+
+- Reenable ctrl-alt-T as gnome-terminal instead of Konsole.
+
