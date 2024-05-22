@@ -256,11 +256,11 @@ in
     })
     thermald
     powertop
-    libsForQt5.kdeconnect-kde
-    libsForQt5.krdc
-    libsForQt5.breeze-gtk
-    libsForQt5.konversation
-    libsForQt5.kmag
+    kdePackages.kdeconnect-kde
+    kdePackages.krdc
+    kdePackages.breeze-gtk
+    kdePackages.konversation
+    kdePackages.kmag
     gnome.gnome-disk-utility
     openvpn
     unzip
@@ -404,7 +404,7 @@ in
     pkgs-unstable.rhythmbox
     minicom
     nvtopPackages.nvidia
-    libsForQt5.kdenlive
+    kdePackages.kdenlive
     glaxnimate # for kdenlive
     nix-index # for nix-locate
     bitwarden

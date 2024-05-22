@@ -4,7 +4,7 @@ let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
     ${config.systemd.services.sanoid.serviceConfig.ExecStart} --monitor-health
   '';
-  kscreen-doctor = "${pkgs.libsForQt5.libkscreen}/bin/kscreen-doctor";
+  kscreen-doctor = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor";
   left-screen-1080p = pkgs.writeShellScriptBin "left-screen-1080p" ''
     ${kscreen-doctor} output.HDMI-1.mode.1920x1080@60
   '';
