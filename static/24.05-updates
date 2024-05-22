@@ -7,7 +7,8 @@
 - /etc/pipewire/pipewire.conf.d/foobar needs to be in
   services.pipewire.extraConfig but it can't be text.  Not sure if it works.
 
-- Upgraded to Plasma 6.
+- Can't upgrade to Plasma 6 because Ctrl-Alt-T keyboard shortcut cannot be
+  mapped away from Konsole.
 
 - Run ssh-agent as a systemd user service (via programs.ssh.startAgent)
   rather than as Plasma 6 autostart.
@@ -15,3 +16,5 @@
 - Reenable ctrl-alt-T as gnome-terminal instead of Konsole.
 
 - Wayland finally works.
+
+- Translucent drag / wobbly windows.
