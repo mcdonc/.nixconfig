@@ -88,15 +88,27 @@ in
   #
   # pw-jack jack_lsp -l
 
-  services.pipewire.extraConfig.pipewire."92-low-latency.conf" = {
-      context.properties = {
-        default.clock.quantum = 256;
-        default.clock.min-quantum = 256;
-        default.clock.max-quantum = 512;
-      };
-      jack.properties = {
-        node.quantum = "256/48000";
-      };
+  # wanted in 92-low-latency:
+  #
+  # context.properties = {
+  #   default.clock.quantum = 256
+  #   default.clock.min-quantum = 256
+  #   default.clock.max-quantum = 512
+  # }
+  # jack.properties = {
+  #   node.quantum = 256/48000
+  # }
+
+
+  services.pipewire.extraConfig.pipewire."92-low-latency" = {
+    context.properties = {
+      default.clock.quantum = 256;
+      default.clock.min-quantum = 256;
+      default.clock.max-quantum = 512;
+    };
+    jack.properties = {
+      node.quantum = "256/48000";
+    };
   };
 
   environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
