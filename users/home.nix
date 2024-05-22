@@ -141,7 +141,10 @@ let
 in
 
 {
-  imports = [ ./keybase.nix ];
+  #imports = [ ./keybase.nix ];
+
+  services.keybase.enable = true;
+  services.kbfs.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -151,6 +154,7 @@ in
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
+    keybase-gui
   ];
 
   programs.gnome-terminal = {
