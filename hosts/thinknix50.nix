@@ -26,9 +26,9 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   #services.fprintd.tod.enable = true;
   #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
 
-  # override optimus default offload mode to deal with external monitor
-  hardware.nvidia.prime.offload.enable = lib.mkForce true;
-  # hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.prime.offload.enable = lib.mkForce
+    (!config.hardware.nvidia.prime.sync.enable);
+  hardware.nvidia.prime.sync.enable = lib.mkForce false;
 
 }
 

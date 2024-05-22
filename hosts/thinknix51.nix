@@ -21,9 +21,10 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   networking.hostId = "83540bcc";
   networking.hostName = "thinknix51";
 
-  hardware.nvidia.prime.offload.enable = lib.mkForce true;
+  hardware.nvidia.prime.offload.enable = lib.mkForce
+    (!config.hardware.nvidia.prime.sync.enable);
   hardware.nvidia.prime.sync.enable = lib.mkForce false;
-
+  
   # silence ACPI "errors" at boot shown before NixOS stage 1 output
   # (default is 4)
   boot.consoleLogLevel = 3;

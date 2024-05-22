@@ -16,17 +16,17 @@
 
   system.stateVersion = "22.05";
 
-  # override optimus default offload mode to deal with external monitor
-  hardware.nvidia.prime.offload.enable = true;
-  hardware.nvidia.prime.sync.enable = false;
+  # per-host settings
+  networking.hostId = "e1e4a33b";
+  networking.hostName = "thinknix52";
+
+  hardware.nvidia.prime.offload.enable = lib.mkForce
+    (!config.hardware.nvidia.prime.sync.enable);
+  hardware.nvidia.prime.sync.enable = lib.mkForce false;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)
   boot.consoleLogLevel = 3;
-
-  # per-host settings
-  networking.hostId = "e1e4a33b";
-  networking.hostName = "thinknix52";
 
 }
 
