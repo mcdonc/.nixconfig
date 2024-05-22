@@ -84,12 +84,8 @@ in
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-19.1.9"
-    #"python-2.7.18.6"
-    #"python-2.7.18.7"
     "python-2.7.18.8"
-  ]; # etcher (12.2.3), something unknown (maybe matrix or signal desktop) and
-  # unmaintained python
-
+  ]; # something unknown (maybe matrix or signal desktop) and unmaintained python
   # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 

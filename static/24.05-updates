@@ -1,5 +1,7 @@
 - Nix option changes
 
+- Etcher no longer works.
+
 - Emacs smart-tabs-mode no longer works under Emacs 29.
 
 - Upgraded to Plasma 6.
