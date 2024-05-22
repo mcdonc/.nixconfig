@@ -2,7 +2,7 @@
   description = "Chris' Jawns";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
@@ -15,8 +15,7 @@
     nixgl-unstable.url = "github:guibou/nixGL";
     nixgl-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    nix-gaming.url = "github:fufexan/nix-gaming";
+    home-manager.url = "github:nix-community/home-manager";
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
@@ -32,13 +31,8 @@
 
       nixgl-olive = inputs.nixgl-olive.defaultPackage."${system}".nixGLIntel;
       nixgl-unstable = inputs.nixgl-unstable.defaultPackage."${system}".nixGLIntel;
-      ge = inputs.nix-gaming.packages."${system}".proton-ge;
-
       my_overlay = (
         self: super: {
-          steam = super.steam.override {
-            extraProfile = "export STEAM_EXTRA_COMPAT_TOOLS_PATHS='${ge}'";
-          };
         }
       );
 

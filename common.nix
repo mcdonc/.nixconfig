@@ -91,8 +91,9 @@ in
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-19.1.9"
-    "python-2.7.18.6"
-    "python-2.7.18.7"
+    #"python-2.7.18.6"
+    #"python-2.7.18.7"
+    "python-2.7.18.8"
   ]; # etcher (12.2.3), something unknown (maybe matrix or signal desktop) and
   # unmaintained python
 
@@ -135,7 +136,7 @@ in
 
   # desktop stuff
   services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
+  services.displayManager.sddm.enable = true;
   services.xserver.displayManager.sessionCommands = let
     # disable middle click
     modmap = pkgs.writeText "modmap" ''
@@ -144,11 +145,11 @@ in
   in
     "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
   services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "ctrl:nocaps,terminate:ctrl_alt_bksp";
+  services.xserver.xkb.layout = "us";
+  services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
-  services.xserver.libinput.enable = true; # touchpad
+  services.libinput.enable = true; # touchpad
   fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
 
   sound.enable = false; # not needed for pipewire
@@ -184,7 +185,7 @@ in
   # printing
   services.printing.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
 
   # all other services
   services.fwupd.enable = true;
@@ -368,7 +369,7 @@ in
     lsof
     progress
     mc
-    etcher
+    #etcher # 24.05 removed
     pre-commit
     html-tidy
     dua
@@ -402,7 +403,7 @@ in
     rnnoise-plugin
     pkgs-unstable.rhythmbox
     minicom
-    nvtop-nvidia
+    nvtopPackages.nvidia
     libsForQt5.kdenlive
     glaxnimate # for kdenlive
     nix-index # for nix-locate

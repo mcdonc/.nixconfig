@@ -1,8 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   # steam-related
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [ proton-ge-bin ];
+  };
   nix.settings = {
     substituters = [ "https://nix-gaming.cachix.org" ];
     trusted-public-keys = [

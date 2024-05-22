@@ -456,7 +456,7 @@ in
     enableCompletion = true;
 
     dotDir = zshDotDir;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
 
     # speed up zsh start time, see
     # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
