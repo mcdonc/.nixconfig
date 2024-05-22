@@ -285,31 +285,16 @@ in
   };
 
   xdg.configFile."environment.d/ssh_askpass.conf".text = ''
-    SSH_ASKPASS="${pkgs.ksshaskpass}/bin/ksshaskpass"
+    SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
   '';
 
+  # relies on Nix programs.ssh.startAgent
   xdg.configFile."autostart/ssh-add.desktop".text = ''
     [Desktop Entry]
-    Exec=ssh-add -q
+    Exec=${pkgs.openssh}/bin/ssh-add -q
     Name=ssh-add
     Type=Application
   '';
-
-  xdg.configFile."plasma-workspace/env/ssh-agent-startup.sh" = {
-    text = ''
-      #!/bin/sh
-      [ -n "$SSH_AGENT_PID" ] || eval "$(ssh-agent -s)"
-    '';
-    executable = true;
-  };
-
-  xdg.configFile."plasma-workspace/shutdown/ssh-agent-shutdown.sh" = {
-    text = ''
-      #!/bin/sh
-      [ -z "$SSH_AGENT_PID" ] || eval "$(ssh-agent -k)"
-    '';
-    executable = true;
-  };
 
   xdg.configFile."mpv/input.conf" = {
     text = ''

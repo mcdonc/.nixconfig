@@ -212,6 +212,7 @@ in
   programs.ssh = {
     pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
     hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
+    startAgent = true; # starts a systemd user service
   };
 
   # enable nix-ld for pip and friends
