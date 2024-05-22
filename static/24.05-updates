@@ -4,6 +4,9 @@
 
 - Emacs smart-tabs-mode no longer works under Emacs 29.
 
+- /etc/pipewire/pipewire.conf.d/foobar needs to be in
+  services.pipewire.extraConfig but it can't be text.  Not sure if it works.
+
 - Upgraded to Plasma 6.
 
 - Run ssh-agent as a systemd user service (via programs.ssh.startAgent)
