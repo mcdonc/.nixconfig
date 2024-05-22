@@ -236,13 +236,14 @@
     (append '(("\\.fs$" . forth-mode)
                 ("\\.fth$" . forth-mode)) auto-mode-alist))
 
-(autoload 'smart-tabs-mode "smart-tabs-mode"
-  "Intelligently indent with tabs, align with spaces!")
-(autoload 'smart-tabs-mode-enable "smart-tabs-mode")
-(autoload 'smart-tabs-advice "smart-tabs-mode")
-(autoload 'smart-tabs-insinuate "smart-tabs-mode")
-
-(smart-tabs-insinuate 'c 'c++)
+; smartttabs broken in e29: https://github.com/jcsalomon/smarttabs/issues/53
+;(autoload 'smart-tabs-mode "smart-tabs-mode"
+;  "Intelligently indent with tabs, align with spaces!")
+;(autoload 'smart-tabs-mode-enable "smart-tabs-mode")
+;(autoload 'smart-tabs-advice "smart-tabs-mode")
+;(autoload 'smart-tabs-insinuate "smart-tabs-mode")
+;
+;(smart-tabs-insinuate 'c 'c++)
 
 
 (add-to-list 'auto-mode-alist '("\\.zcml$" . nxml-mode))
