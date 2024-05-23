@@ -102,6 +102,7 @@
       },
       "original": {
         "owner": "nix-community",
+        "ref": "release-24.05",
         "repo": "home-manager",
         "type": "github"
       }
@@ -195,22 +196,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-kb-bumpversion": {
-      "locked": {
-        "lastModified": 1704219016,
-        "narHash": "sha256-6SCpvSuGvEVXJm8HHF8sMh9xzynAsm5CRB/cgdON6M4=",
-        "owner": "mcdonc",
-        "repo": "nixpkgs",
-        "rev": "22e59380e980a1c4ed3e042ee49b0c43732ff6be",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mcdonc",
-        "ref": "keybase-bumpversion",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -315,16 +300,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1716293225,
-        "narHash": "sha256-pU9ViBVE3XYb70xZx+jK6SEVphvt7xMTbm6yDIF4xPs=",
+        "lastModified": 1716408587,
+        "narHash": "sha256-el71IUaQdEmntmd51GBpkJs/Hqh6S4dmfmUGP8GQaME=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3eaeaeb6b1e08a016380c279f8846e0bd8808916",
+        "rev": "1a7abfa62e8a36f7f2dbe463722ed9ea31be5e43",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -406,7 +391,6 @@
         "nixgl-unstable": "nixgl-unstable",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-kb-bumpversion": "nixpkgs-kb-bumpversion",
         "nixpkgs-olive": "nixpkgs-olive",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
