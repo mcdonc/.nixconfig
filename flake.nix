@@ -2,12 +2,11 @@
   description = "Chris' Jawns";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixpkgs-py39.url = "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
-    nixpkgs-kb-bumpversion.url = "github:mcdonc/nixpkgs/keybase-bumpversion";
     nixpkgs-olive.url = "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixgl-olive.url = "github:guibou/nixGL";
@@ -15,7 +14,7 @@
     nixgl-unstable.url = "github:guibou/nixGL";
     nixgl-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
@@ -42,7 +41,6 @@
         { name = "pkgs-py36"          ; value=nixpkgs-py36;             }
         { name = "pkgs-py37"          ; value=nixpkgs-py37;             }
         { name = "pkgs-py39"          ; value=nixpkgs-py39;             }
-        { name = "pkgs-kb-bumpversion"; value = nixpkgs-kb-bumpversion; }
       ];
       mkNpFork = forkinput: {
         name = forkinput.name;
