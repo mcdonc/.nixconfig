@@ -251,6 +251,7 @@ in
     kdePackages.breeze-gtk
     kdePackages.konversation
     kdePackages.kmag
+    kdePackages.kdenlive
     gnome.gnome-disk-utility
     openvpn
     unzip
@@ -299,7 +300,6 @@ in
     usbutils
     nmap
     zoom-us
-    konversation
     pkgs-unstable.nixfmt-rfc-style
     wakeonlan
     #pkgs-olive.olive-editor # 0.1.2
@@ -332,8 +332,7 @@ in
     rpi-imager
     dig
     s3cmd
-    kaffeine
-    pcmanfm-qt
+    #kaffeine
     thonny
     cutecom
     rshell
@@ -394,8 +393,7 @@ in
     pkgs-unstable.rhythmbox
     minicom
     nvtopPackages.nvidia
-    kdePackages.kdenlive
-    glaxnimate # for kdenlive
+    #glaxnimate # for kdenlive
     nix-index # for nix-locate
     bitwarden
     any-nix-shell
@@ -416,7 +414,7 @@ in
     github-desktop
     pkgs-unstable.gitkraken
     meld
-    kdiff3
+    #kdiff3
     envsubst
     appimage-run
     jq
