@@ -77,7 +77,7 @@
     package = pkgs.postgresql_15;
     enable = true;
     enableTCPIP = true;
-    port = 5432;
+    settings.port = 5432;
     dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
     authentication = pkgs.lib.mkForce ''
       # TYPE  DATABASE        USER            ADDRESS                 METHOD
