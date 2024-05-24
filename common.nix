@@ -140,6 +140,7 @@ in
   services.xserver.dpi = 96;
   services.libinput.enable = true; # touchpad
   fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
+  i18n.defaultLocale = "en_US.UTF-8";
 
   sound.enable = false; # not needed for pipewire
   hardware.pulseaudio.enable = false;
