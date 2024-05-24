@@ -162,4 +162,7 @@ in
     left-screen-4k
   ];
 
+  # silence ACPI "errors" spewed to console at boot time (default is 4)
+  boot.consoleLogLevel = 3;
+  
 }
