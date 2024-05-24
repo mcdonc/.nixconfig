@@ -74,6 +74,7 @@
   };
 
   services.postgresql = {
+    package = pkgs.postgresql_15;
     enable = true;
     enableTCPIP = true;
     port = 5432;
