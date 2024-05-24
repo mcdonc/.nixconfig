@@ -1,20 +1,31 @@
+Fixed:
+
 - Nix option changes
 
-- Etcher no longer works.
+- Etcher no longer works (disabled)
 
 - Emacs smart-tabs-mode no longer works under Emacs 29.
-
-- /etc/pipewire/pipewire.conf.d/foobar needs to be in
-  services.pipewire.extraConfig but it can't be text.  Not sure if it works.
-
-- Can't upgrade to Plasma 6 because Ctrl-Alt-T keyboard shortcut cannot be
-  mapped away from Konsole.
 
 - Run ssh-agent as a systemd user service (via programs.ssh.startAgent)
   rather than as Plasma 6 autostart.
 
-- Reenable ctrl-alt-T as gnome-terminal instead of Konsole.
-
-- Wayland finally works.
-
 - Translucent drag / wobbly windows.
+
+To investigate:
+
+- Wayland finally works?
+
+- /etc/pipewire/pipewire.conf.d/foobar needs to be in
+  services.pipewire.extraConfig but it can't be text.  Not sure if it works.
+
+- ACPI error on optinix:
+
+  May 23 23:20:57 optinix kernel: ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GLAN.GPEH], AE_NOT_FOUND (20230628/psargs-330)
+  May 23 23:20:57 optinix kernel: ACPI Error: Aborting method \_GPE._L6D due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
+  May 23 23:20:57 optinix kernel: ACPI Error: AE_NOT_FOUND, while evaluating GPE method [_L6D] (20230628/evgpe-511)
+
+- Localsend_app not starting
+
+- Reenable RC505 on optinix
+
+
