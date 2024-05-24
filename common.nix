@@ -133,7 +133,7 @@ in
     '';
   in
     "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.desktopManager.plasma6.enable = true;
   services.xserver.xkb.layout = "us";
   services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
   services.xserver.enableCtrlAltBackspace = true;
