@@ -24,7 +24,7 @@ in
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
 #    ./roles/proaudio.nix
-    ./roles/rc505
+#    ./roles/rc505
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
