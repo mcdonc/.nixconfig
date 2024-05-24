@@ -11,6 +11,8 @@ Fixed:
 
 - Translucent drag / wobbly windows.
 
+- Localsend_app not starting
+
 To investigate:
 
 - Wayland finally works?
@@ -23,8 +25,6 @@ To investigate:
   May 23 23:20:57 optinix kernel: ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GLAN.GPEH], AE_NOT_FOUND (20230628/psargs-330)
   May 23 23:20:57 optinix kernel: ACPI Error: Aborting method \_GPE._L6D due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
   May 23 23:20:57 optinix kernel: ACPI Error: AE_NOT_FOUND, while evaluating GPE method [_L6D] (20230628/evgpe-511)
-
-- Localsend_app not starting
 
 - Reenable RC505 on optinix
 
