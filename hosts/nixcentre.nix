@@ -36,6 +36,8 @@
   boot.kernelParams = lib.mkForce [
     # 2GB max ARC cache
     "zfs.zfs_arc_max=2147483648"
+    # required by wayland, see https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
+    "nvidia-drm.modeset=1"
   ];
 
   fileSystems."/nix" = {
