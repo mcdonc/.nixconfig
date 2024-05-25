@@ -97,11 +97,6 @@ in
     "usbcore.quirks=2357:0601:k,0bda:5411:k" # ethernet, hub
   ];
 
-  # behave as a router
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = true;
-  };
-
   # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
   systemd.services.cups = {
     overrideStrategy = "asDropin";
@@ -170,6 +165,9 @@ in
     };
   };
 
+  # enable docker
+  virtualisation.docker.enable = true;
+
   programs.dconf.enable = true;
 
   # printing
@@ -187,9 +185,6 @@ in
       PermitRootLogin = "no";
     };
   };
-
-  # enable docker
-  virtualisation.docker.enable = true;
 
   # wireshark without sudo; note that still necessary to add
   # wireshark to systemPackages to get gui I think
