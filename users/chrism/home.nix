@@ -7,9 +7,9 @@ let
     ${pkgs.procps}/bin/pgrep -x "code" > /dev/null
     if [ $? -eq 1 ];
     then
-        ${pkgs-unstable.vscode-fhs}/bin/code ${root-code-workspace}
+        ${pkgs.vscode-fhs}/bin/code ${root-code-workspace}
     fi
-    exec ${pkgs-unstable.vscode-fhs}/bin/code -r $@
+    exec ${pkgs.vscode-fhs}/bin/code -r $@
   '';
 
   shellAliases = {

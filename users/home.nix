@@ -10,7 +10,7 @@ let
   '';
 
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
-    ${pkgs-unstable.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+    ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
   '';
 
   gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";

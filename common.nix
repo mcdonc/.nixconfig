@@ -272,7 +272,7 @@ in
     baobab
     signal-desktop
     python27
-    #pkgs-unstable.vscode-fhs
+    #pkgs.vscode-fhs
     pkgs-py36.python36
     pkgs-py37.python37
     pkgs-py39.python38
@@ -301,7 +301,7 @@ in
     usbutils
     nmap
     zoom-us
-    pkgs-unstable.nixfmt-rfc-style
+    nixfmt-rfc-style
     wakeonlan
     #pkgs-olive.olive-editor # 0.1.2
     olive-editor # 0.2
@@ -391,7 +391,7 @@ in
     element-desktop
     speech-denoiser
     rnnoise-plugin
-    pkgs-unstable.rhythmbox
+    rhythmbox
     minicom
     nvtopPackages.nvidia
     #glaxnimate # for kdenlive
@@ -413,7 +413,7 @@ in
     lazygit
     gittyup
     github-desktop
-    pkgs-unstable.gitkraken
+    gitkraken
     meld
     #kdiff3
     envsubst
@@ -426,7 +426,7 @@ in
     smartmontools
     dtc # milkv
     zstd
-    pkgs-unstable.protonvpn-gui
+    protonvpn-gui
     discord
     agebox
     findnixstorelinks
