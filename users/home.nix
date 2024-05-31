@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, nixgl-olive, nixgl-unstable, ... }:
+{ pkgs, nixgl-olive, nixgl-unstable, ... }:
 
 let
 

@@ -6,7 +6,6 @@
 , pkgs-py36
 , pkgs-py37
 , pkgs-py39
-, pkgs-unstable
 , ...
 }:
 
