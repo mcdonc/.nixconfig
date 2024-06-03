@@ -9,6 +9,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/pseries.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (

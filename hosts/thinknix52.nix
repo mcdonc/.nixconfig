@@ -12,6 +12,7 @@
     ./roles/steam.nix
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ../common.nix
   ];
 
