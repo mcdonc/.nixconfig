@@ -187,6 +187,8 @@ in
     };
   };
 
+  hardware.rtl-sdr.enable = true;
+
   # enable docker
   virtualisation.docker.enable = true;
 
@@ -442,6 +444,8 @@ in
     gxplugins-lv2
     localsend
     gparted
+    gqrx
+    nrsc5
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
