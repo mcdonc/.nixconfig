@@ -399,6 +399,7 @@ in
     epkgs.multiple-cursors
     epkgs.dts-mode
     epkgs.rust-mode
+    epkgs.nickel-mode
   ];
 
   services.emacs = {
