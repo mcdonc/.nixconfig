@@ -1,7 +1,9 @@
-{pkgs, ...}:
+{ ... }:
+
 let
   nixcentre = "192.168.1.103";
 in
+
 {
   fileSystems."/v" = {
     device = "//${nixcentre}/v";

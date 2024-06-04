@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 {
   # for machines that never move
