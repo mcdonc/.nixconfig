@@ -1,8 +1,8 @@
-{pkgs, pkgs-unstable, ...}:
+{pkgs, ...}:
 
 {
   environment.systemPackages = [
-    pkgs-unstable.davinci-resolve-studio
+    pkgs.davinci-resolve-studio
   ];
 }    
 

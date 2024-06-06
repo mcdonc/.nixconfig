@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
   homedir = "/home/chrism";

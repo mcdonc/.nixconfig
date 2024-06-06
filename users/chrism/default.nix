@@ -26,6 +26,7 @@ in
       "kvm"
       "input"
       "postgres"
+      "plugdev" # for rtl-sdr
     ];
     openssh = {
       authorizedKeys.keys = [

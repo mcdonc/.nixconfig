@@ -1,4 +1,4 @@
-{pkgs, lib, ...}:
+{pkgs, ...}:
 let
   # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
   # ~/.wine via e.g.  "wine

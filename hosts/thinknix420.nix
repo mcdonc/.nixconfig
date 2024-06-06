@@ -8,6 +8,7 @@
     ./roles/tseries.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ../common.nix
   ];
   system.stateVersion = "22.05";

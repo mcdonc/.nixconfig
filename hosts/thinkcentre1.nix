@@ -7,6 +7,7 @@
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
     ./roles/sessile.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ../common.nix
   ];
 

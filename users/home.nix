@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, nixgl-olive, nixgl-unstable, ... }:
+{ pkgs, nixgl-olive, nixgl-unstable, ... }:
 
 let
 
@@ -399,6 +399,7 @@ in
     epkgs.multiple-cursors
     epkgs.dts-mode
     epkgs.rust-mode
+    epkgs.nickel-mode
   ];
 
   services.emacs = {
