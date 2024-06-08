@@ -442,11 +442,12 @@ in
     nrsc5
     hackrf
     sdrangel
+    netcat
     dsd # for gprx dmr decoding
     dsdcc # for gprx dmr decoding
     socat # for gprx dmr decoding
     sox # for play
-    netcat
+    nickel
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
