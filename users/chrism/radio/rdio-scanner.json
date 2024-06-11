@@ -1,0 +1,1572 @@
+{
+  "access": [],
+  "apiKeys": [
+    {
+      "_id": 1,
+      "disabled": false,
+      "ident": "local",
+      "key": "492021d2-0f8f-4f8c-b61c-35bb22e943ac",
+      "order": null,
+      "systems": "*"
+    }
+  ],
+  "dirWatch": [],
+  "downstreams": [],
+  "groups": [
+    {
+      "_id": 1,
+      "label": "Air"
+    },
+    {
+      "_id": 2,
+      "label": "EMS"
+    },
+    {
+      "_id": 3,
+      "label": "Fire"
+    },
+    {
+      "_id": 4,
+      "label": "Interop"
+    },
+    {
+      "_id": 5,
+      "label": "Law"
+    },
+    {
+      "_id": 6,
+      "label": "Unknown"
+    },
+    {
+      "_id": 7,
+      "label": "Stafford Sheriff"
+    },
+    {
+      "_id": 8,
+      "label": "Stafford Common Zones"
+    },
+    {
+      "_id": 9,
+      "label": "Stafford Fire/Rescue"
+    },
+    {
+      "_id": 10,
+      "label": "Stafford Schools"
+    },
+    {
+      "_id": 11,
+      "label": "Stafford Services"
+    },
+    {
+      "_id": 12,
+      "label": "Aquia Harbour Police"
+    },
+    {
+      "_id": 13,
+      "label": "Fredericksburg Police"
+    },
+    {
+      "_id": 14,
+      "label": "Fredericksburg Sheriff"
+    },
+    {
+      "_id": 15,
+      "label": "Fredericksburg Fire"
+    },
+    {
+      "_id": 16,
+      "label": "Fredericksburg Special Events"
+    },
+    {
+      "_id": 17,
+      "label": "University of Mary Washington"
+    }
+  ],
+  "options": {
+    "afsSystems": "",
+    "audioConversion": 1,
+    "autoPopulate": true,
+    "branding": "",
+    "dimmerDelay": 5000,
+    "disableDuplicateDetection": false,
+    "duplicateDetectionTimeFrame": 500,
+    "email": "",
+    "keypadBeeps": "uniden",
+    "maxClients": 200,
+    "playbackGoesLive": false,
+    "pruneDays": 7,
+    "searchPatchedTalkgroups": false,
+    "showListenersCount": false,
+    "sortTalkgroups": false,
+    "tagsToggle": false,
+    "time12hFormat": false
+  },
+  "systems": [
+    {
+      "_id": 4,
+      "autoPopulate": true,
+      "blacklists": "",
+      "id": 4,
+      "label": "Fxbg/Stafford",
+      "led": "blue",
+      "order": 0,
+      "talkgroups": [
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4501,
+          "label": "StaffSO A1 Disp",
+          "led": null,
+          "name": "A1 Dispatch",
+          "order": 1,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4503,
+          "label": "StaffSO MutAid",
+          "led": null,
+          "name": "Mutual Aid",
+          "order": 2,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4504,
+          "label": "StaffSO Dsp4504",
+          "led": null,
+          "name": "Dispatch",
+          "order": 3,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4505,
+          "label": "Staff Coord",
+          "led": null,
+          "name": "Coordination FireRescue 15A13",
+          "order": 4,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4506,
+          "label": "StaffSO A2Tac1N",
+          "led": null,
+          "name": "A2 Tac 1 North",
+          "order": 5,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4509,
+          "label": "StaffSO Tac 4",
+          "led": null,
+          "name": "Tac 4",
+          "order": 6,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4510,
+          "label": "StaffSO Traffic1",
+          "led": null,
+          "name": "Traffic Services Unit 1",
+          "order": 7,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4512,
+          "label": "StaffSO Motor",
+          "led": null,
+          "name": "Motor Ops",
+          "order": 8,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4526,
+          "label": "StaffSO Courts 1",
+          "led": null,
+          "name": "Courts 1",
+          "order": 9,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4527,
+          "label": "StaffSO Courts 2",
+          "led": null,
+          "name": "Courts 2",
+          "order": 10,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4533,
+          "label": "Staff Event1",
+          "led": null,
+          "name": "Event 1",
+          "order": 11,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4534,
+          "label": "Staff Event2",
+          "led": null,
+          "name": "Event 2",
+          "order": 12,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4544,
+          "label": "Staff Event3",
+          "led": null,
+          "name": "Event 3",
+          "order": 13,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4545,
+          "label": "Staff Event4",
+          "led": null,
+          "name": "Event 4",
+          "order": 14,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4546,
+          "label": "Staff Event5",
+          "led": null,
+          "name": "Event 5",
+          "order": 15,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4547,
+          "label": "Staff Event6",
+          "led": null,
+          "name": "Event 6",
+          "order": 16,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4548,
+          "label": "Staff Event7",
+          "led": null,
+          "name": "Event 7",
+          "order": 17,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4549,
+          "label": "Staff Evt8E",
+          "led": null,
+          "name": "Event 8E",
+          "order": 18,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4601,
+          "label": "StaffFR Disp",
+          "led": null,
+          "name": "Dispatch",
+          "order": 19,
+          "tagId": 3
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4602,
+          "label": "StaffFR Disp2",
+          "led": null,
+          "name": "Dispatch 2",
+          "order": 20,
+          "tagId": 3
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4603,
+          "label": "StaffFR Inc1",
+          "led": null,
+          "name": "Incident 1 Ch 15C1",
+          "order": 21,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4604,
+          "label": "StaffFR Tac1B",
+          "led": null,
+          "name": "Tac 1B",
+          "order": 22,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4605,
+          "label": "StaffFR Tac1C",
+          "led": null,
+          "name": "Tac 1C",
+          "order": 23,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4606,
+          "label": "StaffFR Cmd1",
+          "led": null,
+          "name": "Command 1",
+          "order": 24,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4607,
+          "label": "StaffFR Inc2",
+          "led": null,
+          "name": "Incident 2",
+          "order": 25,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4608,
+          "label": "StaffFR Tac2B",
+          "led": null,
+          "name": "Tac 2B",
+          "order": 26,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4609,
+          "label": "StaffFR Tac2C",
+          "led": null,
+          "name": "Tac 2C",
+          "order": 27,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4610,
+          "label": "StaffFR Cmd2",
+          "led": null,
+          "name": "Command 2",
+          "order": 28,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4611,
+          "label": "StaffFR CmdAdm",
+          "led": null,
+          "name": "Command Admin Talk",
+          "order": 29,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4612,
+          "label": "StaffFR Inc3",
+          "led": null,
+          "name": "Incident 3",
+          "order": 30,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4613,
+          "label": "StaffFR Tac3B",
+          "led": null,
+          "name": "Tac 3B",
+          "order": 31,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4614,
+          "label": "StaffFR Tac3C",
+          "led": null,
+          "name": "Tac 3C",
+          "order": 32,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4615,
+          "label": "StaffFR Cmd3",
+          "led": null,
+          "name": "Command 3",
+          "order": 33,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4616,
+          "label": "StaffFR Inc4",
+          "led": null,
+          "name": "Incident 4",
+          "order": 34,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4617,
+          "label": "StaffFR Tac4B",
+          "led": null,
+          "name": "Tac 4B",
+          "order": 35,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4618,
+          "label": "StaffFR Tac4C",
+          "led": null,
+          "name": "Tac 4C",
+          "order": 36,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4619,
+          "label": "StaffFR Cmd4",
+          "led": null,
+          "name": "Command 4",
+          "order": 37,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4620,
+          "label": "StaffFR 4620",
+          "led": null,
+          "name": "Encrypted",
+          "order": 38,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4624,
+          "label": "StaffFR MCI A",
+          "led": null,
+          "name": "Mass Casualty Incident A",
+          "order": 39,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4631,
+          "label": "StaffFR Trng1",
+          "led": null,
+          "name": "Training 1",
+          "order": 40,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4632,
+          "label": "StaffFR Trng2",
+          "led": null,
+          "name": "Training 2",
+          "order": 41,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4633,
+          "label": "StaffFR Trng3",
+          "led": null,
+          "name": "Training 3",
+          "order": 42,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4634,
+          "label": "StaffFR Trng4",
+          "led": null,
+          "name": "Training 4",
+          "order": 43,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4635,
+          "label": "StaffFR MCI B",
+          "led": null,
+          "name": "Mass Casualty Incident B",
+          "order": 44,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4636,
+          "label": "StaffFR Trng5",
+          "led": null,
+          "name": "Training 5",
+          "order": 45,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4637,
+          "label": "StaffFR Trng6",
+          "led": null,
+          "name": "Training 6",
+          "order": 46,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4638,
+          "label": "StaffFR Trng7",
+          "led": null,
+          "name": "Training 7",
+          "order": 47,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4639,
+          "label": "StaffFR Trng8",
+          "led": null,
+          "name": "Training 8",
+          "order": 48,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4640,
+          "label": "StaffFR Inc5",
+          "led": null,
+          "name": "Incident 5",
+          "order": 49,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4641,
+          "label": "StaffFR Tac5B",
+          "led": null,
+          "name": "Tac 5B",
+          "order": 50,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4642,
+          "label": "StaffFR Tac5C",
+          "led": null,
+          "name": "Tac 5C",
+          "order": 51,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4643,
+          "label": "StaffFR Cmd5",
+          "led": null,
+          "name": "Command 5",
+          "order": 52,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4644,
+          "label": "StaffFR Inc6",
+          "led": null,
+          "name": "Incident 6 used for Automatic Voice Dispatch",
+          "order": 53,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4645,
+          "label": "StaffFR Tac6B",
+          "led": null,
+          "name": "Tac 6B",
+          "order": 54,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4646,
+          "label": "StaffFR Tac6C",
+          "led": null,
+          "name": "Tac 6C",
+          "order": 55,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4647,
+          "label": "StaffFR Cmd6",
+          "led": null,
+          "name": "Command 6",
+          "order": 56,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4648,
+          "label": "StaffFR SpOpsA",
+          "led": null,
+          "name": "Special Ops A",
+          "order": 57,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4649,
+          "label": "StaffFR SpOpsB",
+          "led": null,
+          "name": "Special Ops B",
+          "order": 58,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4653,
+          "label": "StaffFR MeetMe",
+          "led": null,
+          "name": "Meet Me Admin",
+          "order": 59,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4655,
+          "label": "StaffFR Inc7",
+          "led": null,
+          "name": "Incident 7",
+          "order": 60,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4656,
+          "label": "StaffFR Tac7B",
+          "led": null,
+          "name": "Tac 7B",
+          "order": 61,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4657,
+          "label": "StaffFR Tac7C",
+          "led": null,
+          "name": "Tac 7C",
+          "order": 62,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4658,
+          "label": "StaffFR Cmd7",
+          "led": null,
+          "name": "Command 7",
+          "order": 63,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4699,
+          "label": "Staff OEM 12",
+          "led": null,
+          "name": "Emergency Management 12",
+          "order": 64,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4700,
+          "label": "Staff ECC",
+          "led": null,
+          "name": "Emergency Communications Center sometimes used for missing person lookout",
+          "order": 65,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 10,
+          "id": 4702,
+          "label": "StaffSch Safety",
+          "led": null,
+          "name": "Safety and Security",
+          "order": 66,
+          "tagId": 7
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4703,
+          "label": "StaffEM 4703",
+          "led": null,
+          "name": "Missing Person Lookout",
+          "order": 67,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4707,
+          "label": "Staff OEM 1",
+          "led": null,
+          "name": "Emergency Management 1",
+          "order": 68,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4708,
+          "label": "Staff OEM 2",
+          "led": null,
+          "name": "Emergency Management 2",
+          "order": 69,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4709,
+          "label": "Staff OEM 3",
+          "led": null,
+          "name": "Emergency Management 3",
+          "order": 70,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4710,
+          "label": "Staff OEM 4",
+          "led": null,
+          "name": "Emergency Management 4",
+          "order": 71,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4711,
+          "label": "Staff OEM 5",
+          "led": null,
+          "name": "Emergency Management 5",
+          "order": 72,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4712,
+          "label": "Staff OEM 6",
+          "led": null,
+          "name": "Emergency Management 6",
+          "order": 73,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4713,
+          "label": "Staff OEM 7",
+          "led": null,
+          "name": "Emergency Management 7",
+          "order": 74,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4714,
+          "label": "Staff OEM 8",
+          "led": null,
+          "name": "Emergency Management 8",
+          "order": 75,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4715,
+          "label": "Staff OEM 9",
+          "led": null,
+          "name": "Emergency Management 9",
+          "order": 76,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4716,
+          "label": "Staff OEM 10",
+          "led": null,
+          "name": "Emergency Management 10",
+          "order": 77,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4717,
+          "label": "Staff OEM 11",
+          "led": null,
+          "name": "Emergency Management 11",
+          "order": 78,
+          "tagId": 14
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4718,
+          "label": "Staff Water4718",
+          "led": null,
+          "name": "Water",
+          "order": 79,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4719,
+          "label": "Staff Water4719",
+          "led": null,
+          "name": "Water",
+          "order": 80,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4720,
+          "label": "Staff Util",
+          "led": null,
+          "name": "Utilities",
+          "order": 81,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4721,
+          "label": "Staff Util 4721",
+          "led": null,
+          "name": "Utilities often used for traffic control",
+          "order": 82,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4723,
+          "label": "Staff Water4723",
+          "led": null,
+          "name": "Water",
+          "order": 83,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4724,
+          "label": "Staff Util TrCtl",
+          "led": null,
+          "name": "Utilities  Traffic Control",
+          "order": 84,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4726,
+          "label": "Staff Util",
+          "led": null,
+          "name": "UtilitiesWater",
+          "order": 85,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4730,
+          "label": "StaffFR Trn4730",
+          "led": null,
+          "name": "Training",
+          "order": 86,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4745,
+          "label": "StaffMICmdOp",
+          "led": null,
+          "name": "Major Incident  Command and Ops",
+          "order": 87,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4746,
+          "label": "StaffMI Plan",
+          "led": null,
+          "name": "Major Incident  Plans",
+          "order": 88,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4747,
+          "label": "StaffMILogis",
+          "led": null,
+          "name": "Major Incident  Logistics",
+          "order": 89,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4748,
+          "label": "StaffMIAdFi",
+          "led": null,
+          "name": "Major Incident  AdministrationFinance",
+          "order": 90,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 8,
+          "id": 4749,
+          "label": "StaffMI JIC",
+          "led": null,
+          "name": "Major Incident  Joint Info Center",
+          "order": 91,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 12,
+          "id": 4751,
+          "label": "Aquia Harbour PD",
+          "led": null,
+          "name": "Aquia Harbour Police",
+          "order": 92,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 11,
+          "id": 4766,
+          "label": "Staff BldgsGrds",
+          "led": null,
+          "name": "BuildingsGrounds",
+          "order": 93,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4773,
+          "label": "StaffFR MWH",
+          "led": null,
+          "name": "Mary Washington Hospital linked with Spotsylvania 6029",
+          "order": 94,
+          "tagId": 17
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4774,
+          "label": "StaffFR StHosp",
+          "led": null,
+          "name": "Stafford Hospital",
+          "order": 95,
+          "tagId": 17
+        },
+        {
+          "frequency": null,
+          "groupId": 9,
+          "id": 4775,
+          "label": "StaffFR SRMC",
+          "led": null,
+          "name": "Spotsylvania Regional Medical Center linked with Spotsylvania 6028",
+          "order": 96,
+          "tagId": 17
+        },
+        {
+          "frequency": null,
+          "groupId": 10,
+          "id": 4780,
+          "label": "StaffSch Head St",
+          "led": null,
+          "name": "Head StartGari Melchers Complex",
+          "order": 97,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 10,
+          "id": 4796,
+          "label": "StaffSch TrnsFlt",
+          "led": null,
+          "name": "Transportation Fleet Services",
+          "order": 98,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 10,
+          "id": 4797,
+          "label": "StaffSch Trans1",
+          "led": null,
+          "name": "Transportation 1 also called Ch A3",
+          "order": 99,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 10,
+          "id": 4798,
+          "label": "StaffSch Trans2",
+          "led": null,
+          "name": "Transportation 2",
+          "order": 100,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 7,
+          "id": 4813,
+          "label": "StaffSO SIRS",
+          "led": null,
+          "name": "SIRS Patch",
+          "order": 101,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5363,
+          "label": "Fred PD Police 1",
+          "led": null,
+          "name": "Police 1 Dispatch",
+          "order": 102,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5364,
+          "label": "Fred PD Alt",
+          "led": null,
+          "name": "Alternate",
+          "order": 103,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5378,
+          "label": "Fred PD 5378",
+          "led": null,
+          "name": "Interop",
+          "order": 104,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5379,
+          "label": "Fred PD 5379",
+          "led": null,
+          "name": "Interop",
+          "order": 105,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5388,
+          "label": "Fred PD 5388",
+          "led": null,
+          "name": "Interop",
+          "order": 106,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5393,
+          "label": "Fred PD Interop",
+          "led": null,
+          "name": "Interop",
+          "order": 107,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 13,
+          "id": 5397,
+          "label": "Fred PD 5397",
+          "led": null,
+          "name": "Interop 10218 Drill",
+          "order": 108,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 14,
+          "id": 5408,
+          "label": "Fred SO 5408",
+          "led": null,
+          "name": "Sheriff",
+          "order": 109,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 14,
+          "id": 5409,
+          "label": "Fred SO 5409",
+          "led": null,
+          "name": "Sheriff",
+          "order": 110,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 14,
+          "id": 5410,
+          "label": "Fred SO 5410",
+          "led": null,
+          "name": "Sheriff",
+          "order": 111,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5412,
+          "label": "FredFD Trng 1",
+          "led": null,
+          "name": "Training 1",
+          "order": 112,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5413,
+          "label": "FredFD Trng 5413",
+          "led": null,
+          "name": "Training",
+          "order": 113,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5414,
+          "label": "FredFD Trng 1C",
+          "led": null,
+          "name": "Training 1C",
+          "order": 114,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5415,
+          "label": "FredFD Trng 5415",
+          "led": null,
+          "name": "Training",
+          "order": 115,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5416,
+          "label": "FredFD Trng 2B",
+          "led": null,
+          "name": "Training 2B",
+          "order": 116,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5417,
+          "label": "FredFD Trng 2C",
+          "led": null,
+          "name": "Training 2C",
+          "order": 117,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5420,
+          "label": "FredFD Trng 3C",
+          "led": null,
+          "name": "Training 3C",
+          "order": 118,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5701,
+          "label": "FredFD Fire 1",
+          "led": null,
+          "name": "Fire 1 Dispatch",
+          "order": 119,
+          "tagId": 3
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5702,
+          "label": "FredFD Fire 2",
+          "led": null,
+          "name": "Fire 2",
+          "order": 120,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5703,
+          "label": "FredFD Fred 1",
+          "led": null,
+          "name": "Fred 1",
+          "order": 121,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5704,
+          "label": "FredFD Fred 1B",
+          "led": null,
+          "name": "Fred 1 Bravo",
+          "order": 122,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5705,
+          "label": "FredFD Fred 1C",
+          "led": null,
+          "name": "Fred 1 Charlie",
+          "order": 123,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5706,
+          "label": "FredFD Fred 2",
+          "led": null,
+          "name": "Fred 2",
+          "order": 124,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5714,
+          "label": "FredFD Trng 5714",
+          "led": null,
+          "name": "Training",
+          "order": 125,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5719,
+          "label": "FredFD Trng 5719",
+          "led": null,
+          "name": "Training",
+          "order": 126,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5744,
+          "label": "FredFD Trng 5744",
+          "led": null,
+          "name": "Training",
+          "order": 127,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5747,
+          "label": "FredFD Dive A",
+          "led": null,
+          "name": "Dive A",
+          "order": 128,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5748,
+          "label": "FredFD Trng 1B",
+          "led": null,
+          "name": "Training 1B",
+          "order": 129,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 15,
+          "id": 5757,
+          "label": "FredFD Trng 5757",
+          "led": null,
+          "name": "Training",
+          "order": 130,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 16,
+          "id": 5760,
+          "label": "Fred Event 1A",
+          "led": null,
+          "name": "Event 1A",
+          "order": 131,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 16,
+          "id": 5761,
+          "label": "Fred Event 1B",
+          "led": null,
+          "name": "Event 1B",
+          "order": 132,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 16,
+          "id": 5762,
+          "label": "Fred Event 2A",
+          "led": null,
+          "name": "Event 2A",
+          "order": 133,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 16,
+          "id": 5763,
+          "label": "Fred Event 2B",
+          "led": null,
+          "name": "Event 2B",
+          "order": 134,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 16,
+          "id": 5764,
+          "label": "Fred Event 3A",
+          "led": null,
+          "name": "Event 3A",
+          "order": 135,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 17,
+          "id": 5801,
+          "label": "UMW PD Disp",
+          "led": null,
+          "name": "Police Dispatch",
+          "order": 136,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 17,
+          "id": 5802,
+          "label": "UMW PD Alt",
+          "led": null,
+          "name": "Police Alternate",
+          "order": 137,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 17,
+          "id": 5803,
+          "label": "UMW SafetySec",
+          "led": null,
+          "name": "SafetySecurity active Commencement 2023",
+          "order": 138,
+          "tagId": 7
+        }
+      ],
+      "units": []
+    }
+  ],
+  "tags": [
+    {
+      "_id": 1,
+      "label": "Air Traffic Control"
+    },
+    {
+      "_id": 2,
+      "label": "Emergency "
+    },
+    {
+      "_id": 3,
+      "label": "Fire Dispatch"
+    },
+    {
+      "_id": 4,
+      "label": "Fire Tac"
+    },
+    {
+      "_id": 5,
+      "label": "Fire Talk"
+    },
+    {
+      "_id": 6,
+      "label": "Interop"
+    },
+    {
+      "_id": 7,
+      "label": "Security"
+    },
+    {
+      "_id": 8,
+      "label": "Service"
+    },
+    {
+      "_id": 9,
+      "label": "Untagged"
+    },
+    {
+      "_id": 10,
+      "label": "Law Dispatch"
+    },
+    {
+      "_id": 11,
+      "label": "Law Tac"
+    },
+    {
+      "_id": 12,
+      "label": "Fire-Tac"
+    },
+    {
+      "_id": 13,
+      "label": "Fire-Talk"
+    },
+    {
+      "_id": 14,
+      "label": "Emergency Ops"
+    },
+    {
+      "_id": 15,
+      "label": "Utilities"
+    },
+    {
+      "_id": 16,
+      "label": "Public Works"
+    },
+    {
+      "_id": 17,
+      "label": "Hospital"
+    },
+    {
+      "_id": 18,
+      "label": "Schools"
+    }
+  ]
+}

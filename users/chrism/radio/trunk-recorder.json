@@ -25,7 +25,7 @@
       "server": "http://127.0.0.1:3000",
       "systems": [{
           "shortName": "fburg",
-          "apiKey": "<rdio-scanner-api-key>",
+          "apiKey": "492021d2-0f8f-4f8c-b61c-35bb22e943ac",
           "systemId": 4
       }]
   }]
