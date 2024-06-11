@@ -80,6 +80,18 @@
     {
       "_id": 17,
       "label": "University of Mary Washington"
+    },
+    {
+      "_id": 18,
+      "label": "Sheriff"
+    },
+    {
+      "_id": 19,
+      "label": "Services"
+    },
+    {
+      "_id": 20,
+      "label": "Schools"
     }
   ],
   "options": {
@@ -1493,6 +1505,1328 @@
         }
       ],
       "units": []
+    },
+    {
+      "_id": 6,
+      "autoPopulate": true,
+      "blacklists": "",
+      "id": 6,
+      "label": "Spotsy",
+      "led": "green",
+      "order": 0,
+      "talkgroups": [
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5000,
+          "label": "SpotSO AllChan",
+          "led": null,
+          "name": "All Channels",
+          "order": 1,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5001,
+          "label": "SpotSO Tac 1",
+          "led": null,
+          "name": "Tac 1",
+          "order": 2,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5002,
+          "label": "SpotSO Patrol 1",
+          "led": null,
+          "name": "Patrol 1",
+          "order": 3,
+          "tagId": 10
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5003,
+          "label": "SpotSO Info",
+          "led": null,
+          "name": "Info",
+          "order": 4,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5005,
+          "label": "SpotSO Tac 2",
+          "led": null,
+          "name": "Tac 2",
+          "order": 5,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5007,
+          "label": "SpotSO SIRS",
+          "led": null,
+          "name": "SIRS",
+          "order": 6,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5014,
+          "label": "SpotSO SAR",
+          "led": null,
+          "name": "Search and Rescue",
+          "order": 7,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5015,
+          "label": "Spotsy Louisa 1",
+          "led": null,
+          "name": "Louisa 1",
+          "order": 8,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5016,
+          "label": "Spotsy DisTac",
+          "led": null,
+          "name": "Disaster Tac",
+          "order": 9,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5017,
+          "label": "SpotSO ERT",
+          "led": null,
+          "name": "Emergency Response Team",
+          "order": 10,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 18,
+          "id": 5019,
+          "label": "SpotSO Court",
+          "led": null,
+          "name": "Court",
+          "order": 11,
+          "tagId": 11
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5025,
+          "label": "Spotsy RIOS 1",
+          "led": null,
+          "name": "RIOS 1",
+          "order": 12,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5026,
+          "label": "Spotsy RIOS 2",
+          "led": null,
+          "name": "RIOS 2",
+          "order": 13,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5027,
+          "label": "Spotsy MA Law 1",
+          "led": null,
+          "name": "Mutual Aid Law 1",
+          "order": 14,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 5028,
+          "label": "Spotsy MA Law 2",
+          "led": null,
+          "name": "Mutual Aid Law 2",
+          "order": 15,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6001,
+          "label": "SpotFR A1 Disp",
+          "led": null,
+          "name": "A1 Dispatch",
+          "order": 16,
+          "tagId": 3
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6002,
+          "label": "SpotFR A2 Spot1",
+          "led": null,
+          "name": "A2 Spotsy 1",
+          "order": 17,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6003,
+          "label": "SpotFR A11 Inc3",
+          "led": null,
+          "name": "A11 Incident 3",
+          "order": 18,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6004,
+          "label": "SpotFR B3 Inc 4",
+          "led": null,
+          "name": "B3 Incident 4",
+          "order": 19,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6005,
+          "label": "SpotFR B7 Inc5",
+          "led": null,
+          "name": "B7 Incident 5",
+          "order": 20,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6006,
+          "label": "SpotFR B11 Inc6",
+          "led": null,
+          "name": "B11 Incident 6",
+          "order": 21,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6011,
+          "label": "SpotFR A4 Cmd 1",
+          "led": null,
+          "name": "A4 Command 1",
+          "order": 22,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6012,
+          "label": "SpotFR A8 Cmd 2",
+          "led": null,
+          "name": "A8 Command 2",
+          "order": 23,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6013,
+          "label": "SpotFR A12 Cmd3",
+          "led": null,
+          "name": "A12 Command 3",
+          "order": 24,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6018,
+          "label": "Spotsy PS IO 1",
+          "led": null,
+          "name": "Public Safety Interop 1",
+          "order": 25,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6019,
+          "label": "Spotsy PS IO 2",
+          "led": null,
+          "name": "Public Safety Interop 2",
+          "order": 26,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6020,
+          "label": "Spotsy PS IO 3",
+          "led": null,
+          "name": "Public Safety Interop 3",
+          "order": 27,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6021,
+          "label": "SpotFR C3 FM",
+          "led": null,
+          "name": "C3 Fire Marshal",
+          "order": 28,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6023,
+          "label": "SpotFR C2 Info",
+          "led": null,
+          "name": "C2 Info",
+          "order": 29,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6026,
+          "label": "SpotFR C4 Trng1",
+          "led": null,
+          "name": "C4 Training 1",
+          "order": 30,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6027,
+          "label": "SpotFR C5 Trng2",
+          "led": null,
+          "name": "C5 Training 2",
+          "order": 31,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6028,
+          "label": "SpotFR SRMC",
+          "led": null,
+          "name": "Spotsylvania Regional Medical Center linked with Stafford 4775",
+          "order": 32,
+          "tagId": 17
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6029,
+          "label": "SpotFR MWH",
+          "led": null,
+          "name": "Mary Washington Hospital also Freestanding ER linked with Stafford 4773",
+          "order": 33,
+          "tagId": 17
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6031,
+          "label": "SpotFR C6 TrInc",
+          "led": null,
+          "name": "C6 Training Incident",
+          "order": 34,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6032,
+          "label": "SpotFR C7 TrnC",
+          "led": null,
+          "name": "C7 Training Command",
+          "order": 35,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6033,
+          "label": "Spotsy PS IO 4",
+          "led": null,
+          "name": "Public Safety Interop 4",
+          "order": 36,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6034,
+          "label": "Spotsy PS IO 5",
+          "led": null,
+          "name": "Public Safety Interop 5",
+          "order": 37,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 6035,
+          "label": "Spotsy PS IO 6",
+          "led": null,
+          "name": "Public Safety Interop 6",
+          "order": 38,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6054,
+          "label": "SpotFR 6054",
+          "led": null,
+          "name": "Statewide EMS Patch",
+          "order": 39,
+          "tagId": 19
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6055,
+          "label": "SpotFR 6055",
+          "led": null,
+          "name": "Statewide EMS Patch",
+          "order": 40,
+          "tagId": 19
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6075,
+          "label": "SpotFR A3 Inc 1",
+          "led": null,
+          "name": "A3 Incident 1",
+          "order": 41,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6076,
+          "label": "SpotFR A5 Tac 1",
+          "led": null,
+          "name": "A5 Tac 1",
+          "order": 42,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6077,
+          "label": "SpotFR Tac 2A",
+          "led": null,
+          "name": "Tac 2A",
+          "order": 43,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6078,
+          "label": "SpotFR A13 Tac3",
+          "led": null,
+          "name": "A13 Tac 3",
+          "order": 44,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6079,
+          "label": "SpotFR Spotsy2",
+          "led": null,
+          "name": "Spotsy 2",
+          "order": 45,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6080,
+          "label": "SpotFR B4 Cmd 4",
+          "led": null,
+          "name": "B4 Command 4",
+          "order": 46,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6081,
+          "label": "SpotFR B5 Tac 4",
+          "led": null,
+          "name": "B5 Tac 4",
+          "order": 47,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6082,
+          "label": "SpotFR B8 Cmd 5",
+          "led": null,
+          "name": "B8 Command 5",
+          "order": 48,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6083,
+          "label": "SpotFR B9 Tac 5",
+          "led": null,
+          "name": "B9 Tac 5",
+          "order": 49,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6084,
+          "label": "SpotFR B12 Cmd6",
+          "led": null,
+          "name": "B12 Command 6",
+          "order": 50,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6085,
+          "label": "SpotFR B13 Tac6",
+          "led": null,
+          "name": "B13 Tac 6",
+          "order": 51,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6086,
+          "label": "SpotFR C8 TrnTc",
+          "led": null,
+          "name": "C8 Training Tac",
+          "order": 52,
+          "tagId": 13
+        },
+        {
+          "frequency": null,
+          "groupId": 3,
+          "id": 6087,
+          "label": "SpotFR A7 Inc 2",
+          "led": null,
+          "name": "A7 Incident 2",
+          "order": 53,
+          "tagId": 12
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7005,
+          "label": "Spotsy ConvCent",
+          "led": null,
+          "name": "Convenience CenterLandfill",
+          "order": 54,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7006,
+          "label": "Spotsy ChCCColl",
+          "led": null,
+          "name": "Chancellor Convenience CenterLandfill Collection",
+          "order": 55,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7007,
+          "label": "Spotsy LivLndfll",
+          "led": null,
+          "name": "Livingston Landfill",
+          "order": 56,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7010,
+          "label": "Spotsy Bldg Mnt",
+          "led": null,
+          "name": "Building Maintenance",
+          "order": 57,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7017,
+          "label": "Spotsy MsspnxWTP",
+          "led": null,
+          "name": "Massaponax Wastewater Treatment Plant",
+          "order": 58,
+          "tagId": 15
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7020,
+          "label": "Spotsy Utilities",
+          "led": null,
+          "name": "Utilities",
+          "order": 59,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7025,
+          "label": "Spotsy PW",
+          "led": null,
+          "name": "Public Works",
+          "order": 60,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 19,
+          "id": 7031,
+          "label": "Spotsy ParksRec",
+          "led": null,
+          "name": "Parks and Recreation",
+          "order": 61,
+          "tagId": 16
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7039,
+          "label": "Spotsy Event 1",
+          "led": null,
+          "name": "Event 1",
+          "order": 62,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7040,
+          "label": "Spotsy Event 2",
+          "led": null,
+          "name": "Event 2",
+          "order": 63,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7041,
+          "label": "Spotsy INT OP1",
+          "led": null,
+          "name": "INT OP1",
+          "order": 64,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7042,
+          "label": "Spotsy INT OP2",
+          "led": null,
+          "name": "INT OP2",
+          "order": 65,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7043,
+          "label": "Spotsy INT OP3",
+          "led": null,
+          "name": "INT OP3",
+          "order": 66,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7044,
+          "label": "Spotsy INT OP4",
+          "led": null,
+          "name": "INT OP4",
+          "order": 67,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7045,
+          "label": "Spotsy INT OP5",
+          "led": null,
+          "name": "INT OP5",
+          "order": 68,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7046,
+          "label": "Spotsy INT OP6",
+          "led": null,
+          "name": "INT OP6",
+          "order": 69,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7047,
+          "label": "Spotsy Event 3",
+          "led": null,
+          "name": "Event 3",
+          "order": 70,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7048,
+          "label": "Spotsy Event 4",
+          "led": null,
+          "name": "Event 4",
+          "order": 71,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7049,
+          "label": "Spotsy Event 5",
+          "led": null,
+          "name": "Event 5",
+          "order": 72,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 4,
+          "id": 7050,
+          "label": "Spotsy Event 6",
+          "led": null,
+          "name": "Event 6",
+          "order": 73,
+          "tagId": 6
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7101,
+          "label": "SpotSchActivity1",
+          "led": null,
+          "name": "Activity 1 Ch 5 on school portables",
+          "order": 74,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7104,
+          "label": "SpotSchEmergency",
+          "led": null,
+          "name": "Emergency",
+          "order": 75,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7110,
+          "label": "Battlefield ES 1",
+          "led": null,
+          "name": "Battlefield Elementary School Ch 1",
+          "order": 76,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7111,
+          "label": "Battlefield ES 2",
+          "led": null,
+          "name": "Battlefield Elementary School Ch 2",
+          "order": 77,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7112,
+          "label": "Battlefield ES 3",
+          "led": null,
+          "name": "Battlefield Elementary School Ch 3",
+          "order": 78,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7120,
+          "label": "BattlefldMS 7120",
+          "led": null,
+          "name": "Battlefield Middle School",
+          "order": 79,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7121,
+          "label": "BattlefldMS 7121",
+          "led": null,
+          "name": "Battlefield Middle School",
+          "order": 80,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7130,
+          "label": "Berkeley ES 7130",
+          "led": null,
+          "name": "Berkeley Elementary School",
+          "order": 81,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7131,
+          "label": "Berkeley ES 7131",
+          "led": null,
+          "name": "Berkeley Elementary School",
+          "order": 82,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7160,
+          "label": "Chancellor ES ",
+          "led": null,
+          "name": "Chancellor Elementary School",
+          "order": 83,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7161,
+          "label": "Chancellor ES 2",
+          "led": null,
+          "name": "Chancellor Elementary School Ch 2",
+          "order": 84,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7170,
+          "label": "Chancellor HS 1",
+          "led": null,
+          "name": "Chancellor High School Ch 1",
+          "order": 85,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7171,
+          "label": "Chancellor HS 2",
+          "led": null,
+          "name": "Chancellor High School Ch 2",
+          "order": 86,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7180,
+          "label": "Chancellor MS 1",
+          "led": null,
+          "name": "Chancellor Middle School Ch 1",
+          "order": 87,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7181,
+          "label": "Chancellor MS 2",
+          "led": null,
+          "name": "Chancellor Middle School Ch 2",
+          "order": 88,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7182,
+          "label": "Chancellor MS 3",
+          "led": null,
+          "name": "Chancellor Middle School Ch 3",
+          "order": 89,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7200,
+          "label": "CourthouseRdES 1",
+          "led": null,
+          "name": "Courthouse Road Elementary School Ch 1",
+          "order": 90,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7201,
+          "label": "CourthouseRdES 2",
+          "led": null,
+          "name": "Courthouse Road Elementary School Ch 2",
+          "order": 91,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7202,
+          "label": "CourthouseRdES 3",
+          "led": null,
+          "name": "Courthouse Road Elementary School Ch 3",
+          "order": 92,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7210,
+          "label": "Courtland ES 1",
+          "led": null,
+          "name": "Courtland Elementary School Ch 1",
+          "order": 93,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7211,
+          "label": "Courtland ES 2",
+          "led": null,
+          "name": "Courtland Elementary School Ch 2",
+          "order": 94,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7212,
+          "label": "Courtland ES 3",
+          "led": null,
+          "name": "Courtland Elementary School Ch 3",
+          "order": 95,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7240,
+          "label": "Freedom MS 7240",
+          "led": null,
+          "name": "Freedom Middle School",
+          "order": 96,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7241,
+          "label": "Freedom MS 7241",
+          "led": null,
+          "name": "Freedom Middle School",
+          "order": 97,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7242,
+          "label": "Freedom MS 3",
+          "led": null,
+          "name": "Freedom Middle School Ch 3",
+          "order": 98,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7243,
+          "label": "Freedom MS 4",
+          "led": null,
+          "name": "Freedom Middle School Ch 4",
+          "order": 99,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7250,
+          "label": "Harr Rd ES 7250",
+          "led": null,
+          "name": "Harrison Road Elementary School",
+          "order": 100,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7251,
+          "label": "Harr Rd ES 7251",
+          "led": null,
+          "name": "Harrison Road Elementary School",
+          "order": 101,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7252,
+          "label": "Harr Rd ES 3",
+          "led": null,
+          "name": "Harrison Road Elementary School Ch 3",
+          "order": 102,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7260,
+          "label": "JJWright ECC 1",
+          "led": null,
+          "name": "John J Wright Educational and Cultural CenterCourthouse Academy Ch 1",
+          "order": 103,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7261,
+          "label": "JJWright ECC 2",
+          "led": null,
+          "name": "John J Wright Educational and Cultural CenterCourthouse Academy Ch 2",
+          "order": 104,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7280,
+          "label": "LivingstonES7280",
+          "led": null,
+          "name": "Livingston Elementary School",
+          "order": 105,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7281,
+          "label": "LivingstonES7281",
+          "led": null,
+          "name": "Livingston Elementary School",
+          "order": 106,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7282,
+          "label": "Livingston ES 3",
+          "led": null,
+          "name": "Livingston Elementary School Ch 3",
+          "order": 107,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7330,
+          "label": "Riverbend HS 1",
+          "led": null,
+          "name": "Riverbend High School Ch 1",
+          "order": 108,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7331,
+          "label": "Riverbend HS 2",
+          "led": null,
+          "name": "Riverbend High School Ch 2",
+          "order": 109,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7340,
+          "label": "RiverviewES 7340",
+          "led": null,
+          "name": "Riverview Elementary School",
+          "order": 110,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7341,
+          "label": "RiverviewES 7341",
+          "led": null,
+          "name": "Riverview Elementary School",
+          "order": 111,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7350,
+          "label": "Salem ES",
+          "led": null,
+          "name": "Salem Elementary School",
+          "order": 112,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7351,
+          "label": "Salem ES 2",
+          "led": null,
+          "name": "Salem Elementary School Ch 2",
+          "order": 113,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7370,
+          "label": "SpotswoodES 7370",
+          "led": null,
+          "name": "Spotswood Elementary School",
+          "order": 114,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7371,
+          "label": "SpotswoodES 7371",
+          "led": null,
+          "name": "Spotswood Elementary School",
+          "order": 115,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7420,
+          "label": "ThornburgMS 7420",
+          "led": null,
+          "name": "Thornburg Middle School",
+          "order": 116,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7421,
+          "label": "ThornburgMS 7421",
+          "led": null,
+          "name": "Thornburg Middle School",
+          "order": 117,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7430,
+          "label": "Wilderness ES 1",
+          "led": null,
+          "name": "Wilderness Elementary School Ch 1",
+          "order": 118,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7431,
+          "label": "Wilderness ES 2",
+          "led": null,
+          "name": "Wilderness Elementary School Ch 2",
+          "order": 119,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7432,
+          "label": "Wilderness ES 3",
+          "led": null,
+          "name": "Wilderness Elementary School Ch 3",
+          "order": 120,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7501,
+          "label": "SpotSch Admin",
+          "led": null,
+          "name": "Administration",
+          "order": 121,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7504,
+          "label": "SpotSch TrnsSch",
+          "led": null,
+          "name": "Transportation to Schools",
+          "order": 122,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7505,
+          "label": "SpotSch SpNdBus",
+          "led": null,
+          "name": "Special Needs Buses",
+          "order": 123,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7506,
+          "label": "SpotSch BusGar",
+          "led": null,
+          "name": "Bus Garage",
+          "order": 124,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7507,
+          "label": "SpotSch RegBus",
+          "led": null,
+          "name": "Regular Buses",
+          "order": 125,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7508,
+          "label": "SpotSch Maint 1",
+          "led": null,
+          "name": "Maintenance 1",
+          "order": 126,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7509,
+          "label": "SpotSch Maint 2",
+          "led": null,
+          "name": "Maintenance 2",
+          "order": 127,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7510,
+          "label": "SpotSch Tech 1",
+          "led": null,
+          "name": "Technology 1",
+          "order": 128,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7511,
+          "label": "SpotSch SpNdSch",
+          "led": null,
+          "name": "Special Needs Bus Dispatcher to Schools",
+          "order": 129,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7512,
+          "label": "SpotSch Tech 2",
+          "led": null,
+          "name": "Technology 2",
+          "order": 130,
+          "tagId": 18
+        },
+        {
+          "frequency": null,
+          "groupId": 20,
+          "id": 7514,
+          "label": "SpotSch BusEmrg",
+          "led": null,
+          "name": "Buses  EmergencyEvents Bus Roadeo 2018",
+          "order": 131,
+          "tagId": 18
+        }
+      ],
+      "units": []
     }
   ],
   "tags": [
@@ -1567,6 +2901,10 @@
     {
       "_id": 18,
       "label": "Schools"
+    },
+    {
+      "_id": 19,
+      "label": "EMS Dispatch"
     }
   ]
 }
