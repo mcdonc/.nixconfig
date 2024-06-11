@@ -52,6 +52,8 @@ in
   imports = [
     ./pkgs/cachix.nix
     ./pkgs/dvtranscode.nix
+    ./pkgs/rdio-scanner
+    ./pkgs/trunk-recorder
   ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -448,6 +450,7 @@ in
     socat # for gprx dmr decoding
     sox # for play
     nickel
+    gnome.gnome-boxes
     # https://github.com/WolfangAukang/nur-packages/issues/9#issuecomment-1089072988
     # share/vdhcoapp/net.downloadhelper.coapp install --user
     #config.nur.repos.wolfangaukang.vdhcoapp
