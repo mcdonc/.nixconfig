@@ -5,7 +5,7 @@
     "rate": 2800000.0,
     "error": 0,
     "gain": 20,
-    "digitalRecorders": 1,
+    "digitalRecorders": 6,
     "driver": "osmosdr",
     "device": "rtl=000"
   }],
@@ -16,6 +16,7 @@
     "squelch": -50,
     "modulation": "qpsk",
     "compressWav": false,
+    "autoArchive": false,
     "talkgroupsFile":"trs_tg_6730.csv"
   }],
   "plugins": [{
