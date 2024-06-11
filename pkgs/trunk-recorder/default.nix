@@ -48,7 +48,7 @@ let
       homepage = "https://github.com/robotastic/trunk-recorder";
       license = licenses.gpl3Plus;
       maintainers = with maintainers; [ ];
-      platforms = platforms.all;
+      platforms = platforms.linux;
       mainProgram = "trunk-recorder";
     };
   };

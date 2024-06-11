@@ -26,7 +26,6 @@ let
     src = rdio-scanner-src;
     sourceRoot = "${rdio-scanner-src.name}/server";
     vendorHash = "sha256-Dvb8g+XtMcI9bbB83AZ94UI54L10jmBnXYrgzGe9200=";
-    buildInputs = [ pkgs.makeWrapper ];
     postUnpack = ''
       cp -r ${rdio-scanner-client}/webapp /build/source/server
     '';
@@ -44,7 +43,7 @@ let
       homepage = "https://github.com/chuot/rdio-scanner";
       license = licenses.gpl3Plus;
       maintainers = with maintainers; [ ];
-      platforms = platforms.all;
+      platforms = platforms.linux;
       mainProgram = "rdio-scanner";
     };
   };

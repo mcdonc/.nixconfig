@@ -1,0 +1,31 @@
+{
+  "ver": 2,
+  "sources": [{
+    "center":773106250,
+    "rate": 2800000.0,
+    "error": 0,
+    "gain": 20,
+    "digitalRecorders": 1,
+    "driver": "osmosdr",
+    "device": "rtl=000"
+  }],
+  "systems": [{
+    "control_channels": [774181250],
+    "shortName":"fburg",
+    "type": "p25",
+    "squelch": -50,
+    "modulation": "qpsk",
+    "compressWav": false,
+    "talkgroupsFile":"trs_tg_6730.csv"
+  }],
+  "plugins": [{
+      "name": "rdioscanner_uploader",
+      "library": "librdioscanner_uploader.so",
+      "server": "http://127.0.0.1:3000",
+      "systems": [{
+          "shortName": "fburg",
+          "apiKey": "<rdio-scanner-api-key>",
+          "systemId": 4
+      }]
+  }]
+}
