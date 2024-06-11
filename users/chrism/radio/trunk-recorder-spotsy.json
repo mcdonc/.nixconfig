@@ -1,0 +1,32 @@
+{
+  "ver": 2,
+  "sources": [{
+    "center":857112500,
+    "rate": 2800000.0,
+    "error": 0,
+    "gain": 30,
+    "digitalRecorders": 6,
+    "driver": "osmosdr",
+    "device": "rtl=000"
+  }],
+  "systems": [{
+    "control_channels": [858187500],
+    "shortName":"spotsy",
+    "type": "p25",
+    "squelch": -50,
+    "modulation": "qpsk",
+    "compressWav": false,
+    "autoArchive": false,
+    "talkgroupsFile":"trs_tg_8651.csv"
+  }],
+  "plugins": [{
+      "name": "rdioscanner_uploader",
+      "library": "librdioscanner_uploader.so",
+      "server": "http://127.0.0.1:3000",
+      "systems": [{
+          "shortName": "spotsy",
+          "apiKey": "492021d2-0f8f-4f8c-b61c-35bb22e943ac",
+          "systemId": 6
+      }]
+  }]
+}
