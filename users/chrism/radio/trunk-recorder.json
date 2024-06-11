@@ -17,6 +17,7 @@
     "modulation": "qpsk",
     "compressWav": false,
     "audioArchive": false,
+    "callLog": false,
     "talkgroupsFile":"trs_tg_6730.csv"
   }],
   "plugins": [{
