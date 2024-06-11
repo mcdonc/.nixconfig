@@ -16,7 +16,7 @@
     "squelch": -50,
     "modulation": "qpsk",
     "compressWav": false,
-    "autoArchive": false,
+    "audioArchive": false,
     "talkgroupsFile":"trs_tg_8651.csv"
   }],
   "plugins": [{
