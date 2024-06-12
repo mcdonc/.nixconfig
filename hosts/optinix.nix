@@ -15,7 +15,7 @@ in
 {
   imports = [
     ../users/chrism
-    "${nixos-hardware}/common/cpu/intel"
+    ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
     ./roles/dnsovertls/resolvedonly.nix
@@ -24,7 +24,8 @@ in
     ./roles/davinci-resolve.nix
     ./roles/vmount.nix
 #    ./roles/proaudio.nix
-#    ./roles/rc505
+    #    ./roles/rc505
+    ./roles/davinci-resolve.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
@@ -37,8 +38,6 @@ in
   networking.hostId = "0a2c6441";
   networking.hostName = "optinix";
 
-  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
-
   # music, doesn't actually work for some reason
   powerManagement.enable = lib.mkForce true;
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
@@ -46,7 +45,6 @@ in
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   boot.zfs.extraPools = [ "b" ];
@@ -160,7 +158,9 @@ in
     # kscreendoctor
     left-screen-1080p
     left-screen-4k
-  ];
+
+    pkgs.davinci-resolve
+ ];
 
   # silence ACPI "errors" spewed to console at boot time (default is 4)
   boot.consoleLogLevel = 3;
