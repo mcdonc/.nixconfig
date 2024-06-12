@@ -451,6 +451,6 @@ in
     sox # for play
     nickel
     gnome.gnome-boxes
-    vdhcoapp # vdhcoapp install --user
+    vdhcoapp # vdhcoapp install --user (see also https://github.com/NixOS/nixpkgs/issues/112046)
   ];
 }
