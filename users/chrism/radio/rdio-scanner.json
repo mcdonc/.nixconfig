@@ -98,7 +98,7 @@
     "afsSystems": "",
     "audioConversion": 1,
     "autoPopulate": true,
-    "branding": "",
+    "branding": "Athens Hotel",
     "dimmerDelay": 5000,
     "disableDuplicateDetection": false,
     "duplicateDetectionTimeFrame": 500,
@@ -108,7 +108,7 @@
     "playbackGoesLive": false,
     "pruneDays": 7,
     "searchPatchedTalkgroups": false,
-    "showListenersCount": false,
+    "showListenersCount": true,
     "sortTalkgroups": false,
     "tagsToggle": false,
     "time12hFormat": false
@@ -123,6 +123,16 @@
       "led": "blue",
       "order": 0,
       "talkgroups": [
+        {
+          "frequency": null,
+          "groupId": 6,
+          "id": 5387,
+          "label": "5387",
+          "led": null,
+          "name": "5387",
+          "order": 0,
+          "tagId": 9
+        },
         {
           "frequency": null,
           "groupId": 7,
