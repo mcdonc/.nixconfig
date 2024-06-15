@@ -187,6 +187,7 @@ in
   };
 
   hardware.rtl-sdr.enable = true;
+  services.udev.packages = [pkgs.airspy];
 
   # wireshark without sudo; note that still necessary to add
   # wireshark to systemPackages to get gui I think
