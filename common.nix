@@ -453,5 +453,6 @@ in
     gnome.gnome-boxes
     vdhcoapp # vdhcoapp install --user (see also https://github.com/NixOS/nixpkgs/issues/112046)
     airspy
+    soapyairspy
   ];
 }
