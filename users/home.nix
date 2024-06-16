@@ -143,8 +143,6 @@ let
 in
 
 {
-  #imports = [ ./keybase.nix ];
-
   services.keybase.enable = true;
   services.kbfs.enable = true;
 

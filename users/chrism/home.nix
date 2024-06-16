@@ -37,10 +37,6 @@ in
 
   home.file.".root.code-workspace".force = true;
 
-  xdg.configFile."autostart/keybase_autostart.desktop".text = ''
-    [Desktop Entry]
-  '';
-
   programs.git = {
     enable = true;
     userName = "Chris McDonough";
