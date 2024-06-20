@@ -9,7 +9,6 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   environment = {
     etc = {

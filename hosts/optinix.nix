@@ -35,6 +35,8 @@ in
     )
   ];
 
+  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
+
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6441";
   networking.hostName = "optinix";
