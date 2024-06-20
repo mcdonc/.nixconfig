@@ -21,11 +21,10 @@ in
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/speedtest
     ./roles/steam.nix
-    ./roles/davinci-resolve.nix
+    ./roles/davinci-resolve/studio.nix
     ./roles/vmount.nix
 #    ./roles/proaudio.nix
     #    ./roles/rc505
-    ./roles/davinci-resolve.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
@@ -159,7 +158,6 @@ in
     left-screen-1080p
     left-screen-4k
 
-    pkgs.davinci-resolve
  ];
 
   # silence ACPI "errors" spewed to console at boot time (default is 4)

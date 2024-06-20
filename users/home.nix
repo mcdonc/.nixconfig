@@ -349,24 +349,6 @@ in
       mimeType = [ "application/vnd.olive-project" ];
       icon = "org.olivevideoeditor.Olive";
     };
-    davinci-nvidia = {
-      name = "DaVinci Resolve (via nvidia-offload)";
-      genericName = "DaVinci Resolve Video Editor";
-      exec = "nvidia-offload davinci-resolve";
-      terminal = false;
-      categories = [ "AudioVideo" "Recorder" ];
-      mimeType = [ "application/x-resolveproj" ];
-      icon = ../static/DV_Resolve.png;
-    };
-    davinci-studio-nvidia = {
-      name = "DaVinci Resolve Studio (via nvidia-offload)";
-      genericName = "DaVinci Resolve Studio Video Editor";
-      exec = "nvidia-offload davinci-resolve-studio";
-      terminal = false;
-      categories = [ "AudioVideo" "Recorder" ];
-      mimeType = [ "application/x-resolveproj" ];
-      icon = ../static/DV_Resolve.png;
-    };
   };
 
   programs.emacs.enable = true;

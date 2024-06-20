@@ -10,7 +10,7 @@
     ./roles/tlp.nix
     #./roles/sessile.nix
     ./roles/steam.nix
-    ./roles/davinci-resolve.nix
+    ./roles/davinci-resolve/studio.nix
     ./roles/vmount.nix
     ./roles/dnsovertls/resolvedonly.nix
     ../common.nix

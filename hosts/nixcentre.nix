@@ -8,7 +8,7 @@
     ./roles/encryptedzfs.nix
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/sessile.nix
-    ./roles/davinci-resolve.nix
+    ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ../common.nix
   ];
