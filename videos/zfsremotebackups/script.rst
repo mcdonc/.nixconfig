@@ -64,10 +64,10 @@ Prerequisites
 - On the *target* machine, take the ``backup.key`` we generated and copy it to
   ``/var/lib/syncoid/backup.key`` and give it world-readable permission (it's
   less bad than it sounds, the directory itself cannot be traversed by anyone
-  buut ``syncoid`` and ``root`` users)::
+  but ``syncoid`` and ``root`` users)::
 
     $ sudo cp /home/chrism/backup.key /var/lib/syncoid
-    $ sudo chmod o+r /var/lib/syncoid/backup.key
+    $ sudo chown syncoid:syncoid /var/lib/syncoid/backup.key
 
   Note that the key cannot live anywhere else if you want to use it with
   syncoid.  The ``syncoid`` user which it runs under seemingly can see nowhere
