@@ -270,7 +270,7 @@ in
     baobab
     signal-desktop
     python27
-    #pkgs.vscode-fhs
+    pkgs.vscode-fhs
     pkgs-py36.python36
     pkgs-py37.python37
     pkgs-py39.python38
