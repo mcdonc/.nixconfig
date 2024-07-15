@@ -251,6 +251,9 @@ in
         user = "pi";
         forwardAgent = true;
       };
+      "keithmoon" = {
+        forwardAgent = true;
+      };
 
       "win10" = { user = "user"; };
       "thinknix*" = { forwardAgent = true; };
