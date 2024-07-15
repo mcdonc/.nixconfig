@@ -29,5 +29,7 @@
 
   # 32 GB max ARC cache
   boot.kernelParams = [ "zfs.zfs_arc_max=34359738368" ];
+  # not encrypted
+  boot.zfs.requestEncryptionCredentials = lib.mkForce false;
 
 }
