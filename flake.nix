@@ -85,6 +85,7 @@
           "optinix"
           "nixcentre"
           "nixos_vm"
+          "keithmoon"
         ];
         mkSystem = host: {
           name = host;
