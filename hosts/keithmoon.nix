@@ -40,7 +40,6 @@
   services.samba = {
     enable = true;
     package = pkgs.samba4Full;
-    syncPasswordsByPam = true;
     openFirewall = true;
     securityType = "user";
     extraConfig = ''
@@ -79,7 +78,7 @@
     };
   };
 
-  avahi = {
+  services.avahi = {
     publish.enable = true;
     publish.userServices = true;
     # ^^ Needed to allow samba to automatically register mDNS records
