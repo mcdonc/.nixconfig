@@ -101,7 +101,7 @@ Post-Reboot
       -o primarycache=metadata -o secondarycache=none \
       -o com.sun:auto-snapshot=false NIXROOT/swap
 
-   mkswap -f /dev/zvol/NXROOT/swap
+   mkswap -f /dev/zvol/NIXROOT/swap
 
    swapon -av
 
