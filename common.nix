@@ -456,5 +456,6 @@ in
     airspy
     soapyairspy
     gnome-multi-writer
+    util-linux # wipefs
   ];
 }
