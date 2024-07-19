@@ -457,5 +457,6 @@ in
     soapyairspy
     gnome-multi-writer
     util-linux # wipefs
+    ipmitool
   ];
 }

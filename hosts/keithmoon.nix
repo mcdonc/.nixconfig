@@ -7,6 +7,8 @@
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
     ./roles/dnsovertls/resolvedonly.nix
+    ./roles/davinci-resolve/studio.nix
+    ./roles/steam.nix
     ../common.nix
   ];
 
@@ -28,12 +30,41 @@
     };
 
   # 32 GB max ARC cache
-  boot.kernelParams = [ "zfs.zfs_arc_max=34359738368" ];
+  boot.kernelParams = [
+    "zfs.zfs_arc_max=34359738368" 
+    # required by wayland, see https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
+    "nvidia-drm.modeset=1"
+  ];
   # not encrypted
   boot.zfs.requestEncryptionCredentials = lib.mkForce false;
   services.desktopManager.plasma6.enable = lib.mkForce false;
   services.xserver.enable = lib.mkForce false;
   services.displayManager.sddm.enable = lib.mkForce false;
+
+    # Enable OpenGL
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.nvidia = {
+
+    # Modesetting is required.
+    modesetting.enable = true;
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+    nvidiaSettings = true;
+
+    # # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 
   environment.systemPackages = [ pkgs.cifs-utils ];
 
