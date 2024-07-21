@@ -103,7 +103,7 @@ Inputs include ``nixpkgs``, ``nixpkgs-unstable``, ```nixos-hardware``,
 
 In the outputs, I set up "modules" related to each of two users.  And I define
 eight systems in ``nixosConfiguration``. In each one, choosing to use one or
-the other set of user modules (or both)q as well as a host-specific config.
+the other set of user modules (or both) as well as a host-specific config.
 
 When ``nixos-rebuild`` is executed, the hostname on which it has been executed
 is looked up in ``nixosConfigurations``, and the ``nixosSystem`` that it
