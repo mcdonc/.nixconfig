@@ -168,4 +168,10 @@
   '';
   };
 
+  # resolve "network->connect"
+  # name: videos
+  # ip:
+  # username: resolve
+  # pass:
+
 }
