@@ -30,11 +30,14 @@
     };
 
   boot.zfs.extraPools = [ "d" ];
+  # don't run updatedb on /d
+  services.locate.prunePaths = [ "/d" ];
 
   # 32 GB max ARC cache
   boot.kernelParams = [
-    "zfs.zfs_arc_max=34359738368" 
-    # required by wayland, see https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
+    "zfs.zfs_arc_max=34359738368"
+    # required by wayland, see
+    # https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
     "nvidia-drm.modeset=1"
   ];
   # not encrypted
@@ -64,7 +67,6 @@
     powerManagement.finegrained = false;
     nvidiaSettings = true;
 
-    # # Optionally, you may need to select the appropriate driver version for your specific GPU.
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
@@ -100,6 +102,17 @@
         "force user" = "chrism";
         "force group" = "users";
       };
+      v = {
+        path = "/home/chrism/v";
+        browseable = "yes";
+        writeable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "chrism";
+        "force group" = "users";
+      };
       homes = {
         browseable = "no";
         # note: each home will be browseable; the "homes" share will not.
@@ -126,6 +139,33 @@
   services.samba-wsdd = {
     enable = true;
     openFirewall = true;
+  };
+
+  system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ]
+    ''
+      chmod o+x /home/chrism
+      mkdir /home/chrism/v
+      chown chrism:users /home/chrism/v
+      mkdir /home/chrism/v/postgresql
+      chown postgres:postgres /home/chrism/v/postgresql
+      ln -sf /home/chrism/v /v
+    '';
+
+  services.postgresql = {
+    package = pkgs.postgresql_15;
+    enable = true;
+    enableTCPIP = true;
+    settings.port = 5432;
+    dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
+    authentication = pkgs.lib.mkForce ''
+      # TYPE  DATABASE        USER            ADDRESS                 METHOD
+      local   all             all                                     trust
+      host    all             all             127.0.0.1/32            trust
+      host    all             all             192.168.1.0/24          trust
+    '';
+  initialScript = pkgs.writeText "postgres-init-script" ''
+    CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
+  '';
   };
 
 }
