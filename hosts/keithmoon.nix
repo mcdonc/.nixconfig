@@ -29,6 +29,8 @@
       fsType = "zfs";
     };
 
+  boot.zfs.extraPools = [ "d" ];
+
   # 32 GB max ARC cache
   boot.kernelParams = [
     "zfs.zfs_arc_max=34359738368" 
