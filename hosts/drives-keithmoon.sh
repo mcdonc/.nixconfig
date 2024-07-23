@@ -1,4 +1,5 @@
 # keithmoon boots from a SATA SSD, not from the NVME root disk
+# slot bifurcation of slot 3 is on in BIOS (x4x4)
 / is mirror of nvme-eui.002538d63140d3a5-part2 & nvme-eui.002538d63140d3e2-part2
 /boot is ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1
 
