@@ -32,3 +32,7 @@ sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_
 sudo zpool add d log mirror \
      /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2 \
      /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
+
+# create subvols on d
+sudo zfs create -o encryption=aes-256-gcm -o keylocation=prompt \
+     -o keyformat=passphrase d/enc
