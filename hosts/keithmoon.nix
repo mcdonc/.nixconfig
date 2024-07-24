@@ -29,9 +29,16 @@
       fsType = "zfs";
     };
 
+  fileSystems."/steam1" =
+    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2";
+      label="STEAM1";
+      fsType = "ext4";
+    };
+  
   boot.zfs.extraPools = [ "d" ];
-  # don't run updatedb on /d
-  services.locate.prunePaths = [ "/d" ];
+
+  # don't run updatedb on these disks
+  services.locate.prunePaths = [ "/d" "/steam1" ];
 
   # 32 GB max ARC cache
   boot.kernelParams = [
@@ -144,11 +151,12 @@
   system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ]
     ''
       chmod o+x /home/chrism
-      mkdir /home/chrism/v
+      mkdir -p /home/chrism/v
       chown chrism:users /home/chrism/v
-      mkdir /home/chrism/v/postgresql
+      mkdir -p /home/chrism/v/postgresql
       chown postgres:postgres /home/chrism/v/postgresql
       ln -sf /home/chrism/v /v
+      chown chrism:users /steam1
     '';
 
   services.postgresql = {

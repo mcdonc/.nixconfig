@@ -1,9 +1,10 @@
 # keithmoon boots from a SATA SSD, not from the NVME root disk
 # slot bifurcation of slot 3 is on in BIOS (x4x4)
-/ is mirror of nvme-eui.002538d63140d3a5-part2 & nvme-eui.002538d63140d3e2-part2
-/boot is ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1
 
-# spinning rust
+#/ is mirror of nvme-eui.002538d63140d3a5-part2 & nvme-eui.002538d63140d3e2-part2
+#/boot is ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1
+
+# spinning rust mirror 0
 sudo zpool create -f \
     -O compression=lz4 \
     -O acltype=posixacl \
@@ -16,13 +17,18 @@ sudo zpool create -f \
     /dev/disk/by-id/scsi-35000cca05cdc2b2c \
     /dev/disk/by-id/scsi-35000cca05cdc2880
 
-sudo zpool add d mirror \
-     /dev/disk/by-id/scsi-35000cca05cdbdd7c \
-     /dev/disk/by-id/scsi-35000cca25c1e8f94
-
+# mirror 1
 sudo zpool add d mirror \
      /dev/disk/by-id/scsi-35000cca269b12c94  \
+     /dev/disk/by-id/scsi-35000cca25c1e8f94
+
+# mirror 2 (inactive)
+sudo zpool add d mirror \
+     /dev/disk/by-id/scsi-35000cca05cdbdd7c \
      /dev/disk/by-id/scsi-35000cca05cdd6924
+
+# zfs permissions
+sudo zfs allow -u chrism compression,create,mount,mountpoint,receive,destroy,diff,hold,load-key,refreservation,release,rename,rollback,send,snapshot d
 
 # create second partitions on EVO 850 log disks (one is boot disk)
 sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
@@ -33,6 +39,28 @@ sudo zpool add d log mirror \
      /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2 \
      /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
 
+# remove the created log (or any other mirror)
+sudo zpool remove d mirror-3
+
+# or use them as a fast steam volume (steam doesnt like this)
+sudo zpool create -f \
+    -O compression=lz4 \
+    -o ashift=12 \
+    -o autotrim=on \
+    -O acltype=posixacl \
+    -O xattr=sa \
+    -O relatime=on \
+    -O normalization=formC \
+    -O dnodesize=auto \
+    s \
+    mirror \
+    /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2 \
+    /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
+
+# or just use them individually as steam drives (current)
+sudo mke2fs -t ext4 -L STEAM1 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
+sudo mke2fs -t ext4 -L STEAM2 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
+
 # create subvols on d
 sudo zfs create -o encryption=aes-256-gcm -o keylocation=prompt \
-     -o keyformat=passphrase d/enc
+     -o keyformat=passphrase -o mountpoint=/e d/e
