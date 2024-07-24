@@ -22,7 +22,7 @@ in
     ./roles/speedtest
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
-    ./roles/vmount.nix
+    #./roles/vmount.nix
     ./roles/keithclient.nix
 #    ./roles/proaudio.nix
     #    ./roles/rc505
