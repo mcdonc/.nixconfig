@@ -34,7 +34,8 @@
       label="STEAM1";
       fsType = "ext4";
     };
-  
+
+  # note that this is chowned in activationScripts
   boot.zfs.extraPools = [ "d" ];
 
   # don't run updatedb on these disks
@@ -157,6 +158,7 @@
       chown postgres:postgres /home/chrism/v/postgresql
       ln -sf /home/chrism/v /v
       chown chrism:users /steam1
+      chown chrism:users /d
     '';
 
   services.postgresql = {
@@ -181,5 +183,59 @@
   # ip:
   # username: resolve
   # pass:
+
+  services.syncoid = {
+    enable = true;
+    interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
+    commonArgs = [ "--debug" ];
+    commands = {
+      "optinix-home" = {
+        source = "NIXROOT/home";
+        target = "d/home-keithmoon";
+        sendOptions = "w c";
+      };
+      # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
+    };
+    localSourceAllow = options.services.syncoid.localSourceAllow.default
+      ++ [ "mount" ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default
+      ++ [ "destroy" ];
+  };
+
+  services.sanoid = {
+    enable = true;
+    interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
+    datasets = {
+      "NIXROOT/home" = {
+        autoprune = true;
+        autosnap = true;
+        hourly = 1;
+        daily = 1;
+        weekly = 1;
+        monthly = 1;
+        yearly = 0;
+      };
+      "d/o" = {
+        autoprune = true;
+        autosnap = true;
+        hourly = 0;
+        daily = 0;
+        weekly = 2;
+        monthly = 0;
+        yearly = 0;
+      };
+      # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
+      "d/home-keithmoon" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 4;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
+    };
+    extraArgs = [ "--debug" ];
+  };
 
 }

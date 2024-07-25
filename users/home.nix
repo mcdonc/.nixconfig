@@ -111,7 +111,7 @@ let
     schnix = "nix search nixpkgs";
     rbnix = "sudo nixos-rebuild build --rollback";
     replnix = "nix repl '<nixpkgs>'";
-    mountzfs = "sudo zfs load-key b/storage; sudo zfs mount b/storage";
+    mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
     toconsole = "sudo systemd isolate multi-user.target";

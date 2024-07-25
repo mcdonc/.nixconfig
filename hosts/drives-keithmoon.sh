@@ -20,12 +20,8 @@ sudo zpool create -f \
 # mirror 1
 sudo zpool add d mirror \
      /dev/disk/by-id/scsi-35000cca269b12c94  \
-     /dev/disk/by-id/scsi-35000cca25c1e8f94
-
-# mirror 2 (inactive)
-sudo zpool add d mirror \
-     /dev/disk/by-id/scsi-35000cca05cdbdd7c \
      /dev/disk/by-id/scsi-35000cca05cdd6924
+
 
 # zfs permissions
 sudo zfs allow -u chrism compression,create,mount,mountpoint,receive,destroy,diff,hold,load-key,refreservation,release,rename,rollback,send,snapshot d
@@ -63,4 +59,26 @@ sudo mke2fs -t ext4 -L STEAM2 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNX
 
 # create subvols on d
 sudo zfs create -o encryption=aes-256-gcm -o keylocation=prompt \
-     -o keyformat=passphrase -o mountpoint=/e d/e
+     -o keyformat=passphrase -o mountpoint=/o d/o
+
+# set mountpoint by hand
+sudo zfs set mountpoint=/o d/o
+
+# restore from existing dataset
+sudo zfs send -cw b/storage@autosnap_2024-07-22_23:32:02_weekly | pv | zfs recv -u -s d/o
+
+# create snapshot
+sudo zfs snapshot b/storage@d-incremental
+
+# inrcremental restore
+sudo zfs send -cw -I b/storage@autosnap_2024-07-22_23:32:02_weekly b/storage@d-incremental | pv | zfs recv -u d/o
+
+# disable file indexing
+balooctl6 suspend
+balooctl6 disable
+
+# suspected bad:
+# /dev/disk/by-id/scsi-35000cca25c1e8f94
+
+# remaining good:
+# /dev/disk/by-id/scsi-35000cca05cdbdd7c
