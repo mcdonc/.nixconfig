@@ -82,3 +82,9 @@ balooctl6 disable
 
 # remaining good:
 # /dev/disk/by-id/scsi-35000cca05cdbdd7c
+
+# generate a 32-byte hex key
+# openssl rand -hex 32
+
+# boot.initrd.secrets."/key.txt" = /path/to/key.txt
+# keylocation=file:///key.txt

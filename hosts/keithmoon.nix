@@ -22,7 +22,12 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
+  # see prepserver.sh
+  boot.initrd.secrets."/key.txt" = /key.txt;
   boot.extraModulePackages = [ ];
+
+  # dont ask for "d/o" credentials
+  boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
 
   fileSystems."/nix" =
     { device = "NIXROOT/nix";
