@@ -24,6 +24,7 @@ in
     ./roles/davinci-resolve/studio.nix
     #./roles/vmount.nix
     ./roles/keithclient.nix
+    ./roles/backupsource
 #    ./roles/proaudio.nix
     #    ./roles/rc505
     ../common.nix
@@ -72,26 +73,6 @@ in
 
   #swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
 
-  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/backup/sanoid.nix
-
-  services.syncoid = {
-    enable = true;
-    interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
-    commonArgs = [ "--debug" ];
-    commands = {
-      "optinix-home" = {
-        source = "NIXROOT/home";
-        target = "b/optinix-home";
-        sendOptions = "w c";
-      };
-      # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
-    };
-    localSourceAllow = options.services.syncoid.localSourceAllow.default
-      ++ [ "mount" ];
-    localTargetAllow = options.services.syncoid.localTargetAllow.default
-      ++ [ "destroy" ];
-  };
-
   services.sanoid = {
     enable = true;
     interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
@@ -112,16 +93,6 @@ in
         daily = 0;
         weekly = 2;
         monthly = 0;
-        yearly = 0;
-      };
-      # https://github.com/jimsalterjrs/sanoid/wiki/Syncoid#snapshot-management-with-sanoid
-      "b/optinix-home" = {
-        autoprune = true;
-        autosnap = false;
-        hourly = 4;
-        daily = 7;
-        weekly = 4;
-        monthly = 12;
         yearly = 0;
       };
     };
