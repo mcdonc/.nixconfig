@@ -73,32 +73,6 @@ in
 
   #swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
 
-  services.sanoid = {
-    enable = true;
-    interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
-    datasets = {
-      "NIXROOT/home" = {
-        autoprune = true;
-        autosnap = true;
-        hourly = 1;
-        daily = 1;
-        weekly = 1;
-        monthly = 1;
-        yearly = 0;
-      };
-      "b/storage" = {
-        autoprune = true;
-        autosnap = true;
-        hourly = 0;
-        daily = 0;
-        weekly = 2;
-        monthly = 0;
-        yearly = 0;
-      };
-    };
-    extraArgs = [ "--debug" ];
-  };
-
   networking.nftables = {
     enable = true;
     ruleset = ''
@@ -117,12 +91,6 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    # used by zfs send/receive
-    pv
-    mbuffer
-    lzop
-    zstd
-
     # health
     monitor-sanoid-health
 

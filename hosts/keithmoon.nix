@@ -201,7 +201,7 @@
         source = "backup@optinix.local:NIXROOT/home";
         target = "d/home-optinix";
         sendOptions = "w c";
-        extraArgs = "--sshoption=StrictHostKeyChecking=off";
+        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
