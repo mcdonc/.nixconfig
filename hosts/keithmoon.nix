@@ -54,7 +54,6 @@
     "nvidia-drm.modeset=1"
   ];
   # not encrypted
-  boot.zfs.requestEncryptionCredentials = lib.mkForce false;
   #services.desktopManager.plasma6.enable = lib.mkForce false;
   #services.xserver.enable = lib.mkForce false;
   #services.displayManager.sddm.enable = lib.mkForce false;
