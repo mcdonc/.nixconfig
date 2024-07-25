@@ -82,8 +82,6 @@
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  environment.systemPackages = [ pkgs.cifs-utils ];
-
   services.samba = {
     enable = true;
     package = pkgs.samba4Full;
@@ -193,10 +191,17 @@
     interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
     commonArgs = [ "--debug" ];
     commands = {
-      "optinix-home" = {
+      "home-keithmoon" = {
         source = "NIXROOT/home";
         target = "d/home-keithmoon";
         sendOptions = "w c";
+      };
+      "home-optinix" = {
+        sshKey = "/var/lib/syncoid/backup.key";
+        source = "backup@optinix.local:NIXROOT/home";
+        target = "d/home-optinix";
+        sendOptions = "w c";
+        extraArgs = "--sshoption=StrictHostKeyChecking=off";
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
@@ -238,8 +243,27 @@
         monthly = 12;
         yearly = 0;
       };
+      "d/home-optinix" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 4;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
     };
     extraArgs = [ "--debug" ];
   };
+
+  environment.systemPackages = with pkgs; [
+    # used by zfs send/receive
+    pv
+    mbuffer
+    lzop
+    zstd
+
+    cifs-utils
+  ];
 
 }
