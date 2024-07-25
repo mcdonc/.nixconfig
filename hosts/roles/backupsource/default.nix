@@ -81,7 +81,7 @@ in
       # https://stackoverflow.com/a/50400836 ; prevent
       # ssh backup@optinix.local -t "bash --noprofile" via no-pty
       authorizedKeys.keys = [
-        "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLuqK/tjXwfiMpOVw3Kk2N24BbEoY3jT4D66WvYGS0v chrism@thinknix512"
+        "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIbkGiLOckZtVuWCBWZUtqIl3seeqlRHnb7e2sdCNHs chrism@optinix"
       ];
     };
   };
