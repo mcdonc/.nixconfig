@@ -13,6 +13,7 @@
     ./roles/davinci-resolve/studio.nix
     ./roles/vmount.nix
     ./roles/dnsovertls/resolvedonly.nix
+    ./roles/backupsource
     ../common.nix
   ];
 
