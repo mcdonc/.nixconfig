@@ -213,6 +213,13 @@
         sendOptions = "w c";
         extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
       };
+      "home-thinknix512" = {
+        sshKey = "/var/lib/syncoid/backup.key";
+        source = "backup@thinknix512.local:NIXROOT/home";
+        target = "d/home-thinknix512";
+        sendOptions = "w c";
+        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+      };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
     localSourceAllow = options.services.syncoid.localSourceAllow.default
@@ -254,6 +261,33 @@
         yearly = 0;
       };
       "d/home-optinix" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 4;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
+      "d/home-thinknix52" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 4;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
+      "d/home-thinknix50" = {
+        autoprune = true;
+        autosnap = false;
+        hourly = 4;
+        daily = 7;
+        weekly = 4;
+        monthly = 12;
+        yearly = 0;
+      };
+     "d/home-thinknix512" = {
         autoprune = true;
         autosnap = false;
         hourly = 4;
