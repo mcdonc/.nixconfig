@@ -9,6 +9,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/tlp.nix
     ./roles/vmount.nix
     ./roles/dnsovertls/resolvedonly.nix
+    ./roles/backupsource
     ../common.nix
     (
       import ./roles/macos-ventura.nix (

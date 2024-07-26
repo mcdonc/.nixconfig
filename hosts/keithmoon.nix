@@ -206,6 +206,13 @@
         sendOptions = "w c";
         extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
       };
+      "home-thinknix50" = {
+        sshKey = "/var/lib/syncoid/backup.key";
+        source = "backup@thinknix50.local:NIXROOT/home";
+        target = "d/home-thinknix50";
+        sendOptions = "w c";
+        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+      };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
     localSourceAllow = options.services.syncoid.localSourceAllow.default
