@@ -53,10 +53,6 @@
     # https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
     "nvidia-drm.modeset=1"
   ];
-  # not encrypted
-  #services.desktopManager.plasma6.enable = lib.mkForce false;
-  #services.xserver.enable = lib.mkForce false;
-  #services.displayManager.sddm.enable = lib.mkForce false;
 
     # Enable OpenGL
   hardware.opengl = {
