@@ -113,4 +113,9 @@ in
     lzop
     zstd
   ];
+
+  system.activationScripts.zfsbackupuser = pkgs.lib.stringAfter [ "users" ]
+    ''
+     sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
+    ''
 }
