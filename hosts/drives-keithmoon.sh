@@ -2,7 +2,7 @@
 # slot bifurcation of slot 3 is on in BIOS (x4x4)
 
 #/ is mirror of nvme-eui.002538d63140d3a5-part2 & nvme-eui.002538d63140d3e2-part2
-#/boot is ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1
+#/boot is VFLASH (was ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1)
 
 # spinning rust mirror 0
 sudo zpool create -f \
@@ -22,6 +22,10 @@ sudo zpool add d mirror \
      /dev/disk/by-id/scsi-35000cca269b12c94  \
      /dev/disk/by-id/scsi-35000cca05cdd6924
 
+# mirror 2
+sudo zpool add d mirror \
+     /dev/disk/by-id/scsi-35000cca03b9183c4 \
+     /dev/disk/by-id/scsi-35000cca05cdbdd7c
 
 # zfs permissions
 sudo zfs allow -u chrism compression,create,mount,mountpoint,receive,destroy,diff,hold,load-key,refreservation,release,rename,rollback,send,snapshot d
