@@ -30,17 +30,17 @@ sudo zpool add d mirror \
 # zfs permissions
 sudo zfs allow -u chrism compression,create,mount,mountpoint,receive,destroy,diff,hold,load-key,refreservation,release,rename,rollback,send,snapshot d
 
-# create second partitions on EVO 850 log disks (one is boot disk)
-sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
-sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
-
-# create a log on the EVO 850 second partitions
+# create a log on the EVO 870 500GB drives
 sudo zpool add d log mirror \
-     /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2 \
-     /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
+     /dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNU0X200730K \
+     /dev/disk/by-id/ata-Samsung_SSD_870_EVO_500GB_S6PXNU0X203974W
 
 # remove the created log (or any other mirror)
 sudo zpool remove d mirror-3
+
+# create second partitions on EVO 850 disks (one is alt boot disk)
+sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
+sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
 
 # or use them as a fast steam volume (steam doesnt like this)
 sudo zpool create -f \
