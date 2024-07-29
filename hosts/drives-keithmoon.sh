@@ -2,7 +2,7 @@
 # slot bifurcation of slot 3 is on in BIOS (x4x4)
 
 #/ is mirror of nvme-eui.002538d63140d3a5-part2 & nvme-eui.002538d63140d3e2-part2
-#/boot is VFLASH (was ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1)
+#/boot is VFBOOT (was ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1)
 
 # spinning rust mirror 0
 sudo zpool create -f \
@@ -38,11 +38,11 @@ sudo zpool add d log mirror \
 # remove the created log (or any other mirror)
 sudo zpool remove d mirror-3
 
-# create second partitions on EVO 850 disks (one is alt boot disk)
+# create second partitions on EVO 850 disks (917K is alt boot disk)
 sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
 sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
 
-# or use them as a fast steam volume (steam doesnt like this)
+# use them as a fast steam volume (steam doesnt like this)
 sudo zpool create -f \
     -O compression=lz4 \
     -o ashift=12 \
@@ -81,7 +81,7 @@ sudo zfs send -cw -I b/storage@autosnap_2024-07-22_23:32:02_weekly b/storage@d-i
 balooctl6 suspend
 balooctl6 disable
 
-# suspected bad:
+# suspected bad (thrown away):
 # /dev/disk/by-id/scsi-35000cca25c1e8f94
 
 # remaining good:
