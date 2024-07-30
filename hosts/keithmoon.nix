@@ -53,18 +53,11 @@
       fsType = "vfat";
     };
 
-  # use an SSD to boot
-  # fileSystems."/boot" = lib.mkForce
-  #   {
-  #     device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part1";
-  #     fsType = "vfat";
-  #   };
-
   # note that this is chowned in activationScripts
   boot.zfs.extraPools = [ "d" ];
 
   # don't run updatedb on these disks
-  services.locate.prunePaths = [ "/d" "/steam1" ];
+  services.locate.prunePaths = [ "/d" "/steam1" "/steam2"];
 
   # 32 GB max ARC cache
   boot.kernelParams = [
