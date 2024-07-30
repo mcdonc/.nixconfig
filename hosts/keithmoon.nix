@@ -35,8 +35,14 @@
     };
 
   fileSystems."/steam1" =
-    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2";
+    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
       label="STEAM1";
+      fsType = "ext4";
+    };
+
+  fileSystems."/steam2" =
+    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
+      label="STEAM2";
       fsType = "ext4";
     };
 
@@ -170,6 +176,7 @@
       chown postgres:postgres /home/chrism/v/postgresql
       ln -sf /home/chrism/v /v
       chown chrism:users /steam1
+      chown chrism:users /steam2
       chown chrism:users /d
     '';
 

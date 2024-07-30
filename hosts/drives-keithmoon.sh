@@ -38,28 +38,9 @@ sudo zpool add d log mirror \
 # remove the created log (or any other mirror)
 sudo zpool remove d mirror-3
 
-# create second partitions on EVO 850 disks (917K is alt boot disk)
-sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
-sudo sgdisk -n 0:0:0 -t 0:8300 -c 0:log /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
-
-# use them as a fast steam volume (steam doesnt like this)
-sudo zpool create -f \
-    -O compression=lz4 \
-    -o ashift=12 \
-    -o autotrim=on \
-    -O acltype=posixacl \
-    -O xattr=sa \
-    -O relatime=on \
-    -O normalization=formC \
-    -O dnodesize=auto \
-    s \
-    mirror \
-    /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2 \
-    /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
-
-# or just use them individually as steam drives (current)
-sudo mke2fs -t ext4 -L STEAM1 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K-part2
-sudo mke2fs -t ext4 -L STEAM2 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H-part2
+# use EVO 850s individually as steam drives (current)
+sudo mke2fs -t ext4 -L STEAM1 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H
+sudo mke2fs -t ext4 -L STEAM2 /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K
 
 # create subvols on d
 sudo zfs create -o encryption=aes-256-gcm -o keylocation=prompt \
