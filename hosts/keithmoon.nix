@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixos-hardware, options, ... }:
+'''{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
   imports = [
@@ -46,12 +46,20 @@
       fsType = "ext4";
     };
 
-  # use the VFlash SD card to boot
+  # # use the VFlash SD card to boot
+  # fileSystems."/boot" = lib.mkForce
+  #   {
+  #     device = "/dev/disk/by-id/usb-iDRAC_VFBOOT_20120731-2-0:0-part1";
+  #     fsType = "vfat";
+  #   };
+
+  # use the double SD card to boot
   fileSystems."/boot" = lib.mkForce
     {
-      device = "/dev/disk/by-id/usb-iDRAC_VFBOOT_20120731-2-0:0-part1";
+      device = "/dev/disk/by-id/usb-DELL_IDSDM_012345678901-0:0";
       fsType = "vfat";
     };
+
 
   # note that this is chowned in activationScripts
   boot.zfs.extraPools = [ "d" ];
