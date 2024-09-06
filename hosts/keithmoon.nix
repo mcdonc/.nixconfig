@@ -9,6 +9,7 @@
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
+    ./roles/speedtest
     ../common.nix
   ];
 

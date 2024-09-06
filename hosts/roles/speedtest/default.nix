@@ -38,7 +38,13 @@ in
 
   services.nginx = {
     enable = true;
-    virtualHosts."192.168.1.212" = { root = "/var/www/speedtest"; };
+    virtualHosts."192.168.1.110" = { root = "/var/www/speedtest"; };
   };
+
+  system.activationScripts.mkwwwdir = ''
+    mkdir -p /var/www/speedtest
+    chown nginx:nginx /var/www/speedtest
+  '';
+  
 
 }
