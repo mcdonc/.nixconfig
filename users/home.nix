@@ -317,6 +317,9 @@ in
       DOWN add volume -2
       n playlist-next
       p playlist-prev
+      r cycle_values video-rotate 90 180 270 0
+      Alt+- add video-zoom -0.25
+      Alt+= add video-zoom 0.25
     '';
   };
 

@@ -333,11 +333,11 @@
     cifs-utils
   ];
 
-  sound.enable = lib.mkForce true; # use pulseaudio
-  hardware.pulseaudio.enable = lib.mkForce true;
-  services.pipewire.enable = lib.mkForce false;
-  services.pipewire.jack.enable = lib.mkForce false;
-  services.pipewire.alsa.enable = lib.mkForce false;
-  services.pipewire.pulse.enable = lib.mkForce false;
+  #sound.enable = lib.mkForce true; # use pulseaudio
+  #hardware.pulseaudio.enable = lib.mkForce true;
+  #services.pipewire.enable = lib.mkForce false;
+  #services.pipewire.jack.enable = lib.mkForce false;
+  #services.pipewire.alsa.enable = lib.mkForce false;
+  #services.pipewire.pulse.enable = lib.mkForce false;
 
 }
