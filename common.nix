@@ -171,9 +171,9 @@ in
   programs.dconf.enable = true;
 
   # printing
-  services.printing.enable = true;
-  services.avahi.enable = true;
-  services.avahi.nssmdns4 = true;
+  #services.printing.enable = true;
+  #services.avahi.enable = true;
+  #services.avahi.nssmdns4 = true;
 
   # all other services
   services.fwupd.enable = true;
