@@ -11,7 +11,7 @@
     #./roles/sessile.nix
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
-    ./roles/vmount.nix
+#    ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/backupsource
     ../common.nix
