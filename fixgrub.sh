@@ -20,10 +20,12 @@ BOOTPLABEL="NIXBOOT${SUFFIX}"
 ROOTPGPTNAME="root${SUFFIX}"
 ROOTPLABEL="NIXROOT${SUFFIX}"
 
+zpool import -f ${ROOTPLABEL}
+
 mount -t zfs ${ROOTPLABEL}/root /mnt
-mkdir /mnt/boot
-mkdir /mnt/home
-mkdir /mnt/nix
+mkdir -p /mnt/boot
+mkdir -p /mnt/home
+mkdir -p /mnt/nix
 
 mount ${DEVPREFIX}1 /mnt/boot
 mount -t zfs ${ROOTPLABEL}/home /mnt/home
