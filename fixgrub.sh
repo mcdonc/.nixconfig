@@ -21,14 +21,18 @@ ROOTPGPTNAME="root${SUFFIX}"
 ROOTPLABEL="NIXROOT${SUFFIX}"
 
 zpool import -f ${ROOTPLABEL}
+zfs load-key NIXROOT
 
 mount -t zfs ${ROOTPLABEL}/root /mnt
-mkdir -p /mnt/boot
-mkdir -p /mnt/home
-mkdir -p /mnt/nix
 
+mkdir -p /mnt/boot
 mount ${DEVPREFIX}1 /mnt/boot
+
+mkdir -p /mnt/home
 mount -t zfs ${ROOTPLABEL}/home /mnt/home
+
+mkdir -p /mnt/nix
 mount -t zfs ${ROOTPLABEL}/nix /mnt/nix
+
 
 #nixos-generate-config --root /mnt
