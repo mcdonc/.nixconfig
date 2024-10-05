@@ -34,5 +34,5 @@ mount -t zfs ${ROOTPLABEL}/home /mnt/home
 mkdir -p /mnt/nix
 mount -t zfs ${ROOTPLABEL}/nix /mnt/nix
 
-
-#nixos-generate-config --root /mnt
+# to fix grub, 
+# sudo nixos-install --flake /mnt/etc/nixos#mysystem
