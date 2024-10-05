@@ -25,13 +25,10 @@ zfs load-key NIXROOT
 
 mount -t zfs ${ROOTPLABEL}/root /mnt
 
-mkdir -p /mnt/boot
 mount ${DEVPREFIX}1 /mnt/boot
 
-mkdir -p /mnt/home
 mount -t zfs ${ROOTPLABEL}/home /mnt/home
 
-mkdir -p /mnt/nix
 mount -t zfs ${ROOTPLABEL}/nix /mnt/nix
 
 # to fix grub, 
