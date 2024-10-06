@@ -171,10 +171,13 @@ in
   programs.dconf.enable = true;
 
   # printing
-  #services.printing.enable = true;
-  #services.avahi.enable = true;
-  #services.avahi.nssmdns4 = true;
+  services.printing.enable = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns4 = true;
 
+  # https://discourse.nixos.org/t/newly-announced-vulnerabilities-in-cups/52771/9
+  systemd.services.cups-browsed.enable = false;
+    
   # all other services
   services.fwupd.enable = true;
   services.locate.enable = false;
