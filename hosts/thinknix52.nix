@@ -12,7 +12,7 @@
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
 #    ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
-#    ./roles/dnsovertls/resolvedonly.nix
+#    ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
     ../common.nix
   ];
