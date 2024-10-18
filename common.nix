@@ -71,7 +71,7 @@ in
       auto-optimise-store = true;
       experimental-features = "nix-command flakes repl-flake";
       trusted-users = [ "root" "@wheel" ];
-      sandbox = "relaxed";
+      #sandbox = "relaxed";
     };
     gc = {
       automatic = true;
