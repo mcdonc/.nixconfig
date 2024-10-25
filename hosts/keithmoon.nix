@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixos-hardware, options, ... }:
+args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
   imports = [
@@ -10,6 +10,11 @@
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
+    (
+      import ./roles/macos-ventura.nix (
+        args // {mem="12G"; cores=4; enable=false;}
+      )
+    )
     ../common.nix
   ];
 
