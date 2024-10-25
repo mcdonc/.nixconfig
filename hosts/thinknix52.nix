@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixos-hardware, ... }:
+args@{ config, pkgs, lib, nixos-hardware, ... }:
 
 {
   imports = [
@@ -14,6 +14,11 @@
 #    ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
 #    ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
+    (
+      import ./roles/macos-ventura.nix (
+        args // {mem="12G"; cores=4; enable=true;}
+      )
+    )
     ../common.nix
   ];
 
