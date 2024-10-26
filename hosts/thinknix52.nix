@@ -16,7 +16,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/backupsource
     (
       import ./roles/macos-ventura.nix (
-        args // {mem="12G"; cores=4; enable=false;}
+        args // {mem="12G"; cores=4; enable=true;}
       )
     )
     ../common.nix
