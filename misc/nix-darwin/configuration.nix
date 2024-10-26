@@ -7,7 +7,6 @@ in
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
     pkgs.vim
-    #pkgs.emacs
   ];
 
   # Auto upgrade nix package and the daemon service.
@@ -20,6 +19,8 @@ in
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;  # default shell on catalina
   programs.zsh.enableCompletion = false;
+  # this is all to avoid "zsh compinit: insecure directories and files,
+  # run compaudit for list."
   programs.zsh.interactiveShellInit = ''
     # On slow systems, checking the cached .zcompdump file to see if it must
     # be regenerated adds a noticable delay to zsh startup.  This little
@@ -42,8 +43,6 @@ in
     else
       compinit -C;
     fi;
-    alias swnix="darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin; home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
-    alias ls="ls --color"
   '';
   # programs.fish.enable = true;
 
