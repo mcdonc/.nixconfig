@@ -25,6 +25,9 @@ in
 
   programs.zsh = {
     shellAliases = shellAliases;
+    sessionVariables = {
+      MFA_DEVICE="Bitwarden";
+    };
   };
 
   programs.bash = {
