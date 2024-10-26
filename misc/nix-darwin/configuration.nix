@@ -42,7 +42,7 @@ in
     else
       compinit -C;
     fi;
-    alias swnix="darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin";
+    alias swnix="darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin; home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
     alias ls="ls --color"
   '';
   # programs.fish.enable = true;
