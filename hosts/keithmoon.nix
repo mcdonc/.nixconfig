@@ -12,7 +12,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/speedtest
     (
       import ./roles/macos-ventura.nix (
-        args // {mem="20G"; cores=4; enable=false;}
+        args // {mem="20G"; cores=4; enable=true;}
       )
     )
     ../common.nix
