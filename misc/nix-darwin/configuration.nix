@@ -7,7 +7,7 @@ in
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
     pkgs.vim
-    pkgs.emacs
+    #pkgs.emacs
   ];
 
   # Auto upgrade nix package and the daemon service.
