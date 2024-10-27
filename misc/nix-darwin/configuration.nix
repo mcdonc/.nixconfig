@@ -22,7 +22,7 @@ in
     loginwindow.GuestEnabled = false;
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.KeyRepeat = 2;
-    NSGlobalDomain.InitialKeyRepeat = 1;
+#    NSGlobalDomain.InitialKeyRepeat = 2; 
     NSGlobalDomain."com.apple.swipescrolldirection" = false;
   };
 

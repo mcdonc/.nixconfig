@@ -7,6 +7,7 @@ let
     diff = "${pkgs.colordiff}/bin/colordiff";
     swnix = "darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin";
     swhome = "home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
+    edit = "emacsclient -n -c";
   };
 
   sessionVariables = {
@@ -180,6 +181,19 @@ in
         src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
       }
     ];
+  };
+
+  launchd.agents.emacs = {
+    enable = true;
+    config = {
+      ProgramArguments = ["/etc/profiles/per-user/chrism/bin/emacs" "--daemon"];
+      KeepAlive = true;
+      RunAtLoad = true;
+      #UserName = "chrism";
+      #ProcessType = "Interactive";
+      StandardOutPath = "/var/log/emacs.out.log";
+      StandardErrorPath = "/var/log/emacs.err.log";
+    };
   };
 
   programs.ssh = {
