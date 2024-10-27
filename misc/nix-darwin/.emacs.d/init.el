@@ -17,11 +17,10 @@
 ;;(set-face-attribute 'default nil :height 150)
 
 ;;Normal font sizing (emacsclient)
-;;(setq default-frame-alist '((width . 80)
-;;                            (height . 34)
-;;                            (font-backend . "xft")
-;;                            (font . "UbuntuMono Nerd Font Mono-18")
-;;                            (vertical-scroll-bars . nil)))
+(setq default-frame-alist '((width . 80)
+                           (height . 34)
+                           (font . "UbuntuMono Nerd Font Mono-18")
+                           (vertical-scroll-bars . nil)))
 
 (set-frame-font "UbuntuMono Nerd Font Mono-18" nil t)
 

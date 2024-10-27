@@ -17,11 +17,12 @@ let
   };
 
   zshDotDir = ".config/zsh";
+  homedir = "/Users/chrism";
 in
 
 {
   home.username = "chrism";
-  home.homeDirectory = "/Users/chrism";
+  home.homeDirectory = homedir;
   home.stateVersion = "24.05";
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
@@ -186,13 +187,13 @@ in
   launchd.agents.emacs = {
     enable = true;
     config = {
-      ProgramArguments = ["/etc/profiles/per-user/chrism/bin/emacs" "--daemon"];
-      KeepAlive = true;
+      ProgramArguments = ["bash" "-c" "/etc/profiles/per-user/chrism/bin/emacs" "--daemon"];
+#      KeepAlive = true;
       RunAtLoad = true;
       #UserName = "chrism";
       #ProcessType = "Interactive";
-      StandardOutPath = "/var/log/emacs.out.log";
-      StandardErrorPath = "/var/log/emacs.err.log";
+      StandardOutPath = "${homedir}/emacs.out.log";
+      StandardErrorPath = "${homedir}/emacs.err.log";
     };
   };
 
@@ -207,7 +208,7 @@ in
       "*" = {
         extraOptions = {
           UseKeychain = "yes";
-          IdentityFile = "~/.ssh/id_ed25519";
+          IdentityFile = "${homedir}/.ssh/id_ed25519";
         };
       };
     };
