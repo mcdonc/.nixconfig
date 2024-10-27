@@ -18,6 +18,9 @@ let
 
   zshDotDir = ".config/zsh";
   homedir = "/Users/chrism";
+  emacsdaemon = pkgs.writeShellScript "emacsdaemon" ''
+    exec /etc/profiles/per-user/chrism/bin/emacs --fg-daemon
+  '';
 in
 
 {
@@ -184,18 +187,17 @@ in
     ];
   };
 
-  launchd.agents.emacs = {
-    enable = true;
-    config = {
-      ProgramArguments = ["bash" "-c" "/etc/profiles/per-user/chrism/bin/emacs" "--daemon"];
-#      KeepAlive = true;
-      RunAtLoad = true;
-      #UserName = "chrism";
-      #ProcessType = "Interactive";
-      StandardOutPath = "${homedir}/emacs.out.log";
-      StandardErrorPath = "${homedir}/emacs.err.log";
-    };
-  };
+ launchd.agents.emacs = {
+   enable = true;
+   config = {
+     Program = "${emacsdaemon}";
+     KeepAlive = true;
+     RunAtLoad = true;
+     ProcessType = "Interactive";
+     StandardOutPath = "${homedir}/emacs.out.log";
+     StandardErrorPath = "${homedir}/emacs.err.log";
+   };
+ };
 
   programs.ssh = {
     enable = true;
