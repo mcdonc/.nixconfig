@@ -185,9 +185,6 @@ in
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    extraOptionOverrides = {
-      UseKeychain = "yes";
-    };
     matchBlocks = {
       "lock802" = {
         user = "pi";
