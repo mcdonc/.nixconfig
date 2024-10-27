@@ -14,19 +14,19 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
     darwinConfigurations."admins-iMac-Pro" = nix-darwin.lib.darwinSystem {
-      modules = [ ./configuration.nix ];
+      modules = [
+        ./configuration.nix
+        home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.chrism = import ./home.nix;
+        }
+      ];
       specialArgs = { inherit inputs; };
     };
 
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."admins-iMac-Pro".pkgs;
 
-    defaultPackage.x86_64-darwin = home-manager.defaultPackage.x86_64-darwin;
-    homeConfigurations = {
-      "chrism" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs { system = "x86_64-darwin"; };
-        modules = [ ./home.nix ];
-      };
-    };
   };
 }

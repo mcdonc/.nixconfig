@@ -5,7 +5,8 @@ let
     sgrep = "${pkgs.ripgrep}/bin/rg -M 200 --hidden";
     ls = "ls --color=auto";
     diff = "${pkgs.colordiff}/bin/colordiff";
-    swnix = "darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin && home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
+    swnix = "darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin";
+    swhome = "home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
   };
 
   sessionVariables = {

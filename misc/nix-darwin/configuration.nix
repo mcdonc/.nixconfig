@@ -30,4 +30,9 @@ in
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
+
+  users.users.chrism = {
+    name = "chrism";
+    home = "/Users/chrism";
+  };
 }
