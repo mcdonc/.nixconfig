@@ -14,7 +14,7 @@ in
     casks = [
       "firefox"
     ];
-    onActivation.cleanup = "zap";
+#    onActivation.cleanup = "zap";
   };
 
   system.defaults = {
