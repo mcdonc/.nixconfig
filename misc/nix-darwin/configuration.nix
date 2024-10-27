@@ -1,7 +1,4 @@
 { pkgs, lib, inputs, ... }:
-let
-  zshDotDir = ".config/zsh";
-in
 {
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -14,7 +11,7 @@ in
     casks = [
       "firefox"
     ];
-#    onActivation.cleanup = "zap";
+    onActivation.cleanup = "zap";
   };
 
   system.defaults = {
