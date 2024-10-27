@@ -182,4 +182,23 @@ in
     ];
   };
 
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+    extraOptionOverrides = {
+      UseKeychain = "yes";
+    };
+    matchBlocks = {
+      "lock802" = {
+        user = "pi";
+        forwardAgent = true;
+      };
+      "*" = {
+        extraOptions = {
+          UseKeychain = "yes";
+          IdentityFile = "~/.ssh/id_ed25519";
+        };
+      };
+    };
+  };
 }
