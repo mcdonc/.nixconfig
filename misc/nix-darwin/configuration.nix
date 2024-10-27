@@ -9,6 +9,23 @@ in
     pkgs.vim
   ];
 
+  homebrew = {
+    enable = true;
+    casks = [
+      "firefox"
+    ];
+    onActivation.cleanup = "zap";
+  };
+
+  system.defaults = {
+    dock.autohide = true;
+    loginwindow.GuestEnabled = false;
+    NSGlobalDomain.AppleInterfaceStyle = "Dark";
+    NSGlobalDomain.KeyRepeat = 2;
+    NSGlobalDomain.InitialKeyRepeat = 1;
+    NSGlobalDomain."com.apple.swipescrolldirection" = false;
+  };
+
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
