@@ -12,41 +12,39 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
   {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#simple
     darwinConfigurations."admins-iMac-Pro" = nix-darwin.lib.darwinSystem {
       modules = [
         ./configuration.nix
+        home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.chrism = import ./home.nix;
+        }
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
             user = "chrism";
           };
         }
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.chrism = import ./home.nix;
-        }
       ];
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs; system="x86_64-darwin";};
     };
     darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
       modules = [
         ./configuration.nix
+        home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.chrism = import ./home.nix;
+        }
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
             user = "chrism";
           };
         }
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.chrism = import ./home.nix;
-        }
       ];
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs; system="x86_64-darwin";};
     };
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."admins-iMac-Pro".pkgs;
