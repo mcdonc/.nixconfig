@@ -206,6 +206,7 @@ in
         user = "pi";
         forwardAgent = true;
       };
+      # Apple ssh extension
       "*" = {
         extraOptions = {
           UseKeychain = "yes";
