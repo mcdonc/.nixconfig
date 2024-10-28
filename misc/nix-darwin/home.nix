@@ -14,6 +14,7 @@ let
     MFA_DEVICE = "Bitwarden";
     CLICOLOR="1";
     LSCOLORS="GxFxCxDxBxegedabagaced";
+    EDITOR="vi";
   };
 
   zshDotDir = ".config/zsh";
@@ -91,11 +92,6 @@ in
      StandardErrorPath = "${homedir}/emacs.err.log";
    };
  };
-
-  # services.emacs = {
-  #   enable = true;
-  #   startWithUserSession = "graphical";
-  # };
 
   programs.bash = {
     enable = true;
