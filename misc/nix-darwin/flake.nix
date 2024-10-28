@@ -23,6 +23,7 @@
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
+            enableRosetta = false;
             user = "chrism";
           };
         }
@@ -40,6 +41,7 @@
         nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
+            enableRosetta = false;
             user = "chrism";
           };
         }

@@ -1,17 +1,25 @@
 { pkgs, lib, inputs, system, ... }:
 {
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   environment.systemPackages = [
     pkgs.vim
+    pkgs.speedtest-cli
+    pkgs.tmux
+    pkgs.nmap
+    pkgs.inetutils # for telnet
+    pkgs.minicom
+    pkgs.netcat
   ];
 
   homebrew = {
     enable = true;
     casks = [
+      "google-chrome"
       "firefox"
+      "bitwarden"
     ];
 #    onActivation.cleanup = "zap";
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
   };
 
   system.defaults = {
