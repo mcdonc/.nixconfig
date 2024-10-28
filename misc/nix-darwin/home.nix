@@ -209,7 +209,6 @@ in
       "*" = {
         extraOptions = {
           UseKeychain = "yes";
-          IdentityFile = "${homedir}/.ssh/id_ed25519";
         };
       };
     };
