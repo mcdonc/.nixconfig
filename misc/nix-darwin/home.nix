@@ -22,6 +22,9 @@ let
   emacsdaemon = pkgs.writeShellScript "emacsdaemon" ''
     exec /etc/profiles/per-user/chrism/bin/emacs --fg-daemon
   '';
+  zshtheme =
+    "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+
 in
 
 {
@@ -77,7 +80,7 @@ in
   };
 
   home.file.".p10k-theme.zsh" = {
-    source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    source = zshtheme;
     executable = true;
   };
 
