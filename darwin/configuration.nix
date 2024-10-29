@@ -20,7 +20,7 @@ let
   username = "chrism";
   homedir = "/Users/${username}";
   emacsdaemon = pkgs.writeShellScript "emacsdaemon" ''
-    exec /etc/profiles/per-user/chrism/bin/emacs --fg-daemon
+    exec /etc/profiles/per-user/${username}/bin/emacs --fg-daemon
   '';
   zshtheme =
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
@@ -84,7 +84,7 @@ in
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = system;
 
-  users.users.chrism = {
+  users.users."${username}" = {
     name = username;
     home = homedir;
     openssh = {
@@ -96,7 +96,7 @@ in
   };
 
   home-manager = {
-    users.chrism = {
+    users."${username}" = {
       home.username = username;
       home.homeDirectory = homedir;
       home.stateVersion = "24.05";
