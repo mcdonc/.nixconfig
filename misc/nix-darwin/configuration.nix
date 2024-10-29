@@ -1,5 +1,9 @@
 { pkgs, lib, inputs, system, ... }:
 {
+  imports = [
+    ./home.nix
+  ];
+
   environment.systemPackages = [
     pkgs.vim
     pkgs.speedtest-cli
@@ -10,23 +14,10 @@
     pkgs.netcat
   ];
 
-  homebrew = {
-    enable = true;
-    casks = [
-      "google-chrome"
-      "firefox"
-      "bitwarden"
-      "iterm2"
-    ];
-#    onActivation.cleanup = "zap";
-    onActivation.autoUpdate = true;
-    onActivation.upgrade = true;
-  };
-
   system.defaults = {
     dock.autohide = true;
     loginwindow.GuestEnabled = false;
-    NSGlobalDomain.AppleInterfaceStyle = "Dark";
+     NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.KeyRepeat = 2;
 #    NSGlobalDomain.InitialKeyRepeat = 2; 
     NSGlobalDomain."com.apple.swipescrolldirection" = false;
@@ -38,7 +29,7 @@
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
-  nix.settings.trusted-users = [ "root" "@wheel" "chrism"];
+  nix.settings.trusted-users = [ "root" "@wheel" ];
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
@@ -46,7 +37,8 @@
   programs.zsh.enableCompletion = false;
 
   # Set Git commit hash for darwin-version.
-  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+  system.configurationRevision =
+    inputs.self.rev or inputs.self.dirtyRev or null;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
@@ -55,14 +47,4 @@
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = system;
 
-  users.users.chrism = {
-    name = "chrism";
-    home = "/Users/chrism";
-    openssh = {
-      authorizedKeys.keys = [
-        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnLD+dQsKPhCV3eY0lMUP4fDrECI1Boe6PbnSHY+eqRpkA/Nd5okdyXvynWETivWsKdDRlT3gIVgEHqEv8s4lzxyZx9G2fAgQVVpBLk18G9wkH0ARJcJ0+RStXLy9mwYl8Bw8J6kl1+t0FE9Aa9RNtqKzpPCNJ1Uzg2VxeNIdUXawh77kIPk/6sKyT/QTNb5ruHBcd9WYyusUcOSavC9rZpfEIFF6ZhXv2FFklAwn4ggWzYzzSLJlMHzsCGmkKmTdwKijkGFR5JQ3UVY64r3SSYw09RY1TYN/vQFqTDw8RoGZVTeJ6Er/F/4xiVBlzMvxtBxkjJA9HLd8djzSKs8yf amnesia@amnesia"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLXUsGqUIEMfcXoIiiItmGNqOucJjx5D6ZEE3KgLKYV ednesia"
-      ];
-    };
-  };
 }

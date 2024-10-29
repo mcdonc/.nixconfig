@@ -11,39 +11,35 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
-    let
-      hm-config = {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.chrism = import ./home.nix;
-        };
+  let
+    hm-config = {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
       };
-      homebrew-config = {
-        nix-homebrew = {
-          enable = true;
-          enableRosetta = false;
-          user = "chrism";
-        };
+    };
+    homebrew-config = {
+      nix-homebrew = {
+        enable = true;
+        enableRosetta = false;
       };
-      shared-modules = [
-        ./configuration.nix
-        home-manager.darwinModules.home-manager
-        nix-homebrew.darwinModules.nix-homebrew
-        hm-config
-        homebrew-config
-      ];
-    in
-      {
-        darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
-          modules = shared-modules;
-          specialArgs = { inherit inputs; system="x86_64-darwin";};
-        };
-        darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
-          modules = shared-modules;
-          specialArgs = { inherit inputs; system="x86_64-darwin";};
-        };
-        # Expose the package set, including overlays, for convenience.
-        darwinPackages = self.darwinConfigurations."admins-iMac-Pro".pkgs;
+    };
+    shared-modules = [
+      ./configuration.nix
+      home-manager.darwinModules.home-manager
+      nix-homebrew.darwinModules.nix-homebrew
+      hm-config
+      homebrew-config
+    ];
+  in
+    {
+      darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules;
+        specialArgs = { inherit inputs; system="x86_64-darwin";};
       };
+      darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules;
+        specialArgs = { inherit inputs; system="x86_64-darwin";};
+      };
+    };
 }
