@@ -12,7 +12,7 @@ let
   sessionVariables = {
     MFA_DEVICE = "Bitwarden";
     CLICOLOR="1";
-    LSCOLORS="GxFxCxDxBxegedabagaced";
+#    LSCOLORS="GxFxCxDxBxegedabagaced";
     EDITOR="vi";
   };
 
