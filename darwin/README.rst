@@ -23,6 +23,9 @@ environment.
 Install Nix-Darwin and Configure Your System
 --------------------------------------------
 
+Initial command to both install ``nix-dawrin`` and configure your system for
+the first time:
+
 ``nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin``
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
