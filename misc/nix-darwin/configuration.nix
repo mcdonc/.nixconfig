@@ -16,6 +16,7 @@
       "google-chrome"
       "firefox"
       "bitwarden"
+      "iterm2"
     ];
 #    onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
