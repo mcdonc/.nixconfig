@@ -11,45 +11,39 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
-  {
-    darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
-      modules = [
+    let
+      hm-config = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.chrism = import ./home.nix;
+        };
+      };
+      homebrew-config = {
+        nix-homebrew = {
+          enable = true;
+          enableRosetta = false;
+          user = "chrism";
+        };
+      };
+      shared-modules = [
         ./configuration.nix
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.chrism = import ./home.nix;
-        }
-        nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = true;
-            enableRosetta = false;
-            user = "chrism";
-          };
-        }
+        home-manager.darwinModules.home-manager
+        nix-homebrew.darwinModules.nix-homebrew
+        hm-config
+        homebrew-config
       ];
-      specialArgs = { inherit inputs; system="x86_64-darwin";};
-    };
-    darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
-      modules = [
-        ./configuration.nix
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.chrism = import ./home.nix;
-        }
-        nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = true;
-            enableRosetta = false;
-            user = "chrism";
-          };
-        }
-      ];
-      specialArgs = { inherit inputs; system="x86_64-darwin";};
-    };
-    # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."admins-iMac-Pro".pkgs;
-
-  };
+    in
+      {
+        darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
+          modules = shared-modules;
+          specialArgs = { inherit inputs; system="x86_64-darwin";};
+        };
+        darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
+          modules = shared-modules;
+          specialArgs = { inherit inputs; system="x86_64-darwin";};
+        };
+        # Expose the package set, including overlays, for convenience.
+        darwinPackages = self.darwinConfigurations."admins-iMac-Pro".pkgs;
+      };
 }
