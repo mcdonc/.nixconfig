@@ -115,17 +115,17 @@ in
         executable = true;
       };
 
-     launchd.agents.emacs = {
-       enable = true;
-       config = {
-         Program = "${emacsdaemon}";
-         KeepAlive = true;
-         RunAtLoad = true;
-         ProcessType = "Interactive";
-         StandardOutPath = "${homedir}/emacs.out.log";
-         StandardErrorPath = "${homedir}/emacs.err.log";
-       };
-     };
+      launchd.agents.emacs = {
+        enable = true;
+        config = {
+          Program = "${emacsdaemon}";
+          KeepAlive = true;
+          RunAtLoad = true;
+          ProcessType = "Interactive";
+          StandardOutPath = "${homedir}/.emacs.out.log";
+          StandardErrorPath = "${homedir}/.emacs.err.log";
+        };
+      };
 
       programs.bash = {
         enable = true;
