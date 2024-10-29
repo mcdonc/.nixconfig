@@ -3,7 +3,6 @@ let
   shellAliases = {
     # dont display lines > 200 chars long
     sgrep = "${pkgs.ripgrep}/bin/rg -M 200 --hidden";
-    ls = "ls --color=auto";
     diff = "${pkgs.colordiff}/bin/colordiff";
     swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
     edit = "emacsclient -n -c";
@@ -123,8 +122,6 @@ in
           mergetool.meld.path = "${pkgs.meld}/bin/meld";
         };
       };
-
-      programs.dircolors.enable = true;
 
       programs.emacs.enable = true;
       programs.emacs.extraPackages = epkgs: [
