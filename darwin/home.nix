@@ -5,8 +5,7 @@ let
     sgrep = "${pkgs.ripgrep}/bin/rg -M 200 --hidden";
     ls = "ls --color=auto";
     diff = "${pkgs.colordiff}/bin/colordiff";
-    swnix = "darwin-rebuild switch --flake ~/.nixconfig/misc/nix-darwin";
-    swhome = "home-manager switch -f ~/.nixconfig/misc/nix-darwin/home.nix";
+    swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
     edit = "emacsclient -n -c";
   };
 
@@ -39,21 +38,6 @@ in
       ];
     };
   };
-
-  homebrew = {
-    enable = true;
-    casks = [
-      "google-chrome"
-      "firefox"
-      "bitwarden"
-      "iterm2"
-    ];
-#    onActivation.cleanup = "zap";
-    onActivation.autoUpdate = true;
-    onActivation.upgrade = true;
-  };
-
-  nix-homebrew.user = username;
 
   home-manager = {
     users.chrism = {

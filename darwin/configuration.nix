@@ -4,6 +4,21 @@
     ./home.nix
   ];
 
+  homebrew = {
+    enable = true;
+    casks = [
+      "google-chrome"
+      "firefox"
+      "bitwarden"
+      "iterm2"
+    ];
+#    onActivation.cleanup = "zap";
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
+  };
+
+  nix-homebrew.user = "chrism";
+
   environment.systemPackages = [
     pkgs.vim
     pkgs.speedtest-cli
@@ -17,7 +32,7 @@
   system.defaults = {
     dock.autohide = true;
     loginwindow.GuestEnabled = false;
-     NSGlobalDomain.AppleInterfaceStyle = "Dark";
+    NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.KeyRepeat = 2;
 #    NSGlobalDomain.InitialKeyRepeat = 2; 
     NSGlobalDomain."com.apple.swipescrolldirection" = false;
