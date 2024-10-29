@@ -52,7 +52,7 @@ in
   ];
 
   system.defaults = {
-    dock.autohide = true;
+#    dock.autohide = true;
     loginwindow.GuestEnabled = false;
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.KeyRepeat = 2;
