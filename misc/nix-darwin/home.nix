@@ -31,14 +31,32 @@ in
   home.username = "chrism";
   home.homeDirectory = homedir;
   home.stateVersion = "24.05";
+
   fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
     bat
     nixpkgs-fmt # unnamed dependency of emacs
     fd # fd is an unnamed dependency of fzf
     pkgs.nerdfonts
   ];
+
+  programs.git = {
+    enable = true;
+    userName = "Chris McDonough";
+    userEmail = "chrism@plope.com";
+    extraConfig = {
+      pull.rebase = "true";
+      diff.guitool = "meld";
+      difftool.meld.path = "${pkgs.meld}/bin/meld";
+      difftool.prompt = "false";
+      merge.tool = "meld";
+      mergetool.meld.path = "${pkgs.meld}/bin/meld";
+    };
+  };
+
   programs.dircolors.enable = true;
+
   programs.emacs.enable = true;
   programs.emacs.extraPackages = epkgs: [
     epkgs.nix-mode
