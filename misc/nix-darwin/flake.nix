@@ -12,7 +12,7 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
   {
-    darwinConfigurations."admins-iMac-Pro" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
       modules = [
         ./configuration.nix
         home-manager.darwinModules.home-manager {
