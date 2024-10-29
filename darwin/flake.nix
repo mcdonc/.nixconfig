@@ -18,7 +18,13 @@
         useUserPackages = true;
       };
     };
-    homebrew-config = {
+    homebrew-config-arm = {
+      nix-homebrew = {
+        enable = true;
+        enableRosetta = true;
+      };
+    };
+    homebrew-config-intel = {
       nix-homebrew = {
         enable = true;
         enableRosetta = false;
@@ -29,16 +35,15 @@
       home-manager.darwinModules.home-manager
       nix-homebrew.darwinModules.nix-homebrew
       hm-config
-      homebrew-config
     ];
   in
     {
       darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
-        modules = shared-modules;
+        modules = shared-modules ++ [ homebrew-config-intel ];
         specialArgs = { inherit inputs; system="x86_64-darwin";};
       };
       darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
-        modules = shared-modules;
+        modules = shared-modules ++ [ homebrew-config-intel ];
         specialArgs = { inherit inputs; system="x86_64-darwin";};
       };
     };
