@@ -9,7 +9,8 @@ Install Nix
 Check out this Repository as ``~/.nixconfig``
 ---------------------------------------------
 
-.. code-block:: bash
+.. code-block::
+
   $ cd ~
   $ git clone <repository>
 
@@ -22,9 +23,10 @@ environment.
 Install Nix-Darwin and Configure Your System
 --------------------------------------------
 
-nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin
+``nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin``
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
 
-Subsequent runs to rebuild will be just ``darwin-rebuild switch --flake
-~/.nixconfig/darwin``.
+Subsequent runs to rebuild will be just:
+
+``darwin-rebuild switch --flake ~/.nixconfig/darwin``
