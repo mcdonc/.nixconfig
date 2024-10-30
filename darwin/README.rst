@@ -32,6 +32,9 @@ the first time:
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
 
+It will exit for each file that it wants to manage that already exists
+unmanaged on your system.
+
 Subsequent runs to rebuild will be just:
 
 ``darwin-rebuild switch --flake ~/.nixconfig/darwin``
@@ -47,3 +50,12 @@ Misc
 For the ``zsh`` "powerlevel-10k" prompt to look right, you have to use a
 NerdFont in the terminal like "Ubuntu Nerd Font Mono".  This must be configured
 by-hand.  Also, colors are wonky in Terminal, but look correct in iTerm.
+
+Uninstalling
+------------
+
+I haven't tried this myself, but there is an uninstaller that is on the $PATH
+named ``darwin-uninstaller`` that will uninstall ``nix-darwin`` (and presumably
+all the changes it made).
+
+To uninstall Nix itself run ``/nix/nix-installer uninstall``.
