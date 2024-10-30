@@ -19,6 +19,12 @@ Declarative config for multiple Macs  (or just one).
 
 - Configures git for first-time use.
 
+- Configures the computer to be in dark mode.
+
+- Makes key repeat as fast as possible.
+
+- Turns off stupid "natural scrolling" for the touchpad.
+
 Install Nix
 -----------
 
@@ -89,6 +95,9 @@ It will also attempt to install some apps from Homebrew.  I have not tried this
 on a system that already has Homebrew installed, nor without the apps it wants
 to install (Chrome, Firefox, others).  The (commented-out) flag in
 ``configuration.nix`` for ``homebrew.autoMigrate`` seems to be important here.
+
+There are some system-level settings set to my liking in ``system.defaults``.
+See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
 
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
