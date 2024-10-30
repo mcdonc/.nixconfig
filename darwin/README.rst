@@ -102,8 +102,9 @@ There are some system-level settings set to my liking in ``system.defaults``.
 See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
 
 Use https://search.nixos.org to find packages that are addable to
-``environment.systemPackages``, kinda like Homebrew.  Adding stuff to
-``homebrew.casks`` is probably better for GUI apps, but YMMV.
+``environment.systemPackages``, kinda like Homebrew casks, but many more of
+them, although many Linux-only.  Adding stuff to ``homebrew.casks`` is probably
+better for GUI apps, but YMMV.
 
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
