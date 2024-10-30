@@ -7,6 +7,8 @@ let
     diff = "${pkgs.colordiff}/bin/colordiff";
     swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
     edit = "emacsclient -n -c";
+    restartemacs =
+      "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
   };
 
   sessionVariables = {
