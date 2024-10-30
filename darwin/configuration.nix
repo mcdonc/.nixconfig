@@ -129,6 +129,7 @@ in
         };
       };
 
+      # in case someone installs coreutils
       programs.dircolors.enable = true;
 
       programs.emacs.enable = true;
@@ -176,6 +177,8 @@ in
         executable = true;
       };
 
+      # i later found out that this might be avoided by using
+      # nix-darwin.services.emacs, but it works
       launchd.agents.emacs = {
         enable = true;
         config = {
