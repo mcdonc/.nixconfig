@@ -13,7 +13,8 @@ Declarative config for multiple Macs (or just one).
 - Sets up pubkeys for my user's inbound ssh.
 
 - Ensures ssh private keys can be added to Apple Keychain via ``ssh-add``
-  (eg. like https://apple.stackexchange.com/a/250572).
+  (eg. ``ssh-add --apple-use-keychain ~/.ssh/[your-private-key]`` ala
+  https://apple.stackexchange.com/a/250572).
 
 - Installs NerdFonts to support zsh powerlevel-10k icons.
 
