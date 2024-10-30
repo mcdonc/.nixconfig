@@ -71,6 +71,9 @@ on a system that already has Homebrew installed, nor without the apps it wants
 to install (Chrome, Firefox, others).  The (commented-out) flag in
 ``configuration.nix`` for ``homebrew.autoMigrate`` seems to be important here.
 
+Also, all the macs I've tried this particular config on are Intel, so if you're
+on ARM, it's possible some things may not work.
+
 Subsequent Runs of ``nixos-rebuild``
 ------------------------------------
 
