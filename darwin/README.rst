@@ -34,6 +34,12 @@ Subsequent runs to rebuild will be just:
 
 ``darwin-rebuild switch --flake ~/.nixconfig/darwin``
 
+There is an alias set up for this in ``configuration.nix`` so once the system
+is configured once, you should be able to do instead:
+
+``swnix``
+
+
 Misc
 ----
 
