@@ -1,7 +1,7 @@
 Chris' Nix-on-Mac Config
 ========================
 
-Declarative config for multiple Macs  (or just one).
+Declarative config for multiple Macs (or just one).
 
 - Installs several packages from Homebrew.  They are updated to their latest
   versions every time ``darwin-rebuild`` is run.
