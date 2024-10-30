@@ -1,7 +1,7 @@
 Chris' Nix-on-Mac Config
 ========================
 
-Declarative config for multiple Macs.
+Declarative config for multiple Macs  (or just one).
 
 Install Nix
 -----------
