@@ -89,7 +89,8 @@ It will ask for a sudo password.
 
 It will exit for each file that it wants to manage that already exists
 unmanaged on your system, and you'll need to move that file aside and rerun the
-command.
+command.  Note which files you move aside, so you can put them back into place
+if this stuff doesn't work out for you.
 
 It will also attempt to install some apps from Homebrew.  I have not tried this
 on a system that already has Homebrew installed, nor without the apps it wants
