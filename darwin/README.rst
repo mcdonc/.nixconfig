@@ -6,7 +6,8 @@ Declarative config for multiple Macs  (or just one).
 Install Nix
 -----------
 
-Download https://install.determinate.systems/nix-installer-pkg/stable/Universal and run it.  Say yes to all defaults.
+Download https://install.determinate.systems/nix-installer-pkg/stable/Universal
+and run it.  Say yes to all defaults.
 
 Check out this Repository as ``~/.nixconfig``
 ---------------------------------------------
