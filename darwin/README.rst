@@ -33,7 +33,8 @@ the first time:
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
 
 It will exit for each file that it wants to manage that already exists
-unmanaged on your system.
+unmanaged on your system, and you'll need to move that file aside and rerun the
+command.
 
 Subsequent runs to rebuild will be just:
 
