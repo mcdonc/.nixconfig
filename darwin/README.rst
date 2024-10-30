@@ -99,4 +99,5 @@ I haven't tried this myself, but there is an uninstaller that is on the $PATH
 named ``darwin-uninstaller`` that will uninstall ``nix-darwin`` (and presumably
 all the changes it made).
 
-To uninstall Nix itself run ``/nix/nix-installer uninstall``.
+To uninstall Nix itself run ``/nix/nix-installer uninstall`` or rerun the GUI
+installer pkg.
