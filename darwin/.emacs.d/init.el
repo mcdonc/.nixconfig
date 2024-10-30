@@ -345,7 +345,10 @@
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
 
+; nix-mode "format buffer", cant find in PATH for some reason
 (setq nix-nixfmt-bin "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
+
+; nixpkgs-fmt-buffer, can't find in PATH for some reason
 (setq nixpkgs-fmt-command "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
 
 ;; hide the options menu
