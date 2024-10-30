@@ -71,7 +71,12 @@ on a system that already has Homebrew installed, nor without the apps it wants
 to install (Chrome, Firefox, others).  The (commented-out) flag in
 ``configuration.nix`` for ``homebrew.autoMigrate`` seems to be important here.
 
-Subsequent runs to rebuild will be just:
+Subsequent Runs of ``nixos-rebuild``
+------------------------------------
+
+After the first run/configuration, you can play around with changes to
+``configuration.nix``.  Subsequent runs to rebuild using your changes will be
+just:
 
 ``darwin-rebuild switch --flake ~/.nixconfig/darwin``
 
