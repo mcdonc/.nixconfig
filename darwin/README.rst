@@ -18,7 +18,7 @@ Customize
 ---------
 
 Make changes in the ``darwin`` subdir of the repo suitable for your
-environment.
+environment (mostly to ``configuration.nix`` probably).
 
 Install Nix-Darwin and Configure Your System
 --------------------------------------------
