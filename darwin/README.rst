@@ -3,6 +3,22 @@ Chris' Nix-on-Mac Config
 
 Declarative config for multiple Macs  (or just one).
 
+- Installs several packages from Homebrew.  They are updated to their latest
+  versions every time ``darwin-rebuild`` is run.
+
+- Sets up zsh the way I like it.
+
+- Sets up Emacs the way it like it.
+
+- Sets up keys for inbound ssh.
+
+- Ensures ssh keys can be added to Apple Keychain via ``ssh-add`` (eg. like
+  https://apple.stackexchange.com/a/250572).
+
+- Installs NerdFonts to support zsh powerlevel-10k icons.
+
+- Configures git for first-time use.
+
 Install Nix
 -----------
 
@@ -47,7 +63,8 @@ If your system is Intel instead of Apple Silicon, use:
       };
 
 Then edit ``configuration.nix`` and change all the mentions of ``chrism`` to
-your username, and possibly email addresses.
+your username, and possibly email addresses.  Also change the SSH pubkeys to
+the one(s) you use.
 
 For a more general overview, see
 https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
