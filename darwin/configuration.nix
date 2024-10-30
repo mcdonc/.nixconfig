@@ -44,6 +44,8 @@ in
 
   nix-homebrew.user = username;
 
+  fonts.packages = [ pkgs.nerdfonts ];
+
   environment.systemPackages = [
     pkgs.vim
     pkgs.speedtest-cli
@@ -87,6 +89,9 @@ in
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = system;
 
+  # Allow unfree software.
+  nixpkgs.config.allowUnfree = true;
+
   users.users."${username}" = {
     name = username;
     home = homedir;
@@ -104,13 +109,10 @@ in
       home.homeDirectory = homedir;
       home.stateVersion = "24.05";
 
-      fonts.fontconfig.enable = true;
-
       home.packages = with pkgs; [
         bat
         nixpkgs-fmt # unnamed dependency of emacs
         fd # fd is an unnamed dependency of fzf
-        pkgs.nerdfonts
       ];
 
       programs.git = {
