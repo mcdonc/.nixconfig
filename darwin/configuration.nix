@@ -13,9 +13,9 @@ let
 
   sessionVariables = {
     MFA_DEVICE = "Bitwarden";
-    CLICOLOR="1";
-#    LSCOLORS="GxFxCxDxBxegedabagaced";
-    EDITOR="vi";
+    CLICOLOR = "1";
+    #    LSCOLORS="GxFxCxDxBxegedabagaced";
+    EDITOR = "vi";
   };
 
   zshDotDir = ".config/zsh";
@@ -38,10 +38,10 @@ in
       "bitwarden"
       "iterm2"
     ];
-#    onActivation.cleanup = "zap";
+    #    onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
-#    autoMigrate = true;
+    #    autoMigrate = true;
   };
 
   nix-homebrew.user = username;
@@ -59,11 +59,11 @@ in
   ];
 
   system.defaults = {
-#    dock.autohide = true;
+    #    dock.autohide = true;
     loginwindow.GuestEnabled = false;
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.KeyRepeat = 2;
-#    NSGlobalDomain.InitialKeyRepeat = 2; 
+    #    NSGlobalDomain.InitialKeyRepeat = 2; 
     NSGlobalDomain."com.apple.swipescrolldirection" = false;
   };
 
