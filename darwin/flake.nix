@@ -11,40 +11,40 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
-  let
-    hm-config = {
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
+    let
+      hm-config = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+        };
       };
-    };
-    homebrew-config-arm = {
-      nix-homebrew = {
-        enable = true;
-        enableRosetta = true;
+      homebrew-config-arm = {
+        nix-homebrew = {
+          enable = true;
+          enableRosetta = true;
+        };
       };
-    };
-    homebrew-config-intel = {
-      nix-homebrew = {
-        enable = true;
-        enableRosetta = false;
+      homebrew-config-intel = {
+        nix-homebrew = {
+          enable = true;
+          enableRosetta = false;
+        };
       };
-    };
-    shared-modules = [
-      ./configuration.nix
-      home-manager.darwinModules.home-manager
-      nix-homebrew.darwinModules.nix-homebrew
-      hm-config
-    ];
-  in
+      shared-modules = [
+        ./configuration.nix
+        home-manager.darwinModules.home-manager
+        nix-homebrew.darwinModules.nix-homebrew
+        hm-config
+      ];
+    in
     {
       darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system="x86_64-darwin";};
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
       };
       darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system="x86_64-darwin";};
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
       };
     };
 }
