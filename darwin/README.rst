@@ -100,7 +100,7 @@ to install (Chrome, Firefox, others).  The (commented-out) flags in
 There are some system-level settings set to my liking in ``system.defaults``.
 See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
 
-Use ``search.nixos.org`` to find packages that are addable to
+Use https://search.nixos.org to find packages that are addable to
 ``environment.systemPackages``, kinda like Homebrew.  Adding stuff to
 ``homebrew.casks`` is probably better for GUI apps, but YMMV.
 
