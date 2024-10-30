@@ -126,6 +126,11 @@ is configured once, you should be able to do instead:
 
 ``swnix``
 
+To update all of the software Nix supplies (e.g. the stuff in
+``environment.systemPackages``) as well as ``nix-darwin`` and ``nix-homebrew``
+themselves, run ``nix flake update`` within the ``~/.nixconfig/darwin``
+directory and rerun ``darwin rebuild switch``.
+
 Misc
 ----
 
