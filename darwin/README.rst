@@ -1,6 +1,8 @@
 Chris' Nix-on-Mac Config
 ========================
 
+Declarative config for multiple Macs.
+
 Install Nix
 -----------
 
@@ -57,6 +59,8 @@ the first time:
 ``nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin``
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
+
+It will ask for a sudo password.
 
 It will exit for each file that it wants to manage that already exists
 unmanaged on your system, and you'll need to move that file aside and rerun the
