@@ -93,9 +93,9 @@ command.  Note which files you move aside, so you can put them back into place
 if this stuff doesn't work out for you.
 
 It will also attempt to install some apps from Homebrew.  I have not tried this
-on a system that already has Homebrew installed, nor without the apps it wants
-to install (Chrome, Firefox, others).  The (commented-out) flags in
-``configuration.nix`` for ``homebrew.autoMigrate`` and
+on a system that already has Homebrew installed, nor on one that already has
+the apps it wants to install (Chrome, Firefox, others).  The (commented-out)
+flags in ``configuration.nix`` for ``homebrew.autoMigrate`` and
 ``homebrew.onActivation.cleanup`` seem to be important here.
 
 There are some system-level settings set to my liking in ``system.defaults``.
