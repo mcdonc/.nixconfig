@@ -20,7 +20,33 @@ Customize
 ---------
 
 Make changes in the ``darwin`` subdir of the repo suitable for your
-environment (mostly to ``configuration.nix`` probably).
+environment.
+
+In ``flake.nix``, add a ``darwinSystem`` at the same indentation level as the
+other ones, e.g.:
+
+.. code-block:: nix
+
+      darwinConfigurations."my-macs-hostname" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-arm ];
+        specialArgs = { inherit inputs; system="aarch64-darwin";};
+      };
+
+Replace ``my-macs-hostname`` with your Mac's hostname.
+
+If your system is Intel instead of Apple Silicon, use:
+
+.. code-block:: nix
+
+      darwinConfigurations."my-macs-hostname" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-intel ];
+        specialArgs = { inherit inputs; system="x86_64-darwin";};
+      };
+
+Then edit ``configuration.nix`` and change all the mentions of ``chrism`` to
+your username, and possibly email addresses.
+
+For a more general overview, see https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
 Install Nix-Darwin and Configure Your System
 --------------------------------------------
@@ -35,6 +61,11 @@ the first time:
 It will exit for each file that it wants to manage that already exists
 unmanaged on your system, and you'll need to move that file aside and rerun the
 command.
+
+It will also attempt to install some apps from Homebrew.  I have not tried this
+on a system that already has Homebrew installed, nor without the apps it wants
+to install (Chrome, Firefox, others).  The (commented-out) flag in
+``configuration.nix`` for ``homebrew.autoMigrate`` seems to be important here.
 
 Subsequent runs to rebuild will be just:
 
