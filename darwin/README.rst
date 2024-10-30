@@ -93,11 +93,16 @@ command.
 
 It will also attempt to install some apps from Homebrew.  I have not tried this
 on a system that already has Homebrew installed, nor without the apps it wants
-to install (Chrome, Firefox, others).  The (commented-out) flag in
-``configuration.nix`` for ``homebrew.autoMigrate`` seems to be important here.
+to install (Chrome, Firefox, others).  The (commented-out) flags in
+``configuration.nix`` for ``homebrew.autoMigrate`` and
+``homebrew.onActivation.cleanup`` seem to be important here.
 
 There are some system-level settings set to my liking in ``system.defaults``.
 See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
+
+Use ``search.nixos.org`` to find packages that are addable to
+``environment.systemPackages``, kinda like Homebrew.  Adding stuff to
+``homebrew.casks`` is probably better for GUI apps, but YMMV.
 
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
