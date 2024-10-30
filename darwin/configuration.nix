@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, system, ... }:
+{ pkgs, lib, inputs, system, config, ... }:
 let
   shellAliases = {
     # dont display lines > 200 chars long
@@ -6,7 +6,7 @@ let
     ls = "ls --color=auto";
     diff = "${pkgs.colordiff}/bin/colordiff";
     swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
-    edit = "emacsclient -n -c";
+    edit = "${emacspkg}/bin/emacsclient -n -c";
     restartemacs =
       "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
   };
@@ -21,8 +21,10 @@ let
   zshDotDir = ".config/zsh";
   username = "chrism";
   homedir = "/Users/${username}";
+  emacspkg =
+    config.home-manager.users."${username}".programs.emacs.finalPackage;
   emacsdaemon = pkgs.writeShellScript "emacsdaemon" ''
-    exec /etc/profiles/per-user/${username}/bin/emacs --fg-daemon
+    exec ${emacspkg}/bin/emacs --fg-daemon
   '';
   zshtheme =
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
@@ -187,6 +189,7 @@ in
           ProcessType = "Interactive";
           StandardOutPath = "${homedir}/.emacs.out.log";
           StandardErrorPath = "${homedir}/.emacs.err.log";
+          EnvironmentVariables = { "PATH" = config.environment.systemPath; };
         };
       };
 

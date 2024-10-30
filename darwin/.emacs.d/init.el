@@ -345,7 +345,8 @@
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
 
-(setq nix-nixfmt-bin "nixpkgs-fmt")
+(setq nix-nixfmt-bin "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
+(setq nixpkgs-fmt-command "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
 
 ;; hide the options menu
 (defun hide-emacs-options-menu ()
