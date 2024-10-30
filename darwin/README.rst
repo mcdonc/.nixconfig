@@ -4,7 +4,7 @@ Chris' Nix-on-Mac Config
 Install Nix
 -----------
 
-- Download https://install.determinate.systems/nix-installer-pkg/stable/Universal and run it.  Say yes to all defaults.
+Download https://install.determinate.systems/nix-installer-pkg/stable/Universal and run it.  Say yes to all defaults.
 
 Check out this Repository as ``~/.nixconfig``
 ---------------------------------------------
