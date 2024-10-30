@@ -48,7 +48,8 @@ If your system is Intel instead of Apple Silicon, use:
 Then edit ``configuration.nix`` and change all the mentions of ``chrism`` to
 your username, and possibly email addresses.
 
-For a more general overview, see https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
+For a more general overview, see
+https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
 Install Nix-Darwin and Configure Your System
 --------------------------------------------
@@ -73,6 +74,9 @@ to install (Chrome, Firefox, others).  The (commented-out) flag in
 
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
+
+Again, for a more general overview, see
+https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
 Subsequent Runs of ``nixos-rebuild``
 ------------------------------------
