@@ -10,10 +10,10 @@ Declarative config for multiple Macs  (or just one).
 
 - Sets up Emacs the way it like it.
 
-- Sets up keys for inbound ssh.
+- Sets up pubkeys for my user's inbound ssh.
 
-- Ensures ssh keys can be added to Apple Keychain via ``ssh-add`` (eg. like
-  https://apple.stackexchange.com/a/250572).
+- Ensures ssh private keys can be added to Apple Keychain via ``ssh-add``
+  (eg. like https://apple.stackexchange.com/a/250572).
 
 - Installs NerdFonts to support zsh powerlevel-10k icons.
 
