@@ -137,7 +137,8 @@ Misc
 
 For the ``zsh`` "powerlevel-10k" prompt to look right, you have to use a
 NerdFont in the terminal like "Ubuntu Nerd Font Mono".  This must be configured
-by-hand.  Also, colors are wonky in Terminal, but look correct in iTerm.
+by-hand.  Also, its prompt colors are wonky in Terminal, but look correct in
+iTerm.
 
 Uninstalling
 ------------
