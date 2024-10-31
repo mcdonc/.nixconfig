@@ -99,19 +99,8 @@ the apps it wants to install (Chrome, Firefox, others).  The (commented-out)
 flags in ``configuration.nix`` for ``homebrew.autoMigrate`` and
 ``homebrew.onActivation.cleanup`` seem to be important here.
 
-There are some system-level settings set to my liking in ``system.defaults``.
-See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
-
-Use https://search.nixos.org to find packages that are addable to
-``environment.systemPackages``, kinda like Homebrew casks, but many more of
-them, although many Linux-only.  Adding stuff to ``homebrew.casks`` is probably
-better for GUI apps, but YMMV.
-
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
-
-Again, for a more general overview, see
-https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
 Subsequent Runs of ``nixos-rebuild``
 ------------------------------------
@@ -127,10 +116,22 @@ is configured once, you should be able to do instead:
 
 ``swnix``
 
+Use https://search.nixos.org to find packages that are addable to
+``environment.systemPackages``, kinda like Homebrew casks, but many more of
+them, although many Linux-only.  Adding stuff to ``homebrew.casks`` is probably
+better for GUI apps, but YMMV.  Any cask you can install imperatively via
+``homebrew install`` can be added declaratively to ``homebrew.casks``.
+
+There are some system-level settings set to my liking in ``system.defaults``.
+See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
+
 To update all of the software Nix supplies (e.g. the stuff in
 ``environment.systemPackages``) as well as ``nix-darwin`` and ``nix-homebrew``
 themselves, run ``nix flake update`` within the ``~/.nixconfig/darwin``
-directory and rerun ``darwin rebuild switch``.
+directory and rerun ``darwin rebuild switch --flake ~/.nixconfig/darwin``.
+
+Again, for a more general overview, see
+https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
 Misc
 ----
@@ -147,5 +148,5 @@ I haven't tried this myself, but there is an uninstaller that is on the $PATH
 named ``darwin-uninstaller`` that will uninstall ``nix-darwin`` (and presumably
 all the changes it made).
 
-To uninstall Nix itself run ``/nix/nix-installer uninstall`` or rerun the GUI
-installer pkg.
+To uninstall Nix itself run ``/nix/nix-installer uninstall`` or rerun the
+Determinate Systems Nix GUI installer pkg.
