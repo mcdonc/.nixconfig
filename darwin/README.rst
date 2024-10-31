@@ -42,8 +42,8 @@ If you're not me, probably best to fork it first.
   $ cd ~
   $ git clone <repository>
 
-Customize for First Install
----------------------------
+Customize for First ``nix-darwin`` Install
+------------------------------------------
 
 Make changes in the ``darwin`` subdir of the repo suitable for your
 environment.
