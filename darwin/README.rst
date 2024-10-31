@@ -97,7 +97,9 @@ It will also attempt to install some apps from Homebrew.  I have not tried this
 on a system that already has Homebrew installed, nor on one that already has
 the apps it wants to install (Chrome, Firefox, others).  The (commented-out)
 flags in ``configuration.nix`` for ``homebrew.autoMigrate`` and
-``homebrew.onActivation.cleanup`` seem to be important here.
+``homebrew.onActivation.cleanup`` seem to be important here.  You can just
+comment out the ``homebrew`` section in ``configuration.nix`` entirely if you
+don't want to think about it.
 
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
