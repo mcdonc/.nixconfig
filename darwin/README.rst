@@ -42,8 +42,8 @@ If you're not me, probably best to fork it first.
   $ cd ~
   $ git clone <repository>
 
-Customize
----------
+Customize for First Install
+---------------------------
 
 Make changes in the ``darwin`` subdir of the repo suitable for your
 environment.
@@ -76,8 +76,8 @@ the one(s) you use.
 For a more general overview, see
 https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
 
-Install Nix-Darwin and Configure Your System
---------------------------------------------
+Install/Run Nix-Darwin
+----------------------
 
 Initial command to both install ``nix-darwin`` and configure your system for
 the first time:
@@ -117,13 +117,16 @@ is configured once, you should be able to do instead:
 ``swnix``
 
 Use https://search.nixos.org to find packages that are addable to
-``environment.systemPackages``, kinda like Homebrew casks, but many more of
-them, although many Linux-only.  Adding stuff to ``homebrew.casks`` is probably
-better for GUI apps, but YMMV.  Any cask you can install imperatively via
-``homebrew install`` can be added declaratively to ``homebrew.casks``.
+``environment.systemPackages``.  What goes in here are kinda like Homebrew
+casks, but there are many more of them, although many Linux-only.  Adding stuff
+to ``homebrew.casks`` is probably better for GUI apps, but YMMV.  Any cask you
+can install imperatively via ``homebrew install`` can be added declaratively to
+``homebrew.casks``.  You can mix and match between
+``environment.systemPackages`` and ``homebrew.casks`` as necessaary.
 
-There are some system-level settings set to my liking in ``system.defaults``.
-See ``man 5 configuration.nix`` for others (search for ``system.defaults``).
+There are some system-level settings set to my liking in ``system.defaults``
+within ``configuration.nix``.  See ``man 5 configuration.nix`` for others
+(search for ``system.defaults``).
 
 To update all of the software Nix supplies (e.g. the stuff in
 ``environment.systemPackages``) as well as ``nix-darwin`` and ``nix-homebrew``
