@@ -37,6 +37,7 @@ in
       "firefox"
       "bitwarden"
       "iterm2"
+      "bitwarden"
     ];
     # onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
