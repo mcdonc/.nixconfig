@@ -30,7 +30,7 @@ let
   nixos-repl = pkgs.writeScriptBin "nixos-repl" ''
     #!/usr/bin/env ${pkgs.expect}/bin/expect
     set timeout 120
-    spawn -noecho nix --extra-experimental-features repl-flake repl nixpkgs
+    spawn -noecho nix --extra-experimental-features repl nixpkgs
     expect "nix-repl> " {
       send ":a builtins\n"
       send "pkgs = legacyPackages.${system}\n"
@@ -69,7 +69,7 @@ in
     settings = {
       tarball-ttl = 300;
       auto-optimise-store = true;
-      experimental-features = "nix-command flakes repl-flake";
+      experimental-features = "nix-command flakes";
       trusted-users = [ "root" "@wheel" ];
       #sandbox = "relaxed";
     };
