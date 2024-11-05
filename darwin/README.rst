@@ -84,7 +84,7 @@ the first time:
 
 .. code-block:: bash
 
-nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin
+    nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
 
@@ -115,7 +115,7 @@ just:
 
 .. code-block:: bash
 
-darwin-rebuild switch --flake ~/.nixconfig/darwin
+    darwin-rebuild switch --flake ~/.nixconfig/darwin
 
 There is an alias set up for this in ``configuration.nix`` so once the system
 is configured once, you should be able to do instead:
