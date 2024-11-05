@@ -82,7 +82,9 @@ Install/Run Nix-Darwin
 Initial command to both install ``nix-darwin`` and configure your system for
 the first time:
 
-``nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin``
+.. code-block:: bash
+
+nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.nixconfig/darwin
 
 (from https://github.com/LnL7/nix-darwin/blob/master/README.md#flakes)
 
@@ -111,7 +113,9 @@ After the first run/configuration, you can play around with changes to
 ``configuration.nix``.  Subsequent runs to rebuild using your changes will be
 just:
 
-``darwin-rebuild switch --flake ~/.nixconfig/darwin``
+.. code-block:: bash
+
+darwin-rebuild switch --flake ~/.nixconfig/darwin
 
 There is an alias set up for this in ``configuration.nix`` so once the system
 is configured once, you should be able to do instead:
