@@ -120,7 +120,9 @@ just:
 There is an alias set up for this in ``configuration.nix`` so once the system
 is configured once, you should be able to do instead:
 
-``swnix``
+.. code-block:: bash
+
+    swnix
 
 Use https://search.nixos.org to find packages that are addable to
 ``environment.systemPackages``.  What goes in here are kinda like Homebrew
