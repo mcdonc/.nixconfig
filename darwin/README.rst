@@ -49,7 +49,7 @@ Make changes in the ``darwin`` subdir of the repo suitable for your
 environment.
 
 In ``flake.nix``, add a ``darwinSystem`` at the same indentation level as the
-other ones, e.g.:
+other ones, e.g., if your system is Apple Silicon:
 
 .. code-block:: nix
 
@@ -57,8 +57,6 @@ other ones, e.g.:
         modules = shared-modules ++ [ homebrew-config-arm ];
         specialArgs = { inherit inputs; system="aarch64-darwin";};
       };
-
-Replace ``my-macs-hostname`` with your Mac's hostname.
 
 If your system is Intel instead of Apple Silicon, use:
 
@@ -69,7 +67,9 @@ If your system is Intel instead of Apple Silicon, use:
         specialArgs = { inherit inputs; system="x86_64-darwin";};
       };
 
-Then edit ``configuration.nix`` and change all the mentions of ``chrism`` to
+Replace ``my-macs-hostname`` with your Mac's hostname.
+T
+hen edit ``configuration.nix`` and change all the mentions of ``chrism`` to
 your username, and possibly email addresses.  Also change the SSH pubkeys to
 the one(s) you use.
 
