@@ -105,6 +105,7 @@ in
     extraArgs = [ "--debug" ];
   };
 
+  nix.settings.trusted-users = [ "backup" ];
 
   environment.systemPackages = with pkgs; [
     # used by zfs send/receive

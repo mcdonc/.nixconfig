@@ -8,6 +8,8 @@ in
   home-manager = {
     users.chrism = import ./home.nix;
   };
+
+  nix.settings.trusted-users = [ "chrism" ];
   
   # Define a user account.
   users.users.chrism = {
