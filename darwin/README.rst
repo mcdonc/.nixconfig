@@ -104,8 +104,8 @@ don't want to think about it.
 Also, all the macs I've tried this particular config on are Intel, so if you're
 on ARM, it's possible some things may not work.
 
-Subsequent Runs of ``nixos-rebuild``
-------------------------------------
+Subsequent Runs of ``darwin-rebuild``
+-------------------------------------
 
 After the first run/configuration, you can play around with changes to
 ``configuration.nix``.  Subsequent runs to rebuild using your changes will be
