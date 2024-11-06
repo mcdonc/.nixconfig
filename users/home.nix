@@ -386,6 +386,7 @@ in
     epkgs.dts-mode
     epkgs.rust-mode
     epkgs.nickel-mode
+    epkgs.editorconfig
   ];
 
   services.emacs = {

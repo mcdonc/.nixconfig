@@ -71,9 +71,11 @@
 (require 'dired)
 (require 'browse-url)
 (require 'multiple-cursors)
+(require 'editorconfig)
+
+(editorconfig-mode 1)
 
 ;; set up multiple cursor mode like vs code
-
 (global-set-key (kbd "C-S-l") 'mc/mark-all-like-this)
 
 ; your fingers are wired to using C-x k to kill off buffers (and you
