@@ -461,5 +461,6 @@ in
     gnome-multi-writer
     util-linux # wipefs
     ipmitool
+    slack
   ];
 }
