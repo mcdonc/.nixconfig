@@ -128,8 +128,6 @@ let
     ssh = "${ssh-chcolor}";
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
-    python3 = "python3.11";
-    python = "python3.11";
     nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel";
     thumbnail = "${thumbnail}";
