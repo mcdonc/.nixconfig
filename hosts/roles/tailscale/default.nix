@@ -21,7 +21,7 @@
 
       # check if we are already authenticated to tailscale
       status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
-      if [ $status = "Running" ]; then # if so, then do nothing
+      if [ "$status" = "Running" ]; then # if so, then do nothing
         exit 0
       fi
 
