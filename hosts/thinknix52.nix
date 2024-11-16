@@ -14,6 +14,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
 #    ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
 #    ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
+    ./roles/tailscale
     (
       import ./roles/macos-ventura.nix (
         args // {mem="12G"; cores=4; enable=true;}

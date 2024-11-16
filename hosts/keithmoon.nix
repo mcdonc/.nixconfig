@@ -10,6 +10,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
+    ./roles/tailscale
     (
       import ./roles/macos-ventura.nix (
         args // {mem="20G"; cores=4; enable=true;}
