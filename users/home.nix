@@ -114,8 +114,8 @@ let
     mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
-    toconsole = "sudo systemd isolate multi-user.target";
-    togui = "sudo systemd isolate graphical.target";
+    toconsole = "sudo systemctl isolate multi-user.target";
+    togui = "sudo systemctl isolate graphical.target";
     open = "kioclient exec";
     edit = "emacsclient -n -c";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
