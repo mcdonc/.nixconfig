@@ -385,6 +385,7 @@ in
     epkgs.rust-mode
     epkgs.nickel-mode
     epkgs.editorconfig
+    epkgs.terraform-mode
   ];
 
   services.emacs = {
