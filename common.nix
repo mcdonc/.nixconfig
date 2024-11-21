@@ -5,6 +5,7 @@
 , pkgs-py36
 , pkgs-py37
 , pkgs-py39
+, pkgs-unstable
 , ...
 }:
 
@@ -462,5 +463,6 @@ in
     util-linux # wipefs
     ipmitool
     slack
+    alsa-scarlett-gui
   ];
 }
