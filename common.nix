@@ -178,7 +178,7 @@ in
 
   # https://discourse.nixos.org/t/newly-announced-vulnerabilities-in-cups/52771/9
   systemd.services.cups-browsed.enable = false;
-    
+
   # all other services
   services.fwupd.enable = true;
   services.locate.enable = false;
