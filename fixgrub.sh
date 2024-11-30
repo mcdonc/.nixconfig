@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# hardware solution that avoids any of this nonsense:
+# remove all disks other than nixos disk
+# remove all other linux "boot manager" options from bios boot menu
+# boot to the nixos disk, ensure it works
+# add the other disks one by one back in and run nixos-rebuild
+
 set -x
 
 DEV=$1
