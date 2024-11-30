@@ -138,7 +138,7 @@ in
   fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
   i18n.defaultLocale = "en_US.UTF-8";
 
-  sound.enable = false; # not needed for pipewire
+  #sound.enable = false; # not needed for pipewire
   hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
@@ -255,7 +255,7 @@ in
     kdePackages.konversation
     kdePackages.kmag
     kdePackages.kdenlive
-    gnome.gnome-disk-utility
+    gnome-disk-utility
     openvpn
     unzip
     ripgrep
@@ -269,7 +269,7 @@ in
     firefox
     audacity
     gimp
-    transmission-qt
+    transmission_3-qt
     remmina
     baobab
     signal-desktop
@@ -313,7 +313,7 @@ in
     odin2
     freepats
     helm
-    distrho
+    #distrho
     calf
     x42-plugins
     tap-plugins
@@ -340,14 +340,14 @@ in
     cutecom
     rshell
     mplayer
-    gnome.cheese
+    cheese
     sqlite
     tldr
     tree
     lha
     quickemu
-    quickgui
-    gnome.zenity # undeclared dep of quickgui
+    #quickgui
+    #zenity # undeclared dep of quickgui
     nix-du
     graphviz
     zgrviewer
@@ -421,7 +421,7 @@ in
     envsubst
     appimage-run
     jq
-    gnome.gucharmap
+    gucharmap
     loccount
     screenkey
     gsmartcontrol
@@ -455,7 +455,7 @@ in
     socat # for gprx dmr decoding
     sox # for play
     nickel
-    gnome.gnome-boxes
+    gnome-boxes
     vdhcoapp # vdhcoapp install --user (see also https://github.com/NixOS/nixpkgs/issues/112046)
     airspy
     soapyairspy
