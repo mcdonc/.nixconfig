@@ -82,18 +82,14 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     "nvidia-drm.modeset=1"
   ];
 
-    # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  # Enable OpenGL
+  hardware.graphics.enable = true;
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
-
+    open = false;
     # Modesetting is required.
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -110,21 +106,20 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     enable = true;
     package = pkgs.samba4Full;
     openFirewall = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = keithmoon
-      netbios name = keithmoon
-      security = user
-      browseable = yes
-      smb encrypt = required
-      # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.1. 127.0.0.1 localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-    '';
-    shares = {
+    settings = {
+      global = {
+        workgroup = "WORKGROUP";
+        "server string" = "keithmoon";
+        "netbios name" = "keithmoon";
+        security = "user";
+        browseable = "yes";
+        "smb encrypt" = "required";
+        # note: localhost is the ipv6 localhost ::1
+        "hosts allow" = "192.168.1. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
       root = {
         path = "/";
         browseable = "yes";
