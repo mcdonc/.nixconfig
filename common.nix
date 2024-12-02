@@ -290,7 +290,10 @@ in
         python311Packages.black # for cmdline and vscode
         python311Packages.tox # for... tox
         python311Packages.build # for pypa build package
+        python311Packages.twine # for uploading to PyPI
       ]))
+    python312
+    python313
     pypy3
     xz
     libreoffice
