@@ -336,7 +336,7 @@ in
     dig
     s3cmd
     #kaffeine
-    thonny
+    #thonny
     cutecom
     rshell
     mplayer
