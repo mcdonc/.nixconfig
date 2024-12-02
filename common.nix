@@ -289,6 +289,7 @@ in
         python311Packages.pygments # for vscode
         python311Packages.black # for cmdline and vscode
         python311Packages.tox # for... tox
+        python311Packages.build # for pypa build package
       ]))
     pypy3
     xz
