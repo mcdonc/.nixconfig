@@ -12,11 +12,11 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/speedtest
     ./roles/tailscale
     #./roles/aws.nix
-    (
-      import ./roles/macos-ventura.nix (
-        args // {mem="20G"; cores=4; enable=true;}
-      )
-    )
+    #(
+    #  import ./roles/macos-ventura.nix (
+    #    args // {mem="20G"; cores=4; enable=true;}
+    #  )
+    #)
     ../common.nix
   ];
 

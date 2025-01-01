@@ -29,6 +29,7 @@ in
       "input"
       "postgres"
       "plugdev" # for rtl-sdr
+      "vboxusers" # for virtualbox
     ];
     openssh = {
       authorizedKeys.keys = [
