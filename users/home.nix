@@ -129,7 +129,7 @@ let
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
     nixos-update = "${nixos-update}";
-    disable-kvm = "sudo modprobe -r kvm-intel";
+    disable-kvm = "sudo modprobe -r kvm-intel"; # for virtualbox
     thumbnail = "${thumbnail}";
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
