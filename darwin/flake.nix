@@ -22,12 +22,14 @@
         nix-homebrew = {
           enable = true;
           enableRosetta = true;
+          autoMigrate = true;
         };
       };
       homebrew-config-intel = {
         nix-homebrew = {
           enable = true;
           enableRosetta = false;
+          autoMigrate = true;
         };
       };
       shared-modules = [

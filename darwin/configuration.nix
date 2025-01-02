@@ -41,7 +41,6 @@ in
     # onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
-    autoMigrate = true;
   };
 
   nix-homebrew.user = username;
