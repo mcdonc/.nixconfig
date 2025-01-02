@@ -46,5 +46,13 @@
         modules = shared-modules ++ [ homebrew-config-intel ];
         specialArgs = { inherit inputs; system = "x86_64-darwin"; };
       };
-    };
+      darwinConfigurations."macvm-52" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-intel ];
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+      }; 
+      darwinConfigurations."macvm-keith" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-intel ];
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+      };
+   };
 }
