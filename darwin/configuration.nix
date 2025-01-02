@@ -38,17 +38,21 @@ in
       "iterm2"
       "bitwarden"
       #"displayplacer"
-      "betterdisplay"
+      #"betterdisplay"
     ];
-    # onActivation.cleanup = "zap";
+    #onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
   };
 
   nix-homebrew.user = username;
 
-  fonts.packages = with pkgs; [ 
-    (nerdfonts.override { fonts = ["UbuntuMono" ]; })
+  #fonts.packages = with pkgs; [ 
+  #  (nerdfonts.override { fonts = ["UbuntuMono" ]; })
+  #]; # old-style
+
+  fonts.packages = [
+    pkgs.nerd-fonts.ubuntu-mono
   ];
 
   environment.systemPackages = [
