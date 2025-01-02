@@ -337,6 +337,7 @@ in
     argyllcms
     xcalib
     virt-manager
+    virt-viewer # for remote-viewer
     rpi-imager
     dig
     s3cmd

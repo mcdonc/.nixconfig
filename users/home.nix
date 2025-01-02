@@ -136,7 +136,8 @@ let
     olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
     stopx = "${pkgs.systemd}/bin/systemctl stop display-manager.service";
     startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
-    macos = "$HOME/.local/share/quickemu/macos-sonoma.conf"; #disable-kvm after?
+    macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
+    ubuntu = "quickemu --vm $HOME/.local/share/quickemu/ubuntu-24.04.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
   };
 
 in

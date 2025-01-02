@@ -161,3 +161,9 @@ all the changes it made).
 
 To uninstall Nix itself run ``/nix/nix-installer uninstall`` or rerun the
 Determinate Systems Nix GUI installer pkg.
+
+SPICE Server
+------------
+
+See https://github.com/utmapp/UTM/discussions/6833 (spice-vdagent pkg in utm
+img file).
