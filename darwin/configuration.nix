@@ -38,6 +38,7 @@ in
       "iterm2"
       "bitwarden"
       #"displayplacer"
+      "betterdisplay"
     ];
     # onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
