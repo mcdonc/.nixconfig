@@ -46,7 +46,9 @@ in
 
   nix-homebrew.user = username;
 
-  fonts.packages = [ pkgs.nerdfonts ];
+  fonts.packages = with pkgs; [ 
+    (nerdfonts.override { fonts = ["UbuntuMono" ]; })
+  ];
 
   environment.systemPackages = [
     pkgs.vim
