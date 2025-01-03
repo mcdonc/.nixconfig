@@ -15,6 +15,7 @@ let
     CLICOLOR = "1";
     # LSCOLORS="GxFxCxDxBxegedabagaced";
     EDITOR = "vi";
+    FXDEV_USE_ZSH="1";
   };
 
   zshDotDir = ".config/zsh";
