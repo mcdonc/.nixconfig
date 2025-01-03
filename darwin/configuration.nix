@@ -177,7 +177,7 @@ in
         recursive = true;
       };
       home.file.".p10k.zsh" = {
-        source = ./.p10k.zsh;
+        source = ../users/.p10k-fornax.zsh;
         executable = true;
       };
 
