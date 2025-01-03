@@ -27,6 +27,7 @@ in
     shellAliases = shellAliases;
     sessionVariables = {
       MFA_DEVICE="Bitwarden";
+      FXDEV_USE_ZSH="1";
     };
   };
 
