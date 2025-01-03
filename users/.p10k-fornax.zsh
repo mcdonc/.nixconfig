@@ -33,6 +33,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     #os_icon                 # os identifier
+    fornax_devenv
     dir                     # current directory
     status                  # exit code of the last command
     command_execution_time  # duration of the last command
@@ -42,7 +43,7 @@
     newline                 # \n
     # prompt_char           # prompt symbol
   )
-  
+
   # The list of segments shown on the right. Fill it with less important segments.
   # Right prompt on the last prompt line (where you are typing your commands) gets
   # automatically hidden when the input line reaches it. Right prompt above the
@@ -1688,6 +1689,13 @@
       return
     fi
     p10k segment -b blue -i $'\uE641' -t $left
+  }
+
+  function prompt_fornax_devenv() {
+    if [ -z "$FXDEV" ]; then
+      return
+    fi
+    p10k segment -b 226 -f red -i $'\uF197'
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
