@@ -152,10 +152,10 @@ in
 
   # virtualization
   virtualisation.libvirtd.enable = true;
-  virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
-  };
+  #virtualisation.virtualbox.host = {
+  #  enable = true;
+  #  enableExtensionPack = true;
+  #};
 
   # vmVariant configuration is added only when building VM with nixos-rebuild
   # build-vm
