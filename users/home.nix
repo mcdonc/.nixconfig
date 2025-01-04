@@ -138,7 +138,7 @@ let
     startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
     macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
     ubuntu = "quickemu --vm $HOME/.local/share/quickemu/ubuntu-24.04.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
-    windows = "quickemu --vm $HOME/.local/share/quickemu/windows-10.conf --width 1920 --height 1200 --display spice --viewer remote-viewer";
+    windows = "quickemu --vm $HOME/.local/share/quickemu/windows-10.conf --width 1920 --height 1200 --display spice";
   };
 
 in
