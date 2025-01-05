@@ -48,10 +48,6 @@ in
 
   nix-homebrew.user = username;
 
-  #fonts.packages = with pkgs; [ 
-  #  (nerdfonts.override { fonts = ["UbuntuMono" ]; })
-  #]; # old-style
-
   fonts.packages = [
     pkgs.nerd-fonts.ubuntu-mono
   ];
