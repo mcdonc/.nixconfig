@@ -184,22 +184,22 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       chown chrism:users /d
     '';
 
-  services.postgresql = {
-    package = pkgs.postgresql_15;
-    enable = true;
-    enableTCPIP = true;
-    settings.port = 5432;
-    dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
-    authentication = pkgs.lib.mkForce ''
-      # TYPE  DATABASE        USER            ADDRESS                 METHOD
-      local   all             all                                     trust
-      host    all             all             127.0.0.1/32            trust
-      host    all             all             192.168.1.0/24          trust
-    '';
-  initialScript = pkgs.writeText "postgres-init-script" ''
-    CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
-  '';
-  };
+  # services.postgresql = {
+  #   package = pkgs.postgresql_15;
+  #   enable = true;
+  #   enableTCPIP = true;
+  #   settings.port = 5432;
+  #   dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
+  #   authentication = pkgs.lib.mkForce ''
+  #     # TYPE  DATABASE        USER            ADDRESS                 METHOD
+  #     local   all             all                                     trust
+  #     host    all             all             127.0.0.1/32            trust
+  #     host    all             all             192.168.1.0/24          trust
+  #   '';
+  # initialScript = pkgs.writeText "postgres-init-script" ''
+  #   CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
+  # '';
+  # };
 
   # resolve "network->connect"
   # name: videos
