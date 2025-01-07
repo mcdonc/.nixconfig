@@ -31,11 +31,12 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
 
   hardware.nvidia.prime.offload.enable = lib.mkForce
     (!config.hardware.nvidia.prime.sync.enable);
-  hardware.nvidia.prime.sync.enable = lib.mkForce false;
+  hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)
   boot.consoleLogLevel = 3;
+  #boot.kernelPackages = pkgs.linuxPackages_6_12;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production; # 550
 
 }
-
