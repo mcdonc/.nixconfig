@@ -122,6 +122,7 @@ in
   # desktop stuff
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "plasmax11";
   services.xserver.displayManager.sessionCommands = let
     # disable middle click
     modmap = pkgs.writeText "modmap" ''
