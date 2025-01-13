@@ -472,5 +472,6 @@ in
     slack
     alsa-scarlett-gui
     spice-gtk
+    dive # docker
   ];
 }
