@@ -123,15 +123,22 @@ in
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.defaultSession = "plasmax11";
-  services.xserver.displayManager.sessionCommands = let
-    # disable middle click
-    modmap = pkgs.writeText "modmap" ''
-      pointer 1 0 3 4 5
-    '';
-  in
-    "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
   services.desktopManager.plasma6.enable = true;
-  services.xserver.xkb.layout = "us";
+
+  # services.xserver.displayManager.sessionCommands = let
+  #   modmap = pkgs.writeText "modmap" ''
+  #     # disable middle click
+  #     pointer 1 0 3 4 5
+  #   '';
+  # in
+  #   "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
+
+  services.xserver.xkb.extraLayouts.mcdonc = {
+    description = "mcdonc's custom xkb layout";
+    languages = [ "eng" ];
+    symbolsFile = ./symbols/mcdonc;
+  };
+  services.xserver.xkb.layout = "mcdonc";
   services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
@@ -473,5 +480,7 @@ in
     alsa-scarlett-gui
     spice-gtk
     dive # docker
+    xorg.xev
+    xorg.xkbcomp
   ];
 }
