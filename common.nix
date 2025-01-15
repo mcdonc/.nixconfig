@@ -124,23 +124,21 @@ in
   services.displayManager.sddm.enable = true;
   services.displayManager.defaultSession = "plasmax11";
   services.desktopManager.plasma6.enable = true;
-
-  services.xserver.displayManager.sessionCommands = let
-    modmap = pkgs.writeText "modmap" ''
-      # disable middle click
-      pointer 1 0 3 4 5
+  services.xserver.displayManager.sessionCommands =
+    let modmap = pkgs.writeText "modmap" ''
+      ! disable middle click
+      ! pointer = 1 0 3 4 5
+      ! map right-ctrl+arrow-keys to pgup/pgdn/home/end
+      ! see https://forums.linuxmint.com/viewtopic.php?t=321400
+      keycode 105 = Mode_switch
+      keycode 113 = Left NoSymbol Home
+      keycode 114 = Right NoSymbol End
+      keycode 111 = Up NoSymbol Prior
+      keycode 116 = Down NoSymbol Next
     '';
-  in
-    "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
+    in "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
 
-  # test "symbols/mcdonc" after modifying it
-  # setxkbmap -I/etc/nixos mcdonc -print | xkbcomp -I/etc/nixos - $DISPLAY
-  services.xserver.xkb.extraLayouts.mcdonc = {
-    description = "mcdonc's custom xkb layout";
-    languages = [ "eng" ];
-    symbolsFile = ./symbols/mcdonc;
-  };
-  services.xserver.xkb.layout = "mcdonc";
+  services.xserver.xkb.layout = "us";
   services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
@@ -484,5 +482,6 @@ in
     dive # docker
     xorg.xev
     xorg.xkbcomp
+    xorg.xmodmap
   ];
 }
