@@ -4,24 +4,28 @@ xkb_symbols "mcdonc" {
   // Right-Ctrl + Up = PgUp
   key <UP> {
     type = "PC_CONTROL_LEVEL2",
+    modifiers = Control_R,
     symbols[Group1] = [ Up, Prior ]
   };
 
   // Right-Ctrl + Down = PgDn
   key <DOWN> {
     type = "PC_CONTROL_LEVEL2",
+    modifiers = Control_R,
     symbols[Group1] = [ Down, Next ]
    };
 
   // Right-Ctrl + Left = Home
   key <LEFT> {
     type = "PC_CONTROL_LEVEL2",
+    modifiers = Control_R,
     symbols[Group1] = [ Left, Home ]
   };
 
   // Right-Ctrl + Right = End
   key <RGHT> {
     type = "PC_CONTROL_LEVEL2",
+    modifiers = Control_R,
     symbols[Group1] = [ Right, End ]
   };
 

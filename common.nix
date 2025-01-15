@@ -125,14 +125,16 @@ in
   services.displayManager.defaultSession = "plasmax11";
   services.desktopManager.plasma6.enable = true;
 
-  # services.xserver.displayManager.sessionCommands = let
-  #   modmap = pkgs.writeText "modmap" ''
-  #     # disable middle click
-  #     pointer 1 0 3 4 5
-  #   '';
-  # in
-  #   "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
+  services.xserver.displayManager.sessionCommands = let
+    modmap = pkgs.writeText "modmap" ''
+      # disable middle click
+      pointer 1 0 3 4 5
+    '';
+  in
+    "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
 
+  # test "symbols/mcdonc" after modifying it
+  # setxkbmap -I/etc/nixos mcdonc -print | xkbcomp -I/etc/nixos - $DISPLAY
   services.xserver.xkb.extraLayouts.mcdonc = {
     description = "mcdonc's custom xkb layout";
     languages = [ "eng" ];
