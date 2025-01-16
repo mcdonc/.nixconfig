@@ -522,10 +522,11 @@ in
          ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
          chcolor 1
       }
+
       function devenv () {
          # turn term color blue
          source ${gterm-color-funcs}
-         chcolor 2
+         chcolor 4
          $HOME/.nix-profile/bin/devenv "$@"
          chcolor 1
       }
