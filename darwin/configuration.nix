@@ -60,6 +60,7 @@ in
     pkgs.inetutils # for telnet
     pkgs.minicom
     pkgs.netcat
+    pkgs.htop
   ];
 
   system.defaults = {
