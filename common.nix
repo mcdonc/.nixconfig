@@ -483,5 +483,6 @@ in
     xorg.xev
     xorg.xkbcomp
     xorg.xmodmap
+    fd
   ];
 }
