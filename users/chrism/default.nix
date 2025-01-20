@@ -10,7 +10,7 @@ in
   };
 
   nix.settings.trusted-users = [ "chrism" ];
-  
+
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;

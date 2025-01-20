@@ -26,9 +26,9 @@ in
   programs.zsh = {
     shellAliases = shellAliases;
     sessionVariables = {
-      MFA_DEVICE="Bitwarden";
-      FXDEV_USE_ZSH="1";
-    };
+      FXDEV_USE_ZSH="1"; 
+      FXDEV_LOG_DEPLOYS="1";
+   };
   };
 
   programs.bash = {
