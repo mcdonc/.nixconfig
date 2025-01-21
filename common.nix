@@ -484,5 +484,6 @@ in
     xorg.xkbcomp
     xorg.xmodmap
     fd
+    shellcheck
   ];
 }
