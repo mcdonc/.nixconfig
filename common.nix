@@ -1,6 +1,7 @@
 { config
 , pkgs
 , system
+, inputs
 , pkgs-olive
 , pkgs-py36
 , pkgs-py37
@@ -485,5 +486,6 @@ in
     xorg.xmodmap
     fd
     shellcheck
+    inputs.isd.packages."${system}".default
   ];
 }

@@ -18,6 +18,7 @@
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
+    isd.url = "github:isd-project/isd";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # agenix.url = "github:ryantm/agenix";
     # nur.url = "github:nix-community/NUR";
@@ -54,7 +55,7 @@
         bigger-darwin = inputs.nixtheplanet.legacyPackages."${system}".makeDarwinImage {
           diskSizeBytes = 100000000000;
         };
-        inherit nixgl-olive nixgl-unstable system;
+        inherit nixgl-olive nixgl-unstable system inputs;
       };
 
       shared-modules = [
