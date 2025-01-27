@@ -30,7 +30,9 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
 
   hardware.nvidia.prime.offload.enable = lib.mkForce
     (!config.hardware.nvidia.prime.sync.enable);
-  hardware.nvidia.prime.sync.enable = lib.mkForce false;
+
+  # to allow sleep
+  hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
 }
 
