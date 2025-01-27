@@ -153,11 +153,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1737828490,
-        "narHash": "sha256-V2uXWc2L25P4Dtfrlb0GMR3vqKclFaPieSz3lA6Z4G8=",
+        "lastModified": 1737906146,
+        "narHash": "sha256-Mjw+78n0oAT5lZfGI+d7QMPdqEGcBfDz13XlGCXfNnE=",
         "owner": "isd-project",
         "repo": "isd",
-        "rev": "591eb04e8d50576ae6dc7ea435664ccb52e82726",
+        "rev": "01ffd8464018d08c4e1d44dc06b4dc2edec1742b",
         "type": "github"
       },
       "original": {
@@ -378,11 +378,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1737746512,
-        "narHash": "sha256-nU6AezEX4EuahTO1YopzueAXfjFfmCHylYEFCagduHU=",
+        "lastModified": 1737885589,
+        "narHash": "sha256-Zf0hSrtzaM1DEz8//+Xs51k/wdSajticVrATqDrfQjg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "825479c345a7f806485b7f00dbe3abb50641b083",
+        "rev": "852ff1d9e153d8875a83602e03fdef8a63f0ecf8",
         "type": "github"
       },
       "original": {
