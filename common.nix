@@ -487,5 +487,6 @@ in
     fd
     shellcheck
     inputs.isd.packages."${system}".default
+    loccount
   ];
 }
