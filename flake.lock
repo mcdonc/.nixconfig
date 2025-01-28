@@ -153,11 +153,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1737961863,
-        "narHash": "sha256-OTkGVz75+CuRnwng+fwdv0LuRzDX5TesFMAN5uRjOaI=",
+        "lastModified": 1738047527,
+        "narHash": "sha256-LkiDTiWM+PupXSsw6SUs4PqIwgSAWZxnuPXAE6T7Z0Q=",
         "owner": "isd-project",
         "repo": "isd",
-        "rev": "9c1a95c5cc66fa847f46e5f76c71022daf5ec1fa",
+        "rev": "369fd55c0e57079f5eca2291c013f74a5dcf3c10",
         "type": "github"
       },
       "original": {
