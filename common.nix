@@ -488,5 +488,6 @@ in
     shellcheck
     inputs.isd.packages."${system}".default
     loccount
+    lazydocker
   ];
 }
