@@ -333,7 +333,7 @@ in
     qjackctl
     odin2
     freepats
-    helm
+    #helm
     #distrho
     calf
     x42-plugins
@@ -496,5 +496,10 @@ in
     inputs.isd.packages."${system}".default
     loccount
     lazydocker
+
+    # for testing ARC
+    # kind # kubernetes
+    # kubernetes-helm
+    # kubectl
   ];
 }
