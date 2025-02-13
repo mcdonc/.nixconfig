@@ -1,3 +1,4 @@
+
 { pkgs, lib, inputs, system, config, username, ... }:
 let
   shellAliases = {
@@ -29,6 +30,8 @@ let
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 in
 {
+  nix.enable = false; # determinate
+
   homebrew = {
     enable = true;
     casks = [
@@ -72,9 +75,6 @@ in
 
   system.keyboard.enableKeyMapping = true;
   system.keyboard.remapCapsLockToControl = true;
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
@@ -169,6 +169,7 @@ in
         epkgs.dts-mode
         epkgs.rust-mode
         epkgs.nickel-mode
+        epkgs.terraform-mode
       ];
 
       home.file.".emacs.d" = {
