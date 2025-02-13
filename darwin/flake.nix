@@ -42,19 +42,23 @@
     {
       darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
       };
       darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
       };
       darwinConfigurations."macvm-52" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
       }; 
       darwinConfigurations."macvm-keith" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; };
+        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
       };
-   };
+      darwinConfigurations."GSLAL0424050006" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-arm ];
+        specialArgs = { inherit inputs; system="aarch64-darwin"; username="cpmcdono";};
+      };
+};
 }

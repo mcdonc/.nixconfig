@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, system, config, ... }:
+{ pkgs, lib, inputs, system, config, username, ... }:
 let
   shellAliases = {
     # dont display lines > 200 chars long
@@ -19,7 +19,6 @@ let
   };
 
   zshDotDir = ".config/zsh";
-  username = "chrism";
   homedir = "/Users/${username}";
   emacspkg =
     config.home-manager.users."${username}".programs.emacs.finalPackage;
@@ -33,11 +32,10 @@ in
   homebrew = {
     enable = true;
     casks = [
-      "google-chrome"
-      "firefox"
+      #"google-chrome"
+      #"firefox"
       "bitwarden"
       "iterm2"
-      "bitwarden"
       #"displayplacer"
       #"betterdisplay"
     ];
@@ -71,6 +69,9 @@ in
     # NSGlobalDomain.InitialKeyRepeat = 2;
     NSGlobalDomain."com.apple.swipescrolldirection" = false;
   };
+
+  system.keyboard.enableKeyMapping = true;
+  system.keyboard.remapCapsLockToControl = true;
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
