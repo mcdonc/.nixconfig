@@ -19,10 +19,10 @@
 ;;Normal font sizing (emacsclient)
 (setq default-frame-alist '((width . 80)
                            (height . 34)
-                           (font . "UbuntuMono Nerd Font Mono-18")
+                           (font . "UbuntuMono Nerd Font Mono-22")
                            (vertical-scroll-bars . nil)))
 
-(set-frame-font "UbuntuMono Nerd Font Mono-18" nil t)
+(set-frame-font "UbuntuMono Nerd Font Mono-22" nil t)
 
 (setq show-trailing-whitespace t)
 (setq-default indent-tabs-mode nil)

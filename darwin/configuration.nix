@@ -39,7 +39,7 @@ in
       #"displayplacer"
       #"betterdisplay"
     ];
-    #onActivation.cleanup = "zap";
+    onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
   };
