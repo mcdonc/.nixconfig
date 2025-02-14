@@ -69,7 +69,7 @@ If your system is Intel instead of Apple Silicon, use:
 
 Replace ``my-macs-hostname`` with your Mac's hostname.
 
-Then edit ``configuration.nix`` and change all the mentions of ``chrism`` to
+Then edit ``flake.nix`` and change all the mentions of ``chrism`` to
 your username, and possibly email addresses.  Also change the SSH pubkeys to
 the one(s) you use.
 
