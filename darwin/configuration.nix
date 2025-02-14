@@ -39,6 +39,7 @@ in
       #"firefox"
       "bitwarden"
       "iterm2"
+      "docker"
       #"displayplacer"
       #"betterdisplay"
     ];
