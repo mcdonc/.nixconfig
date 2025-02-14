@@ -40,8 +40,6 @@ in
       "bitwarden"
       "iterm2"
       "docker"
-      #"displayplacer"
-      #"betterdisplay"
     ];
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
