@@ -55,7 +55,7 @@ other ones, e.g., if your system is Apple Silicon:
 
       darwinConfigurations."my-macs-hostname" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-arm ];
-        specialArgs = { inherit inputs; system="aarch64-darwin";};
+        specialArgs = { inherit inputs; system="aarch64-darwin"; username="chrism"};
       };
 
 If your system is Intel instead of Apple Silicon, use:
@@ -64,14 +64,14 @@ If your system is Intel instead of Apple Silicon, use:
 
       darwinConfigurations."my-macs-hostname" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system="x86_64-darwin";};
+        specialArgs = { inherit inputs; system="x86_64-darwin"; username="my-sername"};
       };
 
-Replace ``my-macs-hostname`` with your Mac's hostname.
+Replace ``my-macs-hostname`` with your Mac's hostname.  Replace ``my-username``
+with your UNIX username,
 
-Then edit ``flake.nix`` and change all the mentions of ``chrism`` to
-your username, and possibly email addresses.  Also change the SSH pubkeys to
-the one(s) you use.
+Then edit ``configuration.nix`` and change the SSH pubkeys to the one(s) you
+use.
 
 For a more general overview, see
 https://www.youtube.com/watch?v=Z8BL8mdzWHI&t=282s&pp=ygUKbml4LWRhcndpbg%3D%3D
