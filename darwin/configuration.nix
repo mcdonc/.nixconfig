@@ -160,6 +160,7 @@ in
         epkgs.doom-modeline
         epkgs.all-the-icons
         epkgs.all-the-icons-dired
+        epkgs.nerd-icons
         epkgs.magit
         epkgs.markdown-mode
         epkgs.markdown-preview-mode
