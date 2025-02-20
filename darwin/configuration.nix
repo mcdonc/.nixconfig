@@ -63,6 +63,7 @@ in
     pkgs.minicom
     pkgs.netcat
     pkgs.htop
+    pkgs.terraform
   ];
 
   system.defaults = {
