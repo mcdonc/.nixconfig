@@ -34,16 +34,29 @@ in
 
   homebrew = {
     enable = true;
+    brews = [
+      # for quickemu
+      "bash"
+      "cdrtools"
+      "coreutils"
+      "jq"
+      "python3"
+      "qemu"
+      "usbutils"
+      "samba"
+      "socat"
+      "swtpm"
+      "zsync"
+      # /for quickemu
+    ];
     casks = [
       #"google-chrome"
       #"firefox"
       "bitwarden"
       "iterm2"
       "docker"
-      # for quickemu, but these are formulae, not casks
-      # "bash" "cdrtools" "coreutils" "jq" "python3" "qemu" "usbutils" "samba" "socat" "swtpm" "zsync"
     ];
-    onActivation.cleanup = "zap";
+    #onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
   };
