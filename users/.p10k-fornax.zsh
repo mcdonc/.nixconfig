@@ -1692,11 +1692,18 @@
   }
 
   function prompt_fornax_devenv() {
-    if [ -z "$FXDEV" ]; then
+    if [ -z "$FXDEV_PROFILE" ]; then
       return
     fi
-    p10k segment -b 226 -f red -i $'\uF197'
+    p10k segment -b 226 -f red -i $'\uF197' -t $FXDEV_PROFILE
   }
+
+  # function prompt_fxdev_profile() {
+  #   if [ -z "$FXDEV_PROFILE" ]; then
+  #     return
+  #   fi
+  #   p10k segment -b green -i $'\uE641' -t $FXDEV_PROFILE
+  # }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
   # is to generate the prompt segment for display in instant prompt. See
