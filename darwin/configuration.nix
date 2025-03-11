@@ -1,5 +1,5 @@
-
 { pkgs, lib, inputs, system, config, username, ... }:
+
 let
   shellAliases = {
     # dont display lines > 200 chars long
@@ -28,9 +28,16 @@ let
   '';
   zshtheme =
     "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+
 in
 {
+
   nix.enable = false; # determinate
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "emacs-with-packages-29.4"
+    "emacs-29.4"
+  ];
 
   homebrew = {
     enable = true;
@@ -127,6 +134,7 @@ in
   };
 
   home-manager = {
+
     users."${username}" = {
       home.username = username;
       home.homeDirectory = homedir;
@@ -156,8 +164,9 @@ in
       programs.dircolors.enable = true;
 
       programs.emacs.enable = true;
+      programs.emacs.package = pkgs.emacs29;
       programs.emacs.extraPackages = epkgs: [
-        epkgs.nix-mode
+#        epkgs.nix-mode
         epkgs.nixpkgs-fmt
         epkgs.flycheck
         epkgs.json-mode
@@ -167,17 +176,17 @@ in
         epkgs.smart-tabs-mode
         epkgs.whitespace-cleanup-mode
         epkgs.flycheck-pyflakes
-        epkgs.flycheck-pos-tip
+        #epkgs.flycheck-pos-tip
         epkgs.nord-theme
         epkgs.nordless-theme
         epkgs.vscode-dark-plus-theme
-        epkgs.doom-modeline
+#        epkgs.doom-modeline
         epkgs.all-the-icons
         epkgs.all-the-icons-dired
         epkgs.nerd-icons
-        epkgs.magit
+        #epkgs.magit
         epkgs.markdown-mode
-        epkgs.markdown-preview-mode
+        #epkgs.markdown-preview-mode
         epkgs.gptel
         pkgs.emacs-all-the-icons-fonts
         epkgs.yaml-mode
@@ -185,7 +194,7 @@ in
         epkgs.dts-mode
         epkgs.rust-mode
         epkgs.nickel-mode
-        epkgs.terraform-mode
+        #epkgs.terraform-mode
       ];
 
       home.file.".emacs.d" = {
