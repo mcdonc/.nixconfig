@@ -69,7 +69,7 @@
 (require 'font-core)
 (require 'dired)
 (require 'browse-url)
-(require 'multiple-cursors)
+;(require 'multiple-cursors)
 
 ;; set up multiple cursor mode like vs code
 
@@ -356,7 +356,7 @@
   "Hide the Emacs 'Options' menu."
   (define-key global-map [menu-bar options] nil))
 
-(setq gptel-model "gpt-4")
+;(setq gptel-model "gpt-4")
 
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20

@@ -164,9 +164,9 @@ in
       programs.dircolors.enable = true;
 
       programs.emacs.enable = true;
-      programs.emacs.package = pkgs.emacs29;
+      #programs.emacs.package = pkgs.emacs29;
       programs.emacs.extraPackages = epkgs: [
-#        epkgs.nix-mode
+        epkgs.nix-mode
         epkgs.nixpkgs-fmt
         epkgs.flycheck
         epkgs.json-mode
@@ -176,17 +176,25 @@ in
         epkgs.smart-tabs-mode
         epkgs.whitespace-cleanup-mode
         epkgs.flycheck-pyflakes
-        #epkgs.flycheck-pos-tip
+        epkgs.pos-tip # required by flycheck pos-tip
+        epkgs.flycheck-pos-tip
         epkgs.nord-theme
         epkgs.nordless-theme
         epkgs.vscode-dark-plus-theme
-#        epkgs.doom-modeline
+        epkgs.s # required by shrink-path
+        epkgs.f # required by shrink-path
+        epkgs.shrink-path # required by doom-modeline
+        epkgs.doom-modeline
         epkgs.all-the-icons
         epkgs.all-the-icons-dired
         epkgs.nerd-icons
-        #epkgs.magit
+        epkgs.with-editor # required by magit
+        epkgs.llama # required by magit
+        epkgs.magit
+        epkgs.websocket # required by markdown-preview mode
+        epkgs.web-server # required by markdown-preview mode
         epkgs.markdown-mode
-        #epkgs.markdown-preview-mode
+        epkgs.markdown-preview-mode
         epkgs.gptel
         pkgs.emacs-all-the-icons-fonts
         epkgs.yaml-mode
@@ -194,7 +202,8 @@ in
         epkgs.dts-mode
         epkgs.rust-mode
         epkgs.nickel-mode
-        #epkgs.terraform-mode
+        epkgs.hcl-mode # required by terraform-mode
+        epkgs.terraform-mode
       ];
 
       home.file.".emacs.d" = {
