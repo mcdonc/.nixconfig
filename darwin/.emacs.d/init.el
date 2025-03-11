@@ -60,8 +60,8 @@
 (require 'uniquify)
 (require 'nxml-mode)
 (require 'saveplace)
-;(require 'auto-complete-config)
-;(require 'auto-complete)
+(require 'auto-complete-config)
+(require 'auto-complete)
 (require 'compile)
 (require 'web-mode)
 (require 'auth-source)
@@ -133,8 +133,8 @@
 ; dont ask if we should follow symlinks
 (setq vc-follow-symlinks t)
 
-;(require 'doom-modeline)
-;(doom-modeline-mode 1)
+(require 'doom-modeline)
+(doom-modeline-mode 1)
 
 (setq save-place-file "~/.emacs.d/saved-places")
 (setq-default save-place t)
