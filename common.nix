@@ -496,6 +496,7 @@ in
     inputs.isd.packages."${system}".default
     loccount
     lazydocker
+    rst2pdf
 
     # for testing ARC
     # kind # kubernetes
