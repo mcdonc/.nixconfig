@@ -104,6 +104,7 @@ let
   zshDotDir = ".config/zsh";
 
   shellAliases = {
+    fxdevenv = "export FXDEV_CHDIR=\"`pwd`\"; cd ~/projects/fornax/fxdevenv; devenv shell";
     swnix = "sudo nixos-rebuild switch --verbose --show-trace";
     drynix = "sudo nixos-rebuild dry-build --verbose --show-trace";
     bootnix = "sudo nixos-rebuild boot --verbose --show-trace";
