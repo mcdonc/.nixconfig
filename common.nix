@@ -497,6 +497,8 @@ in
     loccount
     lazydocker
     rst2pdf
+    go
+    expect
 
     # for testing ARC
     # kind # kubernetes
