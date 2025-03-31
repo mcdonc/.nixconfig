@@ -10,7 +10,7 @@ let
     edit = "${emacspkg}/bin/emacsclient -n -c";
     restartemacs =
       "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
-    fxdevenv = "export FXDEV_CHDIR=\"`pwd`\"; cd ~/projects/fornax/fxdevenv; devenv shell";
+    fxdevenv = "export FXDEV_CHDIR=\"`pwd`\"; cd ~/projects/fornax/fxdevenv; devenv shell; cd $FXDEV_CHDIR; unset FXDEV_CHDIR";
   };
 
   sessionVariables = {
