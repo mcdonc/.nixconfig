@@ -1,3 +1,4 @@
+
 args@{ config, pkgs, lib, nixos-hardware, ... }:
 {
   imports = [
@@ -8,7 +9,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/vmount.nix
-#    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ./roles/backupsource
     ../common.nix
     (
@@ -17,6 +18,17 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
       )
     )
   ];
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      START_CHARGE_THRESH_BAT0 = lib.mkForce "85";
+      STOP_CHARGE_THRESH_BAT0 = lib.mkForce "99";
+      # rtl8153 / tp-link ue330 quirk for USB ethernet
+      USB_DENYLIST = "2357:0601 0bda:5411";
+    };
+  };
 
   system.stateVersion = "22.05";
 

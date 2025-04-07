@@ -499,6 +499,7 @@ in
     rst2pdf
     go
     expect
+    pbzip2
 
     # for testing ARC
     # kind # kubernetes
