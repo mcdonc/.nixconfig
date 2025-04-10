@@ -113,7 +113,7 @@ in
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
 
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Denver";
 
   hardware.bluetooth.enable = true;
   hardware.enableAllFirmware = true;
