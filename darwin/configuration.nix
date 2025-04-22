@@ -63,6 +63,7 @@ in
       "bitwarden"
       "iterm2"
       "docker"
+      "discord"
     ];
     #onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
@@ -84,7 +85,6 @@ in
     pkgs.minicom
     pkgs.netcat
     pkgs.htop
-    pkgs.terraform
   ];
 
   system.defaults = {
