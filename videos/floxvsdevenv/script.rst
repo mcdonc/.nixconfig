@@ -17,7 +17,8 @@ Similarities
 - Both improve software deployment repeatability for development and
   deployment.  Think npm lockfiles but for every package you'll ever need.
 
-- Both are developer environment builders and a frontend to use Nix packages.
+- Both are development environment builders and a frontend to use Nix packages,
+  useful for creating repeatable builds that your team can share.
 
 - Both are in competition with Dockerfiles and Docker Compose.
 
@@ -36,11 +37,13 @@ Similarities
 - Both primarily written in Rust.  Devenv went from bash to Python to Rust.
   Seems like Flox started in Rust.
 
-- Declarative config: flox [install] - > devenv "packages."
+- Both support declarative configuration.
 
-- Declarative: flox [vars] -> envenv "env."
+  - Declarative config: flox [install] - > devenv "packages."
 
-- Declarative: flox [hook] -> devenv "enterShell"/tasks
+  - Declarative: flox [vars] -> envenv "env."
+
+  - Declarative: flox [hook] -> devenv "enterShell"/tasks
 
 
 Differences
@@ -49,23 +52,42 @@ Differences
 Neutral
 _______
 
+- "flox init" creates an environment named after the parent directory.  The
+  environment has a name.  Because devenv environments aren't composed from
+  other devenv environments, "devenv init" is similar but not exactly the same;
+  a devenv checkout doesn't really have a "name."
+
 - Flox hides Nix entirely via imperative commands and in a second level editing
   a "manifest.toml".  Devenv can do something similar via "ad-hoc
   environments," but in order to use devenv fully you need to know some Nix and
-  you need to commit to declaratively defining config.  Devenv also lets you
-  sorta edit a bit of the environment in a YAML file and do that imperatively
-  but it's not much help in reality.
+  you need to commit to declaratively defining config.  Devenv does let you
+  sorta edit a bit of the environment in a YAML file imperatively but it's not
+  much help in reality.
 
 - Flox tries hard to allow you to do imperative configuration.  Devenv not so
   much.  Immediacy of program availability.
 
-- "flox init" creates an environment named after the parent directory.  Because
-  devenv environments aren't composed on top of each other, "devenv init" is
-  similar but not exactly the same.
-
-  
 Point: Flox
 ___________
+
+- Small but important bits from a team-buyin standpoint.
+
+  - In flox, files are hidden in .flox directory, devenv's files must be
+    visible to everyone at the root of the checkout directory.
+
+  - flox attempts to invoke your own shell, while devenv dumps you into a bash
+    shell.  It is possible to invoke your own shell when devenv shell is
+    called, but I didn't find it particularly easy.
+
+  - flox search is fast.  devenv search is slow and requires that you be cd'ed
+    into the root of the devenv.
+
+- "flox search"/"flox show"/"flox install" allows you to choose a package
+  version.  While it's possible to do some reacharounds to select a specific
+  package version using devenv, it's much less straightforward and requires
+  advanced knowledge (overlays, specific hashes of nixpkgs).  Never needing to
+  know how to do this this is probably the most helpful feature of Flox
+  vs. devenv.
 
 - "flox search" helps you know which packages are useful on which OS, not so
   much on devenv; devenv mostly wraps the search that Nix has, which is pretty
@@ -74,59 +96,87 @@ ___________
 - "flox list" shows all the package versions installed into an environment.  No
   real equivalent in devenv.
 
-- Devenv dumps you into a bash shell.  Flox does not, it dumps you into your
-  existing shell as the subshell.
-
-- devenv really wants you to be cd'ed into the directory (the DEVENV_ROOT) to
-  execute various commands.  flox no so much, which is good.
-
-
 Point: Devenv
 _____________
 
-- Flox environments are composed additively.  You run "flox activate" multiple
-  times, e.g. once to install frontend packages and hooks for the frontend,
-  once to install backend packages and hooks.  This isn't really how devenv
-  works.  In devenv, an environment is composed from a single devenv.nix,
-  although you can break it into bits using "profiles" which are thin wrappers
-  around Nix conditions (e.g. frontend and backend).  Flox seems to believe
-  that people imperatively find problems and solve them without switching
-  context out of the flow of the commands they're excuting in the shell, and
-  seem to believe that people ideally compose things this way.  I don't
-  personally work like this, so it's not much help to me; I chose Nix for a
-  reason, and that reason was a config file that I actually edited and owned.
 
-- You inherit guru code in Flox via an environment, much as you do when you
-  attempt to compose a Docker environment from multiple Dockerfiles (e.g. FROM
-  python:3 AS base), although it's not really a perfect analogy.  In devenv,
-  you inherit guru code in devenv via a "language" or a "service" and compose
-  the environment yourself from them.  I prefer the latter because there is
-  exactly one source of truth.
+- Devenv allows you to generate scripts that pull in ancillary packages from
+  Nix that won't pretend to work outside of the active environment.  Very
+  powerful, maybe the best bit of devenv on a day-to-day basis.  In devenv
+  you're not just choosing the versions of things that other people might
+  deliver, you're composing your own extensions too via Nix and it's turtles
+  all the way down.
 
-- Devenv "tasks" allow you to hook into the lifecycle of the environment more
-  precisely.
+- Devenv provides options that set up common things for a particular language
+  (e.g. Python, Haskell, Rust, many others) via its "language." features.
+
+- Devenv has prechewed defintions of "services" e.g. postgres, kafka, redis
+  that will start preconfigured processes for you, allowing you to specify
+  specific overrides as necessary.
+
+- You can also define your own process commands.
 
 - Flox doesn't have much of a service management component; devenv does via
   "processes." and various process mangager integrations
   (e.g. process-compose).
 
-- Devenv allows you to define scripts that pull in ancillary packages from Nix
-  that won't pretend to work outside of the active environment.  Very powerful,
-  maybe the best bit of devenv on a day-to-day basis.
-
-- Devenv, because it holds more fidelity with Nix than Flox does, documents how
-  to override package versions via overlays.
-
 - Devenv provides configuration for lots of git hooks, no real similar
   integration in Flox.
 
-- "Hub"-ness.  "flox pull"
+- Devenv "tasks" allow you to hook into the lifecycle of the environment more
+  precisely (tasks are run when the environment is started asynchronously).
 
-- "The flox catalog".  Something like DockerHub.  Flox the company provides the
-  catalog.  Frontend for nixpkgs.  No non-cached packages?  This is the bit
-  that makes me mort uncomfortable about Flox.  You upload your environments to
-  it.  Maybe some lockin.  Devenv is produced by the same folks who produce
-  Cachix, but "flox push" is just "git push" in devenv.
+- Composition
+
+  - Flox environments are composed additively.  You run "flox activate"
+    multiple times, e.g. once to install frontend packages and hooks for the
+    frontend, once to install backend packages and hooks.
+
+    This isn't really how devenv works.  In devenv, an environment is composed
+    from a single devenv.nix, although you can break it into bits using
+    "profiles" which are thin wrappers around Nix conditions (e.g. frontend and
+    backend).
+
+  - Flox seems to believe that people imperatively find problems and
+    solve them without switching context out of the flow of the commands
+    they're excuting in the shell, and seem to believe that people ideally
+    compose things this way.  I don't personally work like this, so it's not
+    much help to me; I chose Nix for a reason, and that reason was that it
+    wasn't at all imperative; instead it was always via a config file that I
+    actually edited and owned.
+
+  - You inherit guru code in Flox via an environment, much as you do when you
+    attempt to compose a Docker environment from multiple Dockerfiles
+    (e.g. FROM python:3 AS base), although it's not really a perfect analogy.
+    In devenv, you inherit guru code in devenv via a "language" or a "service"
+    and compose the environment yourself from them.  I prefer the latter
+    because there is exactly one source of truth.  The compose an environment
+    from several others model doesn't really fit my brain, but it might fit
+    yours.
+
+- Concerns about lockin and freshness make me most uncomfortable about Flox:
+
+  - The backing services for "flox search" and "flox install" (I think these
+    are referred to as the "flox catalog") are provided solely by Flox the
+    company.  If Flox-the-company goes away, someone else will need to stand
+    these services up.  Devenv just uses nixpkgs, and there are well understood
+    ways to set up a nixpkgs cache.  The flox catalog code is probably open
+    source, but I don't know anyone who would know how to stand one up.
+
+  - The flox catalog needs to ingest nixpkgs and reindex it to be consumable by
+    the flox CLI, so there is bound to be some delay between a package being
+    available in Nix and one being available in Flox.
+
+  - Binary cached versions only via the catalog?  In devenv, as in Nix, I can
+    use a source-only derivation for anything I like as long as I am willing to
+    recompile it.  This doesn't appear possible in Flox.
+
+  - FloxHub.  Something like DockerHub.  You upload your environment configs to
+    it.  Your team shares these.  It's the monetization strategy for Flox.
+    
+  - Devenv hews much closer to the Nixy way of doing things, and because
+    environments are not composed like Flox, there just is no need or
+    oppportunity for a DevenvHub.  It's all just Git.
 
 Unknown
 _______
@@ -136,6 +186,16 @@ _______
 Conclusion
 __________
 
-- Flox is more SF, Devenv is more Lubjiana.  But both are a step forward!  Only
-  the market can decide.  Whichever one you prefer, it's hard to lose, but make
-  no mistake that the market will pick the one you like the least, or neither.
+- Flox is slicker, more marketing polish (Flox is more SF, Devenv is more
+  Lubjiana).
+
+- Flox is better at hiding Nix, and better at allowing you to easily choose
+  package versions.  Flatter learning curve.
+
+- Devenv, because it doesn't attempt to hide Nix to the same extent, is more
+  powerful, and likely more futureproof.
+
+- If I think I'm on a team that won't accept seeing any Nix at all, I might
+  bust out Flox.  Otherwise it's always gonna be devenv.
+  
+- But both are a step forward!
