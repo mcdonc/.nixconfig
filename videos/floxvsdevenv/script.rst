@@ -1,5 +1,5 @@
-NixOS XXX: Flox vs. Devenv
-==========================
+NixOS 98: Flox vs. Devenv
+=========================
 
 - Companion to video at 
   
@@ -9,7 +9,7 @@ NixOS XXX: Flox vs. Devenv
 Video Script
 ------------
 
-Let's hit it.  I got opinions.
+Been a while but I got opinions.
 
 Similarities
 ++++++++++++
