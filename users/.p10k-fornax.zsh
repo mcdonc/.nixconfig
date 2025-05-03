@@ -1692,10 +1692,11 @@
   }
 
   function prompt_fornax_devenv() {
-    if [ -z "$FXDEV_PROFILE" ]; then
-      return
+    if [ -n "$FXDEV_PROFILE" ]; then
+      p10k segment -b 226 -f red -i $'\uF197' -t $FXDEV_PROFILE
+    elif [ -n "$DEVENV_ROOT" ]; then
+      p10k segment -b 015 -f blue -i $'\uF4E6' -t devenv
     fi
-    p10k segment -b 226 -f red -i $'\uF197' -t $FXDEV_PROFILE
   }
 
   # function prompt_fxdev_profile() {
