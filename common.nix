@@ -225,8 +225,8 @@ in
     startAgent = true; # starts a systemd user service
   };
 
-  programs.direnv.enable = true;
-  programs.direnv.enableZshIntegration = true;
+  #programs.direnv.enable = true;
+  #programs.direnv.enableZshIntegration = true;
 
   # enable nix-ld for pip and friends
   #programs.nix-ld.enable = true;
