@@ -73,6 +73,8 @@ in
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
       trusted-users = [ "root" "@wheel" ];
+      trusted-substituters = [ "https://cache.flox.dev" ];
+      trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
       #sandbox = "relaxed";
     };
     gc = {
@@ -223,6 +225,16 @@ in
     startAgent = true; # starts a systemd user service
   };
 
+  #programs.direnv.enable = true;
+  #programs.direnv.enableZshIntegration = true;
+
+  programs.htop.enable = true;
+  programs.htop.settings = {
+    show_program_path = 0;
+    hide_kernel_threads = 1;
+    hide_userland_threads = 1;
+  };
+
   # enable nix-ld for pip and friends
   #programs.nix-ld.enable = true;
 
@@ -277,7 +289,6 @@ in
     ripgrep
     btop
     killall
-    htop
     handbrake
     mpv
     vlc

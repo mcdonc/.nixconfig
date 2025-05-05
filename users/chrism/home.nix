@@ -26,7 +26,6 @@ in
   programs.zsh = {
     shellAliases = shellAliases;
     sessionVariables = {
-      FXDEV_USE_ZSH="1"; 
       FXDEV_LOG_DEPLOYS="1";
    };
   };
