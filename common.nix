@@ -228,6 +228,13 @@ in
   #programs.direnv.enable = true;
   #programs.direnv.enableZshIntegration = true;
 
+  programs.htop.enable = true;
+  programs.htop.settings = {
+    show_program_path = 0;
+    hide_kernel_threads = 1;
+    hide_userland_threads = 1;
+  };
+
   # enable nix-ld for pip and friends
   #programs.nix-ld.enable = true;
 
@@ -282,7 +289,6 @@ in
     ripgrep
     btop
     killall
-    htop
     handbrake
     mpv
     vlc
