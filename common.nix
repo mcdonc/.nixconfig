@@ -511,6 +511,7 @@ in
     go
     expect
     pbzip2
+    gnome-firmware
 
     # for testing ARC
     # kind # kubernetes
