@@ -512,6 +512,7 @@ in
     expect
     pbzip2
     gnome-firmware
+    dysk
 
     # for testing ARC
     # kind # kubernetes
