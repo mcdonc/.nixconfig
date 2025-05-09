@@ -154,7 +154,7 @@ in
   services.xserver.dpi = 96;
   services.libinput.enable = true; # touchpad
   fonts.packages = [
-           pkgs.nerd-fonts.ubuntu-mono
+    pkgs.nerd-fonts.ubuntu-mono
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
