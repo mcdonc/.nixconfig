@@ -19,6 +19,8 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     )
   ];
 
+  systemd.tpm2.enable = false;
+  
   # roadwork setup
   #
   #services.tlp = {
