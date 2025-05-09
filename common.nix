@@ -340,6 +340,7 @@ in
     #pkgs-olive.olive-editor # 0.1.2
     olive-editor # 0.2
     gptfdisk # "sgdisk"
+    cfdisk # curses fdisk
     ardour
     qjackctl
     odin2
