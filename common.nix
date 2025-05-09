@@ -54,8 +54,8 @@ in
   imports = [
     ./pkgs/cachix.nix
     ./pkgs/dvtranscode.nix
-    ./pkgs/rdio-scanner
-    ./pkgs/trunk-recorder
+    # ./pkgs/rdio-scanner
+    # ./pkgs/trunk-recorder
   ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
