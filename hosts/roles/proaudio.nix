@@ -24,9 +24,15 @@ in
     ../../pkgs/xruncounter.nix
   ];
   
+  environment.variables = {
+    # override musnix to add $HOME/.vst to LXVST_PATH (for yabridge)
+    LXVST_PATH = "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
+  };
+
   environment.systemPackages = with pkgs; [
     zita-alsa-pcmi # alsa_delay
     jack-example-tools # jack_iodelay
+
     qpwgraph
     pavucontrol
     yabridge
@@ -43,13 +49,6 @@ in
   musnix.rtirq.enable = true;
   musnix.rtcqs.enable = true;
   musnix.alsaSeq.enable = true;
-
-  services.pipewire.wireplumber.enable = true;
-
-  environment.variables = {
-    # override musnix to add $HOME/.vst to LXVST_PATH (for yabridge)
-    LXVST_PATH = "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
-  };
 
   # Optimized for the Edirol UA-25 USB capture device
   #
@@ -100,41 +99,43 @@ in
   # }
 
 
-  services.pipewire.extraConfig.pipewire."92-low-latency" = {
-    context.properties = {
-      default.clock.quantum = 256;
-      default.clock.min-quantum = 256;
-      default.clock.max-quantum = 512;
-    };
-    jack.properties = {
-      node.quantum = "256/48000";
-    };
-  };
+  # services.pipewire.extraConfig.pipewire."92-low-latency" = {
+  #   context.properties = {
+  #     default.clock.quantum = 256;
+  #     default.clock.min-quantum = 256;
+  #     default.clock.max-quantum = 512;
+  #   };
+  #   jack.properties = {
+  #     node.quantum = "256/48000";
+  #   };
+  # };
 
-  environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
-    text = ''
-      rule = {
-        matches = {
-          {
-            -- Matches all sources.
-            { "node.name", "matches", "alsa_input.usb-Roland_EDIROL_UA-25-00.*" },
-          },
-          {
-            -- Matches all sinks.
-            { "node.name", "matches", "alsa_output.usb-Roland_EDIROL_UA-25-00.*" },
-          },
-        },
-        apply_properties = {
-          -- latency.internal.rate is same as ProcessLatency
-          ["latency.internal.rate"] = 76,
-          ["api.alsa.period-size"]   = 256,
-          ["api.alsa.period-num"]   = 3,
-          -- ["api.alsa.disable-batch"]   = true,
-        },
-      }
+  # services.pipewire.wireplumber.enable = true;
 
-      table.insert(alsa_monitor.rules, rule)
-    '';
-  };
+  # environment.etc."wireplumber/main.lua.d/52-usb-ua25-config.lua" = {
+  #   text = ''
+  #     rule = {
+  #       matches = {
+  #         {
+  #           -- Matches all sources.
+  #           { "node.name", "matches", "alsa_input.usb-Roland_EDIROL_UA-25-00.*" },
+  #         },
+  #         {
+  #           -- Matches all sinks.
+  #           { "node.name", "matches", "alsa_output.usb-Roland_EDIROL_UA-25-00.*" },
+  #         },
+  #       },
+  #       apply_properties = {
+  #         -- latency.internal.rate is same as ProcessLatency
+  #         ["latency.internal.rate"] = 76,
+  #         ["api.alsa.period-size"]   = 256,
+  #         ["api.alsa.period-num"]   = 3,
+  #         -- ["api.alsa.disable-batch"]   = true,
+  #       },
+  #     }
+
+  #     table.insert(alsa_monitor.rules, rule)
+  #   '';
+  # };
 
 }
