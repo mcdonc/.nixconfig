@@ -153,11 +153,14 @@ in
   services.xserver.enableCtrlAltBackspace = true;
   services.xserver.dpi = 96;
   services.libinput.enable = true; # touchpad
-  fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
+  fonts.packages = [
+           pkgs.nerd-fonts.ubuntu-mono
+  ];
+
   i18n.defaultLocale = "en_US.UTF-8";
 
   #sound.enable = false; # not needed for pipewire
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa = {
@@ -309,16 +312,16 @@ in
     python310
     (python311.withPackages (p:
       with p; [
-        python311Packages.pyserial # for pico-w-go in vscode
-        python311Packages.pyflakes # for emacs
-        python311Packages.flake8 # for emacs/vscode
-        python311Packages.docutils # for vscode
-        python311Packages.pygments # for vscode
-        python311Packages.black # for cmdline and vscode
-        python311Packages.tox # for... tox
-        python311Packages.build # for pypa build package
-        python311Packages.twine # for uploading to PyPI
-        python311Packages.docker
+        pyserial # for pico-w-go in vscode
+        pyflakes # for emacs
+        flake8 # for emacs/vscode
+        docutils # for vscode
+        pygments # for vscode
+        black # for cmdline and vscode
+        tox # for... tox
+        build # for pypa build package
+        twine # for uploading to PyPI
+        docker
       ]))
     python312
     python313
@@ -435,7 +438,7 @@ in
     any-nix-shell
     pico-sdk
     sdcc
-    dstat
+#    dstat
     speedtest-cli
     fast-cli
     nmap

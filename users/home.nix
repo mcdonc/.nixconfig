@@ -472,7 +472,7 @@ in
     #  zmodload zsh/zprof
     #'';
 
-    initExtra = ''
+    initContent = ''
       # be more bashy
       setopt interactive_comments bashautolist nobeep nomenucomplete \
              noautolist extended_glob
