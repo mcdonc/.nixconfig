@@ -14,6 +14,8 @@ let
 
   shellAliases = {
     code-client = "${code-client}";
+    vmbuild = "/etc/nixos/videos/composition/nixos/.vms/vmbuild.sh";
+    vmrun = "/etc/nixos/videos/composition/nixos/.vms/vmrun.sh";
   };
 
 in
