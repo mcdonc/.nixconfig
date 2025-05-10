@@ -264,7 +264,7 @@ squiggly braces *not* followed by a colon to signify an attribute set.
 
 We don't need a semicolon to terminate the function argument list because a
 function definition is not an assignment statement.  That's why it's not
-``{config, lib, pkgs, ... }:;``, for example.
+``{config, lib, pkgs, ... }:;`` or ``{config, lib, pkgs, ... };:``.
 
 We don't need a semicolon to terminate the return value of the function (an
 attribute set), because it is similarly not part of an assignment statement.
