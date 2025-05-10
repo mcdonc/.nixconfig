@@ -719,3 +719,220 @@ In the wild, ``lib.mkBefore`` and ``lib.mkAfter`` are not used as frequently as
 ``lib.mkDefault`` or ``lib.mkForce`` because they are useful and appropriate in
 a more limited set of circumstances.
 
+Tracebacks
+----------
+
+When you introduce a syntax error or assign the wrong type to a configuration
+option, or make any other manner of mistake that humans make when you change
+your configuration, you'll get a traceback when you run ``nixos-rebuild``.
+
+For example, let's inject a syntax error into a ``configuration.nix`` file:
+
+.. code-block:: nix
+
+  # configuration.nix
+  { config, lib, pkgs, ... }:
+  {
+    imports = [ ./demo.nix ];
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    networking.networkmanager.enable = true;
+    environment.systemPackages = with pkgs; [ vim ];
+  }
+
+Let's add a semicolon to the ending squiggly brace to introduce the syntax
+error:
+
+.. code-block:: nix
+
+  # configuration.nix
+  { config, lib, pkgs, ... }:
+  {
+    imports = [ ./demo.nix ];
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    networking.networkmanager.enable = true;
+    environment.systemPackages = with pkgs; [ vim ];
+  }; # this semicolon doesn't belong here
+
+When we run ``nixos-rebuild switch``, we'll be provided a traceback, which has
+at its end::
+
+  error: syntax error, unexpected ';', expecting end of file
+  at /nix/store/5lld1qw2m272giszwpx588fn0ml03jdw-source/videos/composition/nixos/configuration.nix:8:2:
+    7|   environment.shellInit = ''export MYVAR="default"'';
+    8| };
+     |  ^
+    9|
+
+Some traceback error messages are pretty easy to interpret.  This is one of
+them.  It's hinting "please remove this semicolon on this line in this file".
+
+For another common demonstration of a useful traceback provided by NixOS,
+let's use this configuration:
+
+.. code-block:: nix
+
+  # configuration.nix
+  { config, lib, pkgs, ... }:
+  {
+    imports = [ ./demo.nix ];
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = "a"; # supposed to be a boolean
+    networking.networkmanager.enable = true;
+    environment.systemPackages = with pkgs; [ vim ];
+  }
+
+When we run ``nixos-rebuild``, we'll see a traceback that ends with something
+like::
+       error: A definition for option `virtualisation.vmVariant.boot.loader.efi.canTouchEfiVariables' is not of type `boolean'. Definition values:
+       - In `/nix/store/ryka46rd7shpihpla0m8ibgl9i4n7i6q-source/videos/composition/nixos/configuration.nix': "a string"
+  
+It's letting you know that you gave ``boot.loader.efi.canTouchEfiVariables``
+(please ignore the ``virtualization.vmVariant`` prefix, that's a product of my
+demo environment) the wrong kind of value; it's a string when it should be a
+boolean.  It tells you the filename in which the offense has taken place.
+
+We can see that if you stick to the basics, Nix tracebacks generally do a
+pretty good job of telling you what and where the problem is.
+
+But when you start wading into Nix beyond the basics, commonly, you will be
+presented with tracebacks from Nix during your change/test loop that initially
+seem to have absolutely nothing whatsoever to do with any changes you made.  Or
+the information in the traceback is too terse.
+
+As an example, let's use this ``configuration.nix``:
+
+.. code-block:: nix
+
+    # configuration.nix
+    { config, lib, pkgs, ... }:
+    let
+      zshi = pkgs.stdenv.mkDerivation {
+        name="devenv-zsh-zshi";
+        src = pkgs.fetchFromGitHub {
+          owner = "romkatv";
+          repo = "zshi";
+          rev = "c9c90687448a1f0aae30d9474026de608dc90734";
+          sha256 = "sha256-OB96i93ZxKDgOqIFq1jM9l+wxAisRXtSCBcHbYDvxsI=";
+        };
+        installPhase = ''
+          mkdir -p $out/bin
+          cp zshi $out/bin/zshi
+          substituteInPlace $out/bin/zshi \
+            --replace '/usr/bin/env zsh' ${pkgs.zsh}/bin/zsh \
+            --replace 'ZDOTDIR=$tmp zsh' 'ZDOTDIR=$tmp ${pkgs.zsh}/bin/zsh'
+         ${1/2}
+        '';
+        meta = with lib; {
+          description = "ZSH -i but initial command exec'd after std zsh files";
+          homepage = "https://github.com/romkatv/zshi";
+          license = licenses.mit;
+          platforms = platforms.all;
+        };
+      };
+    in
+    {
+      imports = [ ./demo.nix ];
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+      environment.systemPackages = [ zshi ];
+    }
+
+This is more complex than any other ``configuration.nix`` we've seen so far
+because it packages up Roman Perepelitsa's zshi
+(https://github.com/romkatv/zshi), which is a handy tool that helps you run
+some abitrary configuration before invoking the zsh shell.
+
+When we run ``nixos-rebuild``, here is the last few lines of the traceback we
+get::
+
+    (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+    error: path '/nix/store/wi1m6b9j0jir84kxwfb1c091kx44g9vf-source/videos/composition/nixos/1/2' does not exist
+
+What the heck is that supposed to mean?  Well, mot much to us, really.  It
+suggests running ``nixos-rebuild`` with the ```--show-trace`` flag, so let's do
+that::
+
+        … while calling the 'derivationStrict' builtin
+         at <nix/derivation-internal.nix>:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
+
+       … while evaluating derivation 'devenv-zsh-zshi'
+         whose name attribute is located at /nix/store/yhc8a0a2mvbp8fp53l57i3d5cnz735fc-source/pkgs/stdenv/generic/make-derivation.nix:439:13
+
+       … while evaluating attribute 'installPhase' of derivation 'devenv-zsh-zshi'
+         at /nix/store/ixsbka0wp7vxd5fz8a1dqbdpr7ywgq90-source/videos/composition/nixos/configuration.nix:12:5:
+           11|     };
+           12|     installPhase = ''
+             |     ^
+           13|       mkdir -p $out/bin
+
+       error: path '/nix/store/ixsbka0wp7vxd5fz8a1dqbdpr7ywgq90-source/videos/composition/nixos/1/2' does not exist
+
+That's a little better.  it's telling us there is a problem with the
+``installPhase`` of our mkDerivation call.  And indeed as the last line of that
+string there is a line that says ``${1/2}``.  We just pasted it in from
+somewhere else mistakenly.  Removing it silences the traceback.
+
+There are far more horrific traceback situations you can wind up in.  Often
+invoking ``--show-trace`` is not helpful at all.  Sometimes there may be a bug
+in a ``nixpkgs`` module that causes a mystifying error when you supply it a
+value it doesn't expect.  Following a traceback "up the stack" is often not
+viable because of the lazy evaluation features of Nix.  It's just too long of a
+stack.
+
+So things can get challenging.  These are some of the general reasons / excuses
+for that:
+
+- When you edit ``configuration.nix``, yhou are writing code, not merely
+  editing a configuration file.
+
+- You can't directly control the order in which Nix evaluates your code.
+
+- Unlike other languages, Nix is lazily evaluated, which means that a value
+  isn't evaluated until it is absolutely necessary.
+
+- NixOS is a framework written mostly in Nix.
+
+The order in which statements are defined in your configuration files is
+largely meaningless at ``nix-rebuild`` time.  Nix doesn't descend your
+``configuration.nix`` in some line-oriented way, evaluating the first
+assignment, then the next, etc.  Your ``configuration.nix`` really isn't a
+configuration file.  It's code.
+
+Nix collects the values you provide via that code into an attribute set that
+may come from many different files, and then operates against that.
+
+The code that operates against your configuration values lives in ``nixpkgs``.
+That code won't evaluate your configuration values in the order they are
+presented in ``configuration.nix`` at all.  It instead evaluates your code in
+an order that you cannot completely control.
+
+When things are evaluated in an order you don't understand, the tracebacks you
+receive when you make a mistake may be mystifying.
+
+Nix is also lazy.  Nix, in fact, is *so damn lazy* that if you invoke
+``nixos-rebuild`` and then switch back to editing your Nix code, the changes
+you're in the process of making in your editor will influence the
+``nixos-rebuild`` run you just kicked off if you save those changes quickly
+enough.  It's that lazy.
+
+This presents a different kind of ordering issue.  Because statements are not
+evaluated eagerly, they might not be evaluated until very late in the rebuild
+process instead of when you might think they were, or should have been.  This
+can also result in impenetrable tracebacks.
+
+Meanwhile, what is evaluating your ``configuration.nix`` code?  Other Nix code
+that you didn't write.  And *all* the Nix code involved in reifying your
+configuration will show up in the traceback.  Nix is a framework.
+
+These features of Nix, combined, will eventually, invariably, wind you up in a
+place where you get tracebacks that are less understandable than the ones we've
+seen so far.  I'd suggest asking for help liberally on the NixOS Discourse when
+this happens.
+
