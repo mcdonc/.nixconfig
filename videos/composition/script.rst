@@ -1,5 +1,5 @@
-NixOS 99: Modularizing Your NixOS Config as a Mere Mortal
-=========================================================
+NixOS 99: Post-Basic NixOS Config as a Mere Mortal
+==================================================
 
 - Companion to video at ...
   
