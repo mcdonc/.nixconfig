@@ -296,7 +296,7 @@ not:
       initialPassword = "123";
       isNormalUser = true;
       extraGroups = [ "wheel" ];
-    } # a semicolon is missing here
+    } # there is a semicolon missing here
   }
 
 These differences are hard to distinguish by a human deep in the weeds.  So it
