@@ -638,8 +638,8 @@ NixOS concatenated the two values together, joined by carriage returns, then it
 has added the concatenated result to the shell init, which is injected into
 ``/etc/profile``.
 
-When we fire up the system, we'll see that the MYVAR environment variable is
-set to ``default``.  This is because ``/etc/profile`` has this in it:
+When we log in to the system system, we'll see that the ``echo $MYVAR`` returns
+``default``.  This is because ``/etc/profile`` has this in it:
 
 .. code-block:: bash
                 
