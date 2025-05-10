@@ -305,8 +305,9 @@ interactively when you are editing Nix code.
 
 ``vim`` kinda helps with this via colorization, but without extensions, it
 won't detect and point out when you've forgotten a semicolon or have too many
-squiggly braces and so forth, except through that colorization.  I'm sure
-there are extensions to vim which point out specific syntax errors in Nix code.
+squiggly braces and so forth, except through that colorization.  I'm sure there
+are extensions to vim which point out specific syntax errors in Nix code, and I
+encourage you to track them down if you're a user.
 
 I use ``emacs`` with ``nix-mode`` and ``flycheck`` and the combination does a
 pretty good job of pointing out syntax errors.
