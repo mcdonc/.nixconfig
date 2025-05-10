@@ -385,7 +385,7 @@ and ``users.users.<name>`` are some of those slots.  They are defined within
 NixOS "options" in Nixpkgs, and options have a schema. NixOS checks what you
 provide against them when you run ``nixos-rebuild``.  First NixOS composes the
 big global attribute set representing the values you've given for specific
-options, then it checks those values against the schema when you run
+options, then it checks those values against the option schemas when you run
 ``nixos-rebuild``.
 
 In our example above, neither ``password`` nor ``groups`` fits into a slot
@@ -540,9 +540,8 @@ a file that has a conflict using a boolean value instead of a list:
     networking.networkmanager.enable = false;
   }
 
-And sure enough, when we try to run ``nixos-rebuild switch`` against this
-configuration it will complain bitterly about two definitions for
-``networking.networkmanager.enable`` conflicting.
+And sure enough, ``nixos-rebuild switch`` will complain bitterly about these
+two definitions for ``networking.networkmanager.enable`` conflicting.
 
 But we can fix it by using either ``lib.mkForce`` or ``lib.mkDefault``, which
 are functions that can tell Nix the relative precedence of the value of
