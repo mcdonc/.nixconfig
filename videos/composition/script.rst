@@ -99,9 +99,9 @@ what that means in a bit) from ``configuration.nix`` and put it into a new
 Even when you use multiple files, NixOS operates against a single global
 configuration namespace.
 
-This might be confusing if you're a programmer coming from a modern dynamic
-scripting language like Python, where code in a separate file usually executes
-in its own namespace when "imported".
+This might be confusing if you're a programmer coming from a dynamic scripting
+language like Python, where code in a separate file usually executes in its own
+namespace when "imported".
 
 When a Nix file is imported by NixOS, it's not like a Python import, where the
 definitions of functions and classes in the imported code execute as the result
@@ -109,19 +109,21 @@ of the import, but thereafter those functions and classes lay around waiting to
 be used in a second step.
 
 Instead, the result of the import is to merge the NixOS configuration returned
-by the import into the single NixOS configuration namespace.  In this way, a
-Nix import is more like a C ``#include`` but with some dynamic execution during
-the import, it's not just a textual include.
+by the imported file into the single NixOS configuration namespace.  In this
+way, a Nix import is more like a C ``#include`` than it is like a Python
+``import``.  Unlike a C ``#include``, it's not just a literal textual include,
+it does dynamic execution during the import.  But like a C ``#include``, the
+purpose is to pull more code into a global namespace.
 
 There is magic happening under the hood of ``imports = []`` here, but as long
 as you feed it files that have the same structure as ``configuration.nix``, you
 can largely get by ignoring it.
 
 By the way, to NixOS, the above configuration with the import of ``users.nix``
-and the above configuration without the import are *totally equivalent*.  NixOS
-doesn't care.  The resulting global namespace is the same when they are merged.
-So you can use as many or as few files as you like to compose your
-configuration, in any organization that fits your brain.
+and the above configuration without the import are *equivalent*.  NixOS doesn't
+care.  The resulting global namespace is the same when they are merged in
+almost every meaningful way.  So you can use as many or as few files as you
+like to compose your configuration, in any organization that fits your brain.
 
 In some of the following code examples, you'll see that I'm importing from a
 file named ``./demo.nix`` that I don't include the source for.  This file
@@ -228,6 +230,10 @@ example, let's take the following assignment:
 ``foo = { a = 1;}`` is also an assignment, and must be terminated with a
 semicolon.  We have two assigments above, so we have two equal signs and two
 semicolons.
+
+FYI, Nix experts tend to not call these "assignments", but instead "bindings."
+There are good technical reasons for this.  Nonetheless, I'll stick with
+"assignment" here.  It's close enough for our purposes.
 
 Confusion about when and when not to use a semicolon is made a little worse by
 Nix syntax, and its use of squiggly braces to mean multiple things, and
@@ -611,8 +617,9 @@ practice, it's not common to need to use ``mkOverride`` directly.
 Some Nix configuration string values, like ``environment.shellInit``, can
 also be influenced by Nix functions named ``lib.mkBefore`` and ``lib.mkAfter``.
 
-For example, let's try to set two differing string values for
-``environment.shellInit`` within two files:
+For example, let's try to set two differing string values for the NixOS
+configuration option named ``environment.shellInit`` (an option that adds lines
+to ``/etc/profile``) within two files:
 
 .. code-block:: nix
 
@@ -631,13 +638,15 @@ For example, let's try to set two differing string values for
   { config, lib, pkgs, ... }:
   {
     environment.shellInit = ''export MYVAR="from shellinit.nix"'';
+
   }
 
-When we fire up our system, we will find that nothing conflicted, even though
-the two files have differing values for ``environment.shellInit``.  Why not?
+When we run ``nixos-rebuild``, we will find that nothing conflicted, even
+though the two files have differing values for ``environment.shellInit``.  Why
+not?
 
-NixOS concatenated the two values together, joined by carriage returns, then it
-has added the concatenated result to the shell init, which is injected into
+NixOS concatenated the two values together, joined by linefeed characters, then
+it has added the concatenated result to the shell init, which is injected into
 ``/etc/profile``.
 
 When we log in to the system system, we'll see that the ``echo $MYVAR`` returns
@@ -682,18 +691,29 @@ the ``/etc/profile`` now has this in it:
 
 And at runtime, ``$MYVAR`` is now ``from shellinit.nix`` as a result.
 
-Although we are dealing with strings in our config, under the hood,
-``environment.shellInit`` is a list and we are just influencing the list
-ordering via a precedence via ``mkAfter``.  The list is joined with carriage
-returns in order to compose the final string that is injected into
+Although we are dealing with simple strings in our config, under the hood,
+``environment.shellInit`` is a Nix ``lines`` option.  When you provide a
+``lines`` option one or more values, NixOS collects the raw text you've
+provided to it from your various imports into an unordered list.  Then it
+orders the list.  After the list is ordered, its values are joined together
+with linefeeds to compose the final lines that are injected into
 ``/etc/profile``.
+
+In our case, we are influencing the list ordering via a precedence via
+``mkAfter`` before Nix injects it into ``/etc/profile``.  By using ``mkAfter``,
+we are telling Nix to sort this value to the bottom.
 
 ``lib.mkBefore`` is the inverse of ``lib.mkAfter``.
 
 The "after" and "before" in ``lib.mkAfter`` and ``lib.mkBefore`` are
 "before/after the default order".  Two values with the same precedence will be
-ordered in the list in a more or less random way, or at least random to anyone
-who isn't intimately familiar with Nix module system (which I am not).
+ordered in the list in a more or less abtitrary way, or at least arbitrary to
+anyone who isn't intimately familiar with Nix module system (which I am not).
 
 ``lib.mkOrder`` is a function that ``lib.mkBefore`` and ``lib.mkAfter`` are
 based on that accepts an integer singifiying a precedence as well as the value.
+
+In the wild, ``lib.mkBefore`` and ``lib.mkAfter`` are not used as frequently as
+``lib.mkDefault`` or ``lib.mkForce`` because they are useful and appropriate in
+a more limited set of circumstances.
+
