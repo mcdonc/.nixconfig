@@ -62,7 +62,7 @@ Given that we have this ``configuration.nix``:
   }
                 
 You've decided that you want to keep the definitions of your users in a
-separate nix file that lives next to ``configuration.nix`` called
+separate file that lives next to ``configuration.nix`` called
 ``users.nix``.  Ours is not to wonder why.
 
 You can remove the ``users.users.fred`` "attribute set" (we'll talk about
@@ -264,7 +264,7 @@ squiggly braces *not* followed by a colon to signify an attribute set.
 
 We don't need a semicolon to terminate the function argument list because a
 function definition is not an assignment statement.  That's why it's not
-``{config, lib, pkgs, ... }:;`` for example.
+``{config, lib, pkgs, ... }:;``, for example.
 
 We don't need a semicolon to terminate the return value of the function (an
 attribute set), because it is similarly not part of an assignment statement.
@@ -384,18 +384,19 @@ In our example above, neither ``password`` nor ``groups`` fits into a slot
 defined by an option in Nixpkgs.  Neither has any meaning to NixOS itself,
 so when ``nixos-rebuild`` is run, we will get an error.
 
-So we can't define variables in the attribute set we're returning, we have to
-define them in the ``let .. in`` block above it.
+So we can't define variables in the attribute set we're returning, instead we
+have to define them in the ``let .. in`` block above it.
 
 ``let .. in`` blocks can be used in other places than right above the
-configuration options attribute set, but we won't think about that here.
+configuration options attribute set, but we can ignore that for the purposes of
+this video.
 
 Merging
 -------
 
-Imported NixOS configuration defined as attribute sets like this will be
-*merged* with the attribute set defined in the file doing the importing.
-Attributes that share the same root value will be merged together.
+Imported NixOS configuration defined as attribute sets will be *merged* with
+the attribute set defined in the file doing the importing.  Attributes that
+share the same root value will be merged together.
 
 For example, if you have this code in your ``configuration.nix``:
 
