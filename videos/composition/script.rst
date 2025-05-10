@@ -111,7 +111,7 @@ be used in a second step.
 Instead, the result of the import is to merge the NixOS configuration returned
 by the import into the single NixOS configuration namespace.  In this way, a
 Nix import is more like a C ``#include`` but with some dynamic execution during
-the import.  It's not just a textual include.
+the import, it's not just a textual include.
 
 There is magic happening under the hood of ``imports = []`` here, but as long
 as you feed it files that have the same structure as ``configuration.nix``, you
