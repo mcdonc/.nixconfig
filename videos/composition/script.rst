@@ -230,7 +230,7 @@ semicolon.  We have two assigments above, so we have two equal signs and two
 semicolons.
 
 Confusion about when and when not to use a semicolon is made a little worse by
-Nix syntax, and its use of squiggly brackets to mean multiple things, and
+Nix syntax, and its use of squiggly braces to mean multiple things, and
 NixOS' use of attribute sets.
 
 For example:
@@ -305,7 +305,7 @@ interactively when you are editing Nix code.
 
 ``vim`` kinda helps with this via colorization, but without extensions, it
 won't detect and point out when you've forgotten a semicolon or have too many
-squiggly brackets and so forth, except through that colorization.  I'm sure
+squiggly braces and so forth, except through that colorization.  I'm sure
 there are extensions to vim which point out specific syntax errors in Nix code.
 
 I use ``emacs`` with ``nix-mode`` and ``flycheck`` and the combination does a
