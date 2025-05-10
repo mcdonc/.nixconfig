@@ -441,8 +441,8 @@ Resolving Configuration Conflicts
 ---------------------------------
 
 Imported files will often have definitions that seemingly conflict with the
-configuration options in the file they're being imported into. But the NixOS
-module system will often be able to deconflict them.
+configuration options in the file they're being imported into. But NixOS will
+often be able to deconflict them.
 
 Let's say we have:
 
@@ -645,8 +645,7 @@ though the two files have differing values for ``environment.shellInit``.  Why
 not?
 
 NixOS concatenated the two values together, joined by linefeed characters, then
-it has added the concatenated result to the shell init, which is injected into
-``/etc/profile``.
+it injected the concatenated result into ``/etc/profile``.
 
 When we log in to the system system, we'll see that the ``echo $MYVAR`` returns
 ``default``.  This is because ``/etc/profile`` has this in it:
@@ -695,19 +694,23 @@ Although we are dealing with simple strings in our config, under the hood,
 ``lines`` option one or more values, NixOS collects the raw text you've
 provided to it from your various imports into an unordered list.  Then it
 orders the list.  After the list is ordered, its values are joined together
-with linefeeds to compose the final lines that are injected into
+with linefeeds to compose the final block of text that is injected into
 ``/etc/profile``.
 
 In our case, we are influencing the list ordering via a precedence via
 ``mkAfter`` before Nix injects it into ``/etc/profile``.  By using ``mkAfter``,
-we are telling Nix to sort this value to the bottom.
+we are telling Nix to sort our ``export MYVAR="from shellinix.nix"`` value to
+the bottom.
 
-``lib.mkBefore`` is the inverse of ``lib.mkAfter``.
+``lib.mkBefore`` is obviously the inverse of ``lib.mkAfter``.
 
 The "after" and "before" in ``lib.mkAfter`` and ``lib.mkBefore`` are
 "before/after the default order".  Two values with the same precedence will be
 ordered in the list in a more or less abtitrary way, or at least arbitrary to
-anyone who isn't intimately familiar with Nix module system (which I am not).
+anyone who isn't intimately familiar with the Nix module system (which I am
+not).  FYI, "module system" is what Nix folks call the set of code and
+conventions that does all this merging and deconflicting and schema-checking
+and whatnot.
 
 ``lib.mkOrder`` is a function that ``lib.mkBefore`` and ``lib.mkAfter`` are
 based on that accepts an integer singifiying a precedence as well as the value.
