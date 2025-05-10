@@ -457,8 +457,8 @@ Let's say we have:
     environment.systemPackages = with pkgs; [ emacs ];
   }
 
-Of note is that we have two conflicting definitions of
-``environment.systemPackages``, one in each file.
+Of note: we have two conflicting definitions of ``environment.systemPackages``,
+one in each file.
 
 In ``configuration.nix``, we have this definition:
 
