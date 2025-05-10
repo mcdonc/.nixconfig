@@ -369,7 +369,7 @@ Why doesn't this work?
 
 It might be helpful to think of it this way: within the configuration options
 attribute set (the place you're setting ``boot.loader`` options and ``users``,
-and ``evnironment.systemPackages``, etc), you are filling in predefined slots
+and ``environment.systemPackages``, etc), you are filling in predefined slots
 offered up by NixOS configuration options.
 
 ``boot.loader.systemd-boot.enable``, ``boot.loader.efi.canTouchEfiVariables``,
