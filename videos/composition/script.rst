@@ -19,8 +19,8 @@ preemptively demystifies for you some of the other things that confused me when
 I first started.
 
 I won't be talking about the beauty of purely functional languages or laziness
-or component stores or PhD theses in this video because it turns out that NixOS
-is pretty great even for utilitarians.
+or component stores or PhD theses in this video except when necessary because
+it turns out that NixOS is pretty great even for utilitarians.
 
 Imports and The Configuration Namespace
 ---------------------------------------
@@ -883,11 +883,11 @@ There are far more horrific traceback situations you can wind up in.  Often
 invoking ``--show-trace`` is not helpful at all.  Sometimes there may be a bug
 in a ``nixpkgs`` module that causes a mystifying error when you supply it a
 value it doesn't expect.  Following a traceback "up the stack" is often not
-viable because of the lazy evaluation features of Nix.  It's just too long of a
-stack.
+viable because of the lazy evaluation features of Nix.  It's just too long and
+winding of a stack.
 
-So things can get challenging.  These are some of the general reasons / excuses
-for that:
+So things can get challenging.  While I can't offer much but solace, I can
+maybe provide some of the general reasons / excuses for those cases:
 
 - When you edit ``configuration.nix``, yhou are writing code, not merely
   editing a configuration file.
@@ -903,7 +903,8 @@ The order in which statements are defined in your configuration files is
 largely meaningless at ``nix-rebuild`` time.  Nix doesn't descend your
 ``configuration.nix`` in some line-oriented way, evaluating the first
 assignment, then the next, etc.  Your ``configuration.nix`` really isn't a
-configuration file.  It's code.
+configuration file.  It's code.  You're writing code to produce a
+configuration, you're not editing configuration.
 
 Nix collects the values you provide via that code into an attribute set that
 may come from many different files, and then operates against that.
@@ -933,6 +934,5 @@ configuration will show up in the traceback.  Nix is a framework.
 
 These features of Nix, combined, will eventually, invariably, wind you up in a
 place where you get tracebacks that are less understandable than the ones we've
-seen so far.  I'd suggest asking for help liberally on the NixOS Discourse when
-this happens.
-
+seen so far.  I'd suggest asking for help liberally on the NixOS Discourse or
+your other favorite Nix-friendly venue when this happens.
