@@ -15,16 +15,16 @@ NixOS & Flakes Book
 by ryan4yin.
 
 I really wish I had read that before making a hash of things when I first
-started out with NixOS.  No practical docs seemed to exist then, and it seems
-to be hard to find them even now.
+started out with NixOS.  No docs designed to help people who didn't really care
+much about Nix itself, but were keenly interested in NixOS seemed to exist
+then, and it seems to be hard to find them even now.  I won't be talking about
+the beauty of purely functional languages or laziness or component stores or
+PhD theses in this video.  We'll stick to the totally practical.
 
 This video extends the the spirit of Ryan's chapter with explanations of some
-of the other things that confused the heck out of me when I first started.  I
-won't be talking about the beauty of purely functional languages or laziness or
-component stores or PhD theses in this video.  We'll stick to the totally
-practical.
+of the other things that confused the heck out of me when I first started.
 
-Some of the practical even reveals magic of NixOS that is not obvious.
+Some of it even reveals magic of NixOS that is not obvious but is glorious.
 
 Imports and The Configuration Namespace
 ---------------------------------------
@@ -119,8 +119,6 @@ But note that, to NixOS, the above configuration with the import of
 equivalent*.  NixOS doesn't care.  The resulting global namespace is the same
 when they are merged.  Use as many or as few files as you like to compose your
 configuration.
-
-Animation of import
 
 Attribute Set Syntax
 --------------------
@@ -249,8 +247,8 @@ NixOS' abundant use of attribute sets.
 There are three places that squiggly braces are used in this snippet of code:
 
 - The function argument list.  This file (``users.nix``) is a function by
-  virtue of having a function argument list.  The function argument list is ``{
-  config, lib, pkgs, ...}:``.
+  virtue of having a function argument list.  The function argument list is
+  ``{config, lib, pkgs, ...}:``.
 
 - The value returned by the function .  This function returns an attribute set
   ``{ users.users.chrism = <elided> }``.
@@ -318,7 +316,7 @@ set.  For example:
 ``let .. in`` allows you to define expressions that can be used within the
 configuration.  In fact, a ``let .. in`` block is the *only* place you can
 define arbitrary expressions to be used elsewhere in the configuration.  You
-can't create a variable within the options configuration block itself.  For
+can't create a variable within the configuration attribute set itself.  For
 example, this won't work:
 
 .. code-block:: nix
@@ -342,12 +340,12 @@ example, this won't work:
   }
 
 Think of it this way: within the configuration options attribute set (the place
-you're setting ``boot.loader.foo.bar`` options and users, and packages, etc),
-you are *filling in* predefined slots offered up by NixOS configuration via an
+you're setting ``boot.loader`` options and users, and packages, etc), you are
+*filling in* predefined slots offered up by NixOS configuration via an
 assignment. Neither ``password`` nor ``groups`` is a predefined slot; neither
 has any meaning to NixOS itself, and what you're creating in the configuration
-must have meaning to NixOS.  ``system.stateVersion``, on the other hand *does*
-have meaning to NixOS, so it is allowed in that place.
+must have meaning to NixOS.  ``system.stateVersion``, on the other hand, for
+example, *does* have meaning to NixOS, so it is allowed in that place.
 
 ``let .. in`` blocks allow you to define variables for reuse within the
 configuration options attribute set.  They are the only place you can do this.
@@ -450,9 +448,13 @@ the *keys* of the attribute sets together, but it is also willing to merge the
 When we run ``nixos-rebuild`` against the configuration above, we will wind up
 with the equivalent of this in the global configuration namespace:
 
+.. code-block:: nix
+
     environment.systemPackages = with pkgs; [ vim emacs ];
 
 Un-sugared, it would look like:
+
+.. code-block:: nix
 
    environment.systemPackages = [ pkgs.vim pkgs.emacs ];
 
