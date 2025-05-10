@@ -40,14 +40,6 @@ let
     }
   '';
 
-  vmbuild = pkgs.writeShellScriptBin "vmbuild" ''
-    nix build ".#nixosConfigurations.\$1.config.system.build.vm"
-  '';
-
-  vmrun = pkgs.writeShellScriptBin "vmrun" ''
-    QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-\$1-vm -nographic; reset
-  '';
-
   findnixstorelinks = pkgs.substituteAll ({
     name = "findnixstorelinks";
     src = ./bin/findnixstorelinks.py;
@@ -521,8 +513,6 @@ in
     pbzip2
     gnome-firmware
     dysk
-    vmbuild
-    vmrun
 
     # for testing ARC
     # kind # kubernetes
