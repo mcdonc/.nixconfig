@@ -124,7 +124,7 @@ So you can use as many or as few files as you like to compose your
 configuration, in any organization that fits your brain.
 
 In some of the following code examples, you'll see that I'm importing from a
-file named "./demo.nix" that I don't include the source for.  This file
+file named ``./demo.nix`` that I don't include the source for.  This file
 defines some stuff that helps me make sure what I'm telling you is not a lie,
 but it's unnecessary for real world usage, please try to ignore it.
 
@@ -160,7 +160,7 @@ This one line:
 
      boot.loader.systemd-boot.enable = true;
 
-Is entirely equivalent to these seven lines:
+Is equivalent to these seven lines:
 
 .. code-block:: nix
 
@@ -218,7 +218,11 @@ to terminate a line and when you don't.  Semicolons are used to terminate
 the assignment to terminate with a semicolon.
 
 It may get particularly confusing when you're creating an attribute set.  For
-example, let's take the following assignment: ``foo = { a = 1;};``.
+example, let's take the following assignment:
+
+.. code-block:: nix
+
+  foo = { a = 1;};
 
 ``a = 1`` is an assignment, and thus must be terminated with a semicolon.
 ``foo = <the attribute set with "a = 1;" in it>`` is also an assignment, and
@@ -227,7 +231,9 @@ two equal signs and two semicolons.
 
 Confusion about when and when not to use a semicolon is made a little worse by
 Nix syntax, and its use of squiggly brackets to mean multiple things, and
-NixOS' abundant use of attribute sets.
+NixOS' use of attribute sets.
+
+For example:
 
 .. code-block:: nix
 
@@ -277,9 +283,9 @@ We are just returning the attribute set.  That's why it's not:
   }; # this semicolon doesn't belong here
 
 
-We *do* need a semicolon to terminate the assigment of the
-``users.users.fred`` attribute set, because it is part of an assignment
-statement.  That's why it's not:
+We *do* need a semicolon to terminate the assigment of the ``users.users.fred``
+attribute set, because it is part of an assignment statement.  That's why it's
+not:
 
 .. code-block:: nix
 
@@ -295,13 +301,22 @@ statement.  That's why it's not:
 
 These differences are hard to distinguish by a human deep in the weeds.  So it
 is almost mandatory to use a code editor that points out syntax errors
-interactively when you are editing Nix code.  ``vim`` kinda helps with this via
-colorization, but without extensions, it won't detect and point out when you've
-forgotten a semicolon or have too many squiggly brackets and so forth.  I use
-``emacs`` with ``nix-mode`` and ``flycheck`` and the combination does a pretty
-good job of pointing out syntax errors.  There is also a Nix mode for VSCode
-that also seemed to do a good job while I briefly used it.  In any case, it is
-pretty much madness to edit Nix code without a syntax checking feature.
+interactively when you are editing Nix code.
+
+``vim`` kinda helps with this via colorization, but without extensions, it
+won't detect and point out when you've forgotten a semicolon or have too many
+squiggly brackets and so forth, except through that colorization.  I'm sure
+there are extensions to vim which point out specific syntax errors in Nix code.
+
+I use ``emacs`` with ``nix-mode`` and ``flycheck`` and the combination does a
+pretty good job of pointing out syntax errors.
+
+There is also a Nix mode for VSCode that also seemed to do a good job while I
+briefly used it.
+
+In any case, it is pretty much madness to edit Nix code without interactive
+syntax checking features, so it's time well spent to get those working,
+whichever editor you use.
 
 The Let Block vs. the Return Expression
 ---------------------------------------
