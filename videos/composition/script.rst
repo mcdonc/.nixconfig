@@ -225,9 +225,9 @@ example, let's take the following assignment:
   foo = { a = 1;};
 
 ``a = 1`` is an assignment, and thus must be terminated with a semicolon.
-``foo = <the attribute set with "a = 1;" in it>`` is also an assignment, and
-must be terminated with a semicolon.  We have two assigments above, so we have
-two equal signs and two semicolons.
+``foo = { a = 1;}`` is also an assignment, and must be terminated with a
+semicolon.  We have two assigments above, so we have two equal signs and two
+semicolons.
 
 Confusion about when and when not to use a semicolon is made a little worse by
 Nix syntax, and its use of squiggly brackets to mean multiple things, and
