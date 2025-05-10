@@ -680,7 +680,7 @@ the ``/etc/profile`` now has this in it:
   export MYVAR="default"
   export MYVAR="from shellinit.nix"
 
-And at runtime, ``$MYVAR`` is now "from shellinix.nix" as a result.
+And at runtime, ``$MYVAR`` is now ``from shellinit.nix`` as a result.
 
 Although we are dealing with strings in our config, under the hood,
 ``environment.shellInit`` is a list and we are just influencing the list
