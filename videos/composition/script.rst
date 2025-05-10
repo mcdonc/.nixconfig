@@ -344,8 +344,9 @@ set within a ``.nix`` file.  For example:
   }
 
 A ``let .. in`` block allows you to define variables that can be used within
-the configuration.  In fact, a ``let .. in`` block is the *only* place you can
-define arbitrary variables to be used elsewhere in the same configuration file.
+the configuration attribute set.  In fact, a ``let .. in`` block is the *only*
+place you can define arbitrary variables to be used elsewhere in the same
+configuration file.
 
 In particular, you can't create a variable within the configuration attribute
 set itself.  For example, this won't work:
