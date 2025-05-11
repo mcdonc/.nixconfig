@@ -1,5 +1,5 @@
-NixOS 99: Post-Basic NixOS Config as a Mere Mortal
-==================================================
+NixOS 99: NixOS Config Beyond the Basics as a Mere Mortal
+=========================================================
 
 - Companion to video at ...
   
