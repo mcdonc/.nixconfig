@@ -429,7 +429,7 @@ The resulting ``boot`` attribute set that NixOS will see will be:
          };
          efi = {
            canTouchEfiVariables = true;
-         }
+         };
        };
      };
 
