@@ -58,7 +58,7 @@ Given that we have this ``configuration.nix``:
     };
     environment.systemPackages = with pkgs; [ vim ];
     environment.shellInit = ''export PS1="\u@\h:\w\$ "'';
-    system.stateVersion = "25.05";
+    system.stateVersion = "24.11";
   }
                 
 You've decided that you want to keep the definitions of your users in a
@@ -81,7 +81,7 @@ what that means in a bit) from ``configuration.nix`` and put it into a new
     networking.networkmanager.enable = true;
     environment.systemPackages = with pkgs; [ vim ];
     environment.shellInit = ''export PS1="\u@\h:\w\$ "'';
-    system.stateVersion = "25.05";
+    system.stateVersion = "24.11";
   }
 
 .. code-block:: nix
