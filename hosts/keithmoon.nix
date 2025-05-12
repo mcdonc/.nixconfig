@@ -44,13 +44,13 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   fileSystems."/steam1" =
     { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
-      label="STEAM1";
+      #label="STEAM1";
       fsType = "ext4";
     };
 
   fileSystems."/steam2" =
     { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
-      label="STEAM2";
+      #label="STEAM2";
       fsType = "ext4";
     };
 
@@ -103,56 +103,56 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  services.samba = {
-    enable = true;
-    package = pkgs.samba4Full;
-    openFirewall = true;
-    settings = {
-      global = {
-        workgroup = "WORKGROUP";
-        "server string" = "keithmoon";
-        "netbios name" = "keithmoon";
-        security = "user";
-        browseable = "yes";
-        "smb encrypt" = "required";
-        # note: localhost is the ipv6 localhost ::1
-        "hosts allow" = "192.168.1. 127.0.0.1 localhost";
-        "hosts deny" = "0.0.0.0/0";
-        "guest account" = "nobody";
-        "map to guest" = "bad user";
-      };
-      root = {
-        path = "/";
-        browseable = "yes";
-        writeable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "chrism";
-        "force group" = "users";
-      };
-      v = {
-        path = "/home/chrism/v";
-        browseable = "yes";
-        writeable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "chrism";
-        "force group" = "users";
-      };
-      homes = {
-        browseable = "no";
-        # note: each home will be browseable; the "homes" share will not.
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-    };
-  };
+  # services.samba = {
+  #   enable = true;
+  #   package = pkgs.samba4Full;
+  #   openFirewall = true;
+  #   settings = {
+  #     global = {
+  #       workgroup = "WORKGROUP";
+  #       "server string" = "keithmoon";
+  #       "netbios name" = "keithmoon";
+  #       security = "user";
+  #       browseable = "yes";
+  #       "smb encrypt" = "required";
+  #       # note: localhost is the ipv6 localhost ::1
+  #       "hosts allow" = "192.168.1. 127.0.0.1 localhost";
+  #       "hosts deny" = "0.0.0.0/0";
+  #       "guest account" = "nobody";
+  #       "map to guest" = "bad user";
+  #     };
+  #     root = {
+  #       path = "/";
+  #       browseable = "yes";
+  #       writeable = "yes";
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #       "force user" = "chrism";
+  #       "force group" = "users";
+  #     };
+  #     v = {
+  #       path = "/home/chrism/v";
+  #       browseable = "yes";
+  #       writeable = "yes";
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #       "force user" = "chrism";
+  #       "force group" = "users";
+  #     };
+  #     homes = {
+  #       browseable = "no";
+  #       # note: each home will be browseable; the "homes" share will not.
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #     };
+  #   };
+  # };
 
   services.avahi = {
     publish.enable = true;
