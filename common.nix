@@ -319,6 +319,7 @@ in
         python311Packages.build # for pypa build package
         python311Packages.twine # for uploading to PyPI
         python311Packages.docker
+        python311Packages.manim
       ]))
     python312
     python313
@@ -513,6 +514,7 @@ in
     pbzip2
     gnome-firmware
     dysk
+    python311Packages.manim # get manim on the command line
 
     # for testing ARC
     # kind # kubernetes
