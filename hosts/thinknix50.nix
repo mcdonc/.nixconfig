@@ -11,6 +11,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/vmount.nix
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/backupsource
+    ./roles/davinci-resolve/studio.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
@@ -47,7 +48,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   hardware.nvidia.prime.offload.enable = lib.mkForce
     (!config.hardware.nvidia.prime.sync.enable);
 
-  # to allow sleep
+  # to allow sleep, set to true
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
 }
