@@ -156,6 +156,18 @@ in
   fonts.packages = with pkgs; [ ubuntu_font_family nerdfonts ];
   i18n.defaultLocale = "en_US.UTF-8";
 
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONEY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
+
+
   #sound.enable = false; # not needed for pipewire
   hardware.pulseaudio.enable = false;
   services.pipewire = {
