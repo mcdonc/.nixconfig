@@ -176,8 +176,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       chmod o+x /home/chrism
       mkdir -p /home/chrism/v
       chown chrism:users /home/chrism/v
-      mkdir -p /home/chrism/v/postgresql
-      chown postgres:postgres /home/chrism/v/postgresql
+      # mkdir -p /home/chrism/v/postgresql
+      # chown postgres:postgres /home/chrism/v/postgresql
       ln -sf /home/chrism/v /v
       chown chrism:users /steam1
       chown chrism:users /steam2
