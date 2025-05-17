@@ -10,7 +10,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
-    ./roles/tailscale
+    #./roles/tailscale
     ./roles/idracfanctl.nix
     #./roles/aws.nix
     #(
