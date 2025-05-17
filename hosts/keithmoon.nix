@@ -11,6 +11,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/steam.nix
     ./roles/speedtest
     ./roles/tailscale
+    ./roles/idracfanctl.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
@@ -42,6 +43,11 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       fsType = "zfs";
     };
 
+  #fileSystems."/et" =
+  #  { device = "et";
+  #    fsType = "zfs";
+  #  };
+
   fileSystems."/steam1" =
     { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
       #label="STEAM1";
@@ -68,12 +74,11 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       fsType = "vfat";
     };
 
-
   # note that this is chowned in activationScripts
   boot.zfs.extraPools = [ "d" ];
 
   # don't run updatedb on these disks
-  services.locate.prunePaths = [ "/d" "/steam1" "/steam2"];
+  services.locate.prunePaths = [ "/d" "/steam1" "/steam2" ];
 
   # 32 GB max ARC cache
   boot.kernelParams = [
@@ -182,6 +187,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       chown chrism:users /steam1
       chown chrism:users /steam2
       chown chrism:users /d
+      #chown chrism:users /et
     '';
 
   # services.postgresql = {

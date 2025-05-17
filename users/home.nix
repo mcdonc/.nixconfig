@@ -9,6 +9,10 @@ let
     sudo nixos-rebuild switch --verbose
   '';
 
+  keithtemps = pkgs.writeShellScriptBin "keithtemps" ''
+    sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
+  '';
+
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
     ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
   '';
@@ -158,6 +162,7 @@ in
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
     keybase-gui
+    keithtemps
   ];
 
   programs.gnome-terminal = {
