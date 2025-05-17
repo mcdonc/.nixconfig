@@ -74,21 +74,6 @@ balooctl6 disable
 # boot.initrd.secrets."/key.txt" = /path/to/key.txt
 # keylocation=file:///key.txt
 
-sudo zpool create -f \
-    -o ashift=12 \
-    -o autotrim=on \
-    -O compression=lz4 \
-    -O acltype=posixacl \
-    -O xattr=sa \
-    -O relatime=on \
-    -O normalization=formC \
-    -O dnodesize=auto \
-    -O encryption=aes-256-gcm \
-    -O keylocation=file:///key.txt \
-    -O keyformat=hex \
-    -O mountpoint=none \
-    et \
-    mirror \
+sudo zpool add NIXROOT mirror \
     /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S2RENX0HC04558Z \
     /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S2RENX0H812562L
-
