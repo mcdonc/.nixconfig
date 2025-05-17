@@ -6,8 +6,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "idracfanctl";
-      rev = "64cd06130a9a3bc7299708005cbe350f1d33a1d7";
-      sha256 = "sha256-RQlkPEUc3ntsltaMsVB72+MzwBoaMF4D5wKxs80orBc=";
+      rev = "a740ed26565f90be0b3cdd8115a88870e9608be8";
+      sha256 = "sha256-/eDvScV1IyJhIysj81jFRUCgIVmfXgMhyb710BGgTZU=";
     };
     buildInputs = [
       pkgs.makeWrapper
@@ -16,8 +16,7 @@ let
       mkdir -p $out/bin
       cp idracfanctl.py $out/bin/idracfanctl.py
       makeWrapper ${pkgs.python3.interpreter} $out/bin/idracfanctl \
-        --add-flags "$out/bin/idracfanctl.py" \
-        --add-flags '--ipmitool="${pkgs.ipmitool}/bin/ipmitool"' \
+        --add-flags "$out/bin/idracfanctl.py"
     '';
     meta = with lib; {
       description = "Dell PowerEdge R730xd fan control";
@@ -40,7 +39,8 @@ in
 
     serviceConfig = {
       ExecStart = ''
-        ${idracfanctl}/bin/idracfanctl --disable-pcie-cooling-response=1
+        ${idracfanctl}/bin/idracfanctl --disable-pcie-cooling-response=1 \
+          --ipmitool="${pkgs.ipmitool}/bin/ipmitool"
       '';
       Restart = "always";
       User = "root";
