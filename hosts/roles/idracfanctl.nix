@@ -44,8 +44,8 @@ in
       ExecStart = ''
         ${idracfanctl}/bin/idracfanctl --disable-pcie-cooling-response=1
       '';
-      Restart = "always";  # Restart the service if it crashes
-      User = "root";  # Run the service as root
+      Restart = "always";
+      User = "root";
       KillSignal = "SIGINT";
     };
   };
