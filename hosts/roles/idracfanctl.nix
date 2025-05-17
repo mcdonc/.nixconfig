@@ -6,8 +6,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "idracfanctl";
-      rev = "5c57dfe40a1dccd79c70762bfcd4b4dda80b1a35";
-      sha256 = "sha256-skrXeqI4O/mdtTNYsn6jqe1MDKiJDBZZjAnIdXBAigg=";
+      rev = "ce3343b47776fcba53ca15db7c522b1e46fb372a";
+      sha256 = "sha256-XDEHS/LsSXy6+2+VOclk/r5C8M7lD+QmgYxHDbZcD5M=";
     };
     buildInputs = [
       pkgs.python3
@@ -22,7 +22,7 @@ let
         --add-flags '--ipmitool="${pkgs.ipmitool}/bin/ipmitool"' \
     '';
     meta = with lib; {
-      description = "Dell poweredge fan control";
+      description = "Dell PowerEdge R730xd fan control";
       homepage = "https://github.com/mcdonc/idracfanctl";
       license = licenses.mit;
       platforms = platforms.all;
@@ -35,7 +35,7 @@ in
     idracfanctl
   ];
   systemd.services.idracfanctl = {
-    description = "Control Dell R730XD fans";
+    description = "Control Dell R730xd fans";
     after = [ "local-fs.target" ];
     before = [ "multi-user.target" ];
     wantedBy = [ "multi-user.target" ];
@@ -46,6 +46,7 @@ in
       '';
       Restart = "always";  # Restart the service if it crashes
       User = "root";  # Run the service as root
+      KillSignal = "SIGINT";
     };
   };
 }
