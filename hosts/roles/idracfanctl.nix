@@ -6,12 +6,10 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "idracfanctl";
-      rev = "acb040f705332a3aa601c18f5e9815edaa9f71e9";
-      sha256 = "sha256-sEVhywXO4H9NfoiVc1kWFyLdaZ4aAQEoPAPchjw4iuY=";
+      rev = "1963cf43f24ec01fa981da1730d20e0f3ef7b243";
+      sha256 = "sha256-ZUV8fl26J5/mlE3raKqVpIGvhqluewQQOvzyJUlcVhs=";
     };
     buildInputs = [
-      pkgs.python3
-      pkgs.ipmitool
       pkgs.makeWrapper
     ];
     installPhase = ''
