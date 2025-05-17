@@ -6,8 +6,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "idracfanctl";
-      rev = "ce3343b47776fcba53ca15db7c522b1e46fb372a";
-      sha256 = "sha256-XDEHS/LsSXy6+2+VOclk/r5C8M7lD+QmgYxHDbZcD5M=";
+      rev = "acb040f705332a3aa601c18f5e9815edaa9f71e9";
+      sha256 = "sha256-sEVhywXO4H9NfoiVc1kWFyLdaZ4aAQEoPAPchjw4iuY=";
     };
     buildInputs = [
       pkgs.python3
