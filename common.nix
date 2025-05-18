@@ -40,13 +40,8 @@ let
     }
   '';
 
-  findnixstorelinks = pkgs.substituteAll ({
-    name = "findnixstorelinks";
-    src = ./bin/findnixstorelinks.py;
-    dir = "/bin";
-    isExecutable = true;
-    py = "${pkgs.python311}/bin/python";
-  });
+  findnixstorelinks = pkgs.writers.writePython3Bin "findnixstorelinks"
+    {} (builtins.readFile ./bin/findnixstorelinks.py);
 
 in
 {
