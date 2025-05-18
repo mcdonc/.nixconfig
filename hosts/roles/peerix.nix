@@ -1,6 +1,6 @@
 { lib, pkgs, inputs, ... }:
 {
-  nixpkgs.overlays = [ inputs.peerix.overlay ];
+  #nixpkgs.overlays = [ inputs.peerix.overlay ];
   imports = [  inputs.peerix.nixosModules.peerix ];
 
   # Define a user account.
