@@ -12,6 +12,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/speedtest
     #./roles/tailscale
     ./roles/idracfanctl.nix
+    ./roles/peerix.nix
     #./roles/idracfanctl2.nix
     #./roles/aws.nix
     #(
