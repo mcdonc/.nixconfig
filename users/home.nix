@@ -13,6 +13,16 @@ let
     sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
   '';
 
+  whoosh = pkgs.writeShellScriptBin "whoosh" ''
+    sudo systemctl stop idracfanctl.service && \
+    sleep 30 && \
+    sudo systemctl start idracfanctl.service
+  '';
+
+  nvfantemps = pkgs.writeShellScriptBin "nvfantemps" ''
+    nvidia-smi --query-gpu=timestamp,utilization.gpu,fan.speed,temperature.gpu --format=csv -l 10
+  '';
+
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
     ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
   '';
@@ -163,6 +173,8 @@ in
     nixfmt80
     keybase-gui
     keithtemps
+    whoosh
+    nvfantemps
   ];
 
   programs.gnome-terminal = {
