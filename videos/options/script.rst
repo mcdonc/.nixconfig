@@ -6,8 +6,8 @@ NixOS 100: Defining and Using Custom NixOS Options
 - See the other videos in this series by visiting the playlist at
   https://www.youtube.com/playlist?list=PLa01scHy0YEmg8trm421aYq4OtPD8u1SN
 
-Video Script
-------------
+About
+-----
 
 I recently had to write my own fan control script for a rackmount server for
 boring reasons.  It is at https://github.com/mcdonc/idracfanctl .
@@ -15,8 +15,8 @@ boring reasons.  It is at https://github.com/mcdonc/idracfanctl .
 There is no reason to make it completely configurable via NixOS options, but
 that's what we're going to do, cuz we don't need reasons.
 
-The Script
-----------
+The Fan Control Script
+----------------------
 
 The script, written in Python, takes various options for fan speed and thermals
 via command line options like ``--temp-cpu-max`` and others.  It is meant to be
