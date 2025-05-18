@@ -11,6 +11,8 @@
 
   nix.settings.allowed-users = [ "peerix" ];
 
+  # nix-store --generate-binary-cache-key "peerix-$(hostname -s)" peerix-private peerix-public
+
   services.peerix = {
     enable = true;
     privateKeyFile = "/etc/nixos/peerix-private";
