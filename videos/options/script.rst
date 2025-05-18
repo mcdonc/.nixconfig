@@ -411,13 +411,9 @@ We can change the minimum fan speed via
 We can try to inject nonsensical values into our service, they won't work.
 
 How do people find out which options our service offers and what they mean?
-Currently, they look at the implementation in ``idracfanctl.nix`` or we write
-and publish documentation for it on our own website.
-
-Most NixOS options can be found via ``man configuration.nix`` or searching
-options on ``search.nixos.org`` but ours won't appear there either of course.
-It would be nice if they could use ``nixos-options services.idracfanctl``, but
-this doesn't appear to work.
+Most NixOS options usable in your configuration can be found via
+``nixos-options`` e.g. ``nixos-options services.idracfanctl``, at least once
+you've installed the modules that provide the options.
 
 Followup
 --------
