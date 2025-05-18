@@ -2,7 +2,6 @@
 {
   imports = [  inputs.peerix.nixosModules.peerix ];
 
-  # Define a user account.
   users.users.peerix = {
     isSystemUser = true;
     group = "peerix";
