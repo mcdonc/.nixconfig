@@ -93,6 +93,10 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
+  # allow changing nvidia fan speed
+  services.xserver.deviceSection = ''
+    Option    "Coolbits" "4"
+  '';
 
   hardware.nvidia = {
     open = false;
