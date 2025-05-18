@@ -90,7 +90,9 @@ and starts a systemd service using the software.
 Let's run ``nixos-rebuild switch`` and see what it gives us.
 
 When it's done, let's take a look at
-``/etc/systemd/system/idracfanctl.service`` that Nix composed for us::
+``/etc/systemd/system/idracfanctl.service`` that Nix composed for us:
+
+.. code-block:: ini
 
    [Unit]
    After=local-fs.target
@@ -371,7 +373,9 @@ Note the extra ``config= {`` surrounding our actual configuration options like
 for people who aren't using options.
 
 Let's run ``nixos-rebuild switch`` and take a look at
-``/etc/systemd/system/idracfanctl.service``::
+``/etc/systemd/system/idracfanctl.service``:
+
+.. code-block:: ini
 
    [Unit]
    After=local-fs.target
