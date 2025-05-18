@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixpkgs-py39.url = "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
@@ -38,6 +39,7 @@
 
       forkInputs = with inputs; [
         { name = "pkgs-unstable"      ; value=nixpkgs-unstable;         }
+        { name = "pkgs-2411"          ; value=nixpkgs-2411;             }
         { name = "pkgs-olive"         ; value=nixpkgs-olive;            }
         { name = "pkgs-py36"          ; value=nixpkgs-py36;             }
         { name = "pkgs-py37"          ; value=nixpkgs-py37;             }

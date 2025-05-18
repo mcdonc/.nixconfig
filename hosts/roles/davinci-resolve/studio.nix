@@ -1,8 +1,10 @@
-{pkgs, ...}:
+{pkgs, pkgs-2411, ...}:
 
 {
   environment.systemPackages = [
-    pkgs.davinci-resolve-studio
+    # 25.05 gjs tests fail (1p4sqldwigyphn2laza1ikxwpxg5hqx0-gjs-1.84.2.drv)
+    # 24.11 uses gjs 1.82.1
+    pkgs-2411.davinci-resolve-studio
   ];
 
   home-manager.users.chrism = {
