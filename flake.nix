@@ -21,7 +21,6 @@
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     isd.url = "github:isd-project/isd";
     peerix.url = "github:cid-chan/peerix";
-    #peerix.inputs.nixpkgs.follows = "nixpkgs-unstable";
     # nixpkgs-bgremoval.url = "github:mcdonc/nixpkgs/newer-obs-bgremoval";
     # agenix.url = "github:ryantm/agenix";
     # nur.url = "github:nix-community/NUR";
