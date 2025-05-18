@@ -12,6 +12,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/speedtest
     #./roles/tailscale
     ./roles/idracfanctl.nix
+    #./roles/idracfanctl2.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
@@ -22,6 +23,9 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   ];
 
   system.stateVersion = "24.05";
+
+  #services.idracfanctl.enable = true;
+  #services.idracfanctl.fan-percent-min = 50;
 
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
