@@ -115,6 +115,6 @@ ambient local download configuration where any local machine would be willing
 to download from any other local machine that has the data, instead of needing
 to dedicate one as a server and the others as clients.
 
-There is also `<Harmonia <https://github.com/nix-community/harmonia>`_.  I
+There is also `Harmonia <https://github.com/nix-community/harmonia>`_.  I
 haven't yet tried it.  It works a lot like ``nix-serve`` except with more
 features, like inbuilt TLS and better streaming (but not peering).
