@@ -47,7 +47,6 @@ in
 {
 
   imports = [
-    ./pkgs/cachix.nix
     ./pkgs/dvtranscode.nix
     # ./pkgs/rdio-scanner
     # ./pkgs/trunk-recorder
