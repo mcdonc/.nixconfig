@@ -97,7 +97,7 @@ You should see the server's nix-serve.service log grow, and you should see
 from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.
 
 To test that signing and signature verification between the server and client
-is working, from a properly configured client that you should be able to do
+is working, from a properly configured client, you should be able to do
 something like this (change hostname to your server's and the nix store path to
 something that exists in the server's ``/nix/store/``)::
   
