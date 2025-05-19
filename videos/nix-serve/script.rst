@@ -19,7 +19,7 @@ other systems to use that server as a "substituter."
 
 In this configuration, your other systems will try to pull changes from your
 server before trying to download from sources on the Internet.  Those systems
-will rarely have to compile any software if their configuration is a lot like
+will rarely need to compile any software if their configuration is a lot like
 the server's, because the server will have done it already.
 
 Server
@@ -105,6 +105,19 @@ something that exists in the server's ``/nix/store/``)::
     /nix/store/lk4qvlshidc6lxa4ig8yixzkf6x6j488-firefox-138.0.3
 
 It should not return anything that says "untrusted".
+
+Notes
+-----
+
+You might notice that we put the server's private key in the ``/root``
+directory.  It doesn't really matter where it goes, it just needs to exist when
+the ``nix-serve.service`` starts.  The need only be readable by the root user
+because ``systemd`` runs as root and takes care of supplying it to the service
+as a `credential <https://systemd.io/CREDENTIALS/>`_.
+
+The ``nix-serve`` service will run as a "dynamic" user.  ``systemd`` will
+create a ``nix-serve`` user when it starts, and the user is deleted when it
+stops.
 
 Other Options
 -------------
