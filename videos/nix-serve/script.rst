@@ -87,7 +87,7 @@ some other large software package that you don't already use to
 
 Then rerun its ``nixos-rebuild``.
 
-The, on the client, change its ``configuration.nix`` to also add ``blender`` to
+Then, on the client, change its ``configuration.nix`` to also add ``blender`` to
 ``environment.systemPackages``.
 
 Then run ``nixos-rebuild switch`` on the client.
