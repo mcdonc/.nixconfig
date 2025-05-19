@@ -2,6 +2,9 @@
 {
   imports = [  inputs.peerix.nixosModules.peerix ];
 
+  # warning: binary cache 'http://127.0.0.1:12304' is for Nix stores with prefix 'Nix::Store::getStoreDir', not '/nix/store'
+  # https://github.com/cid-chan/peerix/issues/9
+
   users.users.peerix = {
     isSystemUser = true;
     group = "peerix";
