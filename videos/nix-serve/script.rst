@@ -15,7 +15,7 @@ and recompile gigabytes of software from the Internet?
 
 `nix-serve <https://github.com/edolstra/nix-serve>`_ will serve up one of your
 systems' ``/nix/store`` as a Nix binary cache.  You can then configure your
-other systems to use that server as a "substituter", aka binary cache.
+other systems to use that server as a "substituter."
 
 In this configuration, your other systems will try to pull changes from your
 server before trying to download from sources on the Internet.  Those systems
