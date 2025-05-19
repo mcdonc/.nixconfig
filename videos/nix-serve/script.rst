@@ -22,6 +22,12 @@ server before trying to download from sources on the Internet.  Those systems
 will rarely need to compile any software if their configuration is a lot like
 the server's, because the server will have done it already.
 
+Most of my systems have the same general configuration, each only deviating
+slightly based on its role. So as long as I remember to update and rebuild the
+``nix-serve`` server config first, subequent builds done on the ``nix-serve``
+clients mostly operate completely locally, without any downloading over the
+Internet and without doing any compilation.
+
 Server
 ------
 
