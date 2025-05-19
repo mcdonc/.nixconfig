@@ -12,6 +12,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/backupsource
     ./roles/davinci-resolve/studio.nix
+    ./roles/nix-serve-client.nix
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
