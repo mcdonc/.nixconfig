@@ -337,13 +337,12 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   };
 
   environment.systemPackages = with pkgs; [
+    cifs-utils
     # used by zfs send/receive
     pv
     mbuffer
     lzop
     zstd
-
-    cifs-utils
   ];
 
   #sound.enable = lib.mkForce true; # use pulseaudio
