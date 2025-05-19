@@ -17,7 +17,7 @@ and recompile gigabytes of software from the Internet?
 systems' ``/nix/store`` as a Nix binary cache.  You can then configure your
 other systems to use that server as a "substituter", aka binary cache.
 
-When configured that way, your other systems will try to pull changes from your
+In this configuration, your other systems will try to pull changes from your
 server before trying to download from sources on the Internet.  Those systems
 will rarely have to compile any software if their configuration is a lot like
 the server's, because the server will have done it already.
@@ -82,7 +82,7 @@ To see the log of the ``nix-serve`` service, invoke this on the server::
 
 Now let's get some software downloaded onto the server that doesn't yet exist
 on either the server or the client.  Maybe add something like ``blender`` or
-some other large software package that you probably don't already use to
+some other large software package that you don't already use to
 ``environment.systemPackages`` on the server.
 
 Then rerun its ``nixos-rebuild``.
