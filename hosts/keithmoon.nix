@@ -23,8 +23,11 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   system.stateVersion = "24.05";
 
-  #services.idracfanctl.enable = true;
-  #services.idracfanctl.fan-percent-min = 50;
+  services.idracfanctl.enable = true;
+  services.idracfanctl.fan-percent-min = 15;
+  services.idracfanctl.fan-percent-max = 65;
+  services.idracfanctl.temp-cpu-min = 43;
+  services.idracfanctl.temp-cpu-max = 96;
 
   services.nix-serve.enable = true;
   services.nix-serve.secretKeyFile = "/nix-store-private";
