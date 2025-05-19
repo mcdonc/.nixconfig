@@ -70,8 +70,8 @@ a prior generation to fix it.
 Run ``nixos-rebuild switch``.
 
 Note that this will also work on non-NixOS systems that use Nix.  On those, you
-max need to add the equivalent values to `/etc/nix/nix.conf` instead of putting
-them in any Nix file.
+max need to add the equivalent values to ``/etc/nix/nix.conf`` instead of
+putting them in any Nix file.
 
 Testing
 -------
