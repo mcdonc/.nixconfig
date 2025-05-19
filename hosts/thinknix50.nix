@@ -13,6 +13,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/backupsource
     ./roles/davinci-resolve/studio.nix
     ./roles/nix-serve-client.nix
+    ./roles/speedtest
     ../common.nix
     (
       import ./roles/macos-ventura.nix (
