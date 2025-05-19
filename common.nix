@@ -525,7 +525,7 @@ in
     dysk
     manim
     manim-slides
-
+    inputs.agenix.packages."${system}".default
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm
