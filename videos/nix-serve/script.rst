@@ -77,18 +77,21 @@ To see the log of the ``nix-serve`` service, invoke this on the server::
 
   sudo journalctl -f -u nix-serve.service
 
-Then add something like ``blender`` or some other large software package that
-you probably don't already use to ``environment.systemPackages`` on the server
-and rerun its ``nixos-rebuild``.  We're just trying to get some software
-downloaded that doesn't yet exist on either the server or the client.
+Now let's get some software downloaded onto the server that doesn't yet exist
+on either the server or the client.  Maybe add something like ``blender`` or
+some other large software package that you probably don't already use to
+``environment.systemPackages`` on the server.
 
-On the client, change its ``configuration.nix`` to also add ``blender`` to
+Then rerun its ``nixos-rebuild``.
+
+The, on the client, change its ``configuration.nix`` to also add ``blender`` to
 ``environment.systemPackages``.
 
-Then run ``nixos-rebuild switch`` on the client.  You should see the server's
-nix-serve.service log grow, and you should see ``blender`` and its dependencies
-being downloaded from your server instead of from ``cache.nixos.org`` in the
-output of ``nixos-rebuild switch``.
+Then run ``nixos-rebuild switch`` on the client.
+
+You should see the server's nix-serve.service log grow, and you should see
+``blender`` and its dependencies being downloaded from your server instead of
+from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.
 
 To test that signing and signature verification between the server and client
 is working, from a properly configured client that you should be able to do
@@ -107,10 +110,10 @@ I tried `Peerix <https://github.com/cid-chan/peerix>`_ but failed to get it
 working.  I experienced the symptoms described in `this GitHub issue
 <https://github.com/cid-chan/peerix/issues/9>`_.
 
-It would be great if this worked, because it would be kinda like Steam's
+It would be great if Peerix worked, because it would be kinda like Steam's
 ambient local download configuration where any local machine would be willing
-to download from any other local machine that has the data, instead of
-needing to dedicate one as a server and the others as clients.
+to download from any other local machine that has the data, instead of needing
+to dedicate one as a server and the others as clients.
 
 There is also `<Harmonia <https://github.com/nix-community/harmonia>`_.  I
 haven't yet tried it.  It works a lot like ``nix-serve`` except with more
