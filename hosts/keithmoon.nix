@@ -27,9 +27,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   #services.idracfanctl.fan-percent-min = 50;
 
   services.nix-serve.enable = true;
-  services.nix-serve.secretKeyFile = "/etc/nixos/keys/nix-store-private";
-  nix.settings.trusted-substituters = [ "http://keithmoon:5000" ];
-  nix.settings.trusted-public-keys = [ "nix-store-keithmoon:wnd5de8H4LDppfiIvh3b+BoPlJh+jVprtx/71gffJck=" ];
+  services.nix-serve.secretKeyFile = "/nix-store-private";
 
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
