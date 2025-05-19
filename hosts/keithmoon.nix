@@ -26,6 +26,9 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   #services.idracfanctl.enable = true;
   #services.idracfanctl.fan-percent-min = 50;
 
+  services.nix-store.enable = true;
+  services.nix-store.secretKeyFile = "/etc/nixos/keys/nix-store-private"
+
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
 
