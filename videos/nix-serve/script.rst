@@ -27,6 +27,12 @@ slightly based on its role. So as long as I remember to update and rebuild the
 clients mostly operate completely locally, without any downloading over the
 Internet and without doing any compilation.
 
+PSA: don't do a ``sudo nix-collect-garbage -d`` just whilst messing with this
+stuff and for a while afterwards. Doing this will prevent you from booting from
+an earlier NixOS generation, and it's pretty easy to find yourself in a place
+where that is required if you make a mistake, and it's easy to make a mistake
+that isn't obvious for a few days.
+
 Server
 ------
 
@@ -127,7 +133,9 @@ stops.
 
 It's advisable to decommission the clients first if you set up ``nix-serve``
 and then stop using it, because if you decommission the server first, the
-clients may not be able to successfully ``nixos-rebuild``. YMMV.
+clients may not be able to successfully ``nixos-rebuild``. YMMV.  Also, if you
+take any of the client machines to a place where the server is uncontactable,
+you might run into the same situation, or at least I did.
 
 Other Options
 -------------
