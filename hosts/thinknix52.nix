@@ -15,7 +15,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
     #./roles/tailscale
-    ./roles/nix-serve-client.nix
+    #./roles/nix-serve-client.nix
     # (
     #   import ./roles/macos-ventura.nix (
     #     args // {mem="12G"; cores=4; enable=true;}
