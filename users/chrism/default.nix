@@ -39,25 +39,4 @@ in
       ];
     };
   };
-  # inotifywait -mr -e close_write -e moved_to -e moved_from -e delete .
-
-  # # https://manpages.debian.org/testing/incron/incrontab.5.en.html
-  # # IN_CREATE,IN_MODIFY,IN_CLOSE_WRITE,IN_MOVED_FROM,IN_MOVED_TO
-  # # IN_ALL_EVENTS,dotdirs=true
-  # # segfault issue: https://github.com/ar-/incron/issues/11
-  # services.incron.enable = true;
-  # services.incron.extraPackages = [ pkgs.coreutils pkgs.incron ];
-  # systemd.services.incron.serviceConfig.Restart = lib.mkForce "always";
-  # system.activationScripts.incron-chrism = ''
-  #   mkdir -p ${intake}
-  #   chown chrism:users ${intake}
-  #   echo "setting up incrontab"
-  #   tmpfile=$(mktemp)
-  #   #echo '${intake} ${intake-events} echo "$@ $# $%" >> /home/chrism/incron.log' > $tmpfile
-  #   echo '${intake} ${intake-events} echo "$# $%" >> /home/chrism/incron.log' > $tmpfile
-  #   ${pkgs.incron}/bin/incrontab -u chrism -r
-  #   ${pkgs.incron}/bin/incrontab -u chrism $tmpfile
-  #   ${pkgs.incron}/bin/incrontab -u chrism -d
-  #   rm -f $tmpfile
-  # '';
 }
