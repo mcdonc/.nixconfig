@@ -15,12 +15,11 @@ and recompile gigabytes of software from the Internet?
 
 `nix-serve <https://github.com/edolstra/nix-serve>`_ will serve up one of your
 systems' ``/nix/store`` as a Nix binary cache.  You can then configure your
-other systems to use that server as a "substituter."
-
-In this configuration, your other systems will try to pull changes from your
-server before trying to download from sources on the Internet.  Those systems
-will rarely need to compile any software if their configuration is a lot like
-the server's, because the server will have done it already.
+other systems to use the server as a "substituter."  They will try to pull
+changes from your server before trying to download from sources on the
+Internet.  Those systems will rarely need to compile any software if their
+configuration is a lot like the server's, because the server will have done it
+already.
 
 Most of my systems have the same general configuration, each only deviating
 slightly based on its role. So as long as I remember to update and rebuild the
@@ -87,20 +86,21 @@ To see the log of the ``nix-serve`` service, invoke this on the server::
   sudo journalctl -f -u nix-serve.service
 
 Now let's get some software downloaded onto the server that doesn't yet exist
-on either the server or the client.  Maybe add something like ``blender`` or
-some other large software package that you don't already use to
-``environment.systemPackages`` on the server.
+on either the server or the client.  To that end, add ``vcv-rack`` (an open
+source virtual modular synth) to ``environment.systemPackages`` on the server.
 
-Then rerun its ``nixos-rebuild``.
+Then rerun ``nixos-rebuild`` on the server.  It will need to compile the
+``vcv-rack`` software.
 
-Then, on the client, change its ``configuration.nix`` to also add ``blender`` to
-``environment.systemPackages``.
+Then, on the client, change its ``configuration.nix`` to also add ``vcv-rack``
+to ``environment.systemPackages``.
 
 Then run ``nixos-rebuild switch`` on the client.
 
 You should see the server's nix-serve.service log grow, and you should see
-``blender`` and its dependencies being downloaded from your server instead of
-from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.
+``vcv-rack`` and its dependencies being downloaded from your server instead of
+from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.  It will
+not need to be compiled.
 
 To test that signing and signature verification between the server and client
 is working, from a properly configured client, you should be able to do
@@ -108,7 +108,7 @@ something like this (change hostname to your server's and the nix store path to
 something that exists in the server's ``/nix/store/``)::
   
   nix store verify --store http://keithmoon:5000/ \
-    /nix/store/lk4qvlshidc6lxa4ig8yixzkf6x6j488-firefox-138.0.3
+    /nix/store/02bcf9dkrmbnv8w2jl5xz2gydp78ikr7-vcv-rack-2.6.0
 
 It should not return anything that says "untrusted".
 
