@@ -43,7 +43,7 @@ Then add the service configuration to its ``configuration.nix``:
 .. code-block:: nix
 
    services.nix-serve.enable = true;
-   services.nix-serve.secretKeyFile = "/nix-store-private";
+   services.nix-serve.secretKeyFile = "/nix-serve-private";
 
 Then run ``nixos-rebuild switch``.
 
@@ -67,7 +67,7 @@ name or IP address of the server you configured above):
    nix.settings.trusted-public-keys = [ "nix-store-<yourserver>:wnd5de..." ];
    
 The value of the item in ``nix.settings.trusted-public-keys`` should be the
-contents of ``/nix-store-public`` from the server.  Be careful to paste
+contents of ``/nix-serve-public`` from the server.  Be careful to paste
 this value exactly, as adding a malformed trusted public key can make it
 impossible to execute ``nixos-rebuild`` subsequently, forcing you to boot from
 a prior generation to fix it.
