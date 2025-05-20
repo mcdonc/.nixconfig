@@ -125,6 +125,10 @@ The ``nix-serve`` service will run as a "dynamic" user.  ``systemd`` will
 create a ``nix-serve`` user when it starts, and the user is deleted when it
 stops.
 
+It's advisable to decommission the clients first if you set up ``nix-serve``
+and then stop using it, because if you decommission the server first, the
+clients may not be able to successfully ``nixos-rebuild``. YMMV.
+
 Other Options
 -------------
 
