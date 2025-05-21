@@ -29,8 +29,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   services.idracfanctl.temp-cpu-min = 43;
   services.idracfanctl.temp-cpu-max = 96;
 
-  #services.nix-serve.enable = true;
-  #services.nix-serve.secretKeyFile = "/nix-serve-private";
+  services.nix-serve.enable = true;
+  services.nix-serve.secretKeyFile = "/nix-serve-private";
 
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
@@ -343,6 +343,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     mbuffer
     lzop
     zstd
+    vcv-rack
   ];
 
   #sound.enable = lib.mkForce true; # use pulseaudio
