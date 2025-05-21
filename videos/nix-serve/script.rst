@@ -27,11 +27,25 @@ slightly based on its role. So as long as I remember to update and rebuild the
 clients mostly operate completely locally, without any downloading over the
 Internet and without doing any compilation.
 
-PSA: don't do a ``sudo nix-collect-garbage -d`` just whilst messing with this
-stuff and for a while afterwards. Doing this will prevent you from booting from
-an earlier NixOS generation, and it's pretty easy to find yourself in a place
-where that is required if you make a mistake, and it's easy to make a mistake
-that isn't obvious for a few days.
+Warnings:
+
+- Don't do a ``sudo nix-collect-garbage -d`` just whilst making changes to any
+  of the systems involved in this process, and for a while afterwards. Doing
+  this will prevent you from booting from an earlier NixOS generation, and it's
+  pretty easy to find yourself in a place where that is required if you make a
+  mistake.
+
+- It may be a mistake to configure systems as ``nix-serve`` clients that won't
+  always be able to contact the server, like laptops that you use on the road.
+  From my observation, if clients aren't able to contact the server, it can
+  make it impossible to run ``nixos-rebuild`` on the client.  I don't know why;
+  my mental model would just see ``nixos-rebuild`` skipping the missing server
+  when trying to use it as a substituter, but that's not my observation of
+  actual behavior.  Instead, a ``nixos-rebuild`` on the client will just fail.
+  You won't even be able to run it to disable your client's ``nix-serve``
+  configuration, so you'll be stuck in that configuration without rolling back
+  using the generation system. I use Tailscale, so my clients can almost always
+  contact the ``nix-serve`` server, so I don't care much.
 
 Server
 ------
