@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+# don't worry about keys, just run "tailscale up" on new client nodes.  it will
+# prompt for a login.
+
 {
   services.tailscale.enable = true;
 
