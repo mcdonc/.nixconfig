@@ -11,7 +11,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/steam.nix
     ./roles/speedtest
     ./roles/idracfanctl.nix
-    #./roles/tailscale
+    ./roles/tailscale
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (

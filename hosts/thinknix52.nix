@@ -8,14 +8,14 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/pseries.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
-    #./roles/sessile.nix
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
-#    ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
-    #./roles/tailscale
+    #./roles/sessile.nix
+    #/roles/tailscale
     #./roles/nix-serve-client.nix
+    # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     # (
     #   import ./roles/macos-ventura.nix (
     #     args // {mem="12G"; cores=4; enable=true;}
