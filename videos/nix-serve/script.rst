@@ -30,7 +30,7 @@ Internet and without doing any compilation.
 Warnings:
 
 - It may be a mistake to configure systems as ``nix-serve`` clients that won't
-  always be able to contact the server, like laptops that you use on the road.
+  always be able to contact the server, like laptops that you take on the road.
   From my observation, if clients aren't able to contact the server, it can
   make it impossible to run ``nixos-rebuild`` on the client.  I don't know why;
   my mental model would just see ``nixos-rebuild`` skipping the missing server
