@@ -343,7 +343,6 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     mbuffer
     lzop
     zstd
-    vcv-rack
   ];
 
   #sound.enable = lib.mkForce true; # use pulseaudio
