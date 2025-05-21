@@ -26,6 +26,11 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
 
   system.stateVersion = "22.05";
 
+  # environment.systemPackages = [ pkgs.vcv-rack ];
+  # nix.settings.substituters = [ "http://keithmoon:5000" ];
+  # nix.settings.trusted-substituters = [ "http://keithmoon:5000" ];
+  # nix.settings.trusted-public-keys = [ "nix-serve-keithmoon:ouITNUagrAyEVzSlnQXJewp5aQhAOu1PPnN5RcN8PJ0=" ];
+
   # per-host settings
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
