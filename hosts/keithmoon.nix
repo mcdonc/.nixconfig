@@ -10,8 +10,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
-    #./roles/tailscale
     ./roles/idracfanctl.nix
+    ./roles/tailscale
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
@@ -23,11 +23,14 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   system.stateVersion = "24.05";
 
-  #services.idracfanctl.enable = true;
-  #services.idracfanctl.fan-percent-min = 50;
+  services.idracfanctl.enable = true;
+  services.idracfanctl.fan-percent-min = 15;
+  services.idracfanctl.fan-percent-max = 65;
+  services.idracfanctl.temp-cpu-min = 43;
+  services.idracfanctl.temp-cpu-max = 96;
 
-  services.nix-serve.enable = true;
-  services.nix-serve.secretKeyFile = "/nix-store-private";
+  #services.nix-serve.enable = true;
+  #services.nix-serve.secretKeyFile = "/nix-serve-private";
 
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
@@ -49,20 +52,13 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
       fsType = "zfs";
     };
 
-  #fileSystems."/et" =
-  #  { device = "et";
-  #    fsType = "zfs";
-  #  };
-
   fileSystems."/steam1" =
     { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
-      #label="STEAM1";
       fsType = "ext4";
     };
 
   fileSystems."/steam2" =
     { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
-      #label="STEAM2";
       fsType = "ext4";
     };
 
@@ -120,7 +116,6 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   services.samba = {
     enable = true;
-    # package = pkgs.samba4Full; # doesn't work on 25.05 due to ceph
     openFirewall = true;
     settings = {
       global = {
@@ -342,13 +337,12 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   };
 
   environment.systemPackages = with pkgs; [
+    cifs-utils
     # used by zfs send/receive
     pv
     mbuffer
     lzop
     zstd
-
-    cifs-utils
   ];
 
   #sound.enable = lib.mkForce true; # use pulseaudio
