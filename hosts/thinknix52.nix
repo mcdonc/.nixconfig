@@ -12,8 +12,8 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/davinci-resolve/studio.nix
     ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
+    ./roles/tailscale
     #./roles/sessile.nix
-    #/roles/tailscale
     #./roles/nix-serve-client.nix
     # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     # (
