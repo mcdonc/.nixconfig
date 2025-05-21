@@ -29,12 +29,6 @@ Internet and without doing any compilation.
 
 Warnings:
 
-- Don't do a ``sudo nix-collect-garbage -d`` just whilst making changes to any
-  of the systems involved in this process, and for a while afterwards. Doing
-  this will prevent you from booting from an earlier NixOS generation, and it's
-  pretty easy to find yourself in a place where that is required if you make a
-  mistake.
-
 - It may be a mistake to configure systems as ``nix-serve`` clients that won't
   always be able to contact the server, like laptops that you use on the road.
   From my observation, if clients aren't able to contact the server, it can
@@ -45,8 +39,14 @@ Warnings:
   You won't even be able to run it to disable your client's ``nix-serve``
   configuration, so you'll be stuck in that configuration without rolling back
   using the generation system. I use Tailscale, so my clients can almost always
-  contact the ``nix-serve`` server, so I don't care much.
+  contact the ``nix-serve`` server by name no matter where they are.
 
+- Don't do a ``sudo nix-collect-garbage -d`` just whilst making changes to any
+  of the systems involved in this process, and for a while afterwards. Doing
+  this will prevent you from booting from an earlier NixOS generation, and it's
+  pretty easy to find yourself in a place where that is required if you make a
+  mistake.
+  
 Server
 ------
 
