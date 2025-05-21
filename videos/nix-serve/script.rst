@@ -165,10 +165,11 @@ I tried `Peerix <https://github.com/cid-chan/peerix>`_ but failed to get it
 working.  I experienced the symptoms described in `this GitHub issue
 <https://github.com/cid-chan/peerix/issues/9>`_.
 
-It would be great if Peerix worked, because it would be kinda like Steam's
-ambient local download configuration where any local machine would be willing
-to download from any other local machine that has the data, instead of needing
-to dedicate one as a server and the others as clients.
+It would be great if Peerix worked, because, at least in my imagination, it
+would be kinda like Steam's ambient local download configuration where any
+local machine would be willing to download from any other local machine that
+has the data, instead of needing to dedicate one as a server and the others as
+clients.
 
 There is also `Harmonia <https://github.com/nix-community/harmonia>`_.  I
 haven't yet tried it.  It works a lot like ``nix-serve`` except with more
