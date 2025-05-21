@@ -27,32 +27,34 @@ slightly based on its role. So as long as I remember to update and rebuild the
 clients mostly operate completely locally, without any downloading over the
 Internet and without doing any compilation.
 
-Warnings:
+Caveat Emptor
+-------------
 
-- It may be a mistake to configure systems as ``nix-serve`` clients that won't
-  always be able to contact the server, like laptops that you take on the road.
-  From my observation, if clients aren't able to contact the server, it can
-  make it impossible to run ``nixos-rebuild`` on the client.  I don't know why;
-  my mental model would just see ``nixos-rebuild`` skipping the missing server
-  when trying to use it as a substituter, but that's not my observation of
-  actual behavior.  Instead, a ``nixos-rebuild`` on the client will just fail.
-  You won't even be able to run it to disable your client's ``nix-serve``
-  configuration, so you'll be stuck in that configuration without rolling back
-  using the generation system. I use Tailscale, so my clients can almost always
-  contact the ``nix-serve`` server by name no matter where they are.
+There are some significant downsides to using ``nix-serve`` or any substituter
+that serves up the same set of files as ``cache.nixos.org``.
 
-- Don't do a ``sudo nix-collect-garbage -d`` just whilst making changes to any
-  of the systems involved in this process, and for a while afterwards. Doing
-  this will prevent you from booting from an earlier NixOS generation, and it's
-  pretty easy to find yourself in a place where that is required if you make a
-  mistake.
+Don't do a ``sudo nix-collect-garbage -d`` just whilst making changes to any of
+the systems involved in this process, and for a while afterwards. Doing this
+will prevent you from booting from an earlier NixOS generation, and it's pretty
+easy to find yourself there if you make a mistake or you run into a Nix bug
+while messing around with this stuff.
 
-- It's advisable to decommission the clients first if you set up ``nix-serve``
-  and then stop using it, because if you decommission the server first, the
-  clients may not be able to successfully ``nixos-rebuild``. YMMV.  Also, if
-  you take any of the client machines to a place where the server is
-  uncontactable, you might run into the same situation, or at least I did.
-  
+For example, if you run into `this Nix bug
+<https://github.com/NixOS/nix/issues/8254#issuecomment-1809046508>`_ you won't
+even be able to run ``nixos-rebuild`` to disable your client's ``nix-serve``
+configuration, so you'll be stuck in that configuration without rolling back
+using the generation system.
+
+If the server dies, or if you take any of the client machines to a place where
+the server is uncontactable, you might run into similar situations, or at least
+I did.  This may make it infeasible to use as clients laptops that can't
+connect to the server from the road using the same hostname as when they're on
+the same network.  I really don't understand why this is the case, and why it
+doesn't just skip the missing substituter.  I'm just reporting from the field.
+
+A similar situation on the server may occur if you paste a malformed private
+key into the server's configuration.
+
 Server
 ------
 
@@ -104,8 +106,6 @@ Note that this will also work on non-NixOS systems that use Nix.  On those, you
 max need to add the equivalent values to ``/etc/nix/nix.conf`` instead of
 putting them in any Nix file.
 
-https://github.com/NixOS/nix/issues/8254#issuecomment-1809046508
-
 Testing
 -------
 
@@ -114,21 +114,20 @@ To see the log of the ``nix-serve`` service, invoke this on the server::
   sudo journalctl -f -u nix-serve.service
 
 Now let's get some software downloaded onto the server that doesn't yet exist
-on either the server or the client.  To that end, add ``vcv-rack`` (an open
-source virtual modular synth) to ``environment.systemPackages`` on the server.
+on either the server or the client.
 
-Then rerun ``nixos-rebuild`` on the server.  It will need to compile the
-``vcv-rack`` software.
+Run this on the server::
 
-Then, on the client, change its ``configuration.nix`` to also add ``vcv-rack``
-to ``environment.systemPackages``.
+  nix-shell -p dwarf-fortress
 
-Then run ``nixos-rebuild switch`` on the client.
+It will need to compile the ``dwarf-fortress`` software.
+
+Once it's finished, run the same on the client.
 
 You should see the server's nix-serve.service log grow, and you should see
-``vcv-rack`` and its dependencies being downloaded from your server instead of
-from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.  It will
-not need to be compiled.
+``dwarf-fortress`` and its dependencies being downloaded from your server
+instead of from ``cache.nixos.org`` in the output of ``nixos-rebuild switch``.
+It will not need to be compiled.
 
 To test that signing and signature verification between the server and client
 is working, from a properly configured client, you should be able to do
@@ -136,9 +135,10 @@ something like this (change hostname to your server's and the nix store path to
 something that exists in the server's ``/nix/store/``)::
   
   nix store verify --store http://keithmoon:5000/ \
-    /nix/store/02bcf9dkrmbnv8w2jl5xz2gydp78ikr7-vcv-rack-2.6.0
+    /nix/store/64v9rlzbiai9h116sjydjj4f9yh5dx8w-dwarf-fortress-51.11
 
-It should not return anything that says "untrusted".
+It should not return anything that says "untrusted", at least for software
+added to the server's Nix store after you set up ``nix-serve``.
 
 Notes
 -----
@@ -152,6 +152,11 @@ as a `credential <https://systemd.io/CREDENTIALS/>`_.
 The ``nix-serve`` service will run as a "dynamic" user.  ``systemd`` will
 create a ``nix-serve`` user when it starts, and the user is deleted when it
 stops.
+
+By observation, at least, files that were present in the ``nix-serve`` server's
+``/nix/store`` before you configured ``nix-serve`` will not be trusted by
+clients.  Those will need to be downloaded from ``cache.nixos.org`` and you'll
+see irritating "not trusted" messages in the output of ``nixos-rebuild``.
 
 Other Options
 -------------

@@ -12,13 +12,13 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/speedtest
     ./roles/idracfanctl.nix
     ./roles/tailscale
+    ../common.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
     #    args // {mem="20G"; cores=4; enable=true;}
     #  )
     #)
-    ../common.nix
   ];
 
   system.stateVersion = "24.05";
@@ -29,8 +29,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   services.idracfanctl.temp-cpu-min = 43;
   services.idracfanctl.temp-cpu-max = 96;
 
-  services.nix-serve.enable = true;
-  services.nix-serve.secretKeyFile = "/nix-serve-private";
+  #services.nix-serve.enable = true;
+  #services.nix-serve.secretKeyFile = "/nix-serve-private";
 
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
