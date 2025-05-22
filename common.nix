@@ -3,10 +3,10 @@
 , system
 , inputs
 , pkgs-olive
+, pkgs-unstable
 , pkgs-py36
 , pkgs-py37
 , pkgs-py39
-, pkgs-unstable
 , ...
 }:
 
@@ -281,7 +281,7 @@ in
     vim-full
     wget
     (wrapOBS {
-      plugins = with pkgs.obs-studio-plugins; [ obs-backgroundremoval ];
+      plugins = [ pkgs.obs-studio-plugins.obs-backgroundremoval ];
     })
     thermald
     powertop
@@ -308,13 +308,8 @@ in
     remmina
     baobab
     signal-desktop
-    python27
     pkgs.vscode-fhs
-    pkgs-py36.python36
-    pkgs-py37.python37
-    pkgs-py39.python38
-    pkgs-py39.python39
-    python310
+    # the order of python3s is intentional; python311 will be first the PATH
     (python311.withPackages (p:
       with p; [
         pyserial # for pico-w-go in vscode
@@ -326,11 +321,16 @@ in
         tox # for... tox
         build # for pypa build package
         twine # for uploading to PyPI
-        docker
       ]))
+    pkgs-py36.python36
+    pkgs-py37.python37
+    pkgs-py39.python38
+    pkgs-py39.python39
+    python310
     python312
     python313
     pypy3
+    python27
     xz
     libreoffice
     ffmpeg-full
@@ -443,7 +443,6 @@ in
     any-nix-shell
     pico-sdk
     sdcc
-#    dstat
     speedtest-cli
     fast-cli
     nmap
@@ -497,7 +496,8 @@ in
     sox # for play
     nickel
     gnome-boxes
-    vdhcoapp # vdhcoapp install --user (see also https://github.com/NixOS/nixpkgs/issues/112046)
+    #  vdhcoapp install --user (https://github.com/NixOS/nixpkgs/issues/112046)
+    vdhcoapp
     airspy
     soapyairspy
     gnome-multi-writer

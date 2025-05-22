@@ -22,7 +22,6 @@
     isd.url = "github:isd-project/isd";
     peerix.url = "github:cid-chan/peerix";
     agenix.url = "github:ryantm/agenix";
-    # nur.url = "github:nix-community/NUR";
   };
 
   outputs = inputs:
@@ -38,12 +37,12 @@
       );
 
       forkInputs = with inputs; [
-        { name = "pkgs-unstable"      ; value=nixpkgs-unstable;         }
-        { name = "pkgs-2411"          ; value=nixpkgs-2411;             }
-        { name = "pkgs-olive"         ; value=nixpkgs-olive;            }
-        { name = "pkgs-py36"          ; value=nixpkgs-py36;             }
-        { name = "pkgs-py37"          ; value=nixpkgs-py37;             }
-        { name = "pkgs-py39"          ; value=nixpkgs-py39;             }
+        { name = "pkgs-unstable"    ; value=nixpkgs-unstable;  }
+        { name = "pkgs-2411"        ; value=nixpkgs-2411;      }
+        { name = "pkgs-olive"       ; value=nixpkgs-olive;     }
+        { name = "pkgs-py36"        ; value=nixpkgs-py36;      }
+        { name = "pkgs-py37"        ; value=nixpkgs-py37;      }
+        { name = "pkgs-py39"        ; value=nixpkgs-py39;      }
       ];
       mkNpFork = forkinput: {
         name = forkinput.name;
@@ -53,8 +52,9 @@
         };
       };
       forks = builtins.listToAttrs ((builtins.map (i: mkNpFork i)) forkInputs);
+      mdi = inputs.nixtheplanet.legacyPackages."${system}".makeDarwinImage;
       specialArgs = inputs // forks // {
-        bigger-darwin = inputs.nixtheplanet.legacyPackages."${system}".makeDarwinImage {
+        bigger-darwin = mdi {
           diskSizeBytes = 100000000000;
         };
         inherit nixgl-olive nixgl-unstable system inputs;
