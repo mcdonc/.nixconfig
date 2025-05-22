@@ -15,6 +15,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/backupsource
     ./roles/tailscale
     ./roles/nix-serve-client.nix
+    ./roles/rc505
     #./roles/sessile.nix
     # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     # (

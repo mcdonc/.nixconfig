@@ -4,14 +4,14 @@
   # enable the Roland RC-505 as an ALSA device
 
   # pin the kernel so we don't need to keep building it
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_6.override {
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_12.override {
     argsOverride = rec {
       src = pkgs.fetchurl {
         url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
-        sha256 = "sha256-85dud3CGlP5KH40TB8MVyKNsvFjwOKOOAGuR4pofMhQ=";
+        sha256 = "sha256-6LLsfiM4zLnIbecVT27cqt/OgJB0k8FD6FqCd2u1Bk0=";
       };
-      version = "6.6.37";
-      modDirVersion = "6.6.37";
+      version = "6.12.29";
+      modDirVersion = "6.12.29";
     };
   });
 
