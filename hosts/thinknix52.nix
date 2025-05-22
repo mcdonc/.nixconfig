@@ -2,6 +2,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
 
 {
   imports = [
+    ../common.nix
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p52"
     "${nixos-hardware}/common/pc/ssd"
@@ -13,23 +14,17 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
     ./roles/backupsource
     ./roles/tailscale
+    ./roles/nix-serve-client.nix
     #./roles/sessile.nix
-    #./roles/nix-serve-client.nix
     # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     # (
     #   import ./roles/macos-ventura.nix (
     #     args // {mem="12G"; cores=4; enable=true;}
     #   )
     # )
-    ../common.nix
   ];
 
   system.stateVersion = "22.05";
-
-  # environment.systemPackages = [ pkgs.vcv-rack ];
-  # nix.settings.substituters = [ "http://keithmoon:5000" ];
-  # nix.settings.trusted-substituters = [ "http://keithmoon:5000" ];
-  # nix.settings.trusted-public-keys = [ "nix-serve-keithmoon:ouITNUagrAyEVzSlnQXJewp5aQhAOu1PPnN5RcN8PJ0=" ];
 
   # per-host settings
   networking.hostId = "e1e4a33b";
