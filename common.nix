@@ -163,8 +163,6 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-
-  #sound.enable = false; # not needed for pipewire
   services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
@@ -192,7 +190,6 @@ in
     };
   };
 
-  # enable docker
   virtualisation.docker.enable = true;
 
   programs.dconf.enable = true;
@@ -205,7 +202,6 @@ in
   # https://discourse.nixos.org/t/newly-announced-vulnerabilities-in-cups/52771/9
   systemd.services.cups-browsed.enable = false;
 
-  # all other services
   services.fwupd.enable = true;
   services.locate.enable = false;
   services.openssh = {

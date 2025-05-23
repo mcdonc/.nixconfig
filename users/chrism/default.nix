@@ -1,9 +1,5 @@
 { lib, config, pkgs, ... }:
 
-let
-  intake = "/home/chrism/intake";
-  intake-events = "IN_CLOSE_WRITE,IN_MOVED_TO";
-in
 {
   home-manager = {
     users.chrism = import ./home.nix;
