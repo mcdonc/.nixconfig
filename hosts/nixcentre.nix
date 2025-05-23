@@ -57,7 +57,7 @@
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
 
@@ -79,16 +79,16 @@
     enable = true;
     enableTCPIP = true;
     settings.port = 5432;
-    dataDir="/v/postgresql/${config.services.postgresql.package.psqlSchema}";
+    dataDir = "/v/postgresql/${config.services.postgresql.package.psqlSchema}";
     authentication = pkgs.lib.mkForce ''
       # TYPE  DATABASE        USER            ADDRESS                 METHOD
       local   all             all                                     trust
       host    all             all             127.0.0.1/32            trust
       host    all             all             192.168.1.0/24          trust
     '';
-  initialScript = pkgs.writeText "postgres-init-script" ''
-    CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
-  '';
+    initialScript = pkgs.writeText "postgres-init-script" ''
+      CREATE ROLE resolve WITH LOGIN PASSWORD 'resolve' CREATEDB;
+    '';
   };
 
   services.samba = {
