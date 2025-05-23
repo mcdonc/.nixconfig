@@ -5,6 +5,7 @@ import shutil
 
 ignore_done = shutil.ignore_patterns("*.done")
 
+
 def copy_transcodes(
         source_dir,
         target_dir,
