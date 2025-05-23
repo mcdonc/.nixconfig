@@ -533,9 +533,6 @@ in
     nil # for nix emacs lsp-mode
     # for rust emacs lsp-mode
     rust-analyzer
-    cargo
-    rustc
-    gcc
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm
