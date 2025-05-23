@@ -1,4 +1,4 @@
-args@{ config, pkgs, lib, nixos-hardware, ... }:
+args@{ config, lib, nixos-hardware, ... }:
 
 {
   imports = [
