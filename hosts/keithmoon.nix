@@ -2,6 +2,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
   imports = [
+    ../common.nix
     ../users/chrism
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
@@ -13,7 +14,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/idracfanctl.nix
     ./roles/tailscale
     ./roles/rc505
-    ../common.nix
+    ./roles/zedalerts.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
