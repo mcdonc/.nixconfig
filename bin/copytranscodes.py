@@ -39,6 +39,7 @@ def copy_transcodes(
             target_subdir = os.path.join(target_dir, dir)
             copy_transcodes(source_subdir, target_subdir, dont_recurse)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Copy directory with transcoded files."

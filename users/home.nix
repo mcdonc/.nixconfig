@@ -409,6 +409,9 @@ in
     epkgs.editorconfig
     epkgs.terraform-mode
     epkgs.lspce
+    epkgs.lsp-mode
+    epkgs.lsp-ui
+    epkgs.lsp-jedi
   ];
 
   services.emacs = {

@@ -530,6 +530,7 @@ in
     manim
     manim-slides
     inputs.agenix.packages."${system}".default
+    nil # for nix emacs lsp-mode
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm

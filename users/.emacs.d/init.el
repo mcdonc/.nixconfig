@@ -72,6 +72,31 @@
 (require 'browse-url)
 (require 'multiple-cursors)
 (require 'editorconfig)
+(require 'lsp-mode)
+(require 'lsp-ui)
+(require 'lsp-jedi)
+
+(use-package lsp-mode
+  :init
+(setq lsp-auto-guess-root nil)
+  :hook (rust-mode . lsp)
+        (lsp-mode . lsp-enable-which-key-integration)
+        :commands lsp)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode)
+
+(use-package lsp-nix
+  :ensure lsp-mode
+  :after (lsp-mode)
+  :demand t
+  :custom
+  (lsp-nix-nil-formatter ["nixpkgs-fmt"]))
+
+(use-package nix-mode
+  ; :mode ("\\.nix\\'" "\\.nix.in'")
+  :hook (nix-mode . lsp-deferred)
+  )
 
 (editorconfig-mode 1)
 

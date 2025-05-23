@@ -59,6 +59,9 @@
 (require 'ido)
 (require 'compile)
 (require 'web-mode)
+(require 'lsp-mode)
+(require 'lsp-ui)
+(require 'lsp-jedi)
 
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
