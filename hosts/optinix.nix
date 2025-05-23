@@ -25,7 +25,7 @@ in
     #./roles/vmount.nix
     ./roles/keithclient.nix
     ./roles/backupsource
-#    ./roles/proaudio.nix
+    #    ./roles/proaudio.nix
     #    ./roles/rc505
     ../common.nix
     (
@@ -59,7 +59,7 @@ in
   services.locate.prunePaths = [ "/b" ];
 
   boot.kernelParams = lib.mkForce [
-     # music
+    # music
     "threadirqs"
     # 2GB max ARC cache
     "zfs.zfs_arc_max=2147483648"
@@ -89,7 +89,7 @@ in
           iifname "enp0s20f0u7u2" oifname "enp1s0" accept
         }
       }
-  '';
+    '';
   };
 
   environment.systemPackages = with pkgs; [
@@ -100,9 +100,9 @@ in
     left-screen-1080p
     left-screen-4k
 
- ];
+  ];
 
   # silence ACPI "errors" spewed to console at boot time (default is 4)
   boot.consoleLogLevel = 3;
-  
+
 }
