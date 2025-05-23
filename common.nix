@@ -2,8 +2,6 @@
 , pkgs
 , system
 , inputs
-, pkgs-olive
-, pkgs-unstable
 , pkgs-py36
 , pkgs-py37
 , pkgs-py39
