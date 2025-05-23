@@ -43,6 +43,26 @@ let
   findnixstorelinks = pkgs.writers.writePython3Bin "findnixstorelinks"
     {} (builtins.readFile ./bin/findnixstorelinks.py);
 
+  python313WithPackages = (
+    pkgs.python313.withPackages (p:
+      with p; [
+        pyserial # for pico-w-go in vscode
+        pyflakes # for emacs
+        flake8 # for emacs/vscode
+        docutils # for vscode
+        pygments # for vscode
+        black # for cmdline and vscode
+        tox
+        build # for pypa build package
+        twine # for uploading to PyPI
+        python-lsp-server # for emacs lsp
+      ])
+  );
+
+  syspython = pkgs.writeScriptBin "syspython" ''
+      exec ${python313WithPackages}/bin/python $@
+  '';
+
 in
 {
 
@@ -305,26 +325,16 @@ in
     baobab
     signal-desktop
     pkgs.vscode-fhs
-    # the order of python3s is intentional; python311 will be first the PATH
-    (python311.withPackages (p:
-      with p; [
-        pyserial # for pico-w-go in vscode
-        pyflakes # for emacs
-        flake8 # for emacs/vscode
-        docutils # for vscode
-        pygments # for vscode
-        black # for cmdline and vscode
-        tox # for... tox
-        build # for pypa build package
-        twine # for uploading to PyPI
-      ]))
+    # the order of python3s is intentional; python313 will be first the PATH
+    python313WithPackages
+    syspython
     pkgs-py36.python36
     pkgs-py37.python37
     pkgs-py39.python38
     pkgs-py39.python39
     python310
+    python311
     python312
-    python313
     pypy3
     python27
     xz

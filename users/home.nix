@@ -408,6 +408,7 @@ in
     epkgs.nickel-mode
     epkgs.editorconfig
     epkgs.terraform-mode
+    epkgs.lspce
   ];
 
   services.emacs = {
