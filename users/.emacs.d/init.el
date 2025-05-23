@@ -80,6 +80,7 @@
   :init
 (setq lsp-auto-guess-root nil)
   :hook (rust-mode . lsp)
+        (python-mode . lsp)
         (lsp-mode . lsp-enable-which-key-integration)
         :commands lsp)
 
