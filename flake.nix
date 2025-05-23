@@ -32,17 +32,16 @@
       nixgl-olive = inputs.nixgl-olive.defaultPackage."${system}".nixGLIntel;
       nixgl-unstable = inputs.nixgl-unstable.defaultPackage."${system}".nixGLIntel;
       my_overlay = (
-        self: super: {
-        }
+        self: super: { }
       );
 
       forkInputs = with inputs; [
-        { name = "pkgs-unstable"    ; value=nixpkgs-unstable;  }
-        { name = "pkgs-2411"        ; value=nixpkgs-2411;      }
-        { name = "pkgs-olive"       ; value=nixpkgs-olive;     }
-        { name = "pkgs-py36"        ; value=nixpkgs-py36;      }
-        { name = "pkgs-py37"        ; value=nixpkgs-py37;      }
-        { name = "pkgs-py39"        ; value=nixpkgs-py39;      }
+        { name = "pkgs-unstable"; value = nixpkgs-unstable; }
+        { name = "pkgs-2411"; value = nixpkgs-2411; }
+        { name = "pkgs-olive"; value = nixpkgs-olive; }
+        { name = "pkgs-py36"; value = nixpkgs-py36; }
+        { name = "pkgs-py37"; value = nixpkgs-py37; }
+        { name = "pkgs-py39"; value = nixpkgs-py39; }
       ];
       mkNpFork = forkinput: {
         name = forkinput.name;
@@ -79,28 +78,28 @@
         }
       ];
     in
-      let
-        hosts = [
-          "thinknix50"
-          "thinknix51"
-          "thinknix512"
-          "thinknix52"
-          "thinkcentre"
-          "optinix"
-          "nixcentre"
-          "nixos_vm"
-          "keithmoon"
-        ];
-        mkSystem = host: {
-          name = host;
-          value = inputs.nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
-            modules = shared-modules ++ [ (./. + "/hosts/${host}.nix") ];
-          };
+    let
+      hosts = [
+        "thinknix50"
+        "thinknix51"
+        "thinknix512"
+        "thinknix52"
+        "thinkcentre"
+        "optinix"
+        "nixcentre"
+        "nixos_vm"
+        "keithmoon"
+      ];
+      mkSystem = host: {
+        name = host;
+        value = inputs.nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = shared-modules ++ [ (./. + "/hosts/${host}.nix") ];
         };
-        configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
-      in
-        {
-          nixosConfigurations = configs;
-        };
+      };
+      configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
+    in
+    {
+      nixosConfigurations = configs;
+    };
 }
