@@ -87,17 +87,17 @@
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
-(use-package lsp-nix
-  :ensure lsp-mode
-  :after (lsp-mode)
-  :demand t
-  :custom
-  (lsp-nix-nil-formatter ["nixpkgs-fmt"]))
+;; (use-package lsp-nix
+;;   :ensure lsp-mode
+;;   :after (lsp-mode)
+;;   :demand t
+;;   :custom
+;;   (lsp-nix-nil-formatter ["nixpkgs-fmt"]))
 
-(use-package nix-mode
-  ; :mode ("\\.nix\\'" "\\.nix.in'")
-  :hook (nix-mode . lsp-deferred)
-  )
+;; (use-package nix-mode
+;;   ; :mode ("\\.nix\\'" "\\.nix.in'")
+;;   :hook (nix-mode . lsp-deferred)
+;;   )
 
 ;; (use-package company
 ;;    :ensure t
