@@ -18,6 +18,10 @@
   # this pin is not specific enough
   # boot.kernelPackages = pkgs.linuxPackages_6_1;
 
+  # NB: The date in uname -a is not the date the kernel was built. The kernel
+  # is built with a non-now date. Specifically, it’s the most recent timestamp
+  # on files in the source tarball. So it doesn’t change when you patch it.
+
   # patch the kernel
   boot.kernelPatches = [{
     name = "roland-rc505";
