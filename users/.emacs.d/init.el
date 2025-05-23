@@ -77,12 +77,12 @@
 (require 'lsp-jedi)
 
 (use-package lsp-mode
-  :init
-(setq lsp-auto-guess-root nil)
+  :init (setq lsp-auto-guess-root nil)
+        (setq lsp-headerline-breadcrumb-enable nil)
   :hook (rust-mode . lsp)
         (python-mode . lsp)
         (lsp-mode . lsp-enable-which-key-integration)
-        :commands lsp)
+  :commands lsp)
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
@@ -99,11 +99,11 @@
   :hook (nix-mode . lsp-deferred)
   )
 
-(use-package company
-    :ensure t
-    :bind ("C-SPC" . company-mode))
+;; (use-package company
+;;    :ensure t
+;;    :bind ("C-," . company-mode))
 
-(add-hook 'after-init-hook 'global-company-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
 
 (editorconfig-mode 1)
 
