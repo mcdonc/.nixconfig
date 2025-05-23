@@ -98,6 +98,12 @@
   :hook (nix-mode . lsp-deferred)
   )
 
+(use-package company
+    :ensure t
+    :bind ("C-SPC" . company-mode))
+
+(add-hook 'after-init-hook 'global-company-mode)
+
 (editorconfig-mode 1)
 
 ;; set up multiple cursor mode like vs code

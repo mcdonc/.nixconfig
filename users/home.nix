@@ -412,6 +412,7 @@ in
     epkgs.lsp-mode
     epkgs.lsp-ui
     epkgs.lsp-jedi
+    epkgs.company
   ];
 
   services.emacs = {
