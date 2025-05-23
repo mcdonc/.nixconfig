@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 
 let
   dvtranscode = pkgs.callPackage ../../pkgs/dvtranscode.nix { };

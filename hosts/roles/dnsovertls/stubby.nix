@@ -1,4 +1,4 @@
-{ config, pkgs, lib, options, ... }:
+{ ... }:
 
 # alternate encrypted dns... https://mdleom.com/blog/2020/03/04/caddy-nixos-part-2/#DNS-over-TLS
 

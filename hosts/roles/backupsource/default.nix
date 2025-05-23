@@ -1,4 +1,4 @@
-{ config, pkgs, home-manager, ... }:
+{ pkgs, ... }:
 
 let
   rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
@@ -117,6 +117,6 @@ in
 
   system.activationScripts.zfsbackupuser = pkgs.lib.stringAfter [ "users" ]
     ''
-     ${pkgs.zfs}/bin/zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
+      ${pkgs.zfs}/bin/zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     '';
 }

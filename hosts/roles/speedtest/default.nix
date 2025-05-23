@@ -45,6 +45,6 @@ in
     mkdir -p /var/www/speedtest
     chown nginx:nginx /var/www/speedtest
   '';
-  
+
 
 }
