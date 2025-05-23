@@ -2,6 +2,7 @@
 args@{ config, pkgs, lib, nixos-hardware, ... }:
 {
   imports = [
+    ../common.nix
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/p50"
     "${nixos-hardware}/common/pc/ssd"
@@ -12,10 +13,10 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/backupsource
     ./roles/davinci-resolve/studio.nix
-    #./roles/nix-serve-client.nix
+    ./roles/nix-serve-client.nix
     ./roles/speedtest
     ./roles/tailscale
-    ../common.nix
+    ./roles/rc505
     (
       import ./roles/macos-ventura.nix (
         args // { mem = "16G"; cores = 4; enable = false; }
