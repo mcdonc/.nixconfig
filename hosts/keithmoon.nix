@@ -37,7 +37,12 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   networking.hostName = "keithmoon";
 
   boot.initrd.availableKernelModules = [
-    "ahci" "xhci_pci" "ehci_pci" "megaraid_sas" "usb_storage" "usbhid"
+    "ahci"
+    "xhci_pci"
+    "ehci_pci"
+    "megaraid_sas"
+    "usb_storage"
+    "usbhid"
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
@@ -49,17 +54,20 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
 
   fileSystems."/nix" =
-    { device = "NIXROOT/nix";
+    {
+      device = "NIXROOT/nix";
       fsType = "zfs";
     };
 
   fileSystems."/steam1" =
-    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
+    {
+      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
       fsType = "ext4";
     };
 
   fileSystems."/steam2" =
-    { device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
+    {
+      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
       fsType = "ext4";
     };
 
@@ -95,7 +103,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   hardware.graphics.enable = true;
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   # allow changing nvidia fan speed
   services.xserver.deviceSection = ''
     Option    "Coolbits" "4"
@@ -234,28 +242,28 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
         source = "backup@optinix.local:NIXROOT/home";
         target = "d/home-optinix";
         sendOptions = "w c";
-        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
       };
       "home-thinknix52" = {
         sshKey = "/var/lib/syncoid/backup.key";
         source = "backup@thinknix52.local:NIXROOT/home";
         target = "d/home-thinknix52";
         sendOptions = "w c";
-        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
       };
       "home-thinknix50" = {
         sshKey = "/var/lib/syncoid/backup.key";
         source = "backup@thinknix50.local:NIXROOT/home";
         target = "d/home-thinknix50";
         sendOptions = "w c";
-        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
       };
       "home-thinknix512" = {
         sshKey = "/var/lib/syncoid/backup.key";
         source = "backup@thinknix512.local:NIXROOT/home";
         target = "d/home-thinknix512";
         sendOptions = "w c";
-        extraArgs = ["--sshoption=StrictHostKeyChecking=off"];
+        extraArgs = [ "--sshoption=StrictHostKeyChecking=off" ];
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
@@ -324,7 +332,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
         monthly = 12;
         yearly = 0;
       };
-     "d/home-thinknix512" = {
+      "d/home-thinknix512" = {
         autoprune = true;
         autosnap = false;
         hourly = 4;
