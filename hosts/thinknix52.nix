@@ -40,7 +40,5 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)
   boot.consoleLogLevel = 3;
-  #boot.kernelPackages = pkgs.linuxPackages_6_12;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production; # 550
 
 }
