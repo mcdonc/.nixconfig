@@ -528,6 +528,7 @@ in
     manim
     manim-slides
     inputs.agenix.packages."${system}".default
+    mailutils # for checking zed reports
     nil # for nix emacs lsp-mode
     # for rust emacs lsp-mode
     rust-analyzer
