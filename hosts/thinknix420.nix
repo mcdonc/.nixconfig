@@ -1,7 +1,8 @@
-{ config, pkgs, lib, nixos-hardware, ... }:
+{ nixos-hardware, ... }:
 
 {
   imports = [
+    ../common.nix
     ../users/chrism
     "${nixos-hardware}/lenovo/thinkpad/t420"
     "${nixos-hardware}/common/pc/ssd"
@@ -9,7 +10,6 @@
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/dnsovertls/resolvedonly.nix
-    ../common.nix
   ];
   system.stateVersion = "22.05";
 
