@@ -12,6 +12,5 @@
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
   system.stateVersion = "25.05";
-  services.cloud-init.enable = true;
 
 }
