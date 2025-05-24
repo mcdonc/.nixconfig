@@ -147,7 +147,7 @@ These lines in our ``dodemo.nix`` file are what cause the magic to happpen:
 
 When we include the ``digital-ocean-config.nix``, the built image will use the
 right virtual disk setup.  We include the ``all-formats`` line to be able to
-invoke a command to build a Digital Ocean image.
+invoke a ``nix build`` command to build a Digital Ocean image.
 
 The remainder of ``dodemo.nix`` is just normal Nix configuration.  Importantly,
 it includes a ``users`` definition for, in this case, ``chrism``.  The user
