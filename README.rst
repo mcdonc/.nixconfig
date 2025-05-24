@@ -109,3 +109,11 @@ Post-Reboot
 
    swapDevices = [{ device = "/dev/zvol/NIXROOT/swap"; }];
  
+Hosted Machines
+---------------
+
+To generate an image for hosted machines::
+
+  nix build ".#nixosConfigurations.hosted.config.formats.do"
+
+Where ``hosted`` is the hostname, and ``do`` (digital ocean) is the format.

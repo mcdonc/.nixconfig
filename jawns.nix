@@ -1,3 +1,4 @@
+# locally-used options for my jawns
 { lib, ... }:
 {
   options.jawns = {

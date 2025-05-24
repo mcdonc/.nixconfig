@@ -90,6 +90,7 @@
         "nixcentre"
         "nixos_vm"
         "keithmoon"
+        "hosted"
       ];
       mkSystem = host: {
         name = host;

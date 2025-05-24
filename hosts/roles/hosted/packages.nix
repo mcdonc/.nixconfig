@@ -112,7 +112,6 @@ in
     nmap
     bottom
     openssl
-    start-virsh
     nixos-repl
     envsubst
     jq

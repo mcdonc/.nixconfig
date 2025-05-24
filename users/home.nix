@@ -322,10 +322,12 @@ in
     };
   };
 
-  xdg.configFile."environment.d/ssh_askpass.conf".text = lib.mkIf isworkstation
-    ''
-      SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
-    '';
+  xdg.configFile."environment.d/ssh_askpass.conf".text =
+    mkIfElse isworkstation
+      ''
+        SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
+      ''
+      "";
 
   # relies on Nix programs.ssh.startAgent
   xdg.configFile."autostart/ssh-add.desktop".text = ''
