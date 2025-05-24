@@ -1,8 +1,6 @@
 { lib, config, pkgs, ... }:
 
 {
-  nix.settings.trusted-users = [ "tseaver" ];
-
   # Define a user account.
   users.users.tseaver = {
     isNormalUser = true;
