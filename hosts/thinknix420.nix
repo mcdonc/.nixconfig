@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../common.nix
     ../users/chrism
+    ./roles/workstation
     "${nixos-hardware}/lenovo/thinkpad/t420"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/tseries.nix

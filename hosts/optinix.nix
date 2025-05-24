@@ -15,6 +15,7 @@ in
 {
   imports = [
     ../users/chrism
+    ./roles/workstation
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
@@ -27,7 +28,6 @@ in
     ./roles/backupsource
     #    ./roles/proaudio.nix
     #    ./roles/rc505
-    ../common.nix
     (
       import ./roles/macos-ventura.nix (
         args // { mem = "8G"; cores = 4; enable = false; }

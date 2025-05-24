@@ -2,8 +2,8 @@
 args@{ config, pkgs, lib, nixos-hardware, ... }:
 {
   imports = [
-    ../common.nix
     ../users/chrism
+    ./roles/workstation
     "${nixos-hardware}/lenovo/thinkpad/p50"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/pseries.nix

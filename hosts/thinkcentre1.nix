@@ -3,12 +3,12 @@
 {
   imports = [
     ../users/chrism
+    ./roles/workstation
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
     ./roles/sessile.nix
     ./roles/dnsovertls/resolvedonly.nix
-    ../common.nix
   ];
 
   system.stateVersion = "23.05";

@@ -20,8 +20,8 @@
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     isd.url = "github:isd-project/isd";
-    peerix.url = "github:cid-chan/peerix";
     agenix.url = "github:ryantm/agenix";
+    nixos-generators.url = "github:nix-community/nixos-generators";
   };
 
   outputs = inputs:

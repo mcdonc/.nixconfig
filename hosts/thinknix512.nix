@@ -3,6 +3,7 @@
 {
   imports = [
     ../users/chrism
+    ./roles/workstation
     "${nixos-hardware}/lenovo/thinkpad/p51"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/pseries.nix
@@ -14,7 +15,6 @@
     ./roles/steam.nix
     #./roles/vmount.nix
     ./roles/proaudio.nix
-    ../common.nix
   ];
   system.stateVersion = "22.05";
   networking.hostId = "deadbeef";

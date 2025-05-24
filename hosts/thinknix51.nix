@@ -4,13 +4,13 @@ args@{ config, lib, nixos-hardware, ... }:
   imports = [
     ../users/chrism
     ../users/larry
+    ./roles/workstation
     "${nixos-hardware}/lenovo/thinkpad/p51"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/pseries.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/dnsovertls/resolvedonly.nix
-    ../common.nix
     (
       import ./roles/macos-ventura.nix (
         args // { mem = "12G"; cores = 4; enable = false; }

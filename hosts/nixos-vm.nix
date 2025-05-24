@@ -5,8 +5,8 @@
     [
       ../users/chrism
       ../users/larry
+      ./roles/workstation
       (modulesPath + "/profiles/qemu-guest.nix")
-      ../common.nix
       {
       }
     ];

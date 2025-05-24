@@ -3,6 +3,7 @@
 {
   imports = [
     ../users/chrism
+    ./roles/workstation
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
@@ -10,7 +11,6 @@
     ./roles/sessile.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
-    ../common.nix
   ];
 
   system.stateVersion = "23.11";
