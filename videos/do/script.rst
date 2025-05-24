@@ -55,6 +55,7 @@ Here is the file named ``dodemo.nix`` referred to by ``flake.nix``:
 
 .. code-block:: nix
 
+    # dodemo.nix
     { lib, pkgs, nixpkgs, nixos-generators, system, ... }:
 
     {
