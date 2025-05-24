@@ -14,7 +14,6 @@
     vim
     wget
     curl
-    git
   ];
 
   nix = {
@@ -62,6 +61,8 @@
       PermitRootLogin = "no";
     };
   };
+
+  programs.git.enable = true;
 
   users.users.chrism = {
     isNormalUser = true;
