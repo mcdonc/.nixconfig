@@ -117,3 +117,10 @@ To generate an image for hosted machines::
   nix build ".#nixosConfigurations.arctor.config.formats.do"
 
 Where ``arctor`` is the hostname, and ``do`` (digital ocean) is the format.
+
+To update the configuration remotely::
+
+  nixos-rebuild switch --flake ".#arctor" --target-host chrism@ipaddr --use-remote-sudo
+
+Could use ``security.sudo.wheelNeedsPassword = false;`` to get around password
+entry requirements.
