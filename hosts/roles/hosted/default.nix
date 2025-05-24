@@ -1,14 +1,12 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 {
+
   imports = [
     ./packages.nix
-    ./sound.nix
-    ./printing.nix
-    ./display.nix
   ];
 
-  jawns.isworkstation = true;
+  jawns.isworkstation = false;
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   system.activationScripts.diff = {
@@ -35,31 +33,17 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # obs
-  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
-
-  # rtl8153 / tp-link ue330 quirk for USB ethernet, see
-  # https://askubuntu.com/questions/1081128/usb-3-0-ethernet-adapter-not-working-ubuntu-18-04
-  # disables link power management for this usb ethernet adapter; won't work
-  # otherwise
-  boot.kernelParams = [
-    "usbcore.quirks=2357:0601:k,0bda:5411:k" # ethernet, hub
-  ];
-
   # restart faster
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=10s
   '';
 
   networking.networkmanager.enable = true;
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   time.timeZone = "America/New_York";
 
-  hardware.bluetooth.enable = true;
   hardware.enableAllFirmware = true;
-
-  hardware.flipperzero.enable = true;
 
   environment.variables = {
     EDITOR = "vi";
@@ -116,15 +100,7 @@
 
   programs.dconf.enable = true;
 
-  services.fwupd.enable = true;
   services.locate.enable = false;
-
-  # wireshark without sudo; note that still necessary to add
-  # wireshark to systemPackages to get gui I think
-  programs.wireshark.enable = true;
-
-  #programs.direnv.enable = true;
-  #programs.direnv.enableZshIntegration = true;
 
   programs.htop.enable = true;
   programs.htop.settings = {
@@ -147,17 +123,4 @@
   #   set ttymouse=
   # '';
 
-  # run appimages directly (see https://nixos.wiki/wiki/Appimage)
-  boot.binfmt = {
-    registrations.appimage = {
-      wrapInterpreterInShell = false;
-      interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-      recognitionType = "magic";
-      offset = 0;
-      mask = "\\xff\\xff\\xff\\xff\\x00\\x00\\x00\\x00\\xff\\xff\\xff";
-      magicOrExtension = "\\x7fELF....AI\\x02";
-    };
-    # run aarch64 binaries
-    emulatedSystems = [ "aarch64-linux" ];
-  };
 }

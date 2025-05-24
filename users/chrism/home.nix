@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+args@{ pkgs, lib, ... }:
 
 let
   homedir = "/home/chrism";
@@ -19,26 +19,23 @@ let
 in
 
 {
-  imports = [ ../home.nix ];
+  # not good enough to just add ../home.nix to imports, must eagerly import,
+  # or config.jawns can't be found
+  imports = [ (import ../home.nix args) ];
 
   home.stateVersion = "22.05";
 
   programs.zsh = {
-    shellAliases = shellAliases;
     sessionVariables = {
       FXDEV_LOG_DEPLOYS="1";
    };
   };
 
-  programs.bash = {
-    shellAliases = shellAliases;
-  };
+  #home.file.".root.code-workspace" = {
+  #  source = ./root.code-workspace;
+  #};
 
-  home.file.".root.code-workspace" = {
-    source = ./root.code-workspace;
-  };
-
-  home.file.".root.code-workspace".force = true;
+  #home.file.".root.code-workspace".force = true;
 
   programs.git = {
     enable = true;
@@ -46,11 +43,11 @@ in
     userEmail = "chrism@plope.com";
     extraConfig = {
       pull.rebase = "true";
-      diff.guitool = "meld";
-      difftool.meld.path = "${pkgs.meld}/bin/meld";
-      difftool.prompt = "false";
-      merge.tool = "meld";
-      mergetool.meld.path = "${pkgs.meld}/bin/meld";
+      # diff.guitool = "meld";
+      # difftool.meld.path = "${pkgs.meld}/bin/meld";
+      # difftool.prompt = "false";
+      # merge.tool = "meld";
+      # mergetool.meld.path = "${pkgs.meld}/bin/meld";
       safe.directory = [ "/etc/nixos" ];
     };
   };

@@ -1,8 +1,9 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, ... }@args:
 
 {
   home-manager = {
-    users.chrism = import ./home.nix;
+    # requires args
+    users.chrism = (import ./home.nix args);
   };
 
   nix.settings.trusted-users = [ "chrism" ];

@@ -1,6 +1,75 @@
-{ pkgs, nixgl-olive, nixgl-unstable, ... }:
+{ pkgs, lib, config, nixgl-olive, nixgl-unstable, ... }:
 
 let
+
+  mkIfElse = p: yes: no: lib.mkMerge [
+    (lib.mkIf p yes)
+    (lib.mkIf (!p) no)
+  ];
+
+  isworkstation = config.jawns.isworkstation;
+
+  termsettings = if isworkstation then {
+    enable = true;
+    showMenubar = false;
+
+    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = defaultprofile;
+    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = defaultprofile // {
+      default = false;
+      visibleName = "2blue";
+      colors = {
+        palette = defaultpalette;
+        backgroundColor = "#00008E";
+        foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = defaultprofile // {
+      default = false;
+      visibleName = "3black";
+      colors = {
+        palette = defaultpalette;
+        backgroundColor = "#000000";
+        foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.a37ed5e4-99f5-4eba-acef-e491965a6076 = defaultprofile // {
+      default = false;
+      visibleName = "4purple";
+      colors = {
+        palette = defaultpalette;
+        backgroundColor = "#2C0035";
+        foregroundColor = "#D0CFCC";
+      };
+    };
+    profile.f9a98c86-a974-42bb-98a0-be84f87b9076 = defaultprofile // {
+      default = false;
+      visibleName = "5yellow";
+      colors = {
+        palette = [
+          "#171421"
+          "#ED1515"
+          "#11D116"
+          "#FF6D03"
+          "#1D99F3"
+          "#A347BA"
+          "#2AA1B3"
+          "#D0CFCC"
+
+
+          "#5E5C64"
+          "#F66151"
+          "#33D17A"
+          "#D8D8D7"
+          "#2A7BDE"
+          "#C061CB"
+          "#33C7DE"
+          "#FFFFFF"
+        ];
+        backgroundColor = "#F1F168";
+        foregroundColor = "#000000";
+      };
+    };
+  } else { enable = false; };
 
   nixos-update = pkgs.writeShellScript "nixos-update" ''
     cd /etc/nixos
@@ -27,7 +96,9 @@ let
     ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
   '';
 
-  gterm-change-profile = "xdotool key --clearmodifiers Shift+F10 r";
+  gterm-change-profile = ''
+    xdotool key --clearmodifiers Shift+F10 r
+  '';
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
     source ${gterm-color-funcs}
@@ -148,7 +219,7 @@ let
     thumbnail = "${thumbnail}";
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
-    olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
+    #olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
     stopx = "${pkgs.systemd}/bin/systemctl stop display-manager.service";
     startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
     macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
@@ -166,76 +237,16 @@ in
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    xdotool
     fd # fd is an unnamed dependency of fzf
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
-    keybase-gui
     keithtemps
     whoosh
     nvfantemps
-  ];
+  ] ++ lib.optionals isworkstation [ pkgs.keybase-gui pkgs.xdotool ];
 
-  programs.gnome-terminal = {
-    enable = true;
-    showMenubar = false;
-
-    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = defaultprofile;
-    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = defaultprofile // {
-      default = false;
-      visibleName = "2blue";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#00008E";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = defaultprofile // {
-      default = false;
-      visibleName = "3black";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#000000";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.a37ed5e4-99f5-4eba-acef-e491965a6076 = defaultprofile // {
-      default = false;
-      visibleName = "4purple";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#2C0035";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.f9a98c86-a974-42bb-98a0-be84f87b9076 = defaultprofile // {
-      default = false;
-      visibleName = "5yellow";
-      colors = {
-        palette = [
-          "#171421"
-          "#ED1515"
-          "#11D116"
-          "#FF6D03"
-          "#1D99F3"
-          "#A347BA"
-          "#2AA1B3"
-          "#D0CFCC"
-          "#5E5C64"
-          "#F66151"
-          "#33D17A"
-          "#D8D8D7"
-          "#2A7BDE"
-          "#C061CB"
-          "#33C7DE"
-          "#FFFFFF"
-        ];
-        backgroundColor = "#F1F168";
-        foregroundColor = "#000000";
-      };
-    };
-  };
+  programs.gnome-terminal = termsettings;
 
   services.gpg-agent = {
     enable = true;
@@ -311,9 +322,10 @@ in
     };
   };
 
-  xdg.configFile."environment.d/ssh_askpass.conf".text = ''
-    SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
-  '';
+  xdg.configFile."environment.d/ssh_askpass.conf".text = lib.mkIf isworkstation
+    ''
+      SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
+    '';
 
   # relies on Nix programs.ssh.startAgent
   xdg.configFile."autostart/ssh-add.desktop".text = ''
@@ -356,26 +368,26 @@ in
   };
 
   # add Olive for nvidia-offload (as installed per video)
-  xdg.desktopEntries = {
-    olive-nvidia = {
-      name = "Olive Video Editor (via nvidia-offload)";
-      genericName = "Olive Video Editor";
-      exec = "nvidia-offload olive-editor";
-      terminal = false;
-      categories = [ "AudioVideo" "Recorder" ];
-      mimeType = [ "application/vnd.olive-project" ];
-      icon = "org.olivevideoeditor.Olive";
-    };
-    olive-intel = {
-      name = "Olive Video Editor (via nixGLIntel)";
-      genericName = "Olive Video Editor";
-      exec = "${nixgl-olive}/bin/nixGLIntel olive-editor";
-      terminal = false;
-      categories = [ "AudioVideo" "Recorder" ];
-      mimeType = [ "application/vnd.olive-project" ];
-      icon = "org.olivevideoeditor.Olive";
-    };
-  };
+  # xdg.desktopEntries = {
+  #   olive-nvidia = {
+  #     name = "Olive Video Editor (via nvidia-offload)";
+  #     genericName = "Olive Video Editor";
+  #     exec = "nvidia-offload olive-editor";
+  #     terminal = false;
+  #     categories = [ "AudioVideo" "Recorder" ];
+  #     mimeType = [ "application/vnd.olive-project" ];
+  #     icon = "org.olivevideoeditor.Olive";
+  #   };
+  #   olive-intel = {
+  #     name = "Olive Video Editor (via nixGLIntel)";
+  #     genericName = "Olive Video Editor";
+  #     exec = "${nixgl-olive}/bin/nixGLIntel olive-editor";
+  #     terminal = false;
+  #     categories = [ "AudioVideo" "Recorder" ];
+  #     mimeType = [ "application/vnd.olive-project" ];
+  #     icon = "org.olivevideoeditor.Olive";
+  #   };
+  # };
 
   programs.emacs.enable = true;
   programs.emacs.extraPackages = epkgs: [
@@ -417,7 +429,7 @@ in
 
   services.emacs = {
     enable = true;
-    startWithUserSession = "graphical";
+    startWithUserSession = lib.mkIf isworkstation "graphical";
   };
 
   home.file.".emacs.d" = {

@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+args@{ config, pkgs, ... }:
 
 {
   home-manager = {
-    users.larry = import ./home.nix;
+    users.larry = (import ./home.nix args);
   };
   
   # Define a user account.

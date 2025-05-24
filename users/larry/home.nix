@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
+args@{ config, pkgs, ... }:
 
 {
-  imports = [ ../home.nix ];
+  # not good enough to just add ../home.nix to imports, must eagerly import,
+  # or config.jawns can't be found
+  imports = [ (import ../home.nix args) ];
 
   home.stateVersion = "22.05";
 

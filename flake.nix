@@ -60,6 +60,7 @@
       };
 
       shared-modules = [
+        ./jawns.nix
         inputs.home-manager.nixosModules.home-manager
         inputs.nixtheplanet.nixosModules.macos-ventura
         inputs.musnix.nixosModules.musnix
