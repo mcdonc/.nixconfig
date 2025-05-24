@@ -176,7 +176,8 @@ It's also possible to just upload it from a form on the DO website, but browser
 uploads of large files are always fraught.
 
 If we now navigate to the Digital Ocean "Backups and Snapshots" page, then the
-"Custom Images" tab, we can click "Import via URL."  Input the URL.
+"Custom Images" tab, we can click "Import via URL."  Input the URL to the file
+we uploaded.
 
 It will take a minute or so for Digital Ocean to validate the image.  It will
 be in the "Pending" state until it's validated.
