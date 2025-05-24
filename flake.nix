@@ -92,6 +92,7 @@
         "nixos_vm"
         "keithmoon"
         "arctor"
+        "dodemo"
       ];
       mkSystem = host: {
         name = host;
