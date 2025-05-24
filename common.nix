@@ -530,11 +530,7 @@ in
     inputs.agenix.packages."${system}".default
     mailutils # for checking zed reports
     nil # for nix emacs lsp-mode
-    # for rust emacs lsp-mode
-    rust-analyzer
-    cargo
-    rustc
-    gcc
+    rust-analyzer # for rust emacs lsp-mode
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm
