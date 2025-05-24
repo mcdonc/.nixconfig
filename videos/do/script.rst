@@ -153,7 +153,10 @@ The remainder of ``dodemo.nix`` is just normal Nix configuration.  Importantly,
 it includes a ``users`` definition for, in this case, ``chrism``.  The user
 definition includes a public key for SSH login.  It also enables an SSH daemon.
 
-When we put those files in the same directory, we can then do::
+The instructions provided by Digital Ocean for custom images tell you to also
+add ``cloud-init`` to the image.  I have found this unnecessary.
+
+When we put those files in the same directory, we can do::
   
   nix build ".#nixosConfigurations.dodemo.config.formats.do"
 
