@@ -6,6 +6,7 @@
   # Define a user account.
   users.users.tseaver = {
     isNormalUser = true;
+    shell = pkgs.bash;
     extraGroups = [
       "wheel"
       "networkmanager"

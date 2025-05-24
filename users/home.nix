@@ -555,7 +555,7 @@ in
         echo (../)#$1(:a)
       }
 
-      any-nix-shell zsh --info-right | source /dev/stdin
+      ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 
       function nix-shell () {
          # turn term color blue
