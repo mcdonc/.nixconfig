@@ -23,7 +23,8 @@ We can then update the droplet's NixOS config either locally or remotely.
 The Files
 ---------
 
-We will use flakes for this.  Sorry, ramp up.
+We will use flakes for this.  Sorry if you're not using flakes, but you should
+think about converting if you don't.
 
 Here's the ``flake.nix`` we'll use:
 
