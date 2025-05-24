@@ -2,8 +2,23 @@
 
 {
 
-  imports = [
-    ./packages.nix
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    curl
+    unzip
+    gzip
+    xz
+    gnutar
+    gnumake
+    ripgrep
+    killall
+    python313
+    nmap
+    file
+    bintools
+    dig
+    nix-tree
   ];
 
   jawns.isworkstation = false;
@@ -33,18 +48,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # restart faster
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=10s
-  '';
-
-  networking.networkmanager.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 80 443 ];
 
   time.timeZone = "America/New_York";
-
-  hardware.enableAllFirmware = true;
 
   environment.variables = {
     EDITOR = "vi";
@@ -80,22 +87,6 @@
       PermitRootLogin = "no";
     };
   };
-
-  # virtualization
-  virtualisation.libvirtd.enable = true;
-
-  # vmVariant configuration is added only when building VM with nixos-rebuild
-  # build-vm
-  virtualisation.vmVariant = {
-    virtualisation = {
-      memorySize = 8192; # Use 8GB memory (value is in MB)
-      cores = 4;
-    };
-  };
-
-  virtualisation.docker.enable = true;
-
-  programs.dconf.enable = true;
 
   services.locate.enable = false;
 

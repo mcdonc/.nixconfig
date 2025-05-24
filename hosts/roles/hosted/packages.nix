@@ -48,7 +48,7 @@ in
 
   environment.systemPackages = with pkgs; [
     cachix
-    vim-full
+    vim
     wget
     openvpn
     unzip

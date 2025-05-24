@@ -330,15 +330,19 @@ in
       "";
 
   # relies on Nix programs.ssh.startAgent
-  xdg.configFile."autostart/ssh-add.desktop".text = ''
-    [Desktop Entry]
-    Exec=${pkgs.openssh}/bin/ssh-add -q
-    Name=ssh-add
-    Type=Application
-  '';
+  xdg.configFile."autostart/ssh-add.desktop".text =
+    mkIfElse isworkstation
+      ''
+      [Desktop Entry]
+      Exec=${pkgs.openssh}/bin/ssh-add -q
+      Name=ssh-add
+      Type=Application
+    ''
+    "";
 
-  xdg.configFile."mpv/input.conf" = {
-    text = ''
+  xdg.configFile."mpv/input.conf".text =
+    mkIfElse isworkstation
+      ''
       PGDWN osd-msg-bar seek 5 exact
       PGUP osd-msg-bar seek -5
       Shift+PGDWN osd-msg-bar seek 30 exact
@@ -354,11 +358,12 @@ in
       r cycle_values video-rotate 90 180 270 0
       Alt+- add video-zoom -0.25
       Alt+= add video-zoom 0.25
-    '';
-  };
+    ''
+    "";
 
-  xdg.configFile."mpv/mpv.conf" = {
-    text = ''
+  xdg.configFile."mpv/mpv.conf".text =
+    mkIfElse isworkstation
+      ''
       osd-level=2
       volume=20
       volume-max=150
@@ -366,8 +371,8 @@ in
       geometry=+50%-25
       #window-maximized
       # see https://github.com/mpv-player/mpv/issues/10229
-    '';
-  };
+    ''
+    "";
 
   # add Olive for nvidia-offload (as installed per video)
   # xdg.desktopEntries = {
@@ -429,10 +434,10 @@ in
     epkgs.company
   ];
 
-  services.emacs = {
+  services.emacs = mkIfElse isworkstation {
     enable = true;
-    startWithUserSession = lib.mkIf isworkstation "graphical";
-  };
+    startWithUserSession = "graphical";
+  } { enable = true; };
 
   home.file.".emacs.d" = {
     source = ./.emacs.d;
@@ -450,7 +455,7 @@ in
   };
 
   # uses nvidia-offload
-  home.file.".local/share/applications/steam.desktop" = {
+  home.file.".local/share/applications/steam.desktop" = lib.mkIf isworkstation {
     source = ./steam.desktop;
   };
 

@@ -22,6 +22,7 @@
     isd.url = "github:isd-project/isd";
     agenix.url = "github:ryantm/agenix";
     nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs:
@@ -90,7 +91,7 @@
         "nixcentre"
         "nixos_vm"
         "keithmoon"
-        "hosted"
+        "arctor"
       ];
       mkSystem = host: {
         name = host;

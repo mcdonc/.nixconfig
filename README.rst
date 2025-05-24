@@ -114,6 +114,6 @@ Hosted Machines
 
 To generate an image for hosted machines::
 
-  nix build ".#nixosConfigurations.hosted.config.formats.do"
+  nix build ".#nixosConfigurations.arctor.config.formats.do"
 
-Where ``hosted`` is the hostname, and ``do`` (digital ocean) is the format.
+Where ``arctor`` is the hostname, and ``do`` (digital ocean) is the format.

@@ -1,23 +1,5 @@
 args@{ pkgs, lib, ... }:
 
-let
-  homedir = "/home/chrism";
-  root-code-workspace = "${homedir}/.root.code-workspace";
-  code-client = pkgs.writeShellScript "code-client" ''
-    ${pkgs.procps}/bin/pgrep -x "code" > /dev/null
-    if [ $? -eq 1 ];
-    then
-        ${pkgs.vscode-fhs}/bin/code ${root-code-workspace}
-    fi
-    exec ${pkgs.vscode-fhs}/bin/code -r $@
-  '';
-
-  shellAliases = {
-    code-client = "${code-client}";
-  };
-
-in
-
 {
   # not good enough to just add ../home.nix to imports, must eagerly import,
   # or config.jawns can't be found
@@ -30,12 +12,6 @@ in
       FXDEV_LOG_DEPLOYS="1";
    };
   };
-
-  #home.file.".root.code-workspace" = {
-  #  source = ./root.code-workspace;
-  #};
-
-  #home.file.".root.code-workspace".force = true;
 
   programs.git = {
     enable = true;
@@ -110,7 +86,7 @@ in
     };
   };
 
-  # systemctl --user status nix-index.service
+  # # systemctl --user status nix-index.service
   # systemd.user.services.nix-index = {
   #   Unit = {
   #     Description = "Run nix-index.";
