@@ -1,6 +1,6 @@
-=============================================
- NixOS 102: Deploying NixOS to Digital Ocean
-=============================================
+=======================================================
+ NixOS 102: Deploying NixOS to a Digital Ocean Droplet
+=======================================================
 
 - Companion to video at ...
   
@@ -183,9 +183,11 @@ It will take a minute or so for Digital Ocean to validate the image.  It will
 be in the "Pending" state until it's validated.
 
 Once it's out of the "Pending" state, we can create a droplet based on the
-image.
+image.  I use "NYC-3" as the region, I choose the droplet type, I choose all my
+SSH keys, and I rename the droplet to something sensible.
 
-We can then login to the new droplet using ``chrism``.
+Once it's done churning, I can then login to the new droplet using the
+``chrism`` user via SSH.
 
 At this point, we can set up the droplet's ``/etc/nixos`` from our files if we
 want to manage it manually like any other of our systems.
