@@ -199,7 +199,7 @@ We can alternately use a remote build from our local system::
 Integrating This into an Existing NixOS Flake
 ---------------------------------------------
 
-It's possible to integrate this into your multisystem flake instead of
+It's possible to integrate this host into your multisystem flake instead of
 maintaining it separately. See `my Nix config
 <https://github.com/mcdonc/.nixconfig/blob/master/flake.nix>`_ for more
 information (search for "dodemo").
