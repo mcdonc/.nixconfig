@@ -35,6 +35,7 @@ let
     ];
   };
 
+  # why must i repeat this?
   pyenv = (
     pkgs.python311.withPackages (p:
       with p; [
@@ -63,50 +64,103 @@ let
 in
 
 {
-  environment.systemPackages = [ pyenv-bin ];
-  systemd.tmpfiles.rules = [
-    "d /var/lib/doorserver 0755 root root -"
-  ];
+  options.services.doorserver = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable the doorserver services";
+      default = true;
+    };
+    passwords-file = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the passwords file";
+      default = "/var/lib/doorserver/passwords";
+    };
+    wssecret-file = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the wssecret file";
+      default = "/var/lib/doorserver/wssecret";
+    };
+    doors-file = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the doors file";
+      default = "/var/lib/doorserver/doors";
+    };
+    production-ini-file = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the production.ini file";
+      default = "/var/lib/doorserver/production.ini";
+    };
+    server-ini-file = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to the server.ini file";
+      default = "/var/lib/doorserver/server.ini";
+    };
+  };
 
-  systemd.services.doorserver-ui = {
-    description = "Doorserver UI server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    script = ''
-      export DOORSERVER_PASSWORD_FILE="$CREDENTIALS_DIRECTORY/DOORSERVER_PASSWORD_FILE"
-      export DOORSERVER_DOORS_FILE="$CREDENTIALS_DIRECTORY/DOORSERVER_DOORS_FILE"
-      export DOORSERVER_WSSECRET="$CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET"
-      exec ${pyenv}/bin/pserve /var/lib/doorserver/production.ini
-    '';
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-      User = "doorserver";
-      Group = "doorserver";
-      DynamicUser = true;
-      LoadCredential = [
-        "DOORSERVER_DOORS_FILE:/var/lib/doorserver/doors"
-        "DOORSERVER_PASSWORD_FILE:/var/lib/doorserver/passwords"
-        "DOORSERVER_WSSECRET:/var/lib/doorserver/wssecret"
+  config = let
+    cfg = config.services.doorserver;
+    creds = [
+      "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
+      "DOORSERVER_PASSWORDS_FILE:${cfg.passwords-file}"
+      "DOORSERVER_DOORS_FILE:${cfg.doors-file}"
+      "DOORSERVER_PRODUCTION_INI_FILE.ini:${cfg.production-ini-file}"
+      "DOORSERVER_SERVER_INI_FILE.ini:${cfg.server-ini-file}"
+    ];
+
+    envs = [
+      "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
+      "DOORSERVER_PASSWORDS_FILE=%d/DOORSERVER_PASSWORDS_FILE"
+      "DOORSERVER_DOORS_FILE=%d/DOORSERVER_DOORS_FILE"
+      "DOORSERVER_PRODUCTION_INI_FILE=%d/DOORSERVER_PRODUCTION_INI_FILE.ini"
+      "DOORSERVER_SERVER_INI_FILE=%d/DOORSERVER_SERVER_INI_FILE.ini"
+    ];
+
+  in
+    lib.mkIf cfg.enable {
+      environment.systemPackages = [ pyenv-bin ];
+
+      systemd.tmpfiles.rules = [
+        "d /var/lib/doorserver 0755 root root -"
       ];
-    };
-  };
 
-  systemd.services.doorserver-websocket = {
-    description = "Doorserver websocket server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    script = ''
-      export DOORSERVER_WSSECRET="$CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET"
-      exec ${pyenv}/bin/doorserver /var/lib/doorserver/server.ini
-    '';
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-      User = "doorserver";
-      Group = "doorserver";
-      DynamicUser = true;
-      LoadCredential = "DOORSERVER_WSSECRET:/var/lib/doorserver/wssecret";
+      systemd.services.doorserver-ui = {
+        description = "Doorserver UI server";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        script = ''
+          secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
+          export DOORSERVER_WSSECRET="$secret"
+          exec ${pyenv}/bin/pserve "$DOORSERVER_PRODUCTION_INI_FILE"
+        '';
+        serviceConfig = {
+          Restart = "always";
+          RestartSec = "5s";
+          User = "doorserver";
+          Group = "doorserver";
+          DynamicUser = true;
+          LoadCredential = creds;
+          Environment = envs;
+        };
+      };
+
+      systemd.services.doorserver-websocket = {
+        description = "Doorserver websocket server";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        script = ''
+          secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
+          export DOORSERVER_WSSECRET="$secret"
+          exec ${pyenv}/bin/doorserver "$DOORSERVER_SERVER_INI_FILE"
+        '';
+        serviceConfig = {
+          Restart = "always";
+          RestartSec = "5s";
+          User = "doorserver";
+          Group = "doorserver";
+          DynamicUser = true;
+          LoadCredential = creds;
+          Environment = envs;
+        };
+      };
     };
-  };
 }
