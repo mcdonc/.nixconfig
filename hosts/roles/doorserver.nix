@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
-      rev = "cac05efe039d31fe1a1faf1cc511d5995c252524";
-      sha256 = "sha256-YkT3DCbgDUWcoDiFlAXYt7a7bEIDOqBH4cj4EWdLdPk=";
+      rev = "b1276370a09ec528d85f4096ce00e90b2064f952";
+      sha256 = "sha256-pa8mYI+BIN/JMbkr0xaKr4dyicK2zsnWacDaFDPEDFQ=";
     };
 
     build-system = with pkgs.python311Packages; [
@@ -100,6 +100,11 @@ in
       description = "Listen port for ui server";
       default = "6544";
     };
+    wsserver-port = lib.mkOption {
+      type = lib.types.str;
+      description = "Listen port for websocket server";
+      default = "8001";
+    };
   };
 
   config = let
@@ -131,9 +136,9 @@ in
       # these are taken care of by __init__ reading envvars itself
       #password_file = %(ENV_DOORSERVER_PASSWORDS_FILE)s
       #doors_file =  %(ENV_DOORSERVER_DOORS_FILE)s
-      #websocket_url = %(ENV_DOORSERVER_WEBSOCKET_URL)s 
+      #websocket_url = %(ENV_DOORSERVER_WEBSOCKET_URL)s
       #doorsip = %(ENV_DOORSERVER_DOORSIP)s
-      #secret = %(ENV_DOORSERVER_WSSECRET)s 
+      #secret = %(ENV_DOORSERVER_WSSECRET)s
 
       ###
       # wsgi server configuration
@@ -178,9 +183,11 @@ in
     '';
 
     server_ini = ''
-    [doorserver]
+      # remainder of settings are passed in as envvars
+      [doorserver]
+      port = ${cfg.wsserver-port}
     '';
-    
+
   in
     { environment.systemPackages = [ pyenv-bin ];} //
 
