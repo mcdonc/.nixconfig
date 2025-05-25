@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
-      rev = "4f08c67c961f897cfa23c3813e5032aa35715795";
-      sha256 = "sha256-3pZAxypEX3lniDbBxUy+jr8e8qL6GBuLirHHhRV0Krs=";
+      rev = "1b903feb6ff28e5d45f213fff94cb00523d0be11";
+      sha256 = "sha256-uTSXv5/36H8CSeBVbisvbfVmdYjAt03lfyBIILjSq0w=";
     };
 
     build-system = with pkgs.python311Packages; [
