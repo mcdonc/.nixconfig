@@ -80,7 +80,7 @@
   :init (setq lsp-auto-guess-root nil)
         (setq lsp-headerline-breadcrumb-enable nil)
   :hook (rust-mode . lsp)
-        (python-mode . lsp)
+        ;(python-mode . lsp)
         (lsp-mode . lsp-enable-which-key-integration)
   :commands lsp)
 

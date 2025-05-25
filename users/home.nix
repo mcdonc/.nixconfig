@@ -103,7 +103,7 @@ in
     whoosh
     nvfantemps
     yt-transcode
-  ] ++ lib.optionals isworkstation [ pkgs.keybase-gui pkgs.xdotool ];
+  ];
 
   services.gpg-agent = {
     enable = true;
