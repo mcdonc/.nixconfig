@@ -85,16 +85,6 @@ in
       description = "Path to the doors file";
       default = "/var/lib/doorserver/doors";
     };
-    production-ini-file = lib.mkOption {
-      type = lib.types.str;
-      description = "Path to the production.ini file";
-      default = "/var/lib/doorserver/production.ini";
-    };
-    server-ini-file = lib.mkOption {
-      type = lib.types.str;
-      description = "Path to the server.ini file";
-      default = "/var/lib/doorserver/server.ini";
-    };
     websocket-url = lib.mkOption {
       type = lib.types.str;
       description = "Websocket URL";
@@ -118,16 +108,12 @@ in
       "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
       "DOORSERVER_PASSWORDS_FILE:${cfg.passwords-file}"
       "DOORSERVER_DOORS_FILE:${cfg.doors-file}"
-      "DOORSERVER_PRODUCTION_INI_FILE.ini:${cfg.production-ini-file}"
-      "DOORSERVER_SERVER_INI_FILE.ini:${cfg.server-ini-file}"
     ];
 
     envs = [
       "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
       "DOORSERVER_PASSWORDS_FILE=%d/DOORSERVER_PASSWORDS_FILE"
       "DOORSERVER_DOORS_FILE=%d/DOORSERVER_DOORS_FILE"
-      "DOORSERVER_PRODUCTION_INI_FILE=%d/DOORSERVER_PRODUCTION_INI_FILE.ini"
-      "DOORSERVER_SERVER_INI_FILE=%d/DOORSERVER_SERVER_INI_FILE.ini"
       "DOORSERVER_WEBSOCKET_URL=${cfg.websocket-url}"
       "DOORSERVER_DOORSIP=${cfg.doorsip}"
     ];
