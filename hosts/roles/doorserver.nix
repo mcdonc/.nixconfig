@@ -187,7 +187,6 @@ in
     lib.mkIf cfg.enable {
 
       systemd.tmpfiles.rules = [
-        "d /var/lib/doorserver 0755 root root -"
         "d /var/run/doorserver 0755 doorserver doorserver -"
       ];
 
