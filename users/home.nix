@@ -130,8 +130,8 @@ let
 
   ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
 
-  yt-transcode = pkgs.writeShellScript "yt-transcode" ''
-    ffmpeg -i $1 -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
+  yt-transcode = pkgs.writeShellScriptBin "yt-transcode" ''
+    ffmpeg -i "$1" -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
       -movflags +faststart output.mp4
   '';
 
