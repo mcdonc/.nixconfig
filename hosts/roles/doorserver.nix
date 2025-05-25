@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
-      rev = "1b903feb6ff28e5d45f213fff94cb00523d0be11";
-      sha256 = "sha256-uTSXv5/36H8CSeBVbisvbfVmdYjAt03lfyBIILjSq0w=";
+      rev = "956c1e2b18ae8b2471fe4305a262872bf4db27d9";
+      sha256 = "sha256-sHiRmMtZG3Qhaoq+rMJ+K4kQKpmjbxsmygYaLMlFtpk=";
     };
 
     build-system = with pkgs.python311Packages; [
@@ -33,7 +33,6 @@ let
       requests
       websocket-client
     ];
-
   };
 
   pyenv = (
@@ -74,6 +73,8 @@ in
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     script = ''
+      export DOORSERVER_PASSWORD_FILE="$CREDENTIALS_DIRECTORY/DOORSERVER_PASSWORD_FILE"
+      export DOORSERVER_DOORS_FILE="$CREDENTIALS_DIRECTORY/DOORSERVER_DOORS_FILE"
       export DOORSERVER_WSSECRET="$CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET"
       exec ${pyenv}/bin/pserve /var/lib/doorserver/production.ini
     '';
@@ -83,7 +84,11 @@ in
       User = "doorserver";
       Group = "doorserver";
       DynamicUser = true;
-      LoadCredential = "DOORSERVER_WSSECRET:/var/lib/doorserver/wssecret";
+      LoadCredential = [
+        "DOORSERVER_DOORS_FILE:/var/lib/doorserver/doors"
+        "DOORSERVER_PASSWORD_FILE:/var/lib/doorserver/passwords"
+        "DOORSERVER_WSSECRET:/var/lib/doorserver/wssecret"
+      ];
     };
   };
 

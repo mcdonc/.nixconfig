@@ -72,20 +72,20 @@
 (require 'browse-url)
 (require 'multiple-cursors)
 (require 'editorconfig)
-(require 'lsp-mode)
-(require 'lsp-ui)
-(require 'lsp-jedi)
+;; (require 'lsp-mode)
+;; (require 'lsp-ui)
+;; (require 'lsp-jedi)
 
-(use-package lsp-mode
-  :init (setq lsp-auto-guess-root nil)
-        (setq lsp-headerline-breadcrumb-enable nil)
-  :hook (rust-mode . lsp)
-        ;(python-mode . lsp)
-        (lsp-mode . lsp-enable-which-key-integration)
-  :commands lsp)
+;; (use-package lsp-mode
+;;   :init (setq lsp-auto-guess-root nil)
+;;         (setq lsp-headerline-breadcrumb-enable nil)
+;;   :hook (rust-mode . lsp)
+;;         ;(python-mode . lsp)
+;;         (lsp-mode . lsp-enable-which-key-integration)
+;;   :commands lsp)
 
-(use-package lsp-ui
-  :commands lsp-ui-mode)
+;; (use-package lsp-ui
+;;   :commands lsp-ui-mode)
 
 ;; (use-package lsp-nix
 ;;   :ensure lsp-mode
