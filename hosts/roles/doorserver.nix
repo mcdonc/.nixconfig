@@ -68,7 +68,7 @@ in
     enable = lib.mkOption {
       type = lib.types.bool;
       description = "Enable the doorserver services";
-      default = true;
+      default = false;
     };
     passwords-file = lib.mkOption {
       type = lib.types.str;

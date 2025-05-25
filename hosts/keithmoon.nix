@@ -26,6 +26,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 
   system.stateVersion = "24.05";
 
+  services.doorserver.enable = true;
+
   services.idracfanctl.enable = true;
   services.idracfanctl.fan-percent-min = 15;
   services.idracfanctl.fan-percent-max = 65;
