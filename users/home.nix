@@ -130,6 +130,11 @@ let
 
   ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
 
+  yt-transcode = pkgs.writeShellScript "yt-transcode" ''
+    ffmpeg -i $1 -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
+      -movflags +faststart output.mp4
+  '';
+
   thumbnail = pkgs.writeShellScript "thumbnail" ''
     # writes to ./thumbnail.png
     # thumbnail eyedrops2.mp4 00:01:07
@@ -211,7 +216,7 @@ let
     blackterm = "${gterm-change-profile} 3";
     purpleterm = "${gterm-change-profile} 4";
     yellowterm = "${gterm-change-profile} 5";
-    ssh = "${ssh-chcolor}";
+    #ssh = "${ssh-chcolor}";
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
     nixos-update = "${nixos-update}";
@@ -244,6 +249,7 @@ in
     keithtemps
     whoosh
     nvfantemps
+    yt-transcode
   ] ++ lib.optionals isworkstation [ pkgs.keybase-gui pkgs.xdotool ];
 
   programs.gnome-terminal = termsettings;
