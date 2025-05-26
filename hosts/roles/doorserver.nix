@@ -152,7 +152,9 @@ in
       [server:main]
       use = egg:waitress#main
       listen = *:${cfg.uiserver-port}
-      url_scheme = ${cfg.http-scheme}
+      #url_scheme = ${cfg.http-scheme}
+      trusted_proxy_headers = x-forwarded-for x-forwarded-host x-forwarded-proto x-forwarded-port
+      trusted_proxy = 127.0.0.1
 
       ###
       # logging configuration
