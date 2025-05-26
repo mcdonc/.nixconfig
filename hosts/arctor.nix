@@ -9,8 +9,80 @@
     ./roles/minimal
   ];
 
+  services.doorserver.enable = true;
+
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
   system.stateVersion = "25.05";
+
+  networking.firewall.allowedTCPPorts = [
+    80 443
+  ];
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "chrism@plope.com";
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts."arctor.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass ="http://127.0.0.1:6544/";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
+    virtualHosts."lock802ws-arctor.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass ="http://localhost:8001"; # worked under apache with ws://
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
+    virtualHosts."bouncer-arctor.repoze.org" = {
+      addSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/home/chrism/static";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
+        '';
+      };
+    };
+    virtualHosts."arctor-root.repoze.org" = {
+      addSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/home/chrism/static/repoze";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
+        '';
+      };
+    };
+  };
+
+  users.users.nginx.extraGroups = [ "acme" ];
 
 }

@@ -142,6 +142,9 @@ in
       "keithmoon" = {
         forwardAgent = true;
       };
+      "arctor.repoze.org" = {
+        forwardAgent = true;
+      };
 
       "win10" = { user = "user"; };
       "thinknix*" = { forwardAgent = true; };
