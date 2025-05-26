@@ -26,7 +26,7 @@
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
     defaults.dnsProvider = "gandi";
-    environmentFile = "/var/lib/secrets/certs.secret";
+    defaults.environmentFile = "/var/lib/secrets/certs.secret";
   };
 
   services.nginx = {
