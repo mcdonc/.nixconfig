@@ -1,0 +1,9 @@
+diff --git a/pjlib/include/pj/config_site.h b/pjlib/include/pj/config_site.h
+new file mode 100644
+index 000000000..1c2399dbc
+--- /dev/null
++++ b/pjlib/include/pj/config_site.h
+@@ -0,0 +1,3 @@
++#define PJMEDIA_AUDIO_DEV_HAS_ALSA      1
++#define PJMEDIA_AUDIO_DEV_HAS_PORTAUDIO 0
++#define PJMEDIA_HAS_VIDEO  0

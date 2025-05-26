@@ -6,7 +6,10 @@
     "${inputs.nixos-hardware}/raspberry-pi/4"
     ../users/chrism
     ./roles/minimal
+    ./roles/lock802/doorclient.nix
   ];
+
+  services.doorclient.enable = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];

@@ -1,66 +1,7 @@
 { pkgs, lib, config, inputs, ... }:
 
 let
-  breakonthru = pkgs.python311Packages.buildPythonPackage rec {
-
-    pname = "breakonthru";
-    version = "0.0";
-    pyproject = true;
-
-    src = pkgs.fetchFromGitHub {
-      owner = "mcdonc";
-      repo = "breakonthru";
-      rev = "b1276370a09ec528d85f4096ce00e90b2064f952";
-      sha256 = "sha256-pa8mYI+BIN/JMbkr0xaKr4dyicK2zsnWacDaFDPEDFQ=";
-    };
-
-    build-system = with pkgs.python311Packages; [
-      setuptools
-    ];
-
-    dependencies = with pkgs.python311Packages; [
-      setuptools
-      plaster-pastedeploy
-      pyramid
-      pyramid-chameleon
-      #pyramid-debugtoolbar
-      waitress
-      bcrypt
-      websockets
-      gpiozero
-      pexpect
-      setproctitle
-      requests
-      websocket-client
-    ];
-  };
-
-  # why must i repeat this?
-  pyenv = (
-    pkgs.python311.withPackages (p:
-      with p; [
-        breakonthru
-        setuptools
-        plaster-pastedeploy
-        pyramid
-        pyramid-chameleon
-        #pyramid-debugtoolbar
-        waitress
-        bcrypt
-        websockets
-        gpiozero
-        pexpect
-        setproctitle
-        requests
-        websocket-client
-      ]
-    )
-  );
-
-  pyenv-bin = pkgs.writeShellScriptBin "pyenv-bin" ''
-    exec ${pyenv}/bin/python $@
-  '';
-
+  breakonthru = (import breakonthru.nix);
 in
 
 {
@@ -196,7 +137,7 @@ in
     '';
 
   in
-    { environment.systemPackages = [ pyenv-bin ];} //
+    { environment.systemPackages = [ breakonthru.pyenv-bin ];} //
 
     lib.mkIf cfg.enable {
 
@@ -219,7 +160,7 @@ chown -R doorserver:doorserver /run/doorserver
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
-          exec ${pyenv}/bin/pserve /run/doorserver/production.ini
+          exec ${breakonthru.pyenv}/bin/pserve /run/doorserver/production.ini
         '';
         serviceConfig = {
           Restart = "always";
@@ -247,7 +188,7 @@ chown -R doorserver:doorserver /run/doorserver
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
-          exec ${pyenv}/bin/doorserver /run/doorserver/server.ini
+          exec ${breakonthru.pyenv}/bin/doorserver /run/doorserver/server.ini
         '';
         serviceConfig = {
           Restart = "always";

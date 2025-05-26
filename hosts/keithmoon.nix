@@ -15,7 +15,6 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/tailscale
     ./roles/rc505
     ./roles/zedalerts.nix
-    ./roles/doorserver.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
@@ -25,8 +24,6 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   ];
 
   system.stateVersion = "24.05";
-
-  services.doorserver.enable = true;
 
   services.idracfanctl.enable = true;
   services.idracfanctl.fan-percent-min = 15;
