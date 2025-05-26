@@ -38,7 +38,7 @@
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        root = "/home/chrism/static";
+        root = "/srv/static";
         extraConfig = ''
           autoindex on;
           autoindex_exact_size off;
