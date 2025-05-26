@@ -31,6 +31,7 @@
 
   services.nginx = {
     enable = true;
+    serviceConfig.ProtectHome = false;
     virtualHosts."arctor.repoze.org" = {
       addSSL = true;
       enableACME = true;
