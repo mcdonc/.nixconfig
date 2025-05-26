@@ -421,4 +421,13 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     127.0.0.1 lock802-keithmoon.repoze.org
   '';
 
+  # ntp
+  # other apache sites
+  # postfix?
+  # do-agent
+  # redis
+  # datadog
+  # containerd
+  # letsencrypt
+
 }
