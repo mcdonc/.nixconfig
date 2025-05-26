@@ -25,13 +25,40 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
+    defaults.dnsProvider = "gandi";
+    environmentFile = "/var/lib/secrets/certs.secret";
   };
 
   services.nginx = {
     enable = true;
     virtualHosts."arctor.repoze.org" = {
-      forceSSL = true;
+      addSSL = true;
       enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        root = "/home/chrism/static";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
+        '';
+      };
+    };
+    virtualHosts."arctor-root.repoze.org" = {
+      addSSL = true;
+      enableACME = false;
+      locations."/" = {
+        root = "/home/chrism/static/repoze";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
+        '';
+      };
+    };
+    virtualHosts."arctor-doorserver.repoze.org" = {
+      forceSSL = true;
+      enableACME = false;
       locations."/" = {
         proxyPass ="http://127.0.0.1:6544/";
         extraConfig = ''
@@ -46,7 +73,7 @@
     };
     virtualHosts."lock802ws-arctor.repoze.org" = {
       forceSSL = true;
-      enableACME = true;
+      enableACME = false;
       locations."/" = {
         proxyPass ="http://localhost:8001"; # worked under apache with ws://
         proxyWebsockets = true;
@@ -60,32 +87,9 @@
         '';
       };
     };
-    virtualHosts."bouncer-arctor.repoze.org" = {
-      addSSL = true;
-      enableACME = true;
-      locations."/" = {
-        root = "/home/chrism/static";
-        extraConfig = ''
-          autoindex on;
-          autoindex_exact_size off;
-          autoindex_localtime on;
-        '';
-      };
-    };
-    virtualHosts."arctor-root.repoze.org" = {
-      addSSL = true;
-      enableACME = true;
-      locations."/" = {
-        root = "/home/chrism/static/repoze";
-        extraConfig = ''
-          autoindex on;
-          autoindex_exact_size off;
-          autoindex_localtime on;
-        '';
-      };
-    };
-  };
 
   users.users.nginx.extraGroups = [ "acme" ];
+
+  };
 
 }
