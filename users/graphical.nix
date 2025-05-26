@@ -221,6 +221,11 @@ in
     enable = true;
     startWithUserSession = "graphical";
   };
+
+  home.packages = with pkgs; [
+    keybase-gui
+    keybase
+  ];
   
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
