@@ -25,7 +25,7 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
-    defaults.dnsProvider = "gandi";
+    defaults.dnsProvider = "gandiv5";
     defaults.environmentFile = "/var/lib/secrets/certs.secret";
   };
 
