@@ -7,6 +7,7 @@
     ../users/chrism
     ../users/tseaver
     ./roles/minimal
+    ./roles/doorserver.nix
   ];
 
   services.doorserver.enable = true;
