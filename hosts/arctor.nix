@@ -20,6 +20,8 @@
     80 443
   ];
 
+  virtualisation.docker.enable = true;
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
