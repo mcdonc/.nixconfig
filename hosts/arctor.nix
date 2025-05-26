@@ -78,7 +78,7 @@
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass ="http://localhost:8001"; # worked under apache with ws://
+        proxyPass ="ws://localhost:8001"; # worked under apache with ws://
         proxyWebsockets = true;
         extraConfig = ''
           proxy_set_header Host $host;
