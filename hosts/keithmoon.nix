@@ -10,7 +10,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
-    ./roles/speedtest
+    #./roles/speedtest
     ./roles/idracfanctl.nix
     ./roles/tailscale
     ./roles/rc505
@@ -364,5 +364,54 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   #services.pipewire.jack.enable = lib.mkForce false;
   #services.pipewire.alsa.enable = lib.mkForce false;
   #services.pipewire.pulse.enable = lib.mkForce false;
+
+  #https://bkiran.com/blog/using-nginx-in-nixos
+
+  networking.firewall.allowedTCPPorts = [
+    80 443
+  ];
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "chrism@plope.com";
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts."lock802-keithmoon.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass ="http://127.0.0.1:6544/";
+      };
+    };
+    virtualHosts."bouncer-keithmoon.repoze.org" = {
+      addSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/d/bouncer/static";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
+          types {
+              video/mp4 mp4;
+              video/x-matroska mkv;
+              audio/mpeg mp3;
+              audio/ogg ogg;
+              audio/aac aac;
+          }
+          add_header Content-Disposition "inline";
+        '';
+      };
+    };
+  };
+
+  users.users.nginx.extraGroups = [ "acme" ];
+
+  networking.extraHosts = ''
+    127.0.0.1 bouncer-keithmoon.repoze.org
+    127.0.0.1 lock802-keithmoon.repoze.org
+  '';
 
 }

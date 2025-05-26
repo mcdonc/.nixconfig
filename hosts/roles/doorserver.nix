@@ -105,6 +105,11 @@ in
       description = "Listen port for websocket server";
       default = "8001";
     };
+    http-scheme = lib.mkOption {
+      type = lib.types.str;
+      description = "WSGI http scheme";
+      default = "http";
+    };
   };
 
   config = let
@@ -147,7 +152,7 @@ in
       [server:main]
       use = egg:waitress#main
       listen = *:${cfg.uiserver-port}
-      #url_scheme = https
+      url_scheme = ${cfg.http-scheme}
 
       ###
       # logging configuration
@@ -193,18 +198,21 @@ in
 
     lib.mkIf cfg.enable {
 
-      systemd.tmpfiles.rules = [
-        "d /var/run/doorserver 0755 doorserver doorserver -"
-      ];
+      # dir not created on nixos-rebuild, only at boot
+      # systemd.tmpfiles.rules = [
+      #   "d /run/doorserver 0755 doorserver doorserver -"
+      # ];
 
       systemd.services.doorserver-ui = {
         description = "Doorserver UI server";
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         preStart = ''
+mkdir -p /run/doorserver
 cat > /run/doorserver/production.ini << EOF
 ${production_ini}
 EOF
+chown -R doorserver:doorserver /run/doorserver
         '';
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
@@ -219,8 +227,7 @@ EOF
           DynamicUser = true;
           LoadCredential = creds;
           Environment = envs;
-          ProtectSystem = "strict";
-          ReadWritePaths = [ "/run/doorserver" ];
+          PermissionsStartOnly = true; # run preStart as root
         };
       };
 
@@ -229,9 +236,11 @@ EOF
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         preStart = ''
+mkdir -p /run/doorserver
 cat > /run/doorserver/server.ini << EOF
 ${server_ini}
 EOF
+chown -R doorserver:doorserver /run/doorserver
 '';
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
@@ -246,9 +255,8 @@ EOF
           DynamicUser = true;
           LoadCredential = creds;
           Environment = envs;
-          ProtectSystem = "strict";
-          ReadWritePaths = [ "/run/doorserver" ];
+          PermissionsStartOnly = true; # run preStart as root
         };
-      };
+       };
     };
 }
