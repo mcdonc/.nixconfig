@@ -29,9 +29,10 @@
     defaults.environmentFile = "/var/lib/secrets/certs.secret";
   };
 
+  systemd.services.nginx.serviceConfig.ProtectHome = false;
+
   services.nginx = {
     enable = true;
-    serviceConfig.ProtectHome = false;
     virtualHosts."arctor.repoze.org" = {
       addSSL = true;
       enableACME = true;
