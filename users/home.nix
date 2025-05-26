@@ -1,4 +1,4 @@
-{ pkgs, lib, config, nixgl-olive, nixgl-unstable, ... }:
+{ pkgs, lib, config, ... }:
 
 let
 
@@ -80,7 +80,6 @@ let
     thumbnail = "${thumbnail}";
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
-    #olive-intel = "${nixgl-unstable}/bin/nixGLIntel olive-editor";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
   };
 
@@ -121,6 +120,10 @@ in
     matchBlocks = {
       "lock802" = {
         user = "pi";
+        forwardAgent = true;
+      };
+      "nixlock802" = {
+        user = "chrism";
         forwardAgent = true;
       };
       "lock802.local" = {

@@ -94,4 +94,12 @@
   };
   
   users.users.nginx.extraGroups = [ "acme" ];
+
+  #https://bkiran.com/blog/using-nginx-in-nixos
+
+  # postfix # XXX ask tres
+  # redis # XXX ask tres
+  # containerd # climo container images need to be migrated
+
+  # rpi: https://blog.janissary.xyz/posts/nixos-install-custom-image
 }

@@ -124,3 +124,7 @@ To update the configuration remotely::
 
 Could use ``security.sudo.wheelNeedsPassword = false;`` to get around password
 entry requirements.
+
+nixlock802 is::
+
+  nix build ".#nixosConfigurations.nixlock802.config.formats.sd-aarch64"

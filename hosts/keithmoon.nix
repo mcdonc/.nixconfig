@@ -365,13 +365,8 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   #services.pipewire.alsa.enable = lib.mkForce false;
   #services.pipewire.pulse.enable = lib.mkForce false;
 
-  #https://bkiran.com/blog/using-nginx-in-nixos
+  networking.hosts = {
+    "192.168.1.185" = [ "lock802nix" ];
+  };
 
-  # postfix # XXX ask tres
-  # redis # XXX ask tres
-  # containerd # climo container images need to be migrated
-  # do-agent # can we run it?
-  # datadog # XXX dont care
-  # letsencrypt XXX reissue keys
-  # znc (see .znc in homedir) XXX i'll revive it if i need it
 }
