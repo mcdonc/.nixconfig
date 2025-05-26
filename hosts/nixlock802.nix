@@ -33,6 +33,7 @@
 
   networking.hostId = "c923c531";
   networking.hostName = "nixlock802";
+  networking.enableIPv6 = false;
   networking.networkmanager.enable = lib.mkForce false;
   networking.wireless.enable = true;
   networking.wireless.secretsFile = "/var/lib/secrets/wifi";

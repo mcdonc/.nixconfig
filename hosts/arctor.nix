@@ -11,6 +11,7 @@
   ];
 
   services.doorserver.enable = true;
+  services.doorserver.clientidentity = "nixdoorserver";
 
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
