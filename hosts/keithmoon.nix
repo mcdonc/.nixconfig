@@ -385,8 +385,25 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
         proxyPass ="http://127.0.0.1:6544/";
         extraConfig = ''
           proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
+    virtualHosts."lock802ws-keithmoon.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass ="http://localhost:8001"; # worked under apache with ws://
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-Host $host:$server_port;
           proxy_set_header X-Forwarded-Port $server_port;
         '';
@@ -401,14 +418,18 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
           autoindex on;
           autoindex_exact_size off;
           autoindex_localtime on;
-          types {
-              video/mp4 mp4;
-              video/x-matroska mkv;
-              audio/mpeg mp3;
-              audio/ogg ogg;
-              audio/aac aac;
-          }
-          add_header Content-Disposition "inline";
+        '';
+      };
+    };
+    virtualHosts."root.repoze.org" = {
+      addSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/d/bouncer/static/repoze";
+        extraConfig = ''
+          autoindex on;
+          autoindex_exact_size off;
+          autoindex_localtime on;
         '';
       };
     };
@@ -419,15 +440,14 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
   networking.extraHosts = ''
     127.0.0.1 bouncer-keithmoon.repoze.org
     127.0.0.1 lock802-keithmoon.repoze.org
+    127.0.0.1 root.repoze.org
   '';
 
-  # ntp
-  # other apache sites
-  # postfix?
-  # do-agent
-  # redis
-  # datadog
-  # containerd
-  # letsencrypt
-
+  # postfix # XXX ask tres
+  # redis # XXX ask tres
+  # containerd # climo container images need to be migrated
+  # do-agent # can we run it?
+  # datadog # XXX dont care
+  # letsencrypt XXX reissue keys
+  # znc (see .znc in homedir) XXX i'll revive it if i need it
 }
