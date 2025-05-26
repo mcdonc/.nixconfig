@@ -31,11 +31,15 @@
   networking.hostId = "c923c531";
   networking.hostName = "nixlock802";
   networking.networkmanager.enable = lib.mkForce false;
-  networking.wireless.secretsFile = "/var/lib/secrets/wifi";
   networking.wireless.enable = true;
+  networking.wireless.secretsFile = "/var/lib/secrets/wifi";
   networking.wireless.networks.haircut.pskRaw = "ext:psk";
+  #networking.wireless.networks.ytvid-rpi.pskRaw = "18923....";
 
-  networking = {
+  # "wpa_passphrase ssid passphrase" creates a psk
+  # "iwconfig" shows connected ssids
+
+ networking = {
     interfaces.end0 = {
       ipv4.addresses = [{
         address = "192.168.1.185";
@@ -43,11 +47,11 @@
       }];
     };
     defaultGateway = {
-      address = "192.168.1.1"; # or whichever IP your router is
+      address = "192.168.1.1";
       interface = "end0";
     };
     nameservers = [
-      "192.168.1.1" # or whichever DNS server you want to use
+      "192.168.1.1"
     ];
   };
 
