@@ -128,3 +128,4 @@ entry requirements.
 nixlock802 is::
 
   nix build ".#nixosConfigurations.nixlock802.config.formats.sd-aarch64"
+  nixos-rebuild switch --flake ".#nixlock802" --target-host chrism@nixlock802 --use-remote-sudo
