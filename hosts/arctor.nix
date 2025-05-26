@@ -44,18 +44,18 @@
         '';
       };
     };
-    virtualHosts."arctor-root.repoze.org" = {
-      addSSL = true;
-      enableACME = false;
-      locations."/" = {
-        root = "/home/chrism/static/repoze";
-        extraConfig = ''
-          autoindex on;
-          autoindex_exact_size off;
-          autoindex_localtime on;
-        '';
-      };
-    };
+    # virtualHosts."arctor-root.repoze.org" = {
+    #   addSSL = true;
+    #   enableACME = false;
+    #   locations."/" = {
+    #     root = "/home/chrism/static/repoze";
+    #     extraConfig = ''
+    #       autoindex on;
+    #       autoindex_exact_size off;
+    #       autoindex_localtime on;
+    #     '';
+    #   };
+    # };
     # virtualHosts."arctor-doorserver.repoze.org" = {
     #   forceSSL = true;
     #   enableACME = false;
