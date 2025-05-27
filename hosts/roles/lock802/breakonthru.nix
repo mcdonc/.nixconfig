@@ -28,7 +28,7 @@ let
       bcrypt
       websockets
       gpiozero
-      #rpi-gpio
+      rpi-gpio
       pexpect
       setproctitle
       requests
@@ -51,7 +51,7 @@ let
         bcrypt
         websockets
         gpiozero
-        #rpi-gpio
+        rpi-gpio
         pexpect
         setproctitle
         requests
