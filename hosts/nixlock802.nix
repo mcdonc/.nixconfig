@@ -37,28 +37,28 @@
   networking.firewall.enable = lib.mkForce false;
   networking.networkmanager.enable = lib.mkForce false;
   networking.wireless.enable = true;
-  networking.wireless.secretsFile = "/var/lib/secrets/wifi";
-  networking.wireless.networks.haircut.pskRaw = "ext:psk";
-  #networking.wireless.networks.ytvid-rpi.pskRaw = "18923....";
+  #networking.wireless.secretsFile = "/var/lib/secrets/wifi";
+  #networking.wireless.networks.haircut.pskRaw = "ext:psk";
+  networking.wireless.networks.ytvid-rpi.pskRaw = "18a90748cff3ae6006b78dc2b4a65be47f7e8eb22c46388b636314b535486dcb";
 
   # "wpa_passphrase ssid passphrase" creates a psk
   # "iwconfig" shows connected ssids
 
- # networking = {
- #    interfaces.end0 = {
- #      ipv4.addresses = [{
- #        address = "192.168.1.185";
- #        prefixLength = 24;
- #      }];
- #    };
- #    defaultGateway = {
- #      address = "192.168.1.1";
- #      interface = "end0";
- #    };
- #    nameservers = [
- #      "192.168.1.1"
- #    ];
- #  };
+  networking = {
+    interfaces.end0 = {
+      ipv4.addresses = [{
+        address = "192.168.1.185";
+        prefixLength = 24;
+      }];
+    };
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "end0";
+    };
+    nameservers = [
+      "192.168.1.1"
+    ];
+  };
 
   environment.systemPackages = [
     pkgs.usbutils # lsusb
