@@ -9,8 +9,7 @@
     ./roles/lock802/doorclient.nix
   ];
 
-  services.doorclient.enable = true;
-
+  services.doorclient.enable = false;
 
   hardware.enableAllFirmware = true;
   hardware.firmware = [ pkgs.raspberrypiWirelessFirmware ];
@@ -77,9 +76,7 @@
     pkgs.usbutils # lsusb
     pkgs.pciutils # lsusb
     pkgs.wirelesstools # iwconfig
-    pkgs.wpa_supplicant
-    pkgs.networkmanager
-
+    pkgs.wpa_supplicant # in case i decide to use it
   ];
 
 }
