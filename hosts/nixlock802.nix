@@ -9,7 +9,8 @@
     ./roles/lock802/doorclient.nix
   ];
 
-  services.doorclient.enable = false;
+  services.doorclient.enable = true;
+  services.doorclient.clientidentity = "nixlock802";
 
   hardware.enableAllFirmware = true;
   hardware.firmware = [ pkgs.raspberrypiWirelessFirmware ];
