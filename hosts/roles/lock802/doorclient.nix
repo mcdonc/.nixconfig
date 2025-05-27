@@ -107,6 +107,7 @@ chown -R doorserver:doorserver /run/doorclient
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
+          export GPIOZERO_PIN_FACTORY=NATIVE
           exec ${breakonthru.pyenv}/bin/doorclient /run/doorclient/client.ini
         '';
         serviceConfig = {

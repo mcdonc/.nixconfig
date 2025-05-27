@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+ { pkgs, ... }:
 
 let
   breakonthru = pkgs.python311Packages.buildPythonPackage rec {
@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
-      rev = "a9e108351486a107748a3f9a5780cccbe25c2597";
-      sha256 = "sha256-WW1AW4hPffLrT3ikXspEqOZB8n2WsidF+cwMRvoogsM=";
+      rev = "b761ab0656b3be4158d6ce295227167b1b8ca57c";
+      sha256 = "";
     };
 
     build-system = with pkgs.python311Packages; [
@@ -28,7 +28,7 @@ let
       bcrypt
       websockets
       gpiozero
-      rpi-gpio
+      #rpi-gpio
       pexpect
       setproctitle
       requests
@@ -51,7 +51,7 @@ let
         bcrypt
         websockets
         gpiozero
-        rpi-gpio
+        #rpi-gpio
         pexpect
         setproctitle
         requests
