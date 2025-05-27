@@ -9,7 +9,7 @@
     ./roles/lock802/doorclient.nix
   ];
 
-  services.doorclient.enable = true;
+  services.doorclient.enable = false;
   services.doorclient.clientidentity = "nixlock802";
 
   hardware.enableAllFirmware = true;
