@@ -36,6 +36,8 @@ let
     ];
   };
 
+  # RPi.GPIO issue https://github.com/home-assistant/operating-system/issues/3094
+  # https://github.com/joan2937/pigpio
 
   # why must i repeat this?
   pyenv = (
