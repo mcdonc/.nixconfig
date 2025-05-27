@@ -11,7 +11,7 @@ let
       owner = "mcdonc";
       repo = "breakonthru";
       rev = "b761ab0656b3be4158d6ce295227167b1b8ca57c";
-      sha256 = "";
+      sha256 = "sha256-t0vrQYjSgHcSlLm2NVTOJLBZT6/ZcL6mqeaAkOWEWEA=";
     };
 
     build-system = with pkgs.python311Packages; [
