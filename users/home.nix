@@ -126,6 +126,10 @@ in
         user = "chrism";
         forwardAgent = true;
       };
+      "192.168.1.185" = {
+        user = "chrism";
+        forwardAgent = true;
+      };
       "lock802.local" = {
         user = "pi";
         forwardAgent = true;

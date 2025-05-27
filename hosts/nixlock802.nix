@@ -34,6 +34,7 @@
   networking.hostId = "c923c531";
   networking.hostName = "nixlock802";
   networking.enableIPv6 = false;
+  networking.firewall.enable = lib.mkForce false;
   networking.networkmanager.enable = lib.mkForce false;
   networking.wireless.enable = true;
   networking.wireless.secretsFile = "/var/lib/secrets/wifi";
@@ -43,21 +44,21 @@
   # "wpa_passphrase ssid passphrase" creates a psk
   # "iwconfig" shows connected ssids
 
- networking = {
-    interfaces.end0 = {
-      ipv4.addresses = [{
-        address = "192.168.1.185";
-        prefixLength = 24;
-      }];
-    };
-    defaultGateway = {
-      address = "192.168.1.1";
-      interface = "end0";
-    };
-    nameservers = [
-      "192.168.1.1"
-    ];
-  };
+ # networking = {
+ #    interfaces.end0 = {
+ #      ipv4.addresses = [{
+ #        address = "192.168.1.185";
+ #        prefixLength = 24;
+ #      }];
+ #    };
+ #    defaultGateway = {
+ #      address = "192.168.1.1";
+ #      interface = "end0";
+ #    };
+ #    nameservers = [
+ #      "192.168.1.1"
+ #    ];
+ #  };
 
   environment.systemPackages = [
     pkgs.usbutils # lsusb
