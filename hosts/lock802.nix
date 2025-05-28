@@ -95,6 +95,97 @@ in
     playwav
   ];
 
+  environment.etc."pjsua.conf".text = ''
+    --id sip:7001@127.0.0.1:5065
+    --registrar sip:127.0.0.1:5065
+    --realm *
+    --username 7001
+    --password nottherealpassword
+    --local-port 6061
+    --app-log-level 3
+    --auto-answer 200
+    --max-calls 4
+    --duration 120
+    --stun-srv stun.l.google.com:19302
+    --use-ice
+    --capture-dev 0
+    --playback-dev 0
+    #--null-audio
+    --no-tcp
+    --auto-conf
+  '';
+
+  services.asterisk.enable = true;
+  services.asterisk.confFiles = {
+    "extensions.conf" = ''
+      [internal]
+      ; page
+      exten => 7000,1,Answer()
+      exten => 7000,2,Dial(SIP/7002& SIP/7003& SIP/7004& SIP/7005& SIP/7006,30)
+      exten => 7000,3,Hangup()
+
+      ; front door
+      exten => 7001,1,Answer()
+      exten => 7001,2,Dial(SIP/7001,30)
+      exten => 7001,3,Hangup()
+
+      ; me
+      exten => 7002,1,Answer()
+      exten => 7002,2,Dial(SIP/7002,30)
+      exten => 7002,3,Hangup()
+
+      exten => 7003,1,Answer()
+      exten => 7003,2,Dial(SIP/7003,30)
+      exten => 7003,3,Hangup()
+
+      exten => 7004,1,Answer()
+      exten => 7004,2,Dial(SIP/7004,30)
+      exten => 7004,3,Hangup()
+
+      exten => 7005,1,Answer()
+      exten => 7005,2,Dial(SIP/7005,30)
+      exten => 7005,3,Hangup()
+
+      ; larry
+      exten => 7006,1,Answer()
+      exten => 7006,2,Dial(SIP/7006,30)
+      exten => 7006,3,Hangup()
+
+      ; melinda
+      exten => 7007,1,Answer()
+      exten => 7007,2,Dial(SIP/7007,30)
+      exten => 7007,3,Hangup()
+
+      exten => 7008,1,Answer()
+      exten => 7008,2,Dial(SIP/7008,30)
+      exten => 7008,3,Hangup()
+    '';
+    "sip.conf" = ''
+      [general]
+      context=internal
+      allowguest=no
+      allowoverlap=no
+      bindport=5065
+      bindaddr=0.0.0.0
+      srvlookup=no
+      disallow=all
+      allow=ulaw
+      alwaysauthreject=yes
+      canreinvite=no
+      nat=yes
+      session-timers=refuse
+      localnet=192.168.1.0/255.255.255.0
+      externhost=lock802.duckdns.org
+
+      # repeat this for 7001-7007 once i figure out how to protect secrets
+      # [7001]
+      # type=friend
+      # host=dynamic
+      # secret=<secret goes here>
+      # context=internal
+    '';
+  };
+
   systemd.services.playwav-late = {
     description = "Play late night wavs";
     script = "${playwav}/bin/playwav late";

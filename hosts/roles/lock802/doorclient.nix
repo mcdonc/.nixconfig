@@ -62,11 +62,16 @@ in {
       description = "Bounce time for callbutton";
       default = 1;
     };
+    pjsua-conf = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to pjsua.conf";
+      default = "/etc/pjsua.conf";
+    };
+
   };
 
   config = let
     cfg = config.services.doorclient;
-    pjsua_conf = pkgs.writeText "pjsua.conf" '''';
     client_ini = ''
       [doorclient]
       server = ${cfg.websocket-url}
@@ -77,7 +82,7 @@ in {
       callbutton_bouncetime = ${toString cfg.callbutton-bouncetime}
       clientidentity = ${cfg.clientidentity}
       pjsua_bin = ${pjsip}/bin/pjsua
-      pjsua_config_file = ${pjsua_conf}
+      pjsua_config_file = ${cfg.pjsua-conf}
       paging_sip = ${cfg.paging-sip}
       page_throttle_duration = ${toString cfg.page-throttle-duration}
     '';
