@@ -19,6 +19,20 @@ in
     ./roles/lock802/doorclient.nix
   ];
 
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:mcdonc/.nixconfig#lock802";
+    flags = [
+      "--no-write-lock-file"
+      "--recreate-lock-file" # for all inputs
+      # for individual:
+      #"--update-input" "nixpkgs"
+      #"--update-input" "nixpkgs-unstable"
+    ];
+    dates = "04:21";
+    allowReboot = true;
+  };
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
