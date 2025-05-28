@@ -89,6 +89,7 @@ in
   # end wpa_supplicant
 
   age.secrets."pjsua.conf".file = ../secrets/pjsua.conf.age;
+  age.secrets."sip.conf".file = ../secrets/sip.conf;
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
@@ -111,26 +112,6 @@ in
     pkgs.wpa_supplicant # in case i decide to use it
     playwav
   ];
-
-  environment.etc."pjsua.conf".text = ''
-    --id sip:7001@127.0.0.1:5065
-    --registrar sip:127.0.0.1:5065
-    --realm *
-    --username 7001
-    --password nottherealpassword
-    --local-port 6061
-    --app-log-level 3
-    --auto-answer 200
-    --max-calls 4
-    --duration 120
-    --stun-srv stun.l.google.com:19302
-    --use-ice
-    --capture-dev 0
-    --playback-dev 0
-    #--null-audio
-    --no-tcp
-    --auto-conf
-  '';
 
   services.asterisk.enable = true;
   services.asterisk.confFiles = {
@@ -177,30 +158,8 @@ in
       exten => 7008,2,Dial(SIP/7008,30)
       exten => 7008,3,Hangup()
     '';
-    "sip.conf" = ''
-      [general]
-      context=internal
-      allowguest=no
-      allowoverlap=no
-      bindport=5065
-      bindaddr=0.0.0.0
-      srvlookup=no
-      disallow=all
-      allow=ulaw
-      alwaysauthreject=yes
-      canreinvite=no
-      nat=yes
-      session-timers=refuse
-      localnet=192.168.1.0/255.255.255.0
-      externhost=lock802.duckdns.org
-
-      # repeat this for 7001-7007 once i figure out how to protect secrets
-      # [7001]
-      # type=friend
-      # host=dynamic
-      # secret=<secret goes here>
-      # context=internal
-    '';
+    # XXX yeah it loads it into the store, but its better than checking it in
+    "sip.conf" = builtins.readFile config.age.secrets."pjsua.conf".path;
   };
 
   systemd.services.playwav-late = {
