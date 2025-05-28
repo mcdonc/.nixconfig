@@ -12,4 +12,5 @@ in
 
 {
   "pjsua.conf.age".publicKeys = [ chrism lock802 ];
+  "sip.conf.age".publicKeys = [ chrism lock802 ];
 }
