@@ -67,6 +67,11 @@ in {
       description = "Path to pjsua.conf";
       default = "/etc/pjsua.conf";
     };
+    nopage = lib.mkOption {
+      type = lib.types.bool;
+      description = "Disable doorclient paging components";
+      default = false;
+    };
 
   };
 
@@ -118,6 +123,7 @@ chown -R doorserver:doorserver /run/doorclient
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
+          ${if cfg.nopage then "export DOORSERVER_NOPAGE=1" else ""}
           exec ${breakonthru.pyenv}/bin/doorclient /run/doorclient/client.ini
         '';
         serviceConfig = {

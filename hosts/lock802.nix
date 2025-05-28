@@ -98,7 +98,9 @@ in
   };
 
   services.doorclient.enable = true;
+  services.doorclient.nopage = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
+
   users.users.chrism.extraGroups = [ "gpio" "kmem" ];
 
   services.pulseaudio.enable = false; # completely alsa setup

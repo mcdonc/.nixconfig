@@ -6,12 +6,22 @@
     "${inputs.nixos-hardware}/raspberry-pi/4"
   ];
 
+  services.zram-generator = {
+    enable = true;
+    settings.zram0 = {
+      compression-algorithm = "zstd";
+      zram-size = "ram * 2";
+    };
+  };
+
   hardware.enableAllFirmware = true;
   hardware.firmware = [ pkgs.raspberrypiWirelessFirmware ];
   hardware = {
     raspberry-pi."4" = {
       apply-overlays-dtmerge.enable = true;
       fkms-3d.enable = true; # rudolf
+      # below is broken
+      #audio.enable = true;
     };
     deviceTree = {
       enable = true;
