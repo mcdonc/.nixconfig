@@ -28,12 +28,14 @@ in
 
   networking.hostId = "c923c531";
   networking.hostName = "lock802";
-  boot.kernel.sysctl."net.ipv6.conf.wlan0.disable_ipv6" = true;
-  boot.kernel.sysctl."net.ipv6.conf.end0.disable_ipv6" = true;
+
+  boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = true;
+  networking.enableIPv6 = false;
   # none of the above works, use
+  boot.kernelParams = [ "ipv6.disable=1" ];
+  # alternately
   # nmcli d modify wlan0 ipv6.method "disabled"
 
-  networking.enableIPv6 = false;
   networking.firewall.enable = lib.mkForce false;
   networking.networkmanager.enable = lib.mkForce true;
 
