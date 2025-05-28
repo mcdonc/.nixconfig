@@ -1,5 +1,7 @@
 { pkgs, lib, inputs, pkgs-gpio, ... }:
 {
+  # used under nixos-generators
+
   imports = [
     "${inputs.nixos-hardware}/raspberry-pi/4"
   ];
