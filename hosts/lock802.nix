@@ -88,7 +88,8 @@ in
 
   # end wpa_supplicant
 
-  age.secrets."pjsua.conf".file = ../../secrets/pjsua.conf.age;
+  age.secrets."pjsua.conf".file = ../secrets/pjsua.conf.age;
+  #age.secrets."pjsua.conf".path = "/etc/pjsua.conf";
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
