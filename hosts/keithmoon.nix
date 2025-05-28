@@ -23,17 +23,18 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     #)
   ];
 
-  # test autoupgrade locally
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:mcdonc/.nixconfig#keithmoon";
-    flags = [
-      "--no-write-lock-file"
-      "--update-input" "nixpkgs"
-      "--update-input" "nixpkgs-unstable"
-    ];
-    dates = "04:14";
-  };
+  # # test autoupgrade locally
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   flake = "github:mcdonc/.nixconfig#keithmoon";
+  #   flags = [
+  #     "--no-write-lock-file"
+  #     "--recreate-lock-file" # for all inputs or below for individual
+  #     #"--update-input" "nixpkgs"
+  #     #"--update-input" "nixpkgs-unstable"
+  #   ];
+  #   dates = "04:14";
+  # };
 
   system.stateVersion = "24.05";
 
