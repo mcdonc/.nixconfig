@@ -13,7 +13,7 @@
     };
     deviceTree = {
       enable = true;
-      filter = lib.mkForce "*rpi-4-*.dtb";
+      filter = lib.mkForce "*rpi-4-*.dtb"; # seems required to get wlan0?
     };
   };
 
