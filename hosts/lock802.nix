@@ -32,6 +32,8 @@ in
   #   ];
   # };
 
+  security.sudo.wheelNeedsPassword = false;
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
@@ -96,8 +98,8 @@ in
     file = ../secrets/pjsua.conf.age;
     mode = "644";
   };
-  age.secrets."sip.conf" = {
-    file = ../secrets/sip.conf.age;
+  age.secrets."pjsip.conf" = {
+    file = ../secrets/pjsip.conf.age;
     mode = "644";
   };
 
@@ -157,49 +159,49 @@ in
       [internal]
       ; page
       exten => 7000,1,Answer()
-      exten => 7000,2,Dial(SIP/7002& SIP/7003& SIP/7004& SIP/7005& SIP/7006,30)
+      exten => 7000,2,Dial(PJSIP/7002& PJSIP/7003& PJSIP/7004& PJSIP/7005& PJSIP/7006,30)
       exten => 7000,3,Hangup()
 
       ; front door
       exten => 7001,1,Answer()
-      exten => 7001,2,Dial(SIP/7001,30)
+      exten => 7001,2,Dial(PJSIP/7001,30)
       exten => 7001,3,Hangup()
 
       ; me
       exten => 7002,1,Answer()
-      exten => 7002,2,Dial(SIP/7002,30)
+      exten => 7002,2,Dial(PJSIP/7002,30)
       exten => 7002,3,Hangup()
 
       exten => 7003,1,Answer()
-      exten => 7003,2,Dial(SIP/7003,30)
+      exten => 7003,2,Dial(PJSIP/7003,30)
       exten => 7003,3,Hangup()
 
       exten => 7004,1,Answer()
-      exten => 7004,2,Dial(SIP/7004,30)
+      exten => 7004,2,Dial(PJSIP/7004,30)
       exten => 7004,3,Hangup()
 
       exten => 7005,1,Answer()
-      exten => 7005,2,Dial(SIP/7005,30)
+      exten => 7005,2,Dial(PJSIP/7005,30)
       exten => 7005,3,Hangup()
 
       ; larry
       exten => 7006,1,Answer()
-      exten => 7006,2,Dial(SIP/7006,30)
+      exten => 7006,2,Dial(PJSIP/7006,30)
       exten => 7006,3,Hangup()
 
       ; melinda
       exten => 7007,1,Answer()
-      exten => 7007,2,Dial(SIP/7007,30)
+      exten => 7007,2,Dial(PJSIP/7007,30)
       exten => 7007,3,Hangup()
 
       exten => 7008,1,Answer()
-      exten => 7008,2,Dial(SIP/7008,30)
+      exten => 7008,2,Dial(PJSIP/7008,30)
       exten => 7008,3,Hangup()
     '';
   };
 
-  environment.etc."asterisk/sip.conf".source = lib.mkForce
-    config.age.secrets."sip.conf".path;
+  environment.etc."asterisk/pjsip.conf".source = lib.mkForce
+    config.age.secrets."pjsip.conf".path;
 
   systemd.services.playwav-late = {
     description = "Play late night wavs";
