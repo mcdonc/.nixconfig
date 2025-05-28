@@ -11,5 +11,5 @@ let
 in
 
 {
-  "pjsua.conf.age".publicKeys = users ++ systems;
+  "pjsua.conf.age".publicKeys = [ chrism lock802 ];
 }
