@@ -16,6 +16,7 @@
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-gpio.url = "github:doronbehar/nixpkgs/ec24041f0f3d08c0a012e6dd0c02e495f9bac055";
@@ -33,9 +34,9 @@
           shared-mods = [
             ./jawns.nix
             inputs.home-manager.nixosModules.home-manager
+            inputs.agenix.nixosModules.default
             #inputs.nixtheplanet.nixosModules.macos-ventura
             #inputs.musnix.nixosModules.musnix
-            #inputs.agenix.nixosModules.default
             (
               { config, pkgs, ... }:
               {
