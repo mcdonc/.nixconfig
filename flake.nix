@@ -19,7 +19,7 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-gpio.url = "github:doronbehar/nixpkgs/ec24041f0f3d08c0a012e6dd0c02e495f9bac055";
+    nixpkgs-gpio.url = "github:doronbehar/nixpkgs/913419f02308f14069baa504861b82ef3d683edb";
   };
 
   outputs = inputs:

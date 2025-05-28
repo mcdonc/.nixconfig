@@ -33,18 +33,27 @@
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
   users.groups.gpio = {};
+
+  # the bit that matters to lgpio here is
+  # "${pkgs.coreutils}/bin/chgrp gpio /dev/%k && chmod 660 /dev/%k"
+  # https://github.com/NixOS/nixpkgs/pull/352308 (me and doron)
+  # sudo udevadm test --action=add /dev/gpiochip0
+  # import lgpio; lgpio.gpiochip_open(0) should show "1" and not raise
+  # an exception
+
   services.udev.extraRules = ''
     KERNEL=="gpiomem", GROUP="gpio", MODE="0660"
-    SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", PROGRAM="${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/chgrp -R gpio /sys/class/gpio && ${pkgs.coreutils}/bin/chmod -R g=u /sys/class/gpio'"
+    SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", PROGRAM="${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/chgrp gpio /dev/%k && chmod 660 /dev/%k && ${pkgs.coreutils}/bin/chgrp -R gpio /sys/class/gpio && ${pkgs.coreutils}/bin/chmod -R g=u /sys/class/gpio'"
     SUBSYSTEM=="gpio", ACTION=="add", PROGRAM="${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/chgrp -R gpio /sys%p && ${pkgs.coreutils}/bin/chmod -R g=u /sys%p'"
-  '';
+  ''; # requires reboot
+
   nixpkgs.hostPlatform = "aarch64-linux";
 
   environment.systemPackages = [
     pkgs.libraspberrypi
     pkgs.raspberrypi-eeprom
   ];
-    
+
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf

@@ -106,8 +106,6 @@ in {
         breakonthru.pyenv-bin
         breakonthru.doorclient-test
         pjsip
-        #pkgs-gpio.pigpio
-        #pkgs-gpio.lgpio
       ];
       systemd.services.doorclient = {
         description = "Door client";

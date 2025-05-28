@@ -56,11 +56,11 @@ let
         requests
         websocket-client
         gpiozero
-        rpi-gpio
+        #rpi-gpio
         # lgpio etc needs pkgs-gpio instead of pkgs
         lgpio
-        #pigpio
-        #rgpio
+        pigpio
+        rgpio
       ]
     )
   );

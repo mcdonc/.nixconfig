@@ -19,18 +19,18 @@ in
     ./roles/lock802/doorclient.nix
   ];
 
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:mcdonc/.nixconfig#lock802";
-    dates = "04:54";
-    allowReboot = true;
-    flags = [
-      "--no-write-lock-file"
-      # for individual:
-      "--update-input" "nixpkgs"
-      # "--recreate-lock-file" # for all inputs
-    ];
-  };
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   flake = "github:mcdonc/.nixconfig#lock802";
+  #   dates = "04:54";
+  #   allowReboot = true;
+  #   flags = [
+  #     "--no-write-lock-file"
+  #     # for individual:
+  #     "--update-input" "nixpkgs"
+  #     # "--recreate-lock-file" # for all inputs
+  #   ];
+  # };
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
@@ -44,10 +44,14 @@ in
 
   boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = true;
   networking.enableIPv6 = false;
-  # none of the above works, use
-  boot.kernelParams = [ "ipv6.disable=1" ];
+  # none of the above works, use "ipv6.disable=1"
   # alternately
   # nmcli d modify wlan0 ipv6.method "disabled"
+  boot.kernelParams = [
+    "ipv6.disable=1"
+    "iomem=relaxed" # for pigpiod
+    #"strict-devmem=0" # for pigpiod
+  ];
 
   networking.firewall.enable = lib.mkForce false;
   networking.networkmanager.enable = lib.mkForce true;
@@ -98,8 +102,19 @@ in
   };
 
   services.doorclient.enable = true;
-  services.doorclient.nopage = true;
+  #services.doorclient.nopage = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
+
+  systemd.services.pigpiod = {
+    after = [ "network.target" ]; # XXX
+    wantedBy = [ "multi-user.target" ]; # XXX
+    description = "";
+    script = "${pkgs-gpio.pigpio}/bin/pigpiod -g";
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = "5s";
+    };
+  };
 
   users.users.chrism.extraGroups = [ "gpio" "kmem" ];
 
@@ -107,8 +122,21 @@ in
 
   # run "aplay -l" to see alsa interface numbers
 
-  # goes into /etc/asound.conf
-  hardware.alsa.config = ''
+  # NB: this is totally required. even though pjsua.conf appears to allow us to
+  # choose capture and playback devices, it appears to always use the default
+  # device.  when the default device is not correct (e.g. the headphone device,
+  # it'll look something like pjsua_aud.c .Unable to open sound device: Unknown
+  # error from audio driver (PJMEDIA_EAUD_SYSERR) [status=420002] commenting
+  # out the --capture-device in pjsua.conf makes it work, stupidly, but then it
+  # doesn't capture.  this presumably is because it's defaulting to card 0, the
+  # headphone card, which doesn't have a capture component.  the only reliable
+  # way to make it work is to set up asound.conf with defaults to the right
+  # card AFAICT.  EDIT: yeah, the --capture-device and --playback-device in
+  # pjsua.conf aren't the ALSA card numbers.  0 means "default ALSA device",
+  # god knows what 1 is.
+
+  # NB: hardware.alsa.config also doesn't work to set these values
+  environment.etc."asound.conf".text = ''
     defaults.pcm.card 1
     defaults.ctl.card 1
   '';
@@ -119,6 +147,8 @@ in
     pkgs.wirelesstools # iwconfig
     pkgs.wpa_supplicant # in case i decide to use it
     playwav
+    pkgs-gpio.lgpio # for man pages
+    pkgs-gpio.pigpio # for pigpiod
   ];
 
   services.asterisk.enable = true;
