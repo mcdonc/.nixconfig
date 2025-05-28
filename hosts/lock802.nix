@@ -28,7 +28,6 @@ in
       "--no-write-lock-file"
       # for individual:
       "--update-input" "nixpkgs"
-      #"--update-input" "nixpkgs-unstable"
       # "--recreate-lock-file" # for all inputs
     ];
   };
