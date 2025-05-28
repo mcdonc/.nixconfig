@@ -16,6 +16,8 @@
       filter = lib.mkForce "*rpi-4-*.dtb";
     };
   };
+
+  # this may not really be required
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
   users.groups.gpio = {};
