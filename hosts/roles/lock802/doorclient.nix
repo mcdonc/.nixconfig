@@ -123,12 +123,12 @@ chown -R doorserver:doorserver /run/doorclient
         serviceConfig = {
           Restart = "always";
           RestartSec = "5s";
-          User = "doorserver";
-          Group = "doorserver";
-          DynamicUser = true;
+          # User = "doorserver";
+          # Group = "doorserver";
+          # DynamicUser = true;
+          # PermissionsStartOnly = true; # run preStart as root
           LoadCredential = creds;
           Environment = envs;
-          PermissionsStartOnly = true; # run preStart as root
           WorkingDirectory = "/tmp"; # for lgpio
           SupplementaryGroups = [ "audio" "kmem" "gpio" ]; # kmem for lgpio
         };
