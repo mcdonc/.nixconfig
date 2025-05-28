@@ -158,9 +158,10 @@ in
       exten => 7008,2,Dial(SIP/7008,30)
       exten => 7008,3,Hangup()
     '';
-    # XXX yeah it loads it into the store, but its better than checking it in
-    "sip.conf" = builtins.readFile config.age.secrets."pjsua.conf".path;
   };
+
+  environment.etc."asterisk/sip.conf".source = lib.mkForce
+    config.age.secrets."sip.conf".path;
 
   systemd.services.playwav-late = {
     description = "Play late night wavs";
