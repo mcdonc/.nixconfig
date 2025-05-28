@@ -19,7 +19,7 @@
     };
   };
 
-  # this may not really be required
+  # this may not really be required (i think nixos-hardware does this already)
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
   users.groups.gpio = {};
