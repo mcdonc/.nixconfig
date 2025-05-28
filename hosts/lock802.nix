@@ -88,8 +88,14 @@ in
 
   # end wpa_supplicant
 
-  age.secrets."pjsua.conf".file = ../secrets/pjsua.conf.age;
-  age.secrets."sip.conf".file = ../secrets/sip.conf.age;
+  age.secrets."pjsua.conf" = {
+    file = ../secrets/pjsua.conf.age;
+    mode = "644";
+  };
+  age.secrets."sip.conf" = {
+    file = ../secrets/sip.conf.age;
+    mode = "644";
+  };
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
