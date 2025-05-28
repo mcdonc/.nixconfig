@@ -1,24 +1,24 @@
  { pkgs, inputs, pkgs-gpio, ... }:
 
 let
-  breakonthru = pkgs.python312Packages.buildPythonPackage rec {
+  breakonthru = pkgs-gpio.python312Packages.buildPythonPackage rec {
 
     pname = "breakonthru";
     version = "0.0";
     pyproject = true;
 
-    src = pkgs.fetchFromGitHub {
+    src = pkgs-gpio.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
       rev = "3a3d9465ae622a1a6d595f07943d20d8600b2478";
       sha256 = "sha256-RfX6erZIPDmCFgBRPgApU4718/zWyRpZ0ED1/3vQa4k=";
     };
 
-    build-system = with pkgs.python312Packages; [
+    build-system = with pkgs-gpio.python312Packages; [
       setuptools
     ];
 
-    dependencies = with pkgs.python312Packages; [
+    dependencies = with pkgs-gpio.python312Packages; [
       setuptools
       plaster-pastedeploy
       pyramid
@@ -40,7 +40,7 @@ let
   # https://github.com/NixOS/nixpkgs/pull/352308 (doronbehar)
   # why must i repeat this?
   pyenv = (
-    pkgs.python312.withPackages (p:
+    pkgs-gpio.python312.withPackages (p:
       with p; [
         breakonthru
         setuptools
@@ -58,7 +58,7 @@ let
         gpiozero
         rpi-gpio
         # lgpio etc needs pkgs-gpio instead of pkgs
-        #lgpio
+        lgpio
         #pigpio
         #rgpio
       ]
