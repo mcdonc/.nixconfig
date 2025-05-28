@@ -1,5 +1,9 @@
 { pkgs, lib, inputs, pkgs-gpio, ... }:
 {
+  imports = [
+    "${inputs.nixos-hardware}/raspberry-pi/4"
+  ];
+
   hardware.enableAllFirmware = true;
   hardware.firmware = [ pkgs.raspberrypiWirelessFirmware ];
   hardware = {

@@ -13,7 +13,6 @@ in
 {
   imports = [
     inputs.nixos-generators.nixosModules.all-formats
-    "${inputs.nixos-hardware}/raspberry-pi/4"
     ../users/chrism
     ./roles/minimal
     ./roles/rpi4.nix
