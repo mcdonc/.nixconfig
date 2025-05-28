@@ -22,6 +22,8 @@ in
   system.autoUpgrade = {
     enable = true;
     flake = "github:mcdonc/.nixconfig#lock802";
+    dates = "04:49";
+    allowReboot = true;
     flags = [
       "--no-write-lock-file"
       "--recreate-lock-file" # for all inputs
@@ -29,8 +31,6 @@ in
       #"--update-input" "nixpkgs"
       #"--update-input" "nixpkgs-unstable"
     ];
-    dates = "04:23";
-    allowReboot = true;
   };
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
