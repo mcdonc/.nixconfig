@@ -101,9 +101,9 @@ in
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
   users.users.chrism.extraGroups = [ "gpio" "kmem" ];
 
-  services.pulseaudio.enable = true;
+  services.pulseaudio.enable = false; # completely alsa setup
 
-  # run "sudo pacmd list-sources" to see alsa interface numbers
+  # run "aplay -l" to see alsa interface numbers
 
   # goes into /etc/asound.conf
   hardware.alsa.config = ''
