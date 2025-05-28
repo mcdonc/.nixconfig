@@ -20,7 +20,10 @@
     dig
     nix-tree
     isd
+    dysk
     alsa-utils
+    #fast-cli # wants chromium, wtf
+    speedtest-cli
   ];
 
   jawns.isworkstation = false;
