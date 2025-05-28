@@ -22,14 +22,14 @@ in
   system.autoUpgrade = {
     enable = true;
     flake = "github:mcdonc/.nixconfig#lock802";
-    dates = "04:49";
+    dates = "04:54";
     allowReboot = true;
     flags = [
       "--no-write-lock-file"
-      "--recreate-lock-file" # for all inputs
       # for individual:
-      #"--update-input" "nixpkgs"
+      "--update-input" "nixpkgs"
       #"--update-input" "nixpkgs-unstable"
+      # "--recreate-lock-file" # for all inputs
     ];
   };
 
