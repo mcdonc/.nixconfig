@@ -74,7 +74,7 @@ let
 
   doorclient-test = pkgs.writeShellScriptBin "doorclient-test" ''
     export PYTHONPATH=/home/chrism/breakonthru
-    exec ${pyenv}/bin/doorclient "$@"
+    exec ${pyenv}/bin/doorclient /run/doorclient/client.ini
   '';
 
 in
