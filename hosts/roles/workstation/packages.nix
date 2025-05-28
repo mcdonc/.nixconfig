@@ -88,6 +88,7 @@ in
     ripgrep
     btop
     killall
+    alsa-utils
     handbrake
     mpv
     vlc
@@ -293,7 +294,7 @@ in
     xorg.xmodmap
     fd
     shellcheck
-    inputs.isd.packages."${system}".default
+    isd
     loccount
     lazydocker
     rst2pdf

@@ -15,10 +15,10 @@
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
-    isd.url = "github:isd-project/isd";
     agenix.url = "github:ryantm/agenix";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-gpio.url = "github:doronbehar/nixpkgs/ec24041f0f3d08c0a012e6dd0c02e495f9bac055";
   };
 
   outputs = inputs:
@@ -56,6 +56,7 @@
             { name = "pkgs-py36"; value = nixpkgs-py36; }
             { name = "pkgs-py37"; value = nixpkgs-py37; }
             { name = "pkgs-py39"; value = nixpkgs-py39; }
+            { name = "pkgs-gpio"; value = nixpkgs-gpio; }
           ];
           mkNpFork = forkinput: {
             name = forkinput.name;
@@ -95,7 +96,7 @@
         { hostname = "keithmoon"; system = "x86_64-linux"; }
         { hostname = "arctor"; system = "x86_64-linux"; }
         { hostname = "dodemo"; system = "x86_64-linux"; }
-        { hostname = "nixlock802"; system = "aarch64-linux"; }
+        { hostname = "lock802"; system = "aarch64-linux"; }
       ];
       configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
     in

@@ -1,7 +1,7 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, inputs, pkgs-gpio, ... }:
 
 let
-  breakonthru = (import breakonthru.nix);
+  breakonthru = (import ./breakonthru.nix) {inherit pkgs lib inputs pkgs-gpio;};
 in
 
 {

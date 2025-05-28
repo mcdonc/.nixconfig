@@ -1,7 +1,7 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, inputs, pkgs-gpio, ... }:
 
 let
-  breakonthru = (import ./breakonthru.nix) { inherit pkgs lib; };
+  breakonthru = (import ./breakonthru.nix) {inherit pkgs lib inputs pkgs-gpio;};
   pjsip = (pkgs.pjsip.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or []) ++ [ ./pjsip-alsa.patch ];
     }));
@@ -71,7 +71,7 @@ in {
       [doorclient]
       server = ${cfg.websocket-url}
       unlock0_gpio_pin = ${toString cfg.unlock0-gpio-pin}
-      unlock1_gpio_pin = ${toString cfg.unlock0-gpio-pin}
+      unlock1_gpio_pin = ${toString cfg.unlock1-gpio-pin}
       door_unlocked_duration = ${toString cfg.door-unlocked-duration}
       callbutton_gpio_pin = ${toString cfg.callbutton-gpio-pin}
       callbutton_bouncetime = ${toString cfg.callbutton-bouncetime}
@@ -92,7 +92,13 @@ in {
   in
 
     lib.mkIf cfg.enable {
-      environment.systemPackages = [ breakonthru.pyenv-bin pjsip ];
+      environment.systemPackages = [
+        breakonthru.pyenv-bin
+        breakonthru.doorclient-test
+        pjsip
+        #pkgs-gpio.pigpio
+        #pkgs-gpio.lgpio
+      ];
       systemd.services.doorclient = {
         description = "Door client";
         after = [ "network.target" ];
@@ -107,7 +113,6 @@ chown -R doorserver:doorserver /run/doorclient
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
-          export GPIOZERO_PIN_FACTORY=NATIVE
           exec ${breakonthru.pyenv}/bin/doorclient /run/doorclient/client.ini
         '';
         serviceConfig = {
@@ -119,9 +124,10 @@ chown -R doorserver:doorserver /run/doorclient
           LoadCredential = creds;
           Environment = envs;
           PermissionsStartOnly = true; # run preStart as root
+          WorkingDirectory = "/tmp"; # for lgpio
+          SupplementaryGroups = [ "audio" "kmem" "gpio" ]; # kmem for lgpio
         };
       };
 
     };
-
 }

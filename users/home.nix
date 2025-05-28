@@ -119,31 +119,12 @@ in
     enable = true;
     matchBlocks = {
       "lock802" = {
-        user = "pi";
-        forwardAgent = true;
-      };
-      "nixlock802" = {
-        user = "chrism";
-        forwardAgent = true;
-      };
-      "192.168.1.185" = {
-        user = "chrism";
         forwardAgent = true;
       };
       "lock802.local" = {
-        user = "pi";
         forwardAgent = true;
       };
       "192.168.1.139" = {
-        user = "pi";
-        forwardAgent = true;
-      };
-      "testlock802" = {
-        user = "pi";
-        forwardAgent = true;
-      };
-      "testlock802lan" = {
-        user = "pi";
         forwardAgent = true;
       };
       "keithmoon" = {

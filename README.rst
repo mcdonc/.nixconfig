@@ -125,7 +125,7 @@ To update the configuration remotely::
 Could use ``security.sudo.wheelNeedsPassword = false;`` to get around password
 entry requirements.
 
-nixlock802 is::
+lock802 is::
 
-  nix build ".#nixosConfigurations.nixlock802.config.formats.sd-aarch64"
-  nixos-rebuild switch --flake ".#nixlock802" --target-host chrism@nixlock802 --use-remote-sudo
+  nix build ".#nixosConfigurations.lock802.config.formats.sd-aarch64"
+  nixos-rebuild switch --flake ".#lock802" --target-host chrism@lock802 --use-remote-sudo

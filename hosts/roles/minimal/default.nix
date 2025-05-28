@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
 
@@ -19,6 +19,8 @@
     bintools
     dig
     nix-tree
+    isd
+    alsa-utils
   ];
 
   jawns.isworkstation = false;
