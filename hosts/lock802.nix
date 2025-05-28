@@ -29,7 +29,7 @@ in
       #"--update-input" "nixpkgs"
       #"--update-input" "nixpkgs-unstable"
     ];
-    dates = "04:21";
+    dates = "04:23";
     allowReboot = true;
   };
 
