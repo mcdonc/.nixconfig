@@ -111,7 +111,7 @@ in
     after = [ "network.target" ]; # XXX
     wantedBy = [ "multi-user.target" ]; # XXX
     description = "";
-    script = "${pkgs-gpio.pigpio}/bin/pigpiod -g";
+    script = "${pkgs-gpio.pigpio}/bin/pigpiod -g -l";
     serviceConfig = {
       Restart = "always";
       RestartSec = "5s";
