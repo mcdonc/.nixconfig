@@ -56,7 +56,7 @@ let
         requests
         websocket-client
         gpiozero
-        #rpi-gpio
+        rpi-gpio
         # NB: lgpio, pigpio, rpgio need pkgs-gpio instead of pkgs
         lgpio
         pigpio

@@ -77,6 +77,11 @@ in {
       description = "Disable doorclient paging components";
       default = false;
     };
+    pin-factory = lib.mkOption {
+      type = lib.types.str;
+      description = "for gpiozero: one of lgpio|rpigpio|pgpio|native|mock";
+      default = "lgpio";
+    };
 
   };
 
@@ -128,6 +133,8 @@ chown -R doorserver:doorserver /run/doorclient
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
           export DOORSERVER_WSSECRET="$secret"
           ${if cfg.nopage then "export DOORSERVER_NOPAGE=1" else ""}
+          export GPIOZERO_PIN_FACTORY=${cfg.pin-factory}
+          echo "using pin factory $GPIOZERO_PIN_FACTORY"
           exec ${breakonthru.pyenv}/bin/doorclient /run/doorclient/client.ini
         '';
         serviceConfig = {
