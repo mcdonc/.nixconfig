@@ -37,8 +37,8 @@ let
 
   # RPi.GPIO issue https://github.com/home-assistant/operating-system/issues/3094
   # https://github.com/joan2937/pigpio
+  # https://arestless.rest/blog/lab--raspberry-pi-4b-gpio-debugging/
   # https://github.com/NixOS/nixpkgs/pull/352308 (doronbehar)
-  # why must i repeat this?
   pyenv = (
     pkgs-gpio.python312.withPackages (p:
       with p; [
@@ -57,16 +57,13 @@ let
         websocket-client
         gpiozero
         #rpi-gpio
-        # lgpio etc needs pkgs-gpio instead of pkgs
+        # NB: lgpio, pigpio, rpgio need pkgs-gpio instead of pkgs
         lgpio
         pigpio
         rgpio
       ]
     )
   );
-
-  # using rpi.gpio because
-  # lgpio currently doesnt work: /nix/store/2gpij2mn31z0hnfy0803m9w34jzyjbhk-python3-3.12.10-env/lib/python3.12/site-packages/gpiozero/devices.py:300: PinFactoryFallback: Falling back from lgpio: 'can not open gpiochip'
 
   pyenv-bin = pkgs.writeShellScriptBin "pyenv-bin" ''
     exec ${pyenv}/bin/python $@

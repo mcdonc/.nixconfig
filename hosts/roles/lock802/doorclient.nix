@@ -32,6 +32,11 @@ in {
       description = "Unlock pin for door 1";
       default = 24;
     };
+    unlock2-gpio-pin = lib.mkOption {
+      type = lib.types.int;
+      description = "Unlock pin for door 2";
+      default = 13;
+    };
     door-unlocked-duration = lib.mkOption {
       type = lib.types.int;
       description = "Unlock duration in seconds";
@@ -82,6 +87,7 @@ in {
       server = ${cfg.websocket-url}
       unlock0_gpio_pin = ${toString cfg.unlock0-gpio-pin}
       unlock1_gpio_pin = ${toString cfg.unlock1-gpio-pin}
+      unlock2_gpio_pin = ${toString cfg.unlock2-gpio-pin}
       door_unlocked_duration = ${toString cfg.door-unlocked-duration}
       callbutton_gpio_pin = ${toString cfg.callbutton-gpio-pin}
       callbutton_bouncetime = ${toString cfg.callbutton-bouncetime}
