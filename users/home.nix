@@ -2,13 +2,6 @@
 
 let
 
-  nixos-update = pkgs.writeShellScript "nixos-update" ''
-    cd /etc/nixos
-    git pull
-    nix flake update
-    sudo nixos-rebuild switch --verbose
-  '';
-
   keithtemps = pkgs.writeShellScriptBin "keithtemps" ''
     sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
   '';
@@ -56,14 +49,16 @@ let
   zshDotDir = ".config/zsh";
 
   shellAliases = {
-    fxdevenv = "export FXDEV_CHDIR=\"$(pwd)\"; cd ~/projects/fornax/fxdevenv; devenv shell";
-    swnix = "sudo nixos-rebuild switch --verbose --show-trace";
-    drynix = "sudo nixos-rebuild dry-build --verbose --show-trace";
-    bootnix = "sudo nixos-rebuild boot --verbose --show-trace";
-    ednix = "emacsclient -nw /etc/nixos/flake.nix";
-    schnix = "nix search nixpkgs";
+    fxdevenv = ''
+     export FXDEV_CHDIR=\"$(pwd)\"; \
+     cd ~/projects/fornax/fxdevenv; \
+     devenv shell";
+    '';
+    oldswnix = "sudo nixos-rebuild switch --verbose --show-trace";
+    swnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace --verbose";
+    oldreplnix = "nix repl '<nixpkgs>'";
+    replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
     rbnix = "sudo nixos-rebuild build --rollback";
-    replnix = "nix repl '<nixpkgs>'";
     mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
@@ -75,7 +70,6 @@ let
     ls = "ls --color=auto";
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
-    nixos-update = "${nixos-update}";
     disable-kvm = "sudo modprobe -r kvm-intel"; # for virtualbox
     thumbnail = "${thumbnail}";
     yt-1080p = "${yt-1080p}";

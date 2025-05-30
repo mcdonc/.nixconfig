@@ -11,12 +11,18 @@
   jawns.isworkstation = true;
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
-  system.activationScripts.diff = {
-    supportsDryActivation = true;
-    text = ''
-      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
-           /run/current-system "$systemConfig"
-    '';
+  # (replace with nh)
+  #system.activationScripts.diff = {
+  #  supportsDryActivation = true;
+  #  text = ''
+  #    ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff \
+  #         /run/current-system "$systemConfig"
+  #  '';
+  #};
+
+  programs.nh = {
+    enable = true;
+    flake = "/etc/nixos";
   };
 
   nix = {

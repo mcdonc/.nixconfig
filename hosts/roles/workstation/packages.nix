@@ -259,7 +259,6 @@ in
     bastet # tetris
     moon-buggy
     pokete
-    blender
     clinfo
     yt-dlp
     alsa-utils # aplay
@@ -309,6 +308,7 @@ in
     mailutils # for checking zed reports
     nil # for nix emacs lsp-mode
     rust-analyzer # for rust emacs lsp-mode
+    nix-output-monitor
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm
