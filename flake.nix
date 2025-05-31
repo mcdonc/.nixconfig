@@ -98,6 +98,7 @@
         { hostname = "arctor"; system = "x86_64-linux"; }
         { hostname = "dodemo"; system = "x86_64-linux"; }
         { hostname = "lock802"; system = "aarch64-linux"; }
+        { hostname = "clonelock802"; system = "aarch64-linux"; }
       ];
       configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
     in

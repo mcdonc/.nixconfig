@@ -6,11 +6,12 @@ let
 
   lock802 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOFnEHDKsVdV89438jO9rP3j5aPZORwF3olq1cvqcSQa";
   keithmoon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKM2Y/WyecPzlYwodof33IhLgazClRN+T1SHoaNM9Yv";
+  clonelock802 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3FP8bcCXHpaLfTetPPseJwqcCqek+sDrZAz/e33B61";
   systems = [ lock802 keithmoon ];
 
 in
 
 {
-  "pjsua.conf.age".publicKeys = [ chrism lock802 ];
-  "pjsip.conf.age".publicKeys = [ chrism lock802 ];
+  "pjsua.conf.age".publicKeys = [ chrism lock802 clonelock802 ];
+  "pjsip.conf.age".publicKeys = [ chrism lock802 clonelock802 ];
 }
