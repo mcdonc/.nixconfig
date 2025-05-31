@@ -79,13 +79,6 @@ in
       pyramid.debug_routematch = false
       pyramid.default_locale_name = en
 
-      # these are taken care of by __init__ reading envvars itself
-      #password_file = %(ENV_DOORSERVER_PASSWORDS_FILE)s
-      #doors_file =  %(ENV_DOORSERVER_DOORS_FILE)s
-      #websocket_url = %(ENV_DOORSERVER_WEBSOCKET_URL)s
-      #doorsip = %(ENV_DOORSERVER_DOORSIP)s
-      #secret = %(ENV_DOORSERVER_WSSECRET)s
-
       ###
       # wsgi server configuration
       ###

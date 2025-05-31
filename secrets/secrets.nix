@@ -14,4 +14,7 @@ in
 {
   "pjsua.conf.age".publicKeys = [ chrism lock802 clonelock802 ];
   "pjsip.conf.age".publicKeys = [ chrism lock802 clonelock802 ];
+  "passwords.age".publicKeys = [ chrism lock802 clonelock802 ];
+  "doors.age".publicKeys = [ chrism lock802 clonelock802 ];
+  "wssecret.age".publicKeys = [ chrism lock802 clonelock802 ];
 }

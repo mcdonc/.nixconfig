@@ -102,10 +102,23 @@ in
     file = ../secrets/pjsip.conf.age;
     mode = "644";
   };
+  age.secrets."passwords" = {
+    file = ../secrets/passwords.age;
+    mode = "600";
+  };
+  age.secrets."doors" = {
+    file = ../secrets/doors.age;
+    mode = "600";
+  };
+  age.secrets."wssecret" = {
+    file = ../secrets/wssecret.age;
+    mode = "600";
+  };
 
   services.doorclient.enable = true;
-  #services.doorclient.nopage = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
+  services.doorclient.wssecret-file = config.age.secrets."wssecret".path;
+  #services.doorclient.nopage = true;
 
   systemd.services.pigpiod = {
     after = [ "network.target" ]; # XXX

@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, system, ... }:
+{ lib, pkgs, inputs, system, config, ... }:
 
 {
   imports = [
@@ -11,6 +11,9 @@
   ];
 
   services.doorserver.enable = true;
+  services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
+  services.doorserver.doors-file = config.age.secrets."doors".path;
+  services.doorserver.passwords-file = config.age.secrets."passwords".path;
 
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
