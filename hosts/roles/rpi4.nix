@@ -1,10 +1,7 @@
-{ pkgs, lib, inputs, pkgs-gpio, ... }:
+{ pkgs, lib, inputs, pkgs-gpio, config, ... }:
 {
-  # used under nixos-generators
-
   imports = [
     "${inputs.nixos-hardware}/raspberry-pi/4"
-    ./rpigpio.nix
   ];
 
   services.zram-generator = {
@@ -21,8 +18,7 @@
     raspberry-pi."4" = {
       apply-overlays-dtmerge.enable = true;
       fkms-3d.enable = true; # rudolf
-      # below is broken
-      #audio.enable = true;
+      #audio.enable = true; # broken
       gpio.enable = true;
     };
     deviceTree = {
@@ -31,8 +27,16 @@
     };
   };
 
-  # this may not really be required (i think nixos-hardware does this already)
-  boot.kernelPackages = pkgs.linuxPackages_rpi4;
+   # https://github.com/NixOS/nixpkgs/issues/154163, fixes kernel build issue
+   #hardware.enableAllHardware = lib.mkForce false;
+
+   # alternative to above:
+   nixpkgs.overlays = [
+     (final: super: {
+       makeModulesClosure = x:
+         super.makeModulesClosure (x // {allowMissing = true;});
+     })
+   ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
 
