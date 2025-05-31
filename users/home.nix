@@ -44,6 +44,14 @@ let
        -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart "$2"
   '';
 
+  edit = pkgs.writeShellScriptBin "edit" ''
+    if [[ "$XDG_SESSION_TYPE" == "tty" ]]; then
+      exec emacsclient -c $@
+    else
+      exec emacsclient -n -c $@
+    fi
+  '';
+
   sessionVariables = {};
 
   zshDotDir = ".config/zsh";
@@ -65,7 +73,6 @@ let
     toconsole = "sudo systemctl isolate multi-user.target";
     togui = "sudo systemctl isolate graphical.target";
     open = "kioclient exec";
-    edit = "emacsclient -n -c";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
     ls = "ls --color=auto";
     ai = "shell-genie ask";
@@ -96,6 +103,7 @@ in
     whoosh
     nvfantemps
     yt-transcode
+    edit
   ];
 
   services.gpg-agent = {
