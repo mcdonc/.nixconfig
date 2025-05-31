@@ -120,35 +120,18 @@ in
   programs.ssh = {
     enable = true;
     matchBlocks = {
-      "lock802" = {
-        forwardAgent = true;
-      };
-      "clonelock802" = {
-        forwardAgent = true;
-      };
-      "192.168.1.183" = {
-        forwardAgent = true;
-      }; 
-     "lock802.local" = {
-        forwardAgent = true;
-      };
-      "192.168.1.139" = {
-        forwardAgent = true;
-      };
-      "keithmoon" = {
-        forwardAgent = true;
-      };
-      "arctor.repoze.org" = {
-        forwardAgent = true;
-      };
-
-      "win10" = { user = "user"; };
-      "thinknix*" = { forwardAgent = true; };
-      "nixcentre" = { forwardAgent = true; };
-      "bouncer.repoze.org" = { forwardAgent = true; };
-      "lock802.repoze.org" = { forwardAgent = true; };
-      "192.168.1.1" = { user = "root"; };
-      "optinix" = { forwardAgent = true; };
+      "192.168.1.*".forwardAgent = true;
+      "lock802".forwardAgent = true;
+      "clonelock802".forwardAgent = true;
+      "keithmoon".forwardAgent = true;
+      "optinix.".forwardAgent = true;
+      "arctor.repoze.org".forwardAgent = true;
+      "thinknix*".forwardAgent = true;
+      "nixcentre".forwardAgent = true;
+      "bouncer.repoze.org".forwardAgent = true;
+      "lock802.repoze.org".forwardAgent = true;
+      "optinix".forwardAgent = true;
+      "win10" .user = "user";
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";
