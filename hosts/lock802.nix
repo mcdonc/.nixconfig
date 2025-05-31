@@ -56,7 +56,7 @@ in
   ];
 
   networking.firewall.enable = lib.mkForce false;
-  networking.networkmanager.enable = lib.mkForce true;
+  networking.networkmanager.enable = true;
 
   # networkmanager try connect
   # sudo nmcli device wifi connect "ssid"

@@ -8,7 +8,7 @@ let
   keithmoon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKM2Y/WyecPzlYwodof33IhLgazClRN+T1SHoaNM9Yv";
   clonelock802 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3FP8bcCXHpaLfTetPPseJwqcCqek+sDrZAz/e33B61";
   arctor = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0HfCNzDF+l0pM/u5D3aLGXu2ICxcJ/85rHElIHrI3v";
-  systems = [ lock802 keithmoon ];
+  systems = [ lock802 keithmoon clonelock802 arctor ];
 
 in
 
@@ -18,4 +18,5 @@ in
   "wssecret.age".publicKeys = [ chrism lock802 clonelock802 arctor ];
   "passwords.age".publicKeys = [ chrism lock802 arctor ];
   "doors.age".publicKeys = [ chrism lock802 arctor ];
+  "wifi.age".publicKeys = [ chrism lock802 clonelock802 ];
 }
