@@ -8,8 +8,8 @@ let
   playwav = pkgs.writeShellScriptBin "playwav" ''
     ${breakonthru.pyenv}/bin/wavplayer --dir=/var/lib/doorserver/wavs/$1
   '';
-
 in
+
 {
   imports = [
     inputs.nixos-generators.nixosModules.all-formats
@@ -94,9 +94,7 @@ in
   # "wpa_passphrase ssid passphrase" creates a psk
   # "iwconfig" shows connected ssids
 
-
   services.dnsmasq.enable = true;
-
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
@@ -265,12 +263,5 @@ in
       Persistent = true;
     };
   };
-
-  # crontab -e of pi user
-  # 23 1 * * *      /home/pi/lock802/playwav.sh late
-  # 8 2 * * *       /home/pi/lock802/playwav.sh early
-  # 15 6 * * *      /home/pi/lock802/playwav.sh afternoon
-  # 18 32 * * *     /home/pi/lock802/playwav.sh evening
-  # #*/10 * * * *   /home/pi/lock802/playwav.sh tenmins
 
 }
