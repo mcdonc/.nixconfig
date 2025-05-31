@@ -102,6 +102,10 @@ in
     file = ../secrets/pjsip.conf.age;
     mode = "644";
   };
+  age.secrets."wssecret" = {
+    file = ../secrets/wssecret.age;
+    mode = "644";
+  };
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
