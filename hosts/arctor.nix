@@ -15,6 +15,19 @@
   services.doorserver.doors-file = config.age.secrets."doors".path;
   services.doorserver.passwords-file = config.age.secrets."passwords".path;
 
+  age.secrets."passwords" = {
+    file = ../secrets/passwords.age;
+    mode = "600";
+  };
+  age.secrets."doors" = {
+    file = ../secrets/doors.age;
+    mode = "600";
+  };
+  age.secrets."wssecret" = {
+    file = ../secrets/wssecret.age;
+    mode = "600";
+  };
+
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
   system.stateVersion = "25.05";
