@@ -126,7 +126,10 @@ in
       "clonelock802" = {
         forwardAgent = true;
       };
-      "lock802.local" = {
+      "192.168.1.183" = {
+        forwardAgent = true;
+      }; 
+     "lock802.local" = {
         forwardAgent = true;
       };
       "192.168.1.139" = {

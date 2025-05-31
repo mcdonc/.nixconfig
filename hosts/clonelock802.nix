@@ -6,21 +6,23 @@
   networking.hostName = lib.mkForce "clonelock802";
   services.doorclient.clientidentity = lib.mkForce "clonedoorclient";
 
-  networking = {
-    useDHCP = true;
-    wireless = {
-      enable = true;
-      interfaces = ["wlan0"];
-      # ! Change the following to connect to your own network
-      networks = {
-        "ytvid-rpi" = { # SSID
-          psk = "ytvid-rpi"; # password
-        };
-      };
-    };
+  age.secrets."wifi" = {
+    file = ../secrets/wifi.age;
+    mode = "600";
   };
 
-  networking.networkmanager.enable = lib.mkForce false;
+  networking = {
+    interfaces.end0.useDHCP = true;
+    interfaces.wlan0.useDHCP = true;
+    wireless = {
+      secretsFile = config.age.secrets."wifi".path;
+      enable = true;
+      interfaces = ["wlan0"];
+      networks."haircut".pskRaw = "ext:psk";
+    };
+    networkmanager.enable = lib.mkForce false;
+  };
+
   services.dnsmasq.enable = true;
 
 }
