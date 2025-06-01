@@ -15,6 +15,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/tailscale
     ./roles/rc505
     ./roles/zedalerts.nix
+    ./roles/ollama.nix
     #./roles/aws.nix
     #(
     #  import ./roles/macos-ventura.nix (
