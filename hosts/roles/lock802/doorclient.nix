@@ -85,6 +85,19 @@ in {
 
   };
 
+
+  #                      upside down text: "raspberry pi 4B"
+  #
+  #o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+  #G  26      13               G                               G             3.3
+  #   FD
+  #
+  #o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+  #       16   G                           G  24                       G      5V  #       CB
+  #
+  # relay sitting on bottom of box is for front door unlock: brown to 26
+
+
   config = let
     cfg = config.services.doorclient;
     client_ini = ''
