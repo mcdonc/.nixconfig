@@ -17,11 +17,11 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/speedtest
     ./roles/tailscale
     ./roles/rc505
-    (
-      import ./roles/macos-ventura.nix (
-        args // { mem = "16G"; cores = 4; enable = false; }
-      )
-    )
+    # (
+    #   import ./roles/macos-ventura.nix (
+    #     args // { mem = "16G"; cores = 4; enable = false; }
+    #   )
+    # )
   ];
 
   systemd.tpm2.enable = false;
