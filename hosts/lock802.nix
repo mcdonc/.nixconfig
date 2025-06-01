@@ -118,7 +118,7 @@ in
 
   # run "aplay -l" to see alsa interface numbers
 
-  # the settings in asound.cong are 100% brequired. even though pjsua.conf
+  # the settings in asound.conf are 100% brequired. even though pjsua.conf
   # appears to allow us to choose capture and playback devices, it appears to
   # always use the default device.  when the default device is not correct
   # (e.g. the headphone device, it'll look something like pjsua_aud.c .Unable
@@ -141,9 +141,9 @@ in
     pkgs.usbutils # lsusb
     pkgs.pciutils # lspci
     pkgs.wirelesstools # iwconfig
-    pkgs.wpa_supplicant # in case i decide to use it
+    pkgs.wpa_supplicant # wpa_passphrase
+    pkgs-gpio.pigpio # pigpiod
     playwav
-    pkgs-gpio.pigpio # for pigpiod
   ];
 
   services.asterisk.enable = true;
@@ -193,6 +193,7 @@ in
     '';
   };
 
+  # XXX reads into nix store
   environment.etc."asterisk/pjsip.conf".source = lib.mkForce
     config.age.secrets."pjsip.conf".path;
 
