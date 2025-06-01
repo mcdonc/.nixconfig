@@ -203,11 +203,11 @@ in
   #o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
   #G  26      13               G                               G             3.3
   #   FD
-  #  BRN
+  #  BRN                                                                     ORG
   #
   #o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
   #       16   G                           G  24                       G      5V  #       CB                                  ID
-  #       WH  BLU                            GRN
+  #       WH  BLU                            GRN                     BLK     RED
   #
   # relay sitting on bottom of box is for front door unlock: brown to 26
   # relay stuck to door on left is inner door unlock: green to 24
