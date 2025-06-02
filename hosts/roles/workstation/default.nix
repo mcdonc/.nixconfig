@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }:
 
 {
+  jawns.isworkstation = true;
+
   imports = [
-    ./packages.nix
+    ../packages.nix
     ./sound.nix
     ./printing.nix
     ./display.nix
   ];
-
-  jawns.isworkstation = true;
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   # (replace with nh)

@@ -2,32 +2,36 @@
 
 {
 
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    curl
-    unzip
-    gzip
-    xz
-    gnutar
-    gnumake
-    ripgrep
-    killall
-    python313
-    nmap
-    file
-    bintools
-    dig
-    nix-tree
-    isd
-    dysk
-    alsa-utils
-    #fast-cli # wants chromium, wtf
-    speedtest-cli
-    lsof
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   vim
+  #   wget
+  #   curl
+  #   unzip
+  #   gzip
+  #   xz
+  #   gnutar
+  #   gnumake
+  #   ripgrep
+  #   killall
+  #   python313
+  #   nmap
+  #   file
+  #   bintools
+  #   dig
+  #   nix-tree
+  #   isd
+  #   dysk
+  #   alsa-utils
+  #   #fast-cli # wants chromium, wtf
+  #   speedtest-cli
+  #   lsof
+  # ];
 
   jawns.isworkstation = false;
+
+  imports = [
+    ../packages.nix
+  ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   # replace with nh
