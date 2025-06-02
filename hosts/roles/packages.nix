@@ -274,7 +274,7 @@ in
     remmina
     rhythmbox
     rnnoise-plugin
-    rpi-imager
+    #rpi-imager
     rshell
     rst2pdf
     ruby
@@ -309,7 +309,7 @@ in
     virt-manager
     virt-viewer # for remote-viewer
     vlc
-    wireshark
+    #wireshark
     x42-avldrums
     x42-plugins
     xcalib
