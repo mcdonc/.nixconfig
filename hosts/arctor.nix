@@ -6,7 +6,7 @@
     inputs.nixos-generators.nixosModules.all-formats
     ../users/chrism
     ../users/tseaver
-    ./roles/minimal
+    ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
   ];
 

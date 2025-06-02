@@ -4,10 +4,8 @@
   jawns.isworkstation = true;
 
   imports = [
-    ../packages.nix
-    ./sound.nix
-    ./printing.nix
-    ./display.nix
+    ./shared.nix
+    ./packages.nix
   ];
 
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
@@ -19,27 +17,6 @@
   #         /run/current-system "$systemConfig"
   #  '';
   #};
-
-  programs.nh = {
-    enable = true;
-    flake = "/etc/nixos";
-  };
-
-  nix = {
-    settings = {
-      tarball-ttl = 300;
-      auto-optimise-store = true;
-      experimental-features = "nix-command flakes";
-      trusted-users = [ "root" "@wheel" ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-  };
-
-  nixpkgs.config.allowUnfree = true;
 
   # obs
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -66,41 +43,6 @@
   hardware.enableAllFirmware = true;
 
   hardware.flipperzero.enable = true;
-
-  environment.variables = {
-    EDITOR = "vi";
-  };
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONEY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  # default shell for all users
-  users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
-
-  programs.ssh = {
-    pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
-    hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
-    startAgent = true; # starts a systemd user service
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
-    };
-  };
 
   # virtualization
   virtualisation.libvirtd.enable = true;
@@ -132,18 +74,6 @@
   #programs.direnv.enable = true;
   #programs.direnv.enableZshIntegration = true;
 
-  programs.htop.enable = true;
-  programs.htop.settings = {
-    show_program_path = 0;
-    hide_kernel_threads = 1;
-    hide_userland_threads = 1;
-  };
-
-  # enable nix-ld for pip and friends
-  #programs.nix-ld.enable = true;
-
-  users.groups.nixconfig = { };
-
   # # this causes weirdness when vim is exited, printing mouse movements
   # # as ANSI sequences on any terminal; use shift to select text as a
   # # workaround
@@ -166,4 +96,64 @@
     # run aarch64 binaries
     emulatedSystems = [ "aarch64-linux" ];
   };
+
+  # desktop stuff
+  services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "plasmax11";
+  services.desktopManager.plasma6.enable = true;
+  services.xserver.displayManager.sessionCommands =
+    let modmap = pkgs.writeText "modmap" ''
+      ! disable middle click
+      ! pointer = 1 0 3 4 5
+      ! map right-ctrl+arrow-keys to pgup/pgdn/home/end
+      ! see https://forums.linuxmint.com/viewtopic.php?t=321400
+      ! keycode <number> = <default> <shift> <alt> <alt+shift>
+      ! keycode 105 is right-ctrl
+      keycode 105 = Mode_switch
+      keycode 113 = Left NoSymbol Home
+      keycode 114 = Right NoSymbol End
+      keycode 111 = Up NoSymbol Prior
+      keycode 116 = Down NoSymbol Next
+      ! map alt-pgup to home and alt-pgdn to end
+      ! keycode 108 is right-alt
+      keycode 108 = Mode_switch
+      keycode 112 = Prior NoSymbol Home
+      keycode 117 = Next NoSymbol End
+    '';
+    in "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
+
+  services.xserver.xkb.layout = "us";
+  services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
+  services.xserver.enableCtrlAltBackspace = true;
+  services.xserver.dpi = 96;
+  services.libinput.enable = true; # touchpad
+  fonts.packages = [
+    pkgs.nerd-fonts.ubuntu-mono
+  ];
+
+  # match "Jun 19 13:00:01 thinknix512 cupsd[2350]: Expiring subscriptions..."
+  systemd.services.cups = {
+    overrideStrategy = "asDropin";
+    serviceConfig.LogFilterPatterns = "~.*Expiring subscriptions.*";
+  };
+
+  # printing
+  services.printing.enable = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns4 = true;
+  #https://discourse.nixos.org/t/newly-announced-vulnerabilities-in-cups/52771/9
+  systemd.services.cups-browsed.enable = false;
+
+  services.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    jack.enable = true;
+    pulse.enable = true;
+  };
+
 }

@@ -5,7 +5,7 @@
     [
       ../users/chrism
       ../users/larry
-      ./roles/workstation
+      ./roles/workstation.nix
       (modulesPath + "/profiles/qemu-guest.nix")
       {
       }

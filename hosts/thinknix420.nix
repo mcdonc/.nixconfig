@@ -3,7 +3,7 @@
 {
   imports = [
     ../users/chrism
-    ./roles/workstation
+    ./roles/workstation.nix
     "${nixos-hardware}/lenovo/thinkpad/t420"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/tseries.nix

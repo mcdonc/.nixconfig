@@ -3,7 +3,7 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
 {
   imports = [
     ../users/chrism
-    ./roles/workstation
+    ./roles/workstation.nix
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix

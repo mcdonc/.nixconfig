@@ -14,7 +14,7 @@ in
   imports = [
     inputs.nixos-generators.nixosModules.all-formats
     ../users/chrism
-    ./roles/minimal
+    ./roles/minimal.nix
     ./roles/rpi4.nix
     ./roles/lock802/doorclient.nix
   ];

@@ -1,13 +1,5 @@
-{ config, pkgs, inputs, ... }:
-
+{ pkgs, ... }:
 {
-
-  jawns.isworkstation = false;
-
-  imports = [
-    ../packages.nix
-  ];
-
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   # replace with nh
   # system.activationScripts.diff = {
@@ -17,7 +9,7 @@
   #          /run/current-system "$systemConfig"
   #   '';
   # };
-
+  
   programs.nh = {
     enable = true;
     flake = "/etc/nixos";
@@ -38,11 +30,6 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
-
-  time.timeZone = "America/New_York";
 
   environment.variables = {
     EDITOR = "vi";
@@ -79,8 +66,6 @@
     };
   };
 
-  services.locate.enable = false;
-
   programs.htop.enable = true;
   programs.htop.settings = {
     show_program_path = 0;
@@ -89,5 +74,4 @@
   };
 
   users.groups.nixconfig = { };
-
 }

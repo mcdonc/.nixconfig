@@ -3,7 +3,7 @@ args@{ config, lib, nixos-hardware, ... }:
 {
   imports = [
     ../users/chrism
-    ./roles/workstation
+    ./roles/workstation.nix
     "${nixos-hardware}/lenovo/thinkpad/p52"
     "${nixos-hardware}/common/pc/ssd"
     ./roles/pseries.nix
