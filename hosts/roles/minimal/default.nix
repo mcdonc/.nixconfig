@@ -2,31 +2,6 @@
 
 {
 
-  # environment.systemPackages = with pkgs; [
-  #   vim
-  #   wget
-  #   curl
-  #   unzip
-  #   gzip
-  #   xz
-  #   gnutar
-  #   gnumake
-  #   ripgrep
-  #   killall
-  #   python313
-  #   nmap
-  #   file
-  #   bintools
-  #   dig
-  #   nix-tree
-  #   isd
-  #   dysk
-  #   alsa-utils
-  #   #fast-cli # wants chromium, wtf
-  #   speedtest-cli
-  #   lsof
-  # ];
-
   jawns.isworkstation = false;
 
   imports = [
