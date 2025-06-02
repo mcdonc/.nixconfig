@@ -5,7 +5,8 @@ self: super: {
   openssh = super.openssh.overrideAttrs (old: {
     patches = (
       old.patches or [ ]) ++ [
-        ../patches/openssh-dontcheckconfigperms.patch ];
+        ../openssh-dontcheckconfigperms.patch
+      ];
     doCheck = false;
   });
 }
