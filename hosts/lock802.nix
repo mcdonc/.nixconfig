@@ -95,6 +95,9 @@ in
   # "iwconfig" shows connected ssids
 
   services.dnsmasq.enable = true;
+  services.dnsmasq.settings = {
+    listen-address = "127.0.0.1";
+  };
 
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;

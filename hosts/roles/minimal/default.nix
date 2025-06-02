@@ -24,6 +24,7 @@
     alsa-utils
     #fast-cli # wants chromium, wtf
     speedtest-cli
+    lsof
   ];
 
   jawns.isworkstation = false;

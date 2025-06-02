@@ -310,6 +310,7 @@ in
     rust-analyzer # for rust emacs lsp-mode
     nix-output-monitor
     nh
+    lsof
     # for testing ARC
     # kind # kubernetes
     # kubernetes-helm
