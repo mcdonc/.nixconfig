@@ -246,22 +246,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-gpio": {
-      "locked": {
-        "lastModified": 1748438825,
-        "narHash": "sha256-H2HYEoGkPY/Xz/iiTohJz+WLMWw/gwOO51vOTigm6ZA=",
-        "owner": "doronbehar",
-        "repo": "nixpkgs",
-        "rev": "913419f02308f14069baa504861b82ef3d683edb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "doronbehar",
-        "repo": "nixpkgs",
-        "rev": "913419f02308f14069baa504861b82ef3d683edb",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
@@ -454,7 +438,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-2411": "nixpkgs-2411",
-        "nixpkgs-gpio": "nixpkgs-gpio",
         "nixpkgs-olive": "nixpkgs-olive",
         "nixpkgs-py36": "nixpkgs-py36",
         "nixpkgs-py37": "nixpkgs-py37",
