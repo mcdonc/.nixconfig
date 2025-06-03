@@ -10,6 +10,9 @@
     ./roles/lock802/doorserver.nix
   ];
 
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+
   services.doorserver.enable = true;
   services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
   services.doorserver.doors-file = config.age.secrets."doors".path;
@@ -31,10 +34,6 @@
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
   system.stateVersion = "25.05";
-
-  networking.firewall.allowedTCPPorts = [
-    80 443
-  ];
 
   virtualisation.docker.enable = true;
 

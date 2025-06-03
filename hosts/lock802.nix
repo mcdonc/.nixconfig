@@ -19,6 +19,8 @@ in
     ./roles/lock802/doorclient.nix
   ];
 
+  time.timeZone = "America/New_York";
+
   # system.autoUpgrade = {
   #   enable = true;
   #   flake = "github:mcdonc/.nixconfig#lock802";

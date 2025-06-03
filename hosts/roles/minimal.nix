@@ -4,15 +4,12 @@
 
   jawns.isworkstation = false;
 
+  time.timeZone = "America/New_York";
+
   imports = [
     ./shared.nix
     ./packages.nix
   ];
-
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
-
-  time.timeZone = "America/New_York";
 
   services.locate.enable = false;
 
