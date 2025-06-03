@@ -39,7 +39,7 @@ let
   '';
 
   findnixstorelinks = pkgs.writers.writePython3Bin "findnixstorelinks"
-    {} (builtins.readFile ../../bin/findnixstorelinks.py);
+    {} (builtins.readFile ./bin/findnixstorelinks.py);
 
   python313WithPackages = (
     pkgs.python313.withPackages (p:
