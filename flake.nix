@@ -5,12 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
-    nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
-    nixpkgs-py39.url = "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
-    nixpkgs-olive.url = "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
@@ -19,6 +14,15 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixpkgs-py36.url =
+      "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
+    nixpkgs-py37.url =
+      "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
+    nixpkgs-py39.url =
+      "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
+    nixpkgs-olive.url =
+      "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
 
   outputs = inputs:
@@ -31,7 +35,19 @@
       mkSystem = host:
         let
           shared-mods = [
-            ./jawns.nix
+            (
+              # locally-used options for my jawns
+              { lib, ... }:
+              {
+                options.jawns = {
+                  isworkstation = lib.mkOption {
+                    type = lib.types.bool;
+                    description = "Is this build for a workstation?";
+                    default = lib.mkDefault false;
+                  };
+                };
+              }
+            )
             inputs.home-manager.nixosModules.home-manager
             inputs.agenix.nixosModules.default
             #inputs.nixtheplanet.nixosModules.macos-ventura
@@ -64,7 +80,9 @@
               config.allowUnfree = true;
             };
           };
-          forks = builtins.listToAttrs ((builtins.map (i: mkNpFork i)) forkInputs);
+          forks = builtins.listToAttrs (
+            (builtins.map (i: mkNpFork i)) forkInputs
+          );
           # mdi = inputs.nixtheplanet.legacyPackages."${host.system}".makeDarwinImage;
           specialArgs = inputs // forks // {
             # bigger-darwin = mdi {
