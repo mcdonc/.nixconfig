@@ -83,11 +83,7 @@
           forks = builtins.listToAttrs (
             (builtins.map (i: mkNpFork i)) forkInputs
           );
-          # mdi = inputs.nixtheplanet.legacyPackages."${host.system}".makeDarwinImage;
           specialArgs = inputs // forks // {
-            # bigger-darwin = mdi {
-            #   diskSizeBytes = 100000000000;
-            # };
             system = host.system;
             inherit inputs;
           };
