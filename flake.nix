@@ -19,7 +19,6 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-gpio.url = "github:doronbehar/nixpkgs/913419f02308f14069baa504861b82ef3d683edb";
   };
 
   outputs = inputs:
@@ -51,13 +50,12 @@
             }
           ];
           forkInputs = with inputs; [
-            { name = "pkgs-unstable"; value = nixpkgs-unstable; }
-            { name = "pkgs-2411"; value = nixpkgs-2411; }
-            { name = "pkgs-olive"; value = nixpkgs-olive; }
-            { name = "pkgs-py36"; value = nixpkgs-py36; }
-            { name = "pkgs-py37"; value = nixpkgs-py37; }
-            { name = "pkgs-py39"; value = nixpkgs-py39; }
-            { name = "pkgs-gpio"; value = nixpkgs-gpio; }
+            { name = "pkgs-unstable";     value = nixpkgs-unstable; }
+            { name = "pkgs-2411";         value = nixpkgs-2411; }
+            { name = "pkgs-olive";        value = nixpkgs-olive; }
+            { name = "pkgs-py36";         value = nixpkgs-py36; }
+            { name = "pkgs-py37";         value = nixpkgs-py37; }
+            { name = "pkgs-py39";         value = nixpkgs-py39; }
           ];
           mkNpFork = forkinput: {
             name = forkinput.name;
@@ -86,19 +84,19 @@
         };
 
       hosts = [
-        { hostname = "thinknix50";  system = "x86_64-linux"; }
-        { hostname = "thinknix51"; system = "x86_64-linux"; }
-        { hostname = "thinknix512"; system = "x86_64-linux"; }
-        { hostname = "thinknix52"; system = "x86_64-linux"; }
-        { hostname = "thinkcentre"; system = "x86_64-linux"; }
-        { hostname = "optinix"; system = "x86_64-linux"; }
-        { hostname = "nixcentre"; system = "x86_64-linux"; }
-        { hostname = "nixos_vm"; system = "x86_64-linux"; }
-        { hostname = "keithmoon"; system = "x86_64-linux"; }
-        { hostname = "arctor"; system = "x86_64-linux"; }
-        { hostname = "dodemo"; system = "x86_64-linux"; }
-        { hostname = "lock802"; system = "aarch64-linux"; }
-        { hostname = "clonelock802"; system = "aarch64-linux"; }
+        { hostname = "thinknix50";        system = "x86_64-linux"; }
+        { hostname = "thinknix51";        system = "x86_64-linux"; }
+        { hostname = "thinknix512";       system = "x86_64-linux"; }
+        { hostname = "thinknix52";        system = "x86_64-linux"; }
+        { hostname = "thinkcentre";       system = "x86_64-linux"; }
+        { hostname = "optinix";           system = "x86_64-linux"; }
+        { hostname = "nixcentre";         system = "x86_64-linux"; }
+        { hostname = "nixos_vm";          system = "x86_64-linux"; }
+        { hostname = "keithmoon";         system = "x86_64-linux"; }
+        { hostname = "arctor";            system = "x86_64-linux"; }
+        { hostname = "dodemo";            system = "x86_64-linux"; }
+        { hostname = "lock802";           system = "aarch64-linux"; }
+        { hostname = "clonelock802";      system = "aarch64-linux"; }
       ];
       configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
     in

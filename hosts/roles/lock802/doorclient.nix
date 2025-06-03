@@ -1,7 +1,9 @@
-{ pkgs, lib, config, inputs, pkgs-gpio, ... }:
+{ pkgs, lib, config, inputs, pkgs-unstable, ... }:
 
 let
-  breakonthru = (import ./breakonthru.nix) {inherit pkgs lib inputs pkgs-gpio;};
+  breakonthru = (import ./breakonthru.nix) {
+    inherit pkgs pkgs-unstable lib inputs;
+  };
   pjsip = (pkgs.pjsip.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or []) ++ [ ./pjsip-alsa.patch ];
     }));

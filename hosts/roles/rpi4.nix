@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, pkgs-gpio, config, ... }:
+{ pkgs, lib, inputs, config, ... }:
 {
   imports = [
     "${inputs.nixos-hardware}/raspberry-pi/4"

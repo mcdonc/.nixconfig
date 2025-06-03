@@ -1,24 +1,24 @@
- { pkgs, inputs, pkgs-gpio, ... }:
+{ pkgs, inputs, pkgs-unstable, ... }:
 
 let
-  breakonthru = pkgs-gpio.python312Packages.buildPythonPackage rec {
+  breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
 
     pname = "breakonthru";
     version = "0.0";
     pyproject = true;
 
-    src = pkgs-gpio.fetchFromGitHub {
+    src = pkgs-unstable.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
       rev = "3a3d9465ae622a1a6d595f07943d20d8600b2478";
       sha256 = "sha256-RfX6erZIPDmCFgBRPgApU4718/zWyRpZ0ED1/3vQa4k=";
     };
 
-    build-system = with pkgs-gpio.python312Packages; [
+    build-system = with pkgs-unstable.python312Packages; [
       setuptools
     ];
 
-    dependencies = with pkgs-gpio.python312Packages; [
+    dependencies = with pkgs-unstable.python312Packages; [
       setuptools
       plaster-pastedeploy
       pyramid
@@ -40,7 +40,7 @@ let
   # https://arestless.rest/blog/lab--raspberry-pi-4b-gpio-debugging/
   # https://github.com/NixOS/nixpkgs/pull/352308 (doronbehar)
   pyenv = (
-    pkgs-gpio.python312.withPackages (p:
+    pkgs-unstable.python312.withPackages (p:
       with p; [
         breakonthru
         setuptools

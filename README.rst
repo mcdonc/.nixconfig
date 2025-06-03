@@ -127,5 +127,5 @@ entry requirements.
 
 lock802 is::
 
-  nix build ".#nixosConfigurations.lock802.config.formats.sd-aarch64"
+  nix build ".#nixosConfigurations.lock802.config.formats.sd-aarch64" --out-link /etc/nixos/images/lock802
   nixos-rebuild switch --flake ".#lock802" --target-host chrism@lock802 --use-remote-sudo
