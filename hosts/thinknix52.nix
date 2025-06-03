@@ -12,7 +12,7 @@ args@{ config, lib, nixos-hardware, ... }:
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
-    ./roles/backupsource
+    ./roles/backupsource.nix
     ./roles/tailscale
     ./roles/nix-serve-client.nix
     ./roles/rc505

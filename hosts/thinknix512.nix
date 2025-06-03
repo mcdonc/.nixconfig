@@ -11,7 +11,7 @@
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/dnsovertls/resolvedonly.nix
-    ./roles/backupsource
+    ./roles/backupsource.nix
     ./roles/steam.nix
     #./roles/vmount.nix
     ./roles/proaudio.nix

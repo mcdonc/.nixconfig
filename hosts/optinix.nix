@@ -25,7 +25,7 @@ in
     ./roles/davinci-resolve/studio.nix
     #./roles/vmount.nix
     ./roles/keithclient.nix
-    ./roles/backupsource
+    ./roles/backupsource.nix
     #    ./roles/proaudio.nix
     #    ./roles/rc505
     (

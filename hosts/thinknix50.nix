@@ -11,7 +11,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
     ./roles/tlp.nix
     ./roles/vmount.nix
     ./roles/dnsovertls/resolvedonly.nix
-    ./roles/backupsource
+    ./roles/backupsource.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/nix-serve-client.nix
     ./roles/speedtest
