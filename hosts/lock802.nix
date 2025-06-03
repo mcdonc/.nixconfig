@@ -103,6 +103,7 @@ in
   services.doorclient.enable = true;
   services.doorclient.pjsua-conf = config.age.secrets."pjsua.conf".path;
   services.doorclient.wssecret-file = config.age.secrets."wssecret".path;
+  services.doorclient.callbutton-bouncetime = 2; # milliseconds
   #services.doorclient.nopage = true;
 
   systemd.services.pigpiod = {

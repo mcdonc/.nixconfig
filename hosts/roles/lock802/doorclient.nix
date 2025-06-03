@@ -66,7 +66,7 @@ in {
     };
     callbutton-bouncetime = lib.mkOption {
       type = lib.types.int;
-      description = "Bounce time for callbutton";
+      description = "Bounce time in millseconds for callbutton";
       default = 1;
     };
     pjsua-conf = lib.mkOption {
