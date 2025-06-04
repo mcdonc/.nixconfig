@@ -1,8 +1,8 @@
-{ pkgs, lib, config, inputs, pkgs-unstable, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 let
   breakonthru = (import ./breakonthru.nix) {
-    inherit pkgs pkgs-unstable lib inputs;
+    inherit pkgs lib inputs;
   };
 in
 
