@@ -1,4 +1,4 @@
-args@{ config, pkgs, lib, nixos-hardware, options, ... }:
+{ config, pkgs, lib, nixos-hardware, options, ... }:
 
 {
   imports = [
@@ -10,18 +10,12 @@ args@{ config, pkgs, lib, nixos-hardware, options, ... }:
     ./roles/dnsovertls/resolvedonly.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
-    #./roles/speedtest
+    ./roles/speedtest
     ./roles/idracfanctl.nix
     ./roles/tailscale
     ./roles/rc505
     ./roles/zedalerts.nix
     ./roles/ollama.nix
-    #./roles/aws.nix
-    #(
-    #  import ./roles/macos-ventura.nix (
-    #    args // {mem="20G"; cores=4; enable=true;}
-    #  )
-    #)
   ];
 
   system.stateVersion = "24.05";
