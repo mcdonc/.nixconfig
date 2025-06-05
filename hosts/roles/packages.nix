@@ -303,7 +303,6 @@ in
     tap-plugins
     thermald
     thinkfan
-    transmission_3-qt
     vdhcoapp #  vdhcoapp install --user (https://github.com/NixOS/nixpkgs/issues/112046)
     vim-full
     virt-manager
