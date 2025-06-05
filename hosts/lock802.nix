@@ -1,9 +1,9 @@
-{ pkgs, lib, inputs, config, ... }:
+{ pkgs, lib, inputs, config, pkgs-unstable, ... }:
 
 let
   breakonthru = (
     import ./roles/lock802/breakonthru.nix
-    ) {inherit pkgs lib inputs;};
+    ) {inherit pkgs lib inputs pkgs-unstable;};
 
   playwav = pkgs.writeShellScriptBin "playwav" ''
     ${breakonthru.pyenv}/bin/wavplayer --dir=/var/lib/doorserver/wavs/$1
@@ -108,7 +108,7 @@ in
     after = [ "network.target" ]; # XXX
     wantedBy = [ "multi-user.target" ]; # XXX
     description = "";
-    script = "${inputs.pkgs-unstable.pigpio}/bin/pigpiod -g -l";
+    script = "${pkgs-unstable.pigpio}/bin/pigpiod -g -l";
     serviceConfig = {
       Restart = "always";
       RestartSec = "5s";
@@ -145,7 +145,7 @@ in
     pkgs.pciutils # lspci
     pkgs.wirelesstools # iwconfig
     pkgs.wpa_supplicant # wpa_passphrase
-    inputs.pkgs-unstable.pigpio # pigpiod
+    pkgs-unstable.pigpio # pigpiod
     playwav
   ];
 

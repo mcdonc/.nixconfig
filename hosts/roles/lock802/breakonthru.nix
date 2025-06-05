@@ -1,7 +1,6 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, pkgs-unstable, ... }:
 
 let
-  pkgs-unstable = inputs.pkgs-unstable;
   breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
 
     pname = "breakonthru";
