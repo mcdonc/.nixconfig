@@ -32,7 +32,7 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.variables = {
-    EDITOR = "vi";
+    EDITOR = "emacs -nw";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
