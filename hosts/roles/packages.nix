@@ -151,6 +151,7 @@ in
     wol
     xz
     zstd
+    nixos-rebuild-ng
   ] ++
   lib.optionals (!config.jawns.isworkstation) [
     vim
