@@ -52,6 +52,10 @@ let
     fi
   '';
 
+  nix-generations = pkgs.writeShellScriptBin "nix-generations" ''
+    sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+  '';
+
   sessionVariables = {};
 
   zshDotDir = ".config/zsh";
@@ -104,6 +108,7 @@ in
     nvfantemps
     yt-transcode
     edit
+    nix-generations
   ];
 
   services.gpg-agent = {
