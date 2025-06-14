@@ -171,7 +171,10 @@
     # allow sender to be any domain if sasl-auth submitted
     services.postfix.config.smtpd_sender_restrictions = lib.mkForce "
       permit_sasl_authenticated,
-      check_sender_access hash:/var/lib/postfix/conf/reject_sender";
+      reject_non_fqdn_sender,
+      reject_unknown_sender_domain,
+      reject_unauthenticated_sender_login_mismatch";
+      # check_sender_access hash:/var/lib/postfix/conf/reject_sender";
   
   #https://bkiran.com/blog/using-nginx-in-nixos
 
