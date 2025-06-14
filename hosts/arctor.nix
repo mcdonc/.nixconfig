@@ -135,6 +135,8 @@
       openFirewall = true;
       fqdn = "arctor.repoze.org";
       domains = [ "repoze.org" ];
+      enableImap = false;
+      enableImapSsl = false;
 
       # To create the password hashes, use
       # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
@@ -142,11 +144,14 @@
       loginAccounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
-          aliases = [
-            "postmaster@repoze.org"
-            "chris@repoze.org"
+          catchAll = [
+            "repoze.org" # receive all mails destined for repoze.org
           ];
         };
+      };
+
+      forwards = {
+        "chrism@repoze.org" = "chrism@plope.com";
       };
 
       certificateScheme = "acme"; # managed by service.ngnix above

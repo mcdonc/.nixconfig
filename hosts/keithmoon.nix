@@ -23,6 +23,8 @@
     ./roles/rc505
     ./roles/zedalerts.nix
     ./roles/ollama.nix
+    ./roles/mailrelay.nix
+    ./roles/zedalerts.nix
   ];
 
   system.stateVersion = "24.05";
