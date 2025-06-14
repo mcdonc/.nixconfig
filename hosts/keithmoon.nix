@@ -1,4 +1,11 @@
-{ config, pkgs, lib, nixos-hardware, options, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixos-hardware,
+  options,
+  ...
+}:
 
 {
   imports = [
@@ -49,23 +56,20 @@
   # dont ask for "d/o" credentials
   boot.zfs.requestEncryptionCredentials = lib.mkForce [ "NIXROOT" ];
 
-  fileSystems."/nix" =
-    {
-      device = "NIXROOT/nix";
-      fsType = "zfs";
-    };
+  fileSystems."/nix" = {
+    device = "NIXROOT/nix";
+    fsType = "zfs";
+  };
 
-  fileSystems."/steam1" =
-    {
-      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
-      fsType = "ext4";
-    };
+  fileSystems."/steam1" = {
+    device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG612853H";
+    fsType = "ext4";
+  };
 
-  fileSystems."/steam2" =
-    {
-      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
-      fsType = "ext4";
-    };
+  fileSystems."/steam2" = {
+    device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S21CNXAG619917K";
+    fsType = "ext4";
+  };
 
   # # use the VFlash SD card to boot
   # fileSystems."/boot" = lib.mkForce
@@ -75,17 +79,20 @@
   #   };
 
   # use the double SD card to boot
-  fileSystems."/boot" = lib.mkForce
-    {
-      device = "/dev/disk/by-id/usb-DELL_IDSDM_012345678901-0:0";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = lib.mkForce {
+    device = "/dev/disk/by-id/usb-DELL_IDSDM_012345678901-0:0";
+    fsType = "vfat";
+  };
 
   # note that this is chowned in activationScripts
   boot.zfs.extraPools = [ "d" ];
 
   # don't run updatedb on these disks
-  services.locate.prunePaths = [ "/d" "/steam1" "/steam2" ];
+  services.locate.prunePaths = [
+    "/d"
+    "/steam1"
+    "/steam2"
+  ];
 
   # 32 GB max ARC cache
   boot.kernelParams = [
@@ -186,19 +193,18 @@
     openFirewall = true;
   };
 
-  system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ]
-    ''
-      chmod o+x /home/chrism
-      mkdir -p /home/chrism/v
-      chown chrism:users /home/chrism/v
-      # mkdir -p /home/chrism/v/postgresql
-      # chown postgres:postgres /home/chrism/v/postgresql
-      ln -sf /home/chrism/v /v
-      chown chrism:users /steam1
-      chown chrism:users /steam2
-      chown chrism:users /d
-      #chown chrism:users /et
-    '';
+  system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ] ''
+    chmod o+x /home/chrism
+    mkdir -p /home/chrism/v
+    chown chrism:users /home/chrism/v
+    # mkdir -p /home/chrism/v/postgresql
+    # chown postgres:postgres /home/chrism/v/postgresql
+    ln -sf /home/chrism/v /v
+    chown chrism:users /steam1
+    chown chrism:users /steam2
+    chown chrism:users /d
+    #chown chrism:users /et
+  '';
 
   # services.postgresql = {
   #   package = pkgs.postgresql_15;
@@ -263,10 +269,12 @@
       };
       # sudo zfs allow backup compression,hold,send,snapshot,mount,destroy NIXROOT/home
     };
-    localSourceAllow = options.services.syncoid.localSourceAllow.default
-      ++ [ "mount" ];
-    localTargetAllow = options.services.syncoid.localTargetAllow.default
-      ++ [ "destroy" ];
+    localSourceAllow = options.services.syncoid.localSourceAllow.default ++ [
+      "mount"
+    ];
+    localTargetAllow = options.services.syncoid.localTargetAllow.default ++ [
+      "destroy"
+    ];
   };
 
   services.sanoid = {
