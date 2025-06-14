@@ -367,10 +367,6 @@
   #services.pipewire.alsa.enable = lib.mkForce false;
   #services.pipewire.pulse.enable = lib.mkForce false;
 
-  networking.hosts = {
-    "192.168.1.185" = [ "lock802nix" ];
-  };
-
   services.postfix.rootAlias = "chrism@plope.com";
 
 }
