@@ -3,12 +3,14 @@
 # logcheck itself will run at ${hour}:02, the tmpfile creation will run at
 # ${hour}:00
 
+# remove -n10000 after testing
+
 let
   lcjc = pkgs.writeShellScriptBin "logcheck-journalctl" ''
-    journalctl -o short-iso --since \
+    journalctl -o short-iso -n 10000 --since \
       "$(date -d '1 day ago' '+%Y-%m-%d %H:%M:%S')"
   '';
-  hour = "16";
+  hour = "17";
   tmpfile = "/tmp/lcjc.txt";
 in
 {
