@@ -375,5 +375,8 @@
   #services.pipewire.pulse.enable = lib.mkForce false;
 
   services.postfix.rootAlias = "chrism@plope.com";
+  services.postfix.extraAliases = ''
+    default: root
+  '';
 
 }
