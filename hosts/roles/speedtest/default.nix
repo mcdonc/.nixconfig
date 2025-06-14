@@ -17,7 +17,12 @@ in
 {
   systemd.services.speedtest = {
     serviceConfig.Type = "oneshot";
-    path = with pkgs; [ fastlog fasthtml fast-cli python311 ];
+    path = with pkgs; [
+      fastlog
+      fasthtml
+      fast-cli
+      python311
+    ];
     script = ''
       #!/bin/sh
       fastlog
@@ -38,13 +43,14 @@ in
 
   services.nginx = {
     enable = true;
-    virtualHosts."192.168.1.110" = { root = "/var/www/speedtest"; };
+    virtualHosts."192.168.1.110" = {
+      root = "/var/www/speedtest";
+    };
   };
 
   system.activationScripts.mkwwwdir = ''
     mkdir -p /var/www/speedtest
     chown nginx:nginx /var/www/speedtest
   '';
-
 
 }
