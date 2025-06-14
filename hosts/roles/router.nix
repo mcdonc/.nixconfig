@@ -1,4 +1,4 @@
-{...}:
+{ ... }:
 {
   # behave as a router
   boot.kernel.sysctl = {

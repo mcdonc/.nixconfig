@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 let
   # Stuff to get Arturia VSTs installed; presumes ASC has been installed in
   # ~/.wine via e.g.  "wine
@@ -16,14 +16,15 @@ let
     ${yabc} add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
     ${yabc} sync
   '';
-  adevices = pkgs.writeShellScriptBin "adevices"
-    (builtins.readFile ./adevices.sh);
+  adevices = pkgs.writeShellScriptBin "adevices" (
+    builtins.readFile ./adevices.sh
+  );
 in
 {
   imports = [
     ../../pkgs/xruncounter.nix
   ];
-  
+
   environment.variables = {
     # override musnix to add $HOME/.vst to LXVST_PATH (for yabridge)
     LXVST_PATH = "$HOME/.vst:$HOME/.lxvst:$HOME/.nix-profile/lib/lxvst:/run/current-system/sw/lib/lxvst";
@@ -73,7 +74,7 @@ in
   #
   # 328.800 frames      6.850 ms total roundtrip latency
   # 	extra loopback latency: 200 frames
-	#   use 100 for the backend arguments -I and -O
+  #   use 100 for the backend arguments -I and -O
   #
   # see https://discourse.ardour.org/t/how-does-pipewire-perform-with-ardour/107381/12
   #
@@ -97,7 +98,6 @@ in
   # jack.properties = {
   #   node.quantum = 256/48000
   # }
-
 
   # services.pipewire.extraConfig.pipewire."92-low-latency" = {
   #   context.properties = {

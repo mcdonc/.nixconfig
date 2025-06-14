@@ -9,7 +9,7 @@
   #          /run/current-system "$systemConfig"
   #   '';
   # };
-  
+
   programs.nh = {
     enable = true;
     flake = "/etc/nixos";
@@ -20,7 +20,10 @@
       tarball-ttl = 300;
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
     gc = {
       automatic = true;
@@ -53,8 +56,14 @@
   programs.zsh.enable = true;
 
   programs.ssh = {
-    pubkeyAcceptedKeyTypes = [ "ssh-ed25519" "ssh-rsa" ];
-    hostKeyAlgorithms = [ "ssh-ed25519" "ssh-rsa" ];
+    pubkeyAcceptedKeyTypes = [
+      "ssh-ed25519"
+      "ssh-rsa"
+    ];
+    hostKeyAlgorithms = [
+      "ssh-ed25519"
+      "ssh-rsa"
+    ];
     startAgent = true; # starts a systemd user service
   };
 

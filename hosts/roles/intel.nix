@@ -1,4 +1,4 @@
-{ nixos-hardware, ...}:
+{ nixos-hardware, ... }:
 
 {
   imports = [
@@ -6,4 +6,3 @@
   ];
   boot.kernelModules = [ "kvm-intel" ]; # incompatible with virtualbox
 }
-  

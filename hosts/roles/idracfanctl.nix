@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   options.services.idracfanctl = {
@@ -115,17 +120,20 @@
 
         };
       };
-      execstart = ''${idracfanctl}/bin/idracfanctl \
-  --disable-pcie-cooling-response=${if cfg.disable-pcie-cooling-response then "1" else "0"} \
-  --ipmitool="${cfg.ipmitool}/bin/ipmitool" \
-  --temp-cpu-min=${toString cfg.temp-cpu-min} \
-  --temp-cpu-max=${toString cfg.temp-cpu-max} \
-  --temp-exhaust-max=${toString cfg.temp-exhaust-max} \
-  --fan-percent-min=${toString cfg.fan-percent-min} \
-  --fan-percent-max=${toString cfg.fan-percent-max} \
-  --fan-step=${toString cfg.fan-step} \
-  --hysteresis=${toString cfg.hysteresis} \
-  --sleep=${toString cfg.sleep}'';
+      execstart = ''
+        ${idracfanctl}/bin/idracfanctl \
+          --disable-pcie-cooling-response=${
+            if cfg.disable-pcie-cooling-response then "1" else "0"
+          } \
+          --ipmitool="${cfg.ipmitool}/bin/ipmitool" \
+          --temp-cpu-min=${toString cfg.temp-cpu-min} \
+          --temp-cpu-max=${toString cfg.temp-cpu-max} \
+          --temp-exhaust-max=${toString cfg.temp-exhaust-max} \
+          --fan-percent-min=${toString cfg.fan-percent-min} \
+          --fan-percent-max=${toString cfg.fan-percent-max} \
+          --fan-step=${toString cfg.fan-step} \
+          --hysteresis=${toString cfg.hysteresis} \
+          --sleep=${toString cfg.sleep}'';
     in
     lib.mkIf cfg.enable {
       systemd.services.idracfanctl = {

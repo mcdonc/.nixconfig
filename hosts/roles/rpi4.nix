@@ -1,4 +1,10 @@
-{ pkgs, lib, inputs, config, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  config,
+  ...
+}:
 {
   imports = [
     "${inputs.nixos-hardware}/raspberry-pi/4"
@@ -27,16 +33,16 @@
     };
   };
 
-   # https://github.com/NixOS/nixpkgs/issues/154163, fixes kernel build issue
-   #hardware.enableAllHardware = lib.mkForce false;
+  # https://github.com/NixOS/nixpkgs/issues/154163, fixes kernel build issue
+  #hardware.enableAllHardware = lib.mkForce false;
 
-   # alternative to above:
-   nixpkgs.overlays = [
-     (final: super: {
-       makeModulesClosure = x:
-         super.makeModulesClosure (x // {allowMissing = true;});
-     })
-   ];
+  # alternative to above:
+  nixpkgs.overlays = [
+    (final: super: {
+      makeModulesClosure =
+        x: super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
 
@@ -50,10 +56,10 @@
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-label/NIXOS_SD"; # this is important!
-      fsType = "ext4";
-      options = [ "noatime" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/NIXOS_SD"; # this is important!
+    fsType = "ext4";
+    options = [ "noatime" ];
+  };
 
 }

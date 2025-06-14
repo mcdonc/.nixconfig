@@ -1,4 +1,11 @@
-{ config, lib, pkgs, nixpkgs, pkgs-r2211, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  pkgs-r2211,
+  ...
+}:
 
 {
   # turn off nvidia
@@ -10,11 +17,10 @@
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
   #hardware.nvidia.powerManagement.enable = true;
 
-  # 6/7/2023 under 23.05: beta reports as 530.41.03, stable as 530.41.03, 
+  # 6/7/2023 under 23.05: beta reports as 530.41.03, stable as 530.41.03,
   # production as 525.116.04.  Use of production won't allow the computer
   # to sleep for more than, say, a minute.
 }
-
 
 # let
 #   pinnedKernelPackages = pkgs-r2211.linuxPackages_latest;
@@ -23,7 +29,7 @@
 # in
 
 # {
-#   # allow nvidia drivers to be loaded 
+#   # allow nvidia drivers to be loaded
 #   nixpkgs.config.allowUnfree = true;
 
 #   nixpkgs.config.packageOverrides = pkgs: {
