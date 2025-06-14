@@ -132,7 +132,7 @@
   services.postfix.rootAlias = "chrism@plope.com";
 
   # accept mail from any domain
-  services.postfix.extraConfig = lib.mkBefore ''
+  services.postfix.extraConfig = lib.mkAfter ''
     smtpd_sender_restrictions =
       permit_sasl_authenticated,
       reject_non_fqdn_sender,
