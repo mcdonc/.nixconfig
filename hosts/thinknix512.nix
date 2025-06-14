@@ -1,4 +1,9 @@
-{ config, lib, nixos-hardware, ... }:
+{
+  config,
+  lib,
+  nixos-hardware,
+  ...
+}:
 
 {
   imports = [
@@ -20,8 +25,9 @@
   networking.hostId = "deadbeef";
   networking.hostName = "thinknix512";
 
-  hardware.nvidia.prime.offload.enable = lib.mkForce
-    (!config.hardware.nvidia.prime.sync.enable);
+  hardware.nvidia.prime.offload.enable = lib.mkForce (
+    !config.hardware.nvidia.prime.sync.enable
+  );
   hardware.nvidia.prime.sync.enable = lib.mkForce false;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output
