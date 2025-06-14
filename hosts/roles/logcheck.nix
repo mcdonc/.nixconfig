@@ -32,5 +32,8 @@ in
     tmpfile
   ];
   services.logcheck.mailTo = lib.mkDefault "chrism@plope.com";
+  services.logcheck.extraGroups = [
+    "systemd-journal"
+  ];
 
 }
