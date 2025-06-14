@@ -174,7 +174,13 @@
       reject_non_fqdn_sender,
       reject_unknown_sender_domain,
       reject_unauthenticated_sender_login_mismatch";
-      # check_sender_access hash:/var/lib/postfix/conf/reject_sender";
+    # check_sender_access hash:/var/lib/postfix/conf/reject_sender";
+    services.postfix.config.smtpd_recipient_restrictions = lib.mkForce "
+      permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
+    services.postfix.extraAliases = ''
+      default: root
+    '';
+
   
   #https://bkiran.com/blog/using-nginx-in-nixos
 
