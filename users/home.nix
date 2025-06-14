@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
 
@@ -52,15 +57,15 @@ let
     fi
   '';
 
-  sessionVariables = {};
+  sessionVariables = { };
 
   zshDotDir = ".config/zsh";
 
   shellAliases = {
     fxdevenv = ''
-     export FXDEV_CHDIR=\"$(pwd)\"; \
-     cd ~/projects/fornax/fxdevenv; \
-     devenv shell;
+      export FXDEV_CHDIR=\"$(pwd)\"; \
+      cd ~/projects/fornax/fxdevenv; \
+      devenv shell;
     '';
     oldswnix = "sudo nixos-rebuild switch --verbose --show-trace";
     swnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
@@ -82,12 +87,10 @@ let
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
-    nix-generations =
-      ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
+    nix-generations = ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
   };
 
-  graphicalimports = lib.optionals config.jawns.isworkstation
-    [ ./graphical.nix ];
+  graphicalimports = lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
 in
 
@@ -133,7 +136,7 @@ in
       "bouncer.repoze.org".forwardAgent = true;
       "lock802.repoze.org".forwardAgent = true;
       "optinix".forwardAgent = true;
-      "win10" .user = "user";
+      "win10".user = "user";
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";

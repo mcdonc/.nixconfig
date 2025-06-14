@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }@args:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}@args:
 
 {
   home-manager = {

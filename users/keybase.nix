@@ -46,8 +46,7 @@ in
     Unit.Description = "Keybase service";
 
     Service = {
-      ExecStart =
-        "${kb-pkgs.keybase}/bin/keybase service --auto-forked";
+      ExecStart = "${kb-pkgs.keybase}/bin/keybase service --auto-forked";
       Restart = "on-failure";
       PrivateTmp = true;
     };
@@ -63,8 +62,10 @@ in
     };
 
     Service =
-      let mountPoint = ''"%h/keybase"'';
-      in {
+      let
+        mountPoint = ''"%h/keybase"'';
+      in
+      {
         Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
         ExecStart = "${kb-pkgs.kbfs}/bin/kbfsfuse ${mountPoint}";
@@ -75,6 +76,5 @@ in
 
     Install.WantedBy = [ "default.target" ];
   };
-
 
 }

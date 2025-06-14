@@ -9,8 +9,8 @@ args@{ pkgs, lib, ... }:
 
   programs.zsh = {
     sessionVariables = {
-      FXDEV_LOG_DEPLOYS="1";
-   };
+      FXDEV_LOG_DEPLOYS = "1";
+    };
   };
 
   programs.git = {

@@ -29,5 +29,4 @@ in
 
   home.file.".root.code-workspace".force = true;
 
-
 }

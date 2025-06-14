@@ -1,8 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  gterm-change-profile =
-    "${pkgs.xdotool}/bin/xdotool key --clearmodifiers Shift+F10 r";
+  gterm-change-profile = "${pkgs.xdotool}/bin/xdotool key --clearmodifiers Shift+F10 r";
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
     source ${gterm-color-funcs}
@@ -50,7 +49,7 @@ let
     "#33C7DE"
     "#FFFFFF"
   ];
-  
+
   defaultprofile = {
     default = true;
     visibleName = "1grey";
@@ -69,7 +68,6 @@ let
     };
   };
 
-  
   termsettings = {
     enable = true;
     showMenubar = false;
@@ -115,7 +113,6 @@ let
           "#A347BA"
           "#2AA1B3"
           "#D0CFCC"
-
 
           "#5E5C64"
           "#F66151"
@@ -176,7 +173,7 @@ in
       }
     '';
   };
-  
+
   xdg.configFile."environment.d/ssh_askpass.conf".text = ''
     SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
   '';
@@ -205,7 +202,7 @@ in
     r cycle_values video-rotate 90 180 270 0
     Alt+- add video-zoom -0.25
     Alt+= add video-zoom 0.25
-    '';
+  '';
 
   xdg.configFile."mpv/mpv.conf".text = ''
     osd-level=2
@@ -215,7 +212,7 @@ in
     geometry=+50%-25
     #window-maximized
     # see https://github.com/mpv-player/mpv/issues/10229
-    '';
+  '';
 
   services.emacs = {
     enable = true;
@@ -226,7 +223,7 @@ in
     keybase-gui
     keybase
   ];
-  
+
   # uses nvidia-offload
   home.file.".local/share/applications/steam.desktop" = {
     source = ./steam.desktop;
@@ -254,5 +251,4 @@ in
   #   };
   # };
 
-  
 }
