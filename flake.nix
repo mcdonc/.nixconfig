@@ -25,14 +25,14 @@
       "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
 
-  outputs = inputs:
+  outputs =
+    inputs:
     let
 
-      my_overlay = (
-        self: super: { }
-      );
+      my_overlay = (self: super: { });
 
-      mkSystem = host:
+      mkSystem =
+        host:
         let
           shared-mods = [
             (
@@ -66,12 +66,30 @@
             }
           ];
           forkInputs = with inputs; [
-            { name = "pkgs-unstable";     value = nixpkgs-unstable; }
-            { name = "pkgs-2411";         value = nixpkgs-2411; }
-            { name = "pkgs-olive";        value = nixpkgs-olive; }
-            { name = "pkgs-py36";         value = nixpkgs-py36; }
-            { name = "pkgs-py37";         value = nixpkgs-py37; }
-            { name = "pkgs-py39";         value = nixpkgs-py39; }
+            {
+              name = "pkgs-unstable";
+              value = nixpkgs-unstable;
+            }
+            {
+              name = "pkgs-2411";
+              value = nixpkgs-2411;
+            }
+            {
+              name = "pkgs-olive";
+              value = nixpkgs-olive;
+            }
+            {
+              name = "pkgs-py36";
+              value = nixpkgs-py36;
+            }
+            {
+              name = "pkgs-py37";
+              value = nixpkgs-py37;
+            }
+            {
+              name = "pkgs-py39";
+              value = nixpkgs-py39;
+            }
           ];
           mkNpFork = forkinput: {
             name = forkinput.name;
@@ -80,37 +98,79 @@
               config.allowUnfree = true;
             };
           };
-          forks = builtins.listToAttrs (
-            (builtins.map (i: mkNpFork i)) forkInputs
-          );
-          specialArgs = inputs // forks // {
-            system = host.system;
-            inherit inputs;
-          };
+          forks = builtins.listToAttrs
+            ((builtins.map (i: mkNpFork i)) forkInputs);
+          specialArgs =
+            inputs
+            // forks
+            // {
+              system = host.system;
+              inherit inputs;
+            };
 
-        in {
+        in
+        {
           name = host.hostname;
           value = inputs.nixpkgs.lib.nixosSystem {
             system = host.system;
             inherit specialArgs;
-            modules = shared-mods ++ [(./. + "/hosts/${host.hostname}.nix")];
+            modules = shared-mods ++ [ (./. + "/hosts/${host.hostname}.nix") ];
           };
         };
 
       hosts = [
-        { hostname = "thinknix50";        system = "x86_64-linux"; }
-        { hostname = "thinknix51";        system = "x86_64-linux"; }
-        { hostname = "thinknix512";       system = "x86_64-linux"; }
-        { hostname = "thinknix52";        system = "x86_64-linux"; }
-        { hostname = "thinkcentre";       system = "x86_64-linux"; }
-        { hostname = "optinix";           system = "x86_64-linux"; }
-        { hostname = "nixcentre";         system = "x86_64-linux"; }
-        { hostname = "nixos_vm";          system = "x86_64-linux"; }
-        { hostname = "keithmoon";         system = "x86_64-linux"; }
-        { hostname = "arctor";            system = "x86_64-linux"; }
-        { hostname = "dodemo";            system = "x86_64-linux"; }
-        { hostname = "lock802";           system = "aarch64-linux"; }
-        { hostname = "clonelock802";      system = "aarch64-linux"; }
+        {
+          hostname = "thinknix50";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "thinknix51";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "thinknix512";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "thinknix52";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "thinkcentre";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "optinix";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "nixcentre";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "nixos_vm";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "keithmoon";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "arctor";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "dodemo";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "lock802";
+          system = "aarch64-linux";
+        }
+        {
+          hostname = "clonelock802";
+          system = "aarch64-linux";
+        }
       ];
       configs = builtins.listToAttrs ((builtins.map (h: mkSystem h)) hosts);
     in
