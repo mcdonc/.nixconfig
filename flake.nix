@@ -14,7 +14,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-
+    mailserver.url =
+      "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.05";
     nixpkgs-py36.url =
       "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url =

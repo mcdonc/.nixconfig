@@ -11,6 +11,7 @@
   imports = [
     "${inputs.nixpkgs}/nixos/modules/virtualisation/digital-ocean-config.nix"
     inputs.nixos-generators.nixosModules.all-formats
+    inputs.mailserver.nixosModule
     ../users/chrism
     ../users/tseaver
     ./roles/minimal.nix
@@ -39,6 +40,10 @@
   };
   age.secrets."wssecret" = {
     file = ../secrets/wssecret.age;
+    mode = "600";
+  };
+  age.secrets."chris-mail-password-bcrypt" = {
+    file = ../secrets/chris-mail-password-bcrypt.age;
     mode = "600";
   };
 
@@ -120,6 +125,32 @@
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
+
+  mailserver =
+    let
+      passfile = config.age.secrets."chris-mail-password-bcrypt".path;
+    in
+    {
+      enable = true;
+      openFirewall = true;
+      fqdn = "arctor.repoze.org";
+      domains = [ "repoze.org" ];
+
+      # To create the password hashes, use
+      # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
+
+      loginAccounts = {
+        "chrism@repoze.org" = {
+          hashedPasswordFile = passfile;
+          aliases = [
+            "postmaster@repoze.org"
+            "chris@repoze.org"
+          ];
+        };
+      };
+
+      certificateScheme = "acme"; # managed by service.ngnix above
+    };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
 
