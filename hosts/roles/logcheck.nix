@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   # see https://github.com/NixOS/nixpkgs/issues/240383
   nixpkgs.overlays = [(self: super: {
@@ -8,5 +8,7 @@
   })];
 
   services.logcheck.enable = true;
+  services.logcheck.level = lib.mkDefault "workstation";
+  #services.logcheck.mailTo = "root";
 
 }
