@@ -32,6 +32,8 @@ in
     ./roles/mailrelay.nix
   ];
 
+  services.postfix.rootAlias = "chrism@plope.com";
+
   # system.autoUpgrade = {
   #   enable = true;
   #   flake = "github:mcdonc/.nixconfig#lock802";

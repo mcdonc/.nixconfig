@@ -125,6 +125,7 @@
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
+  services.postfix.rootAlias = "chrism@plope.com";
 
   mailserver =
     let
@@ -144,6 +145,9 @@
       loginAccounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
+          aliases = [
+            "@repoze.org" # allow sending from any mail at repoze.org
+          ];
           catchAll = [
             "repoze.org" # receive all mails destined for repoze.org
           ];
