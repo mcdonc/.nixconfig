@@ -60,7 +60,7 @@ let
     fxdevenv = ''
      export FXDEV_CHDIR=\"$(pwd)\"; \
      cd ~/projects/fornax/fxdevenv; \
-     devenv shell";
+     devenv shell;
     '';
     oldswnix = "sudo nixos-rebuild switch --verbose --show-trace";
     swnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
@@ -106,7 +106,6 @@ in
     nvfantemps
     yt-transcode
     edit
-    nix-generations
   ];
 
   services.gpg-agent = {
