@@ -16,7 +16,10 @@
     ../users/tseaver
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
+    ./roles/logcheck.nix
   ];
+
+  services.logcheck.level = "server";
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
@@ -159,6 +162,7 @@
 
       forwards = {
         "chrism@repoze.org" = "chrism@plope.com";
+        "root@arctor.repoze.org" = "chrism@plope.com";
       };
 
       certificateScheme = "acme"; # managed by service.ngnix above
