@@ -142,13 +142,6 @@
       domains = [ "repoze.org" ];
       enableImap = false;
       enableImapSsl = false;
-      config = {
-        # accept mail from any domain if authenticated submission
-        smtpd_sender_restrictions = ''
-          permit_sasl_authenticated,
-          check_sender_access hash:/var/lib/postfix/conf/reject_sender
-        '';
-      };
       # To create the password hashes, use
       # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
 
@@ -171,6 +164,14 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
+    services.postfix.config = {
+      # accept mail from any domain if authenticated submission
+      smtpd_sender_restrictions = ''
+        permit_sasl_authenticated,
+        check_sender_access hash:/var/lib/postfix/conf/reject_sender
+      '';
+    };
+  
   #https://bkiran.com/blog/using-nginx-in-nixos
 
   # postfix # XXX ask tres
