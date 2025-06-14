@@ -1,4 +1,11 @@
-args@{ config, pkgs, lib, nixos-hardware, options, ... }:
+args@{
+  config,
+  pkgs,
+  lib,
+  nixos-hardware,
+  options,
+  ...
+}:
 
 let
   monitor-sanoid-health = pkgs.writeShellScriptBin "monitor-sanoid-health" ''
@@ -28,11 +35,14 @@ in
     ./roles/backupsource.nix
     #    ./roles/proaudio.nix
     #    ./roles/rc505
-    (
-      import ./roles/macos-ventura.nix (
-        args // { mem = "8G"; cores = 4; enable = false; }
-      )
-    )
+    (import ./roles/macos-ventura.nix (
+      args
+      // {
+        mem = "8G";
+        cores = 4;
+        enable = false;
+      }
+    ))
   ];
 
   hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
@@ -45,8 +55,14 @@ in
   powerManagement.enable = lib.mkForce true;
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "nvme"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
