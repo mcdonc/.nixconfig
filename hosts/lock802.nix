@@ -1,9 +1,21 @@
-{ pkgs, lib, inputs, config, pkgs-unstable, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  config,
+  pkgs-unstable,
+  ...
+}:
 
 let
-  breakonthru = (
-    import ./roles/lock802/breakonthru.nix
-    ) {inherit pkgs lib inputs pkgs-unstable;};
+  breakonthru = (import ./roles/lock802/breakonthru.nix) {
+    inherit
+      pkgs
+      lib
+      inputs
+      pkgs-unstable
+      ;
+  };
 
   playwav = pkgs.writeShellScriptBin "playwav" ''
     ${breakonthru.pyenv}/bin/wavplayer --dir=/var/lib/doorserver/wavs/$1
@@ -34,7 +46,10 @@ in
 
   security.sudo.wheelNeedsPassword = false;
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "usbhid"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
@@ -86,7 +101,7 @@ in
     wireless = {
       secretsFile = config.age.secrets."wifi".path;
       enable = true;
-      interfaces = ["wlan0"];
+      interfaces = [ "wlan0" ];
       networks."haircut".pskRaw = "ext:psk";
     };
     networkmanager.enable = lib.mkForce false;
@@ -115,7 +130,10 @@ in
     };
   };
 
-  users.users.chrism.extraGroups = [ "gpio" "kmem" ];
+  users.users.chrism.extraGroups = [
+    "gpio"
+    "kmem"
+  ];
 
   services.pulseaudio.enable = false; # completely alsa setup
 
@@ -197,8 +215,9 @@ in
   };
 
   # XXX reads into nix store
-  environment.etc."asterisk/pjsip.conf".source = lib.mkForce
-    config.age.secrets."pjsip.conf".path;
+  environment.etc."asterisk/pjsip.conf".source =
+    lib.mkForce
+      config.age.secrets."pjsip.conf".path;
 
   ##############################################################################
   #                      upside down text: "raspberry pi 4B"
