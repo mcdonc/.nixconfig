@@ -20,4 +20,6 @@ in
   "doors.age".publicKeys = [ chrism lock802 arctor ];
   "wifi.age".publicKeys = [ chrism lock802 clonelock802 ];
   "chris-mail-password-bcrypt.age".publicKeys = [ chrism arctor ];
+  "chris-mail-password.age".publicKeys = [ keithmoon chrism ];
+  "chris-mail-sasl.age".publicKeys = [ keithmoon chrism ];
 }
