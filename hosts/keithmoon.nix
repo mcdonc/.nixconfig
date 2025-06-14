@@ -144,6 +144,7 @@
         "hosts deny" = "0.0.0.0/0";
         "guest account" = "nobody";
         "map to guest" = "bad user";
+        "log level" = "nmbd:0";
       };
       root = {
         path = "/";
@@ -176,6 +177,12 @@
         "directory mask" = "0755";
       };
     };
+  };
+
+  # filter out stupid samba nmdb messages from log (doesnt seem to work)
+  systemd.services.samba-nmbd.serviceConfig = {
+    StandardOutput = "null";
+    StandardError = "null";
   };
 
   services.avahi = {
