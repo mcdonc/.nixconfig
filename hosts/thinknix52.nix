@@ -1,4 +1,9 @@
-args@{ config, lib, nixos-hardware, ... }:
+args@{
+  config,
+  lib,
+  nixos-hardware,
+  ...
+}:
 
 {
   imports = [
@@ -31,8 +36,9 @@ args@{ config, lib, nixos-hardware, ... }:
   networking.hostId = "e1e4a33b";
   networking.hostName = "thinknix52";
 
-  hardware.nvidia.prime.offload.enable = lib.mkForce
-    (!config.hardware.nvidia.prime.sync.enable);
+  hardware.nvidia.prime.offload.enable = lib.mkForce (
+    !config.hardware.nvidia.prime.sync.enable
+  );
 
   # sleep doesnt work in offload mode 01/07/2025 kernel 6.6 nvidia 565
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
