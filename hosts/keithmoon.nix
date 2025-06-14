@@ -241,7 +241,7 @@
   services.syncoid = {
     enable = true;
     interval = "*:35"; # run this less often than sanoid (every hour at 35 mins)
-    commonArgs = [ "--debug" ];
+    #commonArgs = [ "--debug" ];
     commands = {
       "home-keithmoon" = {
         source = "NIXROOT/home";
@@ -288,6 +288,7 @@
 
   services.sanoid = {
     enable = true;
+    #extraArgs = [ "--debug" ];
     interval = "*:2,32"; # run this more often than syncoid (every 30 mins)
     datasets = {
       "NIXROOT/home" = {
@@ -355,7 +356,6 @@
         yearly = 0;
       };
     };
-    extraArgs = [ "--debug" ];
   };
 
   environment.systemPackages = with pkgs; [
