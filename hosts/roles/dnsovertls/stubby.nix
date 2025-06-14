@@ -14,7 +14,10 @@
   };
 
   networking = {
-    nameservers = [ "::1" "127.0.0.1" ];
+    nameservers = [
+      "::1"
+      "127.0.0.1"
+    ];
   };
 
   ## DNS-over-TLS
@@ -22,7 +25,10 @@
     enable = true;
     settings = {
       # ::1 cause error, use 0::1 instead
-      listen_addresses = [ "127.0.0.1" "0::1" ];
+      listen_addresses = [
+        "127.0.0.1"
+        "0::1"
+      ];
       # https://github.com/getdnsapi/stubby/blob/develop/stubby.yml.example
       resolution_type = "GETDNS_RESOLUTION_STUB";
       dns_transport_list = [ "GETDNS_TRANSPORT_TLS" ];

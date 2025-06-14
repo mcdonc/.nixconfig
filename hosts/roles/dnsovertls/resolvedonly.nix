@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
 
   # see https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/resolved.nix
   # man resolved.conf

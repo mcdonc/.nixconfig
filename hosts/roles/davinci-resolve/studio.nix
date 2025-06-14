@@ -1,4 +1,4 @@
-{pkgs, pkgs-2411, ...}:
+{ pkgs, pkgs-2411, ... }:
 
 {
   environment.systemPackages = [
@@ -14,7 +14,10 @@
         genericName = "DaVinci Resolve Video Editor";
         exec = "nvidia-offload davinci-resolve-studio";
         terminal = false;
-        categories = [ "AudioVideo" "Recorder" ];
+        categories = [
+          "AudioVideo"
+          "Recorder"
+        ];
         mimeType = [ "application/x-resolveproj" ];
         icon = ./DV_Resolve.png;
       };
