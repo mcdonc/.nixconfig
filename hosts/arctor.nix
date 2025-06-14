@@ -1,4 +1,11 @@
-{ lib, pkgs, inputs, system, config, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  system,
+  config,
+  ...
+}:
 
 {
   imports = [
@@ -11,7 +18,11 @@
   ];
 
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    80
+    443
+  ];
 
   services.doorserver.enable = true;
   services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
@@ -77,7 +88,7 @@
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass ="http://127.0.0.1:6544/";
+        proxyPass = "http://127.0.0.1:6544/";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -93,7 +104,7 @@
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass ="http://localhost:8001"; # worked under apache with ws://
+        proxyPass = "http://localhost:8001"; # worked under apache with ws://
         proxyWebsockets = true;
         extraConfig = ''
           proxy_set_header Host $host;
@@ -107,7 +118,7 @@
     };
 
   };
-  
+
   users.users.nginx.extraGroups = [ "acme" ];
 
   #https://bkiran.com/blog/using-nginx-in-nixos
