@@ -21,7 +21,6 @@
     ./roles/idracfanctl.nix
     ./roles/tailscale
     ./roles/rc505
-    ./roles/zedalerts.nix
     ./roles/ollama.nix
     ./roles/mailrelay.nix
     ./roles/zedalerts.nix
