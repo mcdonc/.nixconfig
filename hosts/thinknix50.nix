@@ -1,5 +1,10 @@
-
-args@{ config, pkgs, lib, nixos-hardware, ... }:
+args@{
+  config,
+  pkgs,
+  lib,
+  nixos-hardware,
+  ...
+}:
 {
   imports = [
     ../users/chrism
@@ -25,7 +30,7 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   ];
 
   systemd.tpm2.enable = false;
-  
+
   # roadwork setup
   #
   #services.tlp = {
@@ -49,11 +54,11 @@ args@{ config, pkgs, lib, nixos-hardware, ... }:
   #services.fprintd.tod.enable = true;
   #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
 
-  hardware.nvidia.prime.offload.enable = lib.mkForce
-    (!config.hardware.nvidia.prime.sync.enable);
+  hardware.nvidia.prime.offload.enable = lib.mkForce (
+    !config.hardware.nvidia.prime.sync.enable
+  );
 
   # to allow sleep, set to true
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
 }
-
