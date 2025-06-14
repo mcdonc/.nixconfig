@@ -24,6 +24,7 @@
     ./roles/ollama.nix
     ./roles/mailrelay.nix
     ./roles/zedalerts.nix
+    ./roles/logcheck.nix
   ];
 
   system.stateVersion = "24.05";
