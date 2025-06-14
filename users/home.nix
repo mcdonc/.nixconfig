@@ -52,10 +52,6 @@ let
     fi
   '';
 
-  nix-generations = pkgs.writeShellScriptBin "nix-generations" ''
-    sudo nix-env -p /nix/var/nix/profiles/system --list-generations
-  '';
-
   sessionVariables = {};
 
   zshDotDir = ".config/zsh";
@@ -86,6 +82,8 @@ let
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
+    nix-generations =
+      ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
   };
 
   graphicalimports = lib.optionals config.jawns.isworkstation
