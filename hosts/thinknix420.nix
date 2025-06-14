@@ -20,4 +20,3 @@
   boot.consoleLogLevel = 3;
 
 }
-
