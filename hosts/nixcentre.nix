@@ -1,4 +1,11 @@
-{ config, pkgs, lib, nixos-hardware, options, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixos-hardware,
+  options,
+  ...
+}:
 
 {
   imports = [
@@ -25,8 +32,15 @@
   # hardware.pulseaudio.enable = lib.mkForce true;
   # services.pipewire.enable = lib.mkForce false;
 
-  boot.initrd.availableKernelModules =
-    [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ehci_pci"
+    "ahci"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+    "sr_mod"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
@@ -70,7 +84,8 @@
     powerManagement.finegrained = false;
     nvidiaSettings = true;
 
-    # # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    # Optionally, you may need to select the appropriate driver version for
+    # your specific GPU.
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
