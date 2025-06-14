@@ -377,6 +377,7 @@
   services.postfix.rootAlias = "chrism@plope.com";
   services.postfix.extraAliases = ''
     default: root
+    logcheck: root
   '';
 
 }
