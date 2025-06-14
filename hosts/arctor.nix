@@ -127,6 +127,15 @@
   users.users.nginx.extraGroups = [ "acme" ];
   services.postfix.rootAlias = "chrism@plope.com";
 
+  # accept mail from any domain
+  services.postfix.extraConfig = lib.mkBefore ''
+    smtpd_sender_restrictions =
+      permit_sasl_authenticated,
+      reject_non_fqdn_sender,
+      reject_unknown_sender_domain,
+      reject_unauthenticated_sender_login_mismatch
+'';
+
   mailserver =
     let
       passfile = config.age.secrets."chris-mail-password-bcrypt".path;
