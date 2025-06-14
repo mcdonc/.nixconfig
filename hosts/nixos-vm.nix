@@ -1,15 +1,19 @@
-{ lib, pkgs, modulesPath, ... }:
+{
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
-  imports =
-    [
-      ../users/chrism
-      ../users/larry
-      ./roles/workstation.nix
-      (modulesPath + "/profiles/qemu-guest.nix")
-      {
-      }
-    ];
+  imports = [
+    ../users/chrism
+    ../users/larry
+    ./roles/workstation.nix
+    (modulesPath + "/profiles/qemu-guest.nix")
+    {
+    }
+  ];
 
   home-manager = {
     users.chrism.home.packages = with pkgs; [
@@ -17,8 +21,13 @@
     ];
   };
 
-  boot.initrd.availableKernelModules =
-    [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [
+    "ahci"
+    "xhci_pci"
+    "virtio_pci"
+    "sr_mod"
+    "virtio_blk"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -32,8 +41,9 @@
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/6c848ad1-2f09-467c-8746-c415c6b1b696"; }];
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/6c848ad1-2f09-467c-8746-c415c6b1b696"; }
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   networking.hostId = "fd244a99";
