@@ -1,4 +1,12 @@
-{ pkgs, lib, inputs, system, config, username, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  system,
+  config,
+  username,
+  ...
+}:
 
 let
   shellAliases = {
@@ -8,8 +16,7 @@ let
     diff = "${pkgs.colordiff}/bin/colordiff";
     swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
     edit = "${emacspkg}/bin/emacsclient -n -c";
-    restartemacs =
-      "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
+    restartemacs = "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
     fxdevenv = "export FXDEV_CHDIR=\"`pwd`\"; cd ~/projects/fornax/fxdevenv; devenv shell; cd $FXDEV_CHDIR; unset FXDEV_CHDIR";
   };
 
@@ -17,18 +24,16 @@ let
     CLICOLOR = "1";
     # LSCOLORS="GxFxCxDxBxegedabagaced";
     EDITOR = "vi";
-    FXDEV_USE_ZSH="1";
+    FXDEV_USE_ZSH = "1";
   };
 
   zshDotDir = ".config/zsh";
   homedir = "/Users/${username}";
-  emacspkg =
-    config.home-manager.users."${username}".programs.emacs.finalPackage;
+  emacspkg = config.home-manager.users."${username}".programs.emacs.finalPackage;
   emacsdaemon = pkgs.writeShellScript "emacsdaemon" ''
     exec ${emacspkg}/bin/emacs --fg-daemon
   '';
-  zshtheme =
-    "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+  zshtheme = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 
 in
 {
@@ -101,7 +106,11 @@ in
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
-  nix.settings.trusted-users = [ "root" "@wheel" username ];
+  nix.settings.trusted-users = [
+    "root"
+    "@wheel"
+    username
+  ];
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
@@ -109,8 +118,7 @@ in
   programs.zsh.enableCompletion = false;
 
   # Set Git commit hash for darwin-version.
-  system.configurationRevision =
-    inputs.self.rev or inputs.self.dirtyRev or null;
+  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
@@ -232,7 +240,9 @@ in
           ProcessType = "Interactive";
           StandardOutPath = "${homedir}/.emacs.out.log";
           StandardErrorPath = "${homedir}/.emacs.err.log";
-          EnvironmentVariables = { "PATH" = config.environment.systemPath; };
+          EnvironmentVariables = {
+            "PATH" = config.environment.systemPath;
+          };
         };
       };
 
@@ -333,8 +343,7 @@ in
         plugins = [
           {
             name = "fast-syntax-highlighting";
-            src =
-              "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
+            src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
           }
         ];
       };

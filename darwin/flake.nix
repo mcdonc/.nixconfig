@@ -10,7 +10,14 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nix-homebrew }:
+  outputs =
+    inputs@{
+      self,
+      nix-darwin,
+      nixpkgs,
+      home-manager,
+      nix-homebrew,
+    }:
     let
       hm-config = {
         home-manager = {
@@ -42,23 +49,43 @@
     {
       darwinConfigurations."keithmoon-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
+        specialArgs = {
+          inherit inputs;
+          system = "x86_64-darwin";
+          username = "chrism";
+        };
       };
       darwinConfigurations."thinknix52-mac" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
+        specialArgs = {
+          inherit inputs;
+          system = "x86_64-darwin";
+          username = "chrism";
+        };
       };
       darwinConfigurations."macvm-52" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
-      }; 
+        specialArgs = {
+          inherit inputs;
+          system = "x86_64-darwin";
+          username = "chrism";
+        };
+      };
       darwinConfigurations."macvm-keith" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-intel ];
-        specialArgs = { inherit inputs; system = "x86_64-darwin"; username="chrism"; };
+        specialArgs = {
+          inherit inputs;
+          system = "x86_64-darwin";
+          username = "chrism";
+        };
       };
       darwinConfigurations."GSLAL0424050006" = nix-darwin.lib.darwinSystem {
         modules = shared-modules ++ [ homebrew-config-arm ];
-        specialArgs = { inherit inputs; system="aarch64-darwin"; username="cpmcdono";};
+        specialArgs = {
+          inherit inputs;
+          system = "aarch64-darwin";
+          username = "cpmcdono";
+        };
       };
-};
+    };
 }
