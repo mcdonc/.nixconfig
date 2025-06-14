@@ -1,13 +1,28 @@
-{ pkgs, lib, config, inputs, pkgs-unstable, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  pkgs-unstable,
+  ...
+}:
 
 let
   breakonthru = (import ./breakonthru.nix) {
-    inherit pkgs lib inputs pkgs-unstable;
+    inherit
+      pkgs
+      lib
+      inputs
+      pkgs-unstable
+      ;
   };
-  pjsip = (pkgs.pjsip.overrideAttrs (oldAttrs: {
-      patches = (oldAttrs.patches or []) ++ [ ./pjsip-alsa.patch ];
-    }));
-in {
+  pjsip = (
+    pkgs.pjsip.overrideAttrs (oldAttrs: {
+      patches = (oldAttrs.patches or [ ]) ++ [ ./pjsip-alsa.patch ];
+    })
+  );
+in
+{
   options.services.doorclient = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -87,33 +102,33 @@ in {
 
   };
 
+  config =
+    let
+      cfg = config.services.doorclient;
+      client_ini = ''
+        [doorclient]
+        server = ${cfg.websocket-url}
+        unlock0_gpio_pin = ${toString cfg.unlock0-gpio-pin}
+        unlock1_gpio_pin = ${toString cfg.unlock1-gpio-pin}
+        unlock2_gpio_pin = ${toString cfg.unlock2-gpio-pin}
+        door_unlocked_duration = ${toString cfg.door-unlocked-duration}
+        callbutton_gpio_pin = ${toString cfg.callbutton-gpio-pin}
+        callbutton_bouncetime = ${toString cfg.callbutton-bouncetime}
+        clientidentity = ${cfg.clientidentity}
+        pjsua_bin = ${pjsip}/bin/pjsua
+        pjsua_config_file = ${cfg.pjsua-conf}
+        paging_sip = ${cfg.paging-sip}
+        page_throttle_duration = ${toString cfg.page-throttle-duration}
+      '';
+      creds = [
+        "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
+      ];
 
-  config = let
-    cfg = config.services.doorclient;
-    client_ini = ''
-      [doorclient]
-      server = ${cfg.websocket-url}
-      unlock0_gpio_pin = ${toString cfg.unlock0-gpio-pin}
-      unlock1_gpio_pin = ${toString cfg.unlock1-gpio-pin}
-      unlock2_gpio_pin = ${toString cfg.unlock2-gpio-pin}
-      door_unlocked_duration = ${toString cfg.door-unlocked-duration}
-      callbutton_gpio_pin = ${toString cfg.callbutton-gpio-pin}
-      callbutton_bouncetime = ${toString cfg.callbutton-bouncetime}
-      clientidentity = ${cfg.clientidentity}
-      pjsua_bin = ${pjsip}/bin/pjsua
-      pjsua_config_file = ${cfg.pjsua-conf}
-      paging_sip = ${cfg.paging-sip}
-      page_throttle_duration = ${toString cfg.page-throttle-duration}
-    '';
-    creds = [
-      "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
-    ];
+      envs = [
+        "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
+      ];
 
-    envs = [
-      "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
-    ];
-
-  in
+    in
 
     lib.mkIf cfg.enable {
       environment.systemPackages = [
@@ -126,11 +141,11 @@ in {
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         preStart = ''
-mkdir -p /run/doorclient
-cat > /run/doorclient/client.ini << EOF
-${client_ini}
-EOF
-chown -R doorserver:doorserver /run/doorclient
+          mkdir -p /run/doorclient
+          cat > /run/doorclient/client.ini << EOF
+          ${client_ini}
+          EOF
+          chown -R doorserver:doorserver /run/doorclient
         '';
         script = ''
           secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
@@ -150,7 +165,11 @@ chown -R doorserver:doorserver /run/doorclient
           LoadCredential = creds;
           Environment = envs;
           WorkingDirectory = "/tmp"; # for lgpio
-          SupplementaryGroups = [ "audio" "kmem" "gpio" ]; # kmem for lgpio
+          SupplementaryGroups = [
+            "audio"
+            "kmem"
+            "gpio"
+          ]; # kmem for lgpio
         };
       };
 

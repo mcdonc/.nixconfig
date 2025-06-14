@@ -1,8 +1,20 @@
-{ pkgs, lib, config, inputs, pkgs-unstable, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  pkgs-unstable,
+  ...
+}:
 
 let
   breakonthru = (import ./breakonthru.nix) {
-    inherit pkgs lib inputs pkgs-unstable;
+    inherit
+      pkgs
+      lib
+      inputs
+      pkgs-unstable
+      ;
   };
 in
 
@@ -55,146 +67,150 @@ in
     };
   };
 
-  config = let
-    cfg = config.services.doorserver;
-    creds = [
-      "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
-      "DOORSERVER_PASSWORDS_FILE:${cfg.passwords-file}"
-      "DOORSERVER_DOORS_FILE:${cfg.doors-file}"
-    ];
+  config =
+    let
+      cfg = config.services.doorserver;
+      creds = [
+        "DOORSERVER_WSSECRET_FILE:${cfg.wssecret-file}"
+        "DOORSERVER_PASSWORDS_FILE:${cfg.passwords-file}"
+        "DOORSERVER_DOORS_FILE:${cfg.doors-file}"
+      ];
 
-    envs = [
-      "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
-      "DOORSERVER_PASSWORDS_FILE=%d/DOORSERVER_PASSWORDS_FILE"
-      "DOORSERVER_DOORS_FILE=%d/DOORSERVER_DOORS_FILE"
-      "DOORSERVER_WEBSOCKET_URL=${cfg.websocket-url}"
-      "DOORSERVER_DOORSIP=${cfg.doorsip}"
-    ];
+      envs = [
+        "DOORSERVER_WSSECRET_FILE=:%d/DOORSERVER_WSSECRET_FILE"
+        "DOORSERVER_PASSWORDS_FILE=%d/DOORSERVER_PASSWORDS_FILE"
+        "DOORSERVER_DOORS_FILE=%d/DOORSERVER_DOORS_FILE"
+        "DOORSERVER_WEBSOCKET_URL=${cfg.websocket-url}"
+        "DOORSERVER_DOORSIP=${cfg.doorsip}"
+      ];
 
-    production_ini = ''
-      [app:main]
-      use = egg:breakonthru
+      production_ini = ''
+        [app:main]
+        use = egg:breakonthru
 
-      pyramid.reload_templates = true
-      pyramid.debug_authorization = false
-      pyramid.debug_notfound = false
-      pyramid.debug_routematch = false
-      pyramid.default_locale_name = en
+        pyramid.reload_templates = true
+        pyramid.debug_authorization = false
+        pyramid.debug_notfound = false
+        pyramid.debug_routematch = false
+        pyramid.default_locale_name = en
 
-      ###
-      # wsgi server configuration
-      ###
+        ###
+        # wsgi server configuration
+        ###
 
-      [server:main]
-      use = egg:waitress#main
-      listen = *:${cfg.uiserver-port}
-      #url_scheme = ${cfg.http-scheme}
-      trusted_proxy_headers = x-forwarded-for x-forwarded-host x-forwarded-proto x-forwarded-port
-      trusted_proxy = 127.0.0.1
+        [server:main]
+        use = egg:waitress#main
+        listen = *:${cfg.uiserver-port}
+        #url_scheme = ${cfg.http-scheme}
+        trusted_proxy_headers = x-forwarded-for x-forwarded-host x-forwarded-proto x-forwarded-port
+        trusted_proxy = 127.0.0.1
 
-      ###
-      # logging configuration
-      # https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/logging.html
-      ###
+        ###
+        # logging configuration
+        # https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/logging.html
+        ###
 
-      [loggers]
-      keys = root, breakonthru
+        [loggers]
+        keys = root, breakonthru
 
-      [handlers]
-      keys = console
+        [handlers]
+        keys = console
 
-      [formatters]
-      keys = generic
+        [formatters]
+        keys = generic
 
-      [logger_root]
-      level = INFO
-      handlers = console
+        [logger_root]
+        level = INFO
+        handlers = console
 
-      [logger_breakonthru]
-      level = INFO
-      handlers =
-      qualname = breakonthru
+        [logger_breakonthru]
+        level = INFO
+        handlers =
+        qualname = breakonthru
 
-      [handler_console]
-      class = StreamHandler
-      args = (sys.stderr,)
-      level = NOTSET
-      formatter = generic
+        [handler_console]
+        class = StreamHandler
+        args = (sys.stderr,)
+        level = NOTSET
+        formatter = generic
 
-      [formatter_generic]
-      format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
-    '';
+        [formatter_generic]
+        format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
+      '';
 
-    server_ini = ''
-      # remainder of settings are passed in as envvars
-      [doorserver]
-      port = ${cfg.wsserver-port}
-    '';
+      server_ini = ''
+        # remainder of settings are passed in as envvars
+        [doorserver]
+        port = ${cfg.wsserver-port}
+      '';
 
-  in
-    { environment.systemPackages = [ breakonthru.pyenv-bin ];} //
+    in
+    {
+      environment.systemPackages = [ breakonthru.pyenv-bin ];
+    }
+    //
 
-    lib.mkIf cfg.enable {
+      lib.mkIf cfg.enable {
 
-      # dir not created on nixos-rebuild, only at boot
-      # systemd.tmpfiles.rules = [
-      #   "d /run/doorserver 0755 doorserver doorserver -"
-      # ];
+        # dir not created on nixos-rebuild, only at boot
+        # systemd.tmpfiles.rules = [
+        #   "d /run/doorserver 0755 doorserver doorserver -"
+        # ];
 
-      systemd.services.doorserver-ui = {
-        description = "Doorserver UI server";
-        after = [ "network.target" ];
-        wantedBy = [ "multi-user.target" ];
-        preStart = ''
-mkdir -p /run/doorserver
-cat > /run/doorserver/production.ini << EOF
-${production_ini}
-EOF
-chown -R doorserver:doorserver /run/doorserver
-        '';
-        script = ''
-          secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
-          export DOORSERVER_WSSECRET="$secret"
-          exec ${breakonthru.pyenv}/bin/pserve /run/doorserver/production.ini
-        '';
-        serviceConfig = {
-          Restart = "always";
-          RestartSec = "5s";
-          User = "doorserver";
-          Group = "doorserver";
-          DynamicUser = true;
-          LoadCredential = creds;
-          Environment = envs;
-          PermissionsStartOnly = true; # run preStart as root
+        systemd.services.doorserver-ui = {
+          description = "Doorserver UI server";
+          after = [ "network.target" ];
+          wantedBy = [ "multi-user.target" ];
+          preStart = ''
+            mkdir -p /run/doorserver
+            cat > /run/doorserver/production.ini << EOF
+            ${production_ini}
+            EOF
+            chown -R doorserver:doorserver /run/doorserver
+          '';
+          script = ''
+            secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
+            export DOORSERVER_WSSECRET="$secret"
+            exec ${breakonthru.pyenv}/bin/pserve /run/doorserver/production.ini
+          '';
+          serviceConfig = {
+            Restart = "always";
+            RestartSec = "5s";
+            User = "doorserver";
+            Group = "doorserver";
+            DynamicUser = true;
+            LoadCredential = creds;
+            Environment = envs;
+            PermissionsStartOnly = true; # run preStart as root
+          };
+        };
+
+        systemd.services.doorserver-websocket = {
+          description = "Doorserver websocket server";
+          after = [ "network.target" ];
+          wantedBy = [ "multi-user.target" ];
+          preStart = ''
+            mkdir -p /run/doorserver
+            cat > /run/doorserver/server.ini << EOF
+            ${server_ini}
+            EOF
+            chown -R doorserver:doorserver /run/doorserver
+          '';
+          script = ''
+            secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
+            export DOORSERVER_WSSECRET="$secret"
+            exec ${breakonthru.pyenv}/bin/doorserver /run/doorserver/server.ini
+          '';
+          serviceConfig = {
+            Restart = "always";
+            RestartSec = "5s";
+            User = "doorserver";
+            Group = "doorserver";
+            DynamicUser = true;
+            LoadCredential = creds;
+            Environment = envs;
+            PermissionsStartOnly = true; # run preStart as root
+          };
         };
       };
-
-      systemd.services.doorserver-websocket = {
-        description = "Doorserver websocket server";
-        after = [ "network.target" ];
-        wantedBy = [ "multi-user.target" ];
-        preStart = ''
-mkdir -p /run/doorserver
-cat > /run/doorserver/server.ini << EOF
-${server_ini}
-EOF
-chown -R doorserver:doorserver /run/doorserver
-'';
-        script = ''
-          secret=$(cat $CREDENTIALS_DIRECTORY/DOORSERVER_WSSECRET_FILE)
-          export DOORSERVER_WSSECRET="$secret"
-          exec ${breakonthru.pyenv}/bin/doorserver /run/doorserver/server.ini
-        '';
-        serviceConfig = {
-          Restart = "always";
-          RestartSec = "5s";
-          User = "doorserver";
-          Group = "doorserver";
-          DynamicUser = true;
-          LoadCredential = creds;
-          Environment = envs;
-          PermissionsStartOnly = true; # run preStart as root
-        };
-       };
-    };
 }

@@ -1,4 +1,9 @@
-{ pkgs, inputs, pkgs-unstable, ... }:
+{
+  pkgs,
+  inputs,
+  pkgs-unstable,
+  ...
+}:
 
 let
   breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
@@ -40,8 +45,8 @@ let
   # https://arestless.rest/blog/lab--raspberry-pi-4b-gpio-debugging/
   # https://github.com/NixOS/nixpkgs/pull/352308 (doronbehar)
   pyenv = (
-    pkgs-unstable.python312.withPackages (p:
-      with p; [
+    pkgs-unstable.python312.withPackages (
+      p: with p; [
         breakonthru
         setuptools
         plaster-pastedeploy
