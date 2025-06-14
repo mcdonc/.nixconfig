@@ -24,6 +24,10 @@
     80
     443
   ];
+  networking.firewall.logRefusedConnections = false;
+
+  services.fail2ban.enable = true;
+  services.fail2ban.maxretry = 10;
 
   services.doorserver.enable = true;
   services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
