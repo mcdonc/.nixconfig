@@ -30,7 +30,7 @@ in
     ./roles/rpi4.nix
     ./roles/lock802/doorclient.nix
     ./roles/mailrelayer.nix
-    ./roles/logcheck.nix
+    ./roles/journalwatch.nix
   ];
 
   # system.autoUpgrade = {

@@ -16,10 +16,8 @@
     ../users/tseaver
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
-    ./roles/logcheck.nix
+    ./roles/journalwatch.nix
   ];
-
-  services.logcheck.level = "server";
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
