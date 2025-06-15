@@ -26,6 +26,7 @@ in
         pulseaudio.*
         nixos-rebuild-switch-to-configuration.service.*
         /etc/systemd/system/cups.socket.*
+        vte-spawn.*
       '';
     }
     {
@@ -54,6 +55,10 @@ in
     {
       # nixos-rebuild
       match = "SYSLOG_IDENTIFIER = /(p4|p5)/";
+      filters = ALL;
+    }
+    {
+      match = "SYSLOG_IDENTIFIER = plasmashell";
       filters = ALL;
     }
     {
