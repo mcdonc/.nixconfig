@@ -29,10 +29,9 @@ in
     ./roles/minimal.nix
     ./roles/rpi4.nix
     ./roles/lock802/doorclient.nix
-    ./roles/mailrelay.nix
+    ./roles/mailrelayer.nix
+    ./roles/logcheck.nix
   ];
-
-  services.postfix.rootAlias = "chrism@plope.com";
 
   # system.autoUpgrade = {
   #   enable = true;

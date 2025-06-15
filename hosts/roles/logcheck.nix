@@ -3,14 +3,11 @@
 # logcheck itself will run at ${hour}:02, the tmpfile creation will run at
 # ${hour}:00
 
-# remove -n10000 after testing
-
 let
   lcjc = pkgs.writeShellScriptBin "logcheck-journalctl" ''
-    journalctl -o short-iso -n 10000 --since \
-      "$(date -d '1 day ago' '+%Y-%m-%d %H:%M:%S')"
+    journalctl --since "$(date -d '1 day ago' '+%Y-%m-%d %H:%M:%S')"
   '';
-  hour = "17";
+  hour = "5";
   tmpfile = "/tmp/lcjc.txt";
 in
 {
@@ -26,6 +23,7 @@ in
   # output from journalctl)
   services.cron.systemCronJobs = [
     "0 ${hour} * * * logcheck ${lcjc}/bin/logcheck-journalctl > ${tmpfile}"
+    "@reboot logcheck ${lcjc}/bin/logcheck-journalctl > ${tmpfile}"
   ];
   services.logcheck.enable = true;
   services.logcheck.timeOfDay = hour;
@@ -33,7 +31,7 @@ in
   services.logcheck.files = lib.mkDefault [
     tmpfile
   ];
-  services.logcheck.mailTo = lib.mkDefault "chrism@plope.com";
+  #services.logcheck.mailTo = lib.mkDefault "chrism@repoze.org";
   services.logcheck.extraGroups = [
     "systemd-journal"
   ];

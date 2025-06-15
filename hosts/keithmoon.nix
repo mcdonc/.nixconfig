@@ -22,7 +22,7 @@
     ./roles/tailscale
     ./roles/rc505
     ./roles/ollama.nix
-    ./roles/mailrelay.nix
+    ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/logcheck.nix
   ];
@@ -373,11 +373,5 @@
   #services.pipewire.jack.enable = lib.mkForce false;
   #services.pipewire.alsa.enable = lib.mkForce false;
   #services.pipewire.pulse.enable = lib.mkForce false;
-
-  services.postfix.rootAlias = "chrism@plope.com";
-  services.postfix.extraAliases = ''
-    default: root
-    logcheck: root
-  '';
 
 }
