@@ -29,6 +29,34 @@
 
   services.fail2ban.enable = true;
   services.fail2ban.maxretry = 5;
+  services.fail2ban.extraPackages = [ pkgs.ipset ];
+  services.fail2ban.banaction = "iptables-ipset-proto6-allports";
+  services.fail2ban.jails = {
+    "postfix-bruteforce" = ''
+      enabled = true
+      filter = postfix-bruteforce
+      findtime = 600
+      maxretry = 3
+    '';
+    "postfix-unresolving" = ''
+      enabled = true
+      filter = postfix-unresolving
+      findtime = 600
+      maxretry = 3
+    '';
+  };
+
+  environment.etc."fail2ban/filter.d/postfix-bruteforce.conf".text = ''
+    [Definition]
+    failregex = warning: [\w\.\-]+\[<HOST>\]: SASL LOGIN authentication failed.*$
+    journalmatch = _SYSTEMD_UNIT=postfix.service
+  '';
+  environment.etc."fail2ban/filter.d/postfix-unresolving.conf".text =''
+    [Definition]
+    failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
+    journalmatch = _SYSTEMD_UNIT=postfix.service
+  '';
+
 
   services.doorserver.enable = true;
   services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
