@@ -6,7 +6,8 @@ in
   services.journalwatch.enable = true;
   services.journalwatch.mailTo = "chrism@repoze.org";
   services.journalwatch.priority = 5;
-  services.journalwatch.interval = "0/3:00";
+  #services.journalwatch.interval = "0/3:00";
+  services.journalwatch.interval = "daily";
   services.journalwatch.accuracy = "5min";
   services.journalwatch.filterBlocks = [
     {
