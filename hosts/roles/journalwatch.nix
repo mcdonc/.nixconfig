@@ -6,8 +6,8 @@ in
   services.journalwatch.enable = true;
   services.journalwatch.mailTo = "chrism@repoze.org";
   services.journalwatch.priority = 5;
-  #services.journalwatch.interval = "0/3:00";
-  services.journalwatch.interval = "daily";
+  services.journalwatch.interval = "0/3:00";
+  #services.journalwatch.interval = "daily";
   services.journalwatch.accuracy = "5min";
   services.journalwatch.filterBlocks = [
     {
@@ -28,12 +28,21 @@ in
         nixos-rebuild-switch-to-configuration.service.*
         /etc/systemd/system/cups.socket.*
         vte-spawn.*
+        \w+.service Consumed .*
       '';
     }
     {
+      # relies on fail2ban to do our auditing of this stuff
       match = "SYSLOG_IDENTIFIER = sshd-session";
       filters = ''
-        error: PAM: Authentication failure for illegal user .*
+        error: PAM: Authentication failure for .*
+      '';
+    }
+    {
+      # nixos-rebuild
+      match = "_SYSTEMD_UNIT = postfix.service";
+      filters = ''
+        warning: .*
       '';
     }
     {
@@ -65,6 +74,16 @@ in
     {
       # nixos-rebuild
       match = "_SYSTEMD_UNIT = libvirtd.service";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "_SYSTEMD_UNIT = dbus.service";
+      filters = ALL;
+    }
+    {
+      # user services
+      match = "_SYSTEMD_UNIT = /user@\d+\.service/";
       filters = ALL;
     }
   ];
