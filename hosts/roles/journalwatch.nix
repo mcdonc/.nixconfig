@@ -28,7 +28,7 @@ in
         nixos-rebuild-switch-to-configuration.service.*
         /etc/systemd/system/cups.socket.*
         vte-spawn.*
-        \w+.service Consumed .*
+        [A-Za-z0-9_@\.]+.service Consumed .*
       '';
     }
     {
@@ -72,6 +72,14 @@ in
       filters = ALL;
     }
     {
+      match = "SYSLOG_IDENTIFIER = rspamd";
+      filters = ALL;
+    }
+    {
+      match = "SYSLOG_IDENTIFIER = dhcpd";
+      filters = ALL;
+    }
+    {
       # nixos-rebuild
       match = "_SYSTEMD_UNIT = libvirtd.service";
       filters = ALL;
@@ -84,6 +92,11 @@ in
     {
       # user services
       match = "_SYSTEMD_UNIT = /user@\d+\.service/";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "_SYSTEMD_UNIT = ModemManager.service";
       filters = ALL;
     }
   ];
