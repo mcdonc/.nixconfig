@@ -8,6 +8,7 @@ in
   services.journalwatch.priority = 5;
   services.journalwatch.interval = "0/3:00";
   #services.journalwatch.interval = "daily";
+  #services.journalwatch.interval = "00:42"; # every day at 12:42am
   services.journalwatch.accuracy = "5min";
   services.journalwatch.filterBlocks = [
     {
@@ -25,10 +26,10 @@ in
         syncoid-home.*
         nix-index.*
         pulseaudio.*
-        nixos-rebuild-switch-to-configuration.service.*
-        /etc/systemd/system/cups.socket.*
+        nixos-rebuild-switch-to-configuration\.service.*
+        /etc/systemd/system/cups\.socket.*
         vte-spawn.*
-        [A-Za-z0-9_@\.]+.service Consumed .*
+        [A-Za-z 0-9_@\.\-]+\.service: Consumed .*
       '';
     }
     {
@@ -97,6 +98,16 @@ in
     {
       # not useful
       match = "_SYSTEMD_UNIT = ModemManager.service";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "SYSLOG_IDENTIFIER = systemd-gpt-auto-generator";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "SYSLOG_IDENTIFIER = kscreenlocker.greet";
       filters = ALL;
     }
   ];
