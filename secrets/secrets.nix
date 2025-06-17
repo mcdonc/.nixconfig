@@ -22,4 +22,5 @@ in
   "chris-mail-password-bcrypt.age".publicKeys = [ chrism arctor ];
   "chris-mail-password.age".publicKeys = [ keithmoon chrism ];
   "chris-mail-sasl.age".publicKeys = [ chrism keithmoon lock802 ];
+  "enfold-gemini-key.age".publicKeys = [ chrism keithmoon ];
 }

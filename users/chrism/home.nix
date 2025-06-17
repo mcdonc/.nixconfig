@@ -25,6 +25,8 @@ args@{ pkgs, lib, ... }:
       # merge.tool = "meld";
       # mergetool.meld.path = "${pkgs.meld}/bin/meld";
       safe.directory = [ "/etc/nixos" ];
+      credential.helper = "git-credential-manager";
+      "credential \"https://dev.azure.com\"".useHttpPath = "true";
     };
   };
 

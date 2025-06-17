@@ -326,6 +326,5 @@ in
       zgrviewer
       zoom-us
       zynaddsubfx
-
     ];
 }
