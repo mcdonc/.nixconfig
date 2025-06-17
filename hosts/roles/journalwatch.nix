@@ -6,9 +6,8 @@ in
   services.journalwatch.enable = true;
   services.journalwatch.mailTo = "chrism@repoze.org";
   services.journalwatch.priority = 5;
-  services.journalwatch.interval = "0/2:00";
-  #services.journalwatch.interval = "daily";
-  #services.journalwatch.interval = "00:42"; # every day at 12:42am
+  #services.journalwatch.interval = "0/2:00"; # every 2 hours (12,2,4,etc)
+  services.journalwatch.interval = "05:09"; # every day at 05:09am
   services.journalwatch.accuracy = "5min";
   services.journalwatch.filterBlocks = [
     {
@@ -26,10 +25,17 @@ in
         syncoid-home.*
         nix-index.*
         pulseaudio.*
+        kbfs.service.*
         nixos-rebuild-switch-to-configuration\.service.*
         /etc/systemd/system/cups\.socket.*
         vte-spawn.*
-        [A-Za-z 0-9_@\.\-]+\.(scope|service): Consumed .*
+        [A-Za-z 0-9_@\.\-]+\.(scope|service|slice): Consumed .*
+        ollama-model-loader\.service: .*
+        tailscale-autoconnect\.service: .*
+        plasma-\w+\.service: .*
+        app-org\.gnome-\w+\.(service|slice): .*
+        xdg-desktop-portal-gtk\.service: .*
+        gnome-terminal-service\.service: .*
       '';
     }
     {
@@ -65,11 +71,6 @@ in
       filters = ALL;
     }
     {
-      # nixos-rebuild
-      match = "SYSLOG_IDENTIFIER = /(p4|p5)/";
-      filters = ALL;
-    }
-    {
       match = "SYSLOG_IDENTIFIER = plasmashell";
       filters = ALL;
     }
@@ -98,7 +99,12 @@ in
     }
     {
       # not useful
-      match = "_SYSTEMD_UNIT = ModemManager.service";
+      match = "_SYSTEMD_UNIT = udisks2.service";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "_SYSTEMD_UNIT = systemd-udevd.service";
       filters = ALL;
     }
     {
@@ -113,7 +119,7 @@ in
     }
     {
       # not useful
-      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kxwin_x11|gmenudbusproxy|klwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-decerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kcdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire)/";
+      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kwin_x11|gmenudbusmenuproxy|kwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-dcerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire|avahi-daemon|kconf_update|ModemManaager|udevadm|kscreen_backend_launcher|kaccess|kernel)/";
       filters = ALL;
     }
   ];
