@@ -113,7 +113,7 @@ in
     }
     {
       # not useful
-      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kxwin_x11|gmenudbusproxy|klwalletd6|winbindd|kactivitymanagerd|pipeweire|kalendarac|nmbd|samba-decerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kcdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire)/";
+      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kxwin_x11|gmenudbusproxy|klwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-decerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kcdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire)/";
       filters = ALL;
     }
   ];
