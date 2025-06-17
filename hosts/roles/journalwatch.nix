@@ -6,7 +6,7 @@ in
   services.journalwatch.enable = true;
   services.journalwatch.mailTo = "chrism@repoze.org";
   services.journalwatch.priority = 5;
-  services.journalwatch.interval = "0/3:00";
+  services.journalwatch.interval = "0/2:00";
   #services.journalwatch.interval = "daily";
   #services.journalwatch.interval = "00:42"; # every day at 12:42am
   services.journalwatch.accuracy = "5min";
@@ -29,7 +29,7 @@ in
         nixos-rebuild-switch-to-configuration\.service.*
         /etc/systemd/system/cups\.socket.*
         vte-spawn.*
-        [A-Za-z 0-9_@\.\-]+\.service: Consumed .*
+        [A-Za-z 0-9_@\.\-]+\.(scope|service): Consumed .*
       '';
     }
     {
@@ -37,6 +37,7 @@ in
       match = "SYSLOG_IDENTIFIER = sshd-session";
       filters = ''
         error: PAM: Authentication failure for .*
+        error: key_exchange_identification: .*
       '';
     }
     {
@@ -108,6 +109,11 @@ in
     {
       # not useful
       match = "SYSLOG_IDENTIFIER = kscreenlocker.greet";
+      filters = ALL;
+    }
+    {
+      # not useful
+      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kxwin_x11|gmenudbusproxy|klwalletd6|winbindd|kactivitymanagerd|pipeweire|kalendarac|nmbd|samba-decerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kcdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire)/";
       filters = ALL;
     }
   ];
