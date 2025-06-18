@@ -26,6 +26,8 @@ in
         nix-index.*
         pulseaudio.*
         kbfs.service.*
+        home.mount.*
+        boot.mount.*
         nixos-rebuild-switch-to-configuration\.service.*
         /etc/systemd/system/cups\.socket.*
         vte-spawn.*
@@ -119,7 +121,7 @@ in
     }
     {
       # not useful
-      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kwin_x11|gmenudbusmenuproxy|kwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-dcerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire|avahi-daemon|kconf_update|ModemManager|udevadm|kscreen_backend_launcher|kaccess|kernel)/";
+      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kwin_x11|gmenudbusmenuproxy|kwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-dcerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire|avahi-daemon|kconf_update|ModemManager|udevadm|kscreen_backend_launcher|kaccess|kernel|systemd-coredump|pressure-vessel-wrap|steam-runtime-steam-remote|baloorunner|krunner|okular)/";
       filters = ALL;
     }
   ];

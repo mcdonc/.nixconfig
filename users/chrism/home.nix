@@ -13,6 +13,15 @@ args@{ pkgs, lib, ... }:
     };
   };
 
+  # add this to ~/.gitconfig if this doesn't work
+  # [credential]
+  # 	helper =
+  # 	helper = /nix/store/m0mgy49ffnkdmqfrjx3z5s6dk66prq8q-git-credential-manager-2.6.1/bin/git-credential-manager
+  # [credential "https://dev.azure.com"]
+  # 	useHttpPath = true
+  # [include]
+  #   path = /home/chrism/.config/git/config
+
   programs.git = {
     enable = true;
     userName = "Chris McDonough";
@@ -25,7 +34,7 @@ args@{ pkgs, lib, ... }:
       # merge.tool = "meld";
       # mergetool.meld.path = "${pkgs.meld}/bin/meld";
       safe.directory = [ "/etc/nixos" ];
-      credential.helper = "git-credential-manager";
+      credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
       "credential \"https://dev.azure.com\"".useHttpPath = "true";
     };
   };
