@@ -56,72 +56,21 @@ in
       '';
     }
     {
-      match = "SYSLOG_IDENTIFIER = redis";
-      filters = ALL;
+      # arctor noise
+      match = "_SYSTEMD_UNIT = sshd.service";
+      filters = ''
+        error: maximum authentication attempts exceeded .*
+        error: kex_exchange_identification: .*
+      '';
     }
     {
-      match = "SYSLOG_IDENTIFIER = zed";
-      filters = ALL;
-    }
-    {
-      match = "SYSLOG_IDENTIFIER = polkitd";
-      filters = ALL;
-    }
-    {
-      # nixos-rebuild
-      match = "SYSLOG_IDENTIFIER = /(.os-prober-wrapped|50mounted-tests)/";
-      filters = ALL;
-    }
-    {
-      match = "SYSLOG_IDENTIFIER = plasmashell";
-      filters = ALL;
-    }
-    {
-      match = "SYSLOG_IDENTIFIER = rspamd";
-      filters = ALL;
-    }
-    {
-      match = "SYSLOG_IDENTIFIER = dhcpd";
-      filters = ALL;
-    }
-    {
-      # nixos-rebuild
-      match = "_SYSTEMD_UNIT = libvirtd.service";
+      # not useful
+      match = "_SYSTEMD_UNIT = /(libvirtd\.service|dbus\.service|udisks2\.service|systemd-udevd\.service|user@\d+\.service|do-agent\.service|dhcpcd\.service)/";
       filters = ALL;
     }
     {
       # not useful
-      match = "_SYSTEMD_UNIT = dbus.service";
-      filters = ALL;
-    }
-    {
-      # user services
-      match = "_SYSTEMD_UNIT = /user@\d+\.service/";
-      filters = ALL;
-    }
-    {
-      # not useful
-      match = "_SYSTEMD_UNIT = udisks2.service";
-      filters = ALL;
-    }
-    {
-      # not useful
-      match = "_SYSTEMD_UNIT = systemd-udevd.service";
-      filters = ALL;
-    }
-    {
-      # not useful
-      match = "SYSLOG_IDENTIFIER = systemd-gpt-auto-generator";
-      filters = ALL;
-    }
-    {
-      # not useful
-      match = "SYSLOG_IDENTIFIER = kscreenlocker.greet";
-      filters = ALL;
-    }
-    {
-      # not useful
-      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kwin_x11|gmenudbusmenuproxy|kwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-dcerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire|avahi-daemon|kconf_update|ModemManager|udevadm|kscreen_backend_launcher|kaccess|kernel|systemd-coredump|pressure-vessel-wrap|steam-runtime-steam-remote|baloorunner|krunner|okular)/";
+      match = "SYSLOG_IDENTIFIER = /(sddm|kglobalacceld|kded6|ksmserver|kwin_x11|gmenudbusmenuproxy|kwalletd6|winbindd|kactivitymanagerd|pipewire|kalendarac|nmbd|samba-dcerpcd|smbd|rpcd_lsad|sddm-helper|drkonqi-coredump-launcher|kscreenlocker_greet|systemd-resolved|kdeconnectd|cupsd|org_kde_powerdevil|ksystemstats|wireplumber|kconf-update|pipewire-pulse|pipewire|avahi-daemon|kconf_update|ModemManager|udevadm|kscreen_backend_launcher|kaccess|kernel|systemd-coredump|pressure-vessel-wrap|steam-runtime-steam-remote|baloorunner|krunner|okular|redis|zed|polkitd|\.os-prober-wrapped|50mounted-tests|plasmashell|rspamd|dhcpd|systemd-gpt-auto-generator|kscreenlocker\.greet)/";
       filters = ALL;
     }
   ];
