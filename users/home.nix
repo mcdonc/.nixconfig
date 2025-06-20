@@ -202,6 +202,7 @@ in
     epkgs.lsp-ui
     epkgs.lsp-jedi
     epkgs.company
+    epkgs.dart-mode
   ];
 
   services.emacs.enable = true;
