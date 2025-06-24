@@ -294,7 +294,7 @@ in
       sdrangel
       setbfree
       sfizz
-      pkgs-signal-7561.signal-desktop # 25.05 version broken on Jun 20 2025
+      pkgs-signal-7561.signal-desktop # 25.05 version (7.58.0) broken 6/20/25
       slack
       smartmontools
       soapyairspy
