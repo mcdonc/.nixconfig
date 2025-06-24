@@ -3,6 +3,7 @@
   pkgs-py36,
   pkgs-py37,
   pkgs-py39,
+  pkgs-signal-7561,
   inputs,
   system,
   config,
@@ -293,7 +294,7 @@ in
       sdrangel
       setbfree
       sfizz
-      signal-desktop
+      pkgs-signal-7561.signal-desktop # 25.05 version broken on Jun 20 2025
       slack
       smartmontools
       soapyairspy

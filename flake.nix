@@ -22,8 +22,11 @@
       "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixpkgs-py39.url =
       "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
-    nixpkgs-olive.url =
-      "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
+    # git rev-list -1 --before="2025-06-20 00:00" nixos-25.05
+    nixpkgs-signal-7561.url =
+      "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
+    # nixpkgs-olive.url =
+    #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
 
   outputs =
@@ -75,10 +78,10 @@
               name = "pkgs-2411";
               value = nixpkgs-2411;
             }
-            {
-              name = "pkgs-olive";
-              value = nixpkgs-olive;
-            }
+            # {
+            #   name = "pkgs-olive";
+            #   value = nixpkgs-olive;
+            # }
             {
               name = "pkgs-py36";
               value = nixpkgs-py36;
@@ -90,6 +93,10 @@
             {
               name = "pkgs-py39";
               value = nixpkgs-py39;
+            }
+            {
+              name = "pkgs-signal-7561";
+              value = nixpkgs-signal-7561;
             }
           ];
           mkNpFork = forkinput: {

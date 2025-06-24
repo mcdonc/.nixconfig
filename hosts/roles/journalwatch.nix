@@ -61,6 +61,7 @@ in
       filters = ''
         error: maximum authentication attempts exceeded .*
         error: kex_exchange_identification: .*
+        error: kex_protocol_error: .*
       '';
     }
     {
