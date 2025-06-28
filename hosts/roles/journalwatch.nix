@@ -46,6 +46,7 @@ in
       filters = ''
         error: PAM: Authentication failure for .*
         error: key_exchange_identification: .*
+        error: Protocol major versions differ: .*
       '';
     }
     {
