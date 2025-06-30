@@ -10,6 +10,7 @@
   users.users.tseaver = {
     isNormalUser = true;
     shell = pkgs.bash;
+    initialPassword = "pw321";
     extraGroups = [
       "wheel"
       "networkmanager"
