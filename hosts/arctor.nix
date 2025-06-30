@@ -17,6 +17,7 @@
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
+    ./roles/jupyterhub.nix
   ];
 
   networking.firewall.enable = true;
@@ -144,6 +145,22 @@
       locations."/" = {
         proxyPass = "http://localhost:8001"; # worked under apache with ws://
         proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
+    virtualHosts."jupyterhub.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8000/";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
