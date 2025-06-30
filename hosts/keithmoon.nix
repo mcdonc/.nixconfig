@@ -25,7 +25,6 @@
     ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
-    ./roles/jupyterhub.nix
   ];
 
   system.stateVersion = "24.05";
