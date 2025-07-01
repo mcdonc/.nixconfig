@@ -65,9 +65,10 @@
     failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
     journalmatch = _SYSTEMD_UNIT=postfix.service
   '';
+  # 98.169.127.190 - - [30/Jun/2025:18:49:10 -0400] "POST /hub/login?next= HTTP/2.0" 403 7931 "https://jupyterhub.repoze.org/hub/login?next=" "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0"
   environment.etc."fail2ban/filter.d/jupyterhub-bruteforce.conf".text = ''
     [Definition]
-    failregex = ^<HOST>.*POST.*(\/hub\/login).* HTTP/\d.\d\" 403.*$
+    failregex = ^<HOST>.*POST.*(\/hub\/login).* HTTP\/\d.\d\" 403.*$
   '';
 
   services.doorserver.enable = true;
