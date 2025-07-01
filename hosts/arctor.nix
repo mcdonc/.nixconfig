@@ -45,6 +45,14 @@
       findtime = 600
       maxretry = 3
     '';
+    "jupyterhub-bruteforce" = ''
+      enabled = true
+      filter = jupyterhub-bruteforce
+      findtime = 600
+      maxretry = 6
+      backend = auto
+      logpath = /var/log/nginx/access.log
+    '';
   };
 
   environment.etc."fail2ban/filter.d/postfix-bruteforce.conf".text = ''
@@ -57,7 +65,10 @@
     failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
     journalmatch = _SYSTEMD_UNIT=postfix.service
   '';
-
+  environment.etc."fail2ban/filter.d/jupyterhub-bruteforce.conf".text = ''
+    [Definition]
+    failregex = ^<HOST>.*POST.*(\/hub\/login).* HTTP/\d.\d\" 403.*$
+  '';
 
   services.doorserver.enable = true;
   services.doorserver.wssecret-file = config.age.secrets."wssecret".path;
