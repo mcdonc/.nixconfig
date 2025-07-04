@@ -1,9 +1,20 @@
-{ pkgs, pkgs-2411, ... }:
+{ pkgs, lib, pkgs-2411, ... }:
 
 {
+
+  # 25.05 gjs 1.82.2 tests fail for i686
+  # 24.11 uses gjs 1.82.1; these tests also fail on i686 when only overriding
+  # source
+
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     gjs = super.gjs.overrideAttrs (oldAttrs: {
+  #       doCheck = false;
+  #     });
+  #   })
+  # ];
+
   environment.systemPackages = [
-    # 25.05 gjs tests fail (1p4sqldwigyphn2laza1ikxwpxg5hqx0-gjs-1.84.2.drv)
-    # 24.11 uses gjs 1.82.1
     pkgs-2411.davinci-resolve-studio
   ];
 
