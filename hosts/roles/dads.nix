@@ -12,7 +12,7 @@
       Restart = "always";
       RestartSec = "5s";
       User = "chrism";
-      Group = "chrism";
+      Group = "users";
       Environment = [];
     };
   };
