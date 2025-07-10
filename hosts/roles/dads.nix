@@ -6,7 +6,7 @@
     wantedBy = [ "multi-user.target" ];
     preStart = '''';
     script = ''
-      cd /home/chrism/projects/enfold/dadsenv && ./bootstrap && devenv processes up
+      cd /home/chrism/projects/enfold/dadsenv && /home/chrism/.nix-profile/bin/devenv processes up
     '';
     serviceConfig = {
       Restart = "always";
