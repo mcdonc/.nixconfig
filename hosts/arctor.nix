@@ -18,6 +18,7 @@
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
     ./roles/jupyterhub.nix
+    ./roles/dads.nix
   ];
 
   networking.firewall.enable = true;
@@ -174,6 +175,22 @@
       locations."/" = {
         proxyPass = "http://127.0.0.1:8000/";
         proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
+    virtualHosts."pydio-token-service.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:6550/";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
