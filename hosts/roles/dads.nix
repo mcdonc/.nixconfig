@@ -13,7 +13,9 @@
       RestartSec = "5s";
       User = "chrism";
       Group = "users";
-      Environment = [];
+      Environment = [
+        "PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring"
+      ];
     };
   };
   
