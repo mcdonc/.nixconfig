@@ -270,5 +270,5 @@
 
   # rpi: https://blog.janissary.xyz/posts/nixos-install-custom-image
 
-  boot.kernel.sysctl."vm.overcommit_memory" = "1"; # redis
+  boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 }
