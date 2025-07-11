@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }:
 {
   age.secrets."enfold-pat" = {
-    file = ../../secrets/enfold-pat.age;
+    file = ../../../secrets/enfold-pat.age;
     mode = "600";
     owner = "chrism";
     group = "wheel";
   };
 
   age.secrets."enfold-pydio-service-token" = {
-    file = ../../secrets/enfold-pydio-service-token.age;
+    file = ../../../secrets/enfold-pydio-service-token.age;
     mode = "600";
     owner = "chrism";
     group = "wheel";
