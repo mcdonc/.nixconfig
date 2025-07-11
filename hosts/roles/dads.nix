@@ -28,7 +28,8 @@
       ${lib.getExe pkgs.python3} ./bootstrap
       ${lib.getExe pkgs.git} pull
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
-      if [ ! -f /home/chrism/dads-cli/dads ]; then
+      DADSPATH=/home/chrism/dads-cli/dads
+      if [ -z "$DADSPATH" ]; then
          $DEVENV_CMD shell -- dadsbuild
       fi
       $DEVENV_CMD processes up
