@@ -29,9 +29,10 @@
       ${lib.getExe pkgs.git} pull
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       DADSPATH=/home/chrism/dads-cli/dads
-      if [ -z "$DADSPATH" ]; then
+      if [ ! -f "$DADSPATH" ]; then
          $DEVENV_CMD shell -- dadsbuild
       fi
+      echo "wuzzup"
       $DEVENV_CMD processes up
     '';
     serviceConfig = {
