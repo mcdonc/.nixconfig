@@ -33,7 +33,7 @@
          $DEVENV_CMD shell -- dadsbuild
       fi
       echo "wuzzup"
-      $DEVENV_CMD processes up
+      exec $DEVENV_CMD processes up
     '';
     serviceConfig = {
       Restart = "always";
