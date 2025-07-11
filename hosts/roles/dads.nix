@@ -1,5 +1,10 @@
-{ ... }:
+{ config, ... }:
 {
+  age.secrets."enfold-pat" = {
+    file = ../secrets/enfold-pat.age;
+    mode = 600;
+  };
+
   systemd.services.dads = {
     description = "Dads processes";
     after = [ "network.target" ];
@@ -15,8 +20,9 @@
       Group = "users";
       Environment = [
         "PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring"
+        "ENFOLD_PAT_PATH=${config.age.secrets."enfold-pat".path};"
       ];
     };
   };
-  
+
 }
