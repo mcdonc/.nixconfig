@@ -64,6 +64,11 @@ let
   syspython = pkgs.writeScriptBin "syspython" ''
     exec ${python313WithPackages}/bin/python $@
   '';
+
+  dadsupdate = pkgs.writeShellScriptBin "dadsupdate" ''
+    ssh -t arctor.repoze.org "sudo systemctl restart dads"
+  '';
+
 in
 {
   nixpkgs.config.permittedInsecurePackages = [
@@ -88,6 +93,7 @@ in
       cntr # for build debugging
       cowsay
       curl
+      dadsupdate
       dig
       dua
       duf

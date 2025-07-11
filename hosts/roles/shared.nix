@@ -1,11 +1,5 @@
 { pkgs, ... }:
-let
 
-  dadsupdate = pkgs.writeShellScriptBin "dadsupdate" ''
-    ssh -t arctor.repoze.org "sudo systemctl restart dads"
-  '';
-
-in
 {
   # see https://chattingdarkly.org/@lhf@fosstodon.org/110661879831891580
   # replace with nh
@@ -90,9 +84,5 @@ in
   };
 
   users.groups.nixconfig = { };
-
-  environment.systemPackages = [
-    dadsupdate
-  ];
 
 }
