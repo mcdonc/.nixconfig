@@ -1,9 +1,15 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 {
   age.secrets."enfold-pat" = {
-    file = ../secrets/enfold-pat.age;
-    mode = 600;
+    file = ../../secrets/enfold-pat.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
   };
+
+  environment.systemPackages = [
+    pkgs.curl
+  ];
 
   systemd.services.dads = {
     description = "Dads processes";
@@ -11,7 +17,21 @@
     wantedBy = [ "multi-user.target" ];
     preStart = '''';
     script = ''
-      cd /home/chrism/projects/enfold/dadsenv && /home/chrism/.nix-profile/bin/devenv processes up
+      export PATH="/run/current-system/sw/bin:$PATH"
+      export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
+      mkdir -p /home/chrism/projects/enfold
+      export DADSENV_DIR=/home/chrism/projects/enfold/dadsenv
+      if [ ! -d "$DADSENV_DIR" ]; then
+        ${lib.getExe pkgs.git} clone "https://mcdonc:$ENFOLD_PAT@github.com/mcdonc/dadsenv.git" $DADSENV_DIR
+      fi
+      cd $DADSENV_DIR
+      ${lib.getExe pkgs.python3} ./bootstrap
+      ${lib.getExe pkgs.git} pull
+      DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
+      if [ ! -f /home/chrism/dads-cli/dads ]; then
+         $DEVENV_CMD shell -- dadsbuild
+      fi
+      $DEVENV_CMD processes up
     '';
     serviceConfig = {
       Restart = "always";
@@ -20,7 +40,6 @@
       Group = "users";
       Environment = [
         "PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring"
-        "ENFOLD_PAT_PATH=${config.age.secrets."enfold-pat".path};"
       ];
     };
   };
