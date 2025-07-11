@@ -22,20 +22,22 @@
     description = "Dads processes";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    environment.PATH = lib.mkForce "/run/wrappers/bin:/home/chrism/.nix-profile/bin:/nix/profile/bin:/home/chrism/.local/state/nix/profile/bin:/etc/profiles/per-user/chrism/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
+    environment.PYTHON_KEYRING_BACKEND = "keyrings.alt.file.PlaintextKeyring";
+
     preStart = '''';
     script = ''
-      export PATH="/run/current-system/sw/bin:$PATH"
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export PYDIO_SERVICE_TOKEN=$(cat "${config.age.secrets."enfold-pydio-service-token".path}"|xargs)
       mkdir -p /home/chrism/projects/enfold
       DADSENV_DIR=/home/chrism/projects/enfold/dadsenv
       if [ ! -d "$DADSENV_DIR" ]; then
-        ${lib.getExe pkgs.git} clone "https://mcdonc:$ENFOLD_PAT@github.com/mcdonc/dadsenv.git" $DADSENV_DIR
+        git clone "https://mcdonc:$ENFOLD_PAT@github.com/mcdonc/dadsenv.git" $DADSENV_DIR
       fi
       cd $DADSENV_DIR
-      ${lib.getExe pkgs.python3} ./bootstrap
-      ${lib.getExe pkgs.git} pull
-      pushd afsoc-dads && ${lib.getExe pkgs.git} pull && popd
+      python3 ./bootstrap
+      git pull
+      pushd afsoc-dads && git pull && popd
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       DADSPATH=/home/chrism/dads-cli/dads
       if [ ! -f "$DADSPATH" ]; then
@@ -49,9 +51,6 @@
       RestartSec = "5s";
       User = "chrism";
       Group = "users";
-      Environment = [
-        "PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring"
-      ];
     };
   };
 
