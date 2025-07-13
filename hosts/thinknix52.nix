@@ -41,6 +41,7 @@ args@{
   );
 
   # sleep doesnt work in offload mode 01/07/2025 kernel 6.6 nvidia 565
+  # confirmed 07/12/2025 in 25.05
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
