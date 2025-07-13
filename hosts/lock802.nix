@@ -28,6 +28,7 @@ in
     ../users/chrism
     ./roles/minimal.nix
     ./roles/rpi4.nix
+    ./roles/dnsovertls/resolvedonly.nix
     ./roles/lock802/doorclient.nix
     ./roles/mailrelayer.nix
     ./roles/journalwatch.nix
