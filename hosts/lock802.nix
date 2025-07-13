@@ -33,6 +33,8 @@ in
     ./roles/journalwatch.nix
   ];
 
+  services.avahi.enable = true; #mDNS
+
   # system.autoUpgrade = {
   #   enable = true;
   #   flake = "github:mcdonc/.nixconfig#lock802";
