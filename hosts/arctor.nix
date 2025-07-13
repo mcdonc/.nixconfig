@@ -239,28 +239,28 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
-    # allow sender to be any domain if sasl-auth submitted
-    services.postfix.config.smtpd_sender_restrictions = lib.mkForce "
-      permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
+  # allow sender to be any domain if sasl-auth submitted
+  services.postfix.config.smtpd_sender_restrictions = lib.mkForce "
+    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
 
-    # allow recipient to be any domain if sasl-auth submitted
-    services.postfix.config.smtpd_recipient_restrictions = lib.mkForce "
-      permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
+  # allow recipient to be any domain if sasl-auth submitted
+  services.postfix.config.smtpd_recipient_restrictions = lib.mkForce "
+    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
 
-    services.postfix.extraAliases = ''
-      default: root
-      root: chrism@repoze.org
-    '';
+  services.postfix.extraAliases = ''
+    default: root
+    root: chrism@repoze.org
+  '';
 
-    services.postfix.canonical = ''
-      /^([^@]+)(@(arctor|arctor\.repoze\.org))?$/    ''${1}@repoze.org
-      /^([^@]+)(@([^.@]+(\.localdomain)?)?)?$/       ''${1}@repoze.org
-    '';
+  services.postfix.canonical = ''
+    /^([^@]+)(@(arctor|arctor\.repoze\.org))?$/    ''${1}@repoze.org
+    /^([^@]+)(@([^.@]+(\.localdomain)?)?)?$/       ''${1}@repoze.org
+  '';
 
-    services.postfix.config = {
-      recipient_canonical_maps = "regexp:/etc/postfix/canonical";
-      sender_canonical_maps = "regexp:/etc/postfix/canonical";
-    };
+  services.postfix.config = {
+    recipient_canonical_maps = "regexp:/etc/postfix/canonical";
+    sender_canonical_maps = "regexp:/etc/postfix/canonical";
+  };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
 
@@ -271,4 +271,7 @@
   # rpi: https://blog.janissary.xyz/posts/nixos-install-custom-image
 
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
+
+  services.avahi.enable = lib.mkForce false;
+
 }
