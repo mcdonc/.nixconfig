@@ -47,6 +47,7 @@ in
         error: PAM: Authentication failure for .*
         error: key_exchange_identification: .*
         error: Protocol major versions differ: .*
+        error: kex_exchange_identification: *.
       '';
     }
     {
