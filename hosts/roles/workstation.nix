@@ -135,7 +135,6 @@
     serviceConfig.LogFilterPatterns = "~.*Expiring subscriptions.*";
   };
 
-  # printing (depends on avahi, defined in shared.nix)
   services.printing.enable = true;
   #https://discourse.nixos.org/t/newly-announced-vulnerabilities-in-cups/52771/9
   systemd.services.cups-browsed.enable = false;
