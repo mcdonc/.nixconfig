@@ -85,17 +85,4 @@
 
   users.groups.nixconfig = { };
 
-  services.avahi = {
-    # systemd-resolved now handles mDNS publishing except services.  That's why
-    # publish.enable is false but publish.userServices is true.  Keep an eye
-    # on systemd.dnssd (service publishing) to totally replace avahi.
-    enable = true;
-    #publish.enable = true;
-    publish.userServices = true;
-    # ^^ Needed to allow samba to automatically register mDNS records
-    # without the need for an `extraServiceFile`
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
 }

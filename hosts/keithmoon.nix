@@ -185,7 +185,20 @@
     StandardError = "null";
   };
 
-  # avahi config in shared.nix is required for samba to work
+  services.avahi = {
+    # systemd-resolved now handles mDNS publishing except services.  That's why
+    # publish.enable is false but publish.userServices is true.  Keep an eye
+    # on systemd.dnssd (service publishing) to totally replace avahi.
+    enable = true;
+    #publish.enable = true;
+    publish.userServices = true;
+    # ^^ Needed to allow samba to automatically register mDNS records
+    # without the need for an `extraServiceFile`
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  # avahi config is required for samba to work (maybe?  untested)
 
   services.samba-wsdd = {
     enable = true;
