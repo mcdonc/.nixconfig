@@ -8,7 +8,7 @@
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
     ./roles/sessile.nix
-    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dns/resolved-tls.nix
   ];
 
   system.stateVersion = "23.05";

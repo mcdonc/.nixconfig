@@ -15,7 +15,7 @@ args@{
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/vmount.nix
-    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dns/resolved-tls.nix
     ./roles/backupsource.nix
     ./roles/davinci-resolve/studio.nix
     ./roles/nix-serve-client.nix

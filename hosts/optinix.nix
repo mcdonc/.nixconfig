@@ -26,7 +26,7 @@ in
     ./roles/intel.nix
     "${nixos-hardware}/common/pc/ssd"
     ./roles/encryptedzfs.nix
-    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dns/resolved-tls.nix
     ./roles/speedtest
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix

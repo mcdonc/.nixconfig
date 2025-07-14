@@ -11,12 +11,13 @@
     dnssec = "false";
     domains = [ "~." ]; # "use as default interface for all requests"
     # (see man resolved.conf)
-    # let Avahi handle mDNS publication
     extraConfig = ''
       DNSOverTLS=opportunistic
-      MulticastDNS=resolve
+      MulticastDNS=yes
     '';
-    llmnr = "true";
+    # MulticastDNS=yes lets resolved publish and resolve mdns hostname
+    # records (=resolve lets it only resolve mDNS names)
+    llmnr = "true"; # handle single-name hostnames
   };
 
   networking.nameservers = [

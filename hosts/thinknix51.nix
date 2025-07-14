@@ -10,7 +10,7 @@ args@{ config, lib, nixos-hardware, ... }:
     ./roles/pseries.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
-    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dns/resolved-tls.nix
     (
       import ./roles/macos-ventura.nix (
         args // { mem = "12G"; cores = 4; enable = false; }

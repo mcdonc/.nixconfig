@@ -16,7 +16,7 @@ args@{
     ./roles/tlp.nix
     ./roles/steam.nix
     ./roles/davinci-resolve/studio.nix
-    ./roles/dnsovertls/resolvedonly.nix # cannot be enabled for tpm
+    ./roles/dns/resolved-tls.nix # cannot be enabled for tpm
     ./roles/backupsource.nix
     ./roles/tailscale
     ./roles/nix-serve-client.nix

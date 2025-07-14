@@ -15,7 +15,7 @@
     #./roles/sessile.nix
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
-    ./roles/dnsovertls/resolvedonly.nix
+    ./roles/dns/resolved-tls.nix
     ./roles/backupsource.nix
     ./roles/steam.nix
     #./roles/vmount.nix
