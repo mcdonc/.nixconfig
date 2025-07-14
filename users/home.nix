@@ -57,6 +57,10 @@ let
     fi
   '';
 
+  dadsupdate = pkgs.writeShellScriptBin "dadsupdate" ''
+    ssh -t arctor.repoze.org "sudo systemctl restart dads"
+  '';
+
   sessionVariables = { };
 
   zshDotDir = ".config/zsh";
@@ -105,6 +109,7 @@ in
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
     keithtemps
+    dadsupdate
     whoosh
     nvfantemps
     yt-transcode
