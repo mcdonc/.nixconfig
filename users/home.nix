@@ -57,10 +57,6 @@ let
     fi
   '';
 
-  dadsupdate = pkgs.writeShellScriptBin "dadsupdate" ''
-    ssh -t arctor.repoze.org "sudo systemctl restart dads"
-  '';
-
   sessionVariables = { };
 
   zshDotDir = ".config/zsh";
@@ -92,6 +88,7 @@ let
     extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
     nix-generations = ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
+    dadsupdate = ''ssh -t arctor.repoze.org "sudo systemctl restart dads"'';
   };
 
   graphicalimports = lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
@@ -109,7 +106,6 @@ in
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
     keithtemps
-    dadsupdate
     whoosh
     nvfantemps
     yt-transcode
