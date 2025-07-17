@@ -270,6 +270,10 @@
     (append '(("\\.fs$" . forth-mode)
                 ("\\.fth$" . forth-mode)) auto-mode-alist))
 
+(add-hook 'typescript-mode-hook
+          (lambda () (setq typescript-indent-level 2)))
+(add-hook 'typescript-mode-hook #'flycheck-mode)
+
 ; smartttabs broken in e29: https://github.com/jcsalomon/smarttabs/issues/53
 ;(autoload 'smart-tabs-mode "smart-tabs-mode"
 ;  "Intelligently indent with tabs, align with spaces!")

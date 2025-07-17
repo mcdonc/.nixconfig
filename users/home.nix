@@ -110,6 +110,7 @@ in
     nvfantemps
     yt-transcode
     edit
+    typescript # for tsc for emacs
   ];
 
   services.gpg-agent = {
@@ -205,6 +206,8 @@ in
     epkgs.company
     epkgs.dart-mode
     epkgs.adoc-mode
+    epkgs.typescript-mode
+    epkgs.tsc # maybe required for typescript-mode
   ];
 
   services.emacs.enable = true;
