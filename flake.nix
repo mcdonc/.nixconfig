@@ -25,8 +25,6 @@
     # git rev-list -1 --before="2025-06-20 00:00" nixos-25.05
     nixpkgs-signal-7561.url =
       "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
-    dagger.url = "github:dagger/nix";
-    dagger.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };

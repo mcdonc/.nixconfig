@@ -39,26 +39,6 @@
         "type": "gitlab"
       }
     },
-    "dagger": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1751047013,
-        "narHash": "sha256-tTSoVC0ZCvkI+IMbSJF1J0ECKyZ9a7d24z3jWLVK+FY=",
-        "owner": "dagger",
-        "repo": "nix",
-        "rev": "7765e3fc447077d6ad200df1cd40ec171f16af91",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dagger",
-        "repo": "nix",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -587,7 +567,6 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "dagger": "dagger",
         "home-manager": "home-manager_2",
         "mailserver": "mailserver",
         "musnix": "musnix",
