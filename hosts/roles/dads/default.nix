@@ -34,6 +34,7 @@
 
     preStart = '''';
     script = ''
+      export ENFOLD_GIT_USER=mcdonc
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export PYDIO_SERVICE_TOKEN=$(cat "${config.age.secrets."enfold-pydio-service-token".path}"|xargs)
       export VIEW_USER_PASSWORD=$(cat "${config.age.secrets."enfold-view-user-password".path}"|xargs)
