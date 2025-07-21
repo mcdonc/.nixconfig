@@ -14,6 +14,13 @@
     group = "wheel";
   };
 
+  age.secrets."enfold-view-user-password" = {
+    file = ../../../secrets/enfold-view-user-password.age;
+    mode = "600";
+    owner = "chrism";
+    group = "wheel";
+  };
+  
   environment.systemPackages = [
     pkgs.curl
   ];
@@ -29,7 +36,7 @@
     script = ''
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export PYDIO_SERVICE_TOKEN=$(cat "${config.age.secrets."enfold-pydio-service-token".path}"|xargs)
-      export VIEW_USER_PASSWORD='N0t4production!'
+      export VIEW_USER_PASSWORD=$(cat "${config.age.secrets."enfold-view-user-password".path}"|xargs)
       mkdir -p /home/chrism/projects/enfold
       DADSENV_DIR=/home/chrism/projects/enfold/dadsenv
       if [ ! -d "$DADSENV_DIR" ]; then

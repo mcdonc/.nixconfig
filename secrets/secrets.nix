@@ -25,4 +25,5 @@ in
   "enfold-gemini-key.age".publicKeys = [ chrism keithmoon ];
   "enfold-pat.age".publicKeys = [ chrism keithmoon arctor ];
   "enfold-pydio-service-token.age".publicKeys = [ chrism keithmoon arctor ];
+  "enfold-view-user-password.age".publicKeys = [ chrism keithmoon arctor ];
 }
