@@ -41,9 +41,13 @@
       pushd afsoc-dads && git pull && popd
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       DADSPATH=/home/chrism/dads-cli/dads
+      oldtmpdir="$TMPDIR"
+      mkdir "$DADSENV_DIR/tmp"
+      export TMPDIR="$DADSENV_DIR/tmp" # we run out of space on /tmp via pip
       if [ ! -f "$DADSPATH" ]; then
-        $DEVENV_CMD shell -- dadsbuild
+        $DEVENV_CMD shell -- true
       fi
+      export TMPDIR="$oldtmpdir"
       echo "wuzzup"
       exec $DEVENV_CMD processes up
     '';
