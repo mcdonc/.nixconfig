@@ -68,7 +68,7 @@ in
     }
     {
       # not useful
-      match = "_SYSTEMD_UNIT = /(libvirtd\.service|dbus\.service|udisks2\.service|systemd-udevd\.service|user@\d+\.service|do-agent\.service|dhcpcd\.service)/";
+      match = "_SYSTEMD_UNIT = /(libvirtd\.service|dbus\.service|udisks2\.service|systemd-udevd\.service|user@\d+\.service|do-agent\.service|dhcpcd\.service|docker\.service)/";
       filters = ALL;
     }
     {

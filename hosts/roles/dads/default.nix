@@ -49,7 +49,7 @@
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       DADSPATH=/home/chrism/dads-cli/dads
       oldtmpdir="$TMPDIR"
-      mkdir "$DADSENV_DIR/tmp"
+      mkdir -p "$DADSENV_DIR/tmp"
       export TMPDIR="$DADSENV_DIR/tmp" # we run out of space on /tmp via pip
       if [ ! -f "$DADSPATH" ]; then
         $DEVENV_CMD shell -- true
