@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }:
 {
   age.secrets."enfold-pat" = {
-    file = ../../../secrets/enfold-pat.age;
+    file = ../../secrets/enfold-pat.age;
     mode = "600";
     owner = "chrism";
     group = "wheel";
   };
 
   age.secrets."enfold-openai-api-key" = {
-    file = ../../../secrets/enfold-openapi-key.age;
+    file = ../../secrets/enfold-openai-api-key.age;
     mode = "600";
     owner = "chrism";
     group = "wheel";
@@ -30,19 +30,19 @@
       export ENFOLD_GIT_USER=mcdonc
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
+      DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       mkdir -p /home/chrism/projects/enfold
       RAGENV_DIR=/home/chrism/projects/enfold/ragenv
       if [ ! -d "$RAGENV_DIR" ]; then
         git clone "https://mcdonc:$ENFOLD_PAT@github.com/mcdonc/ragenv.git" $RAGENV_DIR
       fi
       cd $RAGENV_DIR
-      python3 ./bootstrap
       git pull
+      python3 ./bootstrap
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
-      export TMPDIR="$oldtmpdir"
-      exec $DEVENV_CMD processes up
+      exec $DEVENV_CMD shell -- uvicorn llm_proxy:app --port 9000
     '';
     serviceConfig = {
       Restart = "always";
