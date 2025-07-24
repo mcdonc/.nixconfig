@@ -32,9 +32,9 @@
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       mkdir -p /home/chrism/projects/enfold
-      RAGENV_DIR=/home/chrism/projects/enfold/ragenv
+      RAGENV_DIR=/home/chrism/projects/enfold/afsoc-rag
       if [ ! -d "$RAGENV_DIR" ]; then
-        git clone "https://mcdonc:$ENFOLD_PAT@github.com/mcdonc/ragenv.git" $RAGENV_DIR
+        git clone "https://$ENFOLD_GIT_USER:$ENFOLD_PAT@github.com/enfold/afsoc-rag" $RAGENV_DIR
       fi
       cd $RAGENV_DIR
       git pull
@@ -42,7 +42,7 @@
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
-      exec $DEVENV_CMD shell -- uvicorn llm_proxy:app --port 9000
+      exec $DEVENV_CMD shell -- uvicorn ragserver:app --port 9000
     '';
     serviceConfig = {
       Restart = "always";
