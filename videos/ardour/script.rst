@@ -53,8 +53,6 @@ Video Script
 
   - Switching to Pipewire.
 
-- ¯\_(ツ)_/¯
-
 - No idea how stable the system will be with pipewire instead of PA/JACK, but
   I guess I'll find out.
   
