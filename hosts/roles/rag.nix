@@ -37,12 +37,14 @@
         git clone "https://$ENFOLD_GIT_USER:$ENFOLD_PAT@github.com/enfold/afsoc-rag" $RAGENV_DIR
       fi
       cd $RAGENV_DIR
+      git checkout -- .
       git pull
       python3 ./bootstrap
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
-      exec $DEVENV_CMD shell -- uvicorn ragserver:app --port 9000
+      $DEVENV_CMD shell -- flutterbuildweb --base-href="/static/"
+      $DEVENV_CMD processes up
     '';
     serviceConfig = {
       Restart = "always";
