@@ -39,7 +39,7 @@
       cd $RAGENV_DIR
       git checkout -- .
       git pull
-      python3 ./bootstrap
+      python3 ./bootstrap --unattended
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
