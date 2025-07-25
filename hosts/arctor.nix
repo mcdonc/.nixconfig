@@ -170,23 +170,23 @@
       };
     };
 
-    # virtualHosts."jupyterhub.repoze.org" = {
-    #   forceSSL = true;
-    #   enableACME = true;
-    #   acmeRoot = null;
-    #   locations."/" = {
-    #     proxyPass = "http://127.0.0.1:8000/";
-    #     proxyWebsockets = true;
-    #     extraConfig = ''
-    #       proxy_set_header Host $host;
-    #       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #       proxy_set_header X-Forwarded-Proto $scheme;
-    #       proxy_set_header X-Real-IP $remote_addr;
-    #       proxy_set_header X-Forwarded-Host $host:$server_port;
-    #       proxy_set_header X-Forwarded-Port $server_port;
-    #     '';
-    #   };
-    # };
+    virtualHosts."jupyterhub.repoze.org" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8000/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+        '';
+      };
+    };
 
     virtualHosts."pydio-token-service.repoze.org" = {
       forceSSL = true;
@@ -205,40 +205,12 @@
       };
     };
 
-    # virtualHosts."rag.repoze.org" = {
-    #   forceSSL = true;
-    #   enableACME = true;
-    #   acmeRoot = null;
-    #   locations."/" = {
-    #     proxyPass = "http://127.0.0.1:8000/";
-    #     extraConfig = ''
-    #       proxy_set_header Host $host;
-    #       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #       proxy_set_header X-Forwarded-Proto $scheme;
-    #       proxy_set_header X-Real-IP $remote_addr;
-    #       proxy_set_header X-Forwarded-Host $host:$server_port;
-    #       proxy_set_header X-Forwarded-Port $server_port;
-    #     '';
-    #   };
-    # };
-
     virtualHosts."rag.repoze.org" = {
       forceSSL = true;
       enableACME = true;
       acmeRoot = null;
-      locations."/static/" = {
-        proxyPass = "http://127.0.0.1:9000/";
-        extraConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-Host $host:$server_port;
-          proxy_set_header X-Forwarded-Port $server_port;
-        '';
-      };
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8000/";
+        proxyPass = "http://127.0.0.1:9000/";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

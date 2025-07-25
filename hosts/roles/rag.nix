@@ -43,8 +43,7 @@
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
-      $DEVENV_CMD shell -- flutterbuildweb --base-href="/static/"
-      $DEVENV_CMD processes up
+      $DEVENV_CMD shell -- flutterbuildandrunweb
     '';
     serviceConfig = {
       Restart = "always";
