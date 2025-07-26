@@ -27,4 +27,5 @@ in
   "enfold-pydio-service-token.age".publicKeys = [ chrism keithmoon arctor ];
   "enfold-view-user-password.age".publicKeys = [ chrism keithmoon arctor ];
   "enfold-openai-api-key.age".publicKeys = [ chrism keithmoon arctor ];
+  "enfold-droplet-passwords.age".publicKeys = [ chrism ];
 }
