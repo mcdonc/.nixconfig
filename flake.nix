@@ -172,6 +172,10 @@
           system = "x86_64-linux";
         }
         {
+          hostname = "enfold";
+          system = "x86_64-linux";
+        }
+        {
           hostname = "lock802";
           system = "aarch64-linux";
         }
