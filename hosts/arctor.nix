@@ -18,8 +18,8 @@
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
     #./roles/jupyterhub.nix
-    ./roles/dads
-    ./roles/rag.nix
+    #./roles/dads
+    #./roles/rag.nix
   ];
 
   networking.firewall.enable = true;
