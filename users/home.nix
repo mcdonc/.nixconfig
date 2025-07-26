@@ -91,8 +91,8 @@ let
     extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
     nix-generations = ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
-    dadsupdate = ''ssh -t arctor.repoze.org "sudo systemctl restart dads"'';
-    ragupdate = ''ssh -t arctor.repoze.org "sudo systemctl restart rag"'';
+    dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads"'';
+    ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag"'';
   };
 
   graphicalimports = lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
