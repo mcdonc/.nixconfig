@@ -137,6 +137,7 @@ in
       "keithmoon".forwardAgent = true;
       "optinix.".forwardAgent = true;
       "arctor.repoze.org".forwardAgent = true;
+      "enfold.repoze.org".forwardAgent = true;
       "thinknix*".forwardAgent = true;
       "nixcentre".forwardAgent = true;
       "bouncer.repoze.org".forwardAgent = true;
