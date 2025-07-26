@@ -111,4 +111,6 @@
 
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 
+  environment.extraInit = "umask 002";
+
 }
