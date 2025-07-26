@@ -8,7 +8,8 @@ let
   keithmoon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKM2Y/WyecPzlYwodof33IhLgazClRN+T1SHoaNM9Yv";
   clonelock802 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3FP8bcCXHpaLfTetPPseJwqcCqek+sDrZAz/e33B61";
   arctor = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0HfCNzDF+l0pM/u5D3aLGXu2ICxcJ/85rHElIHrI3v";
-  systems = [ lock802 keithmoon clonelock802 arctor ];
+  enfold = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKHgIJDWfZbCNOS5F7f7xp7QhN8v7deNfY5QZRkQsAkO";
+  systems = [ lock802 keithmoon clonelock802 arctor enfold ];
 
 in
 
@@ -22,10 +23,10 @@ in
   "chris-mail-password-bcrypt.age".publicKeys = [ chrism arctor ];
   "chris-mail-password.age".publicKeys = [ keithmoon chrism ];
   "chris-mail-sasl.age".publicKeys = [ chrism keithmoon lock802 ];
-  "enfold-gemini-key.age".publicKeys = [ chrism keithmoon ];
-  "enfold-pat.age".publicKeys = [ chrism keithmoon arctor ];
-  "enfold-pydio-service-token.age".publicKeys = [ chrism keithmoon arctor ];
-  "enfold-view-user-password.age".publicKeys = [ chrism keithmoon arctor ];
-  "enfold-openai-api-key.age".publicKeys = [ chrism keithmoon arctor ];
+  "enfold-gemini-key.age".publicKeys = [ chrism keithmoon enfold ];
+  "enfold-pat.age".publicKeys = [ chrism keithmoon arctor enfold ];
+  "enfold-pydio-service-token.age".publicKeys = [ chrism keithmoon arctor enfold];
+  "enfold-view-user-password.age".publicKeys = [ chrism keithmoon arctor enfold];
+  "enfold-openai-api-key.age".publicKeys = [ chrism keithmoon arctor enfold ];
   "enfold-droplet-passwords.age".publicKeys = [ chrism ];
 }
