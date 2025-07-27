@@ -11,7 +11,6 @@
   imports = [
     "${inputs.nixpkgs}/nixos/modules/virtualisation/digital-ocean-config.nix"
     inputs.nixos-generators.nixosModules.all-formats
-    inputs.mailserver.nixosModule
     ../users/chrism
     ../users/tseaver
     ../users/alan
@@ -33,28 +32,6 @@
   services.fail2ban.maxretry = 5;
   services.fail2ban.extraPackages = [ pkgs.ipset ];
   services.fail2ban.banaction = "iptables-ipset-proto6-allports";
-  services.fail2ban.jails = {
-    "postfix-bruteforce" = ''
-      enabled = true
-      filter = postfix-bruteforce
-      findtime = 600
-      maxretry = 3
-    '';
-    "postfix-unresolving" = ''
-      enabled = true
-      filter = postfix-unresolving
-      findtime = 600
-      maxretry = 3
-    '';
-    "jupyterhub-bruteforce" = ''
-      enabled = true
-      filter = jupyterhub-bruteforce
-      findtime = 600
-      maxretry = 6
-      backend = auto
-      logpath = /var/log/nginx/access.log
-    '';
-  };
 
   networking.hostId = "cd246164";
   networking.hostName = "enfold";
