@@ -1,18 +1,343 @@
-args@{ pkgs, lib, ... }:
+args@{ pkgs, lib, config, ... }:
+
+let
+
+  keithtemps = pkgs.writeShellScriptBin "keithtemps" ''
+    sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
+  '';
+
+  whoosh = pkgs.writeShellScriptBin "whoosh" ''
+    sudo systemctl stop idracfanctl.service && \
+    sleep 30 && \
+    sudo systemctl start idracfanctl.service
+  '';
+
+  nvfantemps = pkgs.writeShellScriptBin "nvfantemps" ''
+    nvidia-smi --query-gpu=timestamp,utilization.gpu,fan.speed,temperature.gpu --format=csv -l 10
+  '';
+
+  nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
+    ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+  '';
+
+  ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
+
+  yt-transcode = pkgs.writeShellScriptBin "yt-transcode" ''
+    ffmpeg -i "$1" -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
+      -movflags +faststart output.mp4
+  '';
+
+  thumbnail = pkgs.writeShellScript "thumbnail" ''
+    # writes to ./thumbnail.png
+    # thumbnail eyedrops2.mp4 00:01:07
+    ${ffmpeg} -y -i "$1" -ss "$2" \
+      -vframes 1 thumbnail.png > /dev/null 2>&1
+  '';
+
+  extractmonopcm = pkgs.writeShellScript "extractmonopcm" ''
+    ${ffmpeg} -i "$1" -map 0:a:0 -ac 1 -f s16le -acodec pcm_s16le "$2"
+  '';
+
+  yt-1080p = pkgs.writeShellScript "yt-1080p" ''
+    # assumes 4k input
+    ${ffmpeg} -i "$1" -c:v h264_nvenc -rc:v vbr -b:v 10M \
+       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart "$2"
+  '';
+
+  edit = pkgs.writeShellScriptBin "edit" ''
+    if [[ "$XDG_SESSION_TYPE" == "tty" ]]; then
+      exec emacsclient -c $@
+    else
+      exec emacsclient -n -c $@
+    fi
+  '';
+
+  sessionVariables = { };
+
+  zshDotDir = ".config/zsh";
+
+  shellAliases = {
+    fxdevenv = ''
+      export FXDEV_CHDIR=\"$(pwd)\"; \
+      cd ~/projects/fornax/fxdevenv; \
+      devenv shell;
+    '';
+    ragenv = ''
+      cd ~/projects/enfold/afsoc-rag && devenv shell
+    '';
+    oldswnix = "sudo nixos-rebuild switch --verbose --show-trace";
+    swnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
+    oldreplnix = "nix repl '<nixpkgs>'";
+    replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
+    rbnix = "sudo nixos-rebuild build --rollback";
+    mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
+    restartemacs = "systemctl --user restart emacs";
+    kbrestart = "systemctl --user restart keybase";
+    toconsole = "sudo systemctl isolate multi-user.target";
+    togui = "sudo systemctl isolate graphical.target";
+    open = "kioclient exec";
+    sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
+    ls = "ls --color=auto";
+    ai = "shell-genie ask";
+    diff = "${pkgs.colordiff}/bin/colordiff";
+    disable-kvm = "sudo modprobe -r kvm-intel"; # for virtualbox
+    thumbnail = "${thumbnail}";
+    yt-1080p = "${yt-1080p}";
+    extractmonopcm = "${extractmonopcm}";
+    cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
+    nix-generations = ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
+    dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads"'';
+    ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag"'';
+  };
+
+  graphicalimports =
+    lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
+
+in
 
 {
   # not good enough to just add ../home.nix to imports, must eagerly import,
   # or config.jawns can't be found
-  imports = [ (import ../home.nix args) ];
+  imports = [ (import ../home.nix args) ] ++ graphicalimports;
 
   home.stateVersion = "22.05";
 
-  programs.zsh = {
-    sessionVariables = {
-      FXDEV_LOG_DEPLOYS = "1";
+  home.packages = with pkgs; [
+    fd # fd is an unnamed dependency of fzf
+    shell-genie
+    nixpkgs-fmt # unnamed dependency of emacs package
+    nixfmt80
+    keithtemps
+    whoosh
+    nvfantemps
+    yt-transcode
+    edit
+    typescript # for tsc for emacs
+  ];
+
+  services.gpg-agent = {
+    enable = true;
+    defaultCacheTtl = 1800;
+    enableSshSupport = true;
+  };
+
+  xdg.configFile."black".text = ''
+    [tool.black]
+    line-length = 80
+  '';
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "192.168.1.*".forwardAgent = true;
+      "lock802".forwardAgent = true;
+      "clonelock802".forwardAgent = true;
+      "keithmoon".forwardAgent = true;
+      "optinix.".forwardAgent = true;
+      "arctor.repoze.org".forwardAgent = true;
+      "enfold.repoze.org".forwardAgent = true;
+      "thinknix*".forwardAgent = true;
+      "nixcentre".forwardAgent = true;
+      "bouncer.repoze.org".forwardAgent = true;
+      "lock802.repoze.org".forwardAgent = true;
+      "optinix".forwardAgent = true;
+      "win10".user = "user";
+      "apex.firewall" = {
+        hostname = "apex.firewall";
+        proxyJump = "bouncer.palladion.com";
+        forwardAgent = true;
+        serverAliveInterval = 60;
+        localForwards = [
+          # windresource
+          {
+            bind.port = 56526;
+            host.port = 56526;
+            host.address = "apex-gis.ace.apexcleanenergy.com";
+          }
+          # 8760, techdash, gisproject
+          {
+            bind.port = 1433;
+            host.port = 1433;
+            host.address = "ace-ra-sql1.ace.apexcleanenergy.com";
+          }
+          # mongo
+          {
+            bind.port = 27017;
+            host.port = 27017;
+            host.address = "ace-web-test.ace.apexcleanenergy.com";
+          }
+        ];
+      };
     };
   };
 
+  programs.emacs.enable = true;
+  programs.emacs.extraPackages = epkgs: [
+    epkgs.nix-mode
+    epkgs.nixpkgs-fmt
+    epkgs.flycheck
+    epkgs.json-mode
+    epkgs.python-mode
+    epkgs.auto-complete
+    epkgs.web-mode
+    epkgs.smart-tabs-mode
+    epkgs.whitespace-cleanup-mode
+    epkgs.flycheck-pyflakes
+    epkgs.flycheck-pos-tip
+    epkgs.nord-theme
+    epkgs.nordless-theme
+    epkgs.vscode-dark-plus-theme
+    epkgs.doom-modeline
+    epkgs.all-the-icons
+    epkgs.all-the-icons-dired
+    epkgs.magit
+    epkgs.markdown-mode
+    epkgs.markdown-preview-mode
+    epkgs.gptel
+    pkgs.emacs-all-the-icons-fonts
+    epkgs.yaml-mode
+    epkgs.multiple-cursors
+    epkgs.dts-mode
+    epkgs.rust-mode
+    epkgs.nickel-mode
+    epkgs.editorconfig
+    epkgs.terraform-mode
+    epkgs.lspce
+    epkgs.lsp-mode
+    epkgs.lsp-ui
+    epkgs.lsp-jedi
+    epkgs.company
+    epkgs.dart-mode
+    epkgs.adoc-mode
+    epkgs.typescript-mode
+    epkgs.tsc # maybe required for typescript-mode
+  ];
+
+  services.emacs.enable = true;
+
+  home.file.".emacs.d" = {
+    source = ./.emacs.d;
+    recursive = true;
+  };
+
+  home.file.".p10k.zsh" = {
+    source = ./.p10k-fornax.zsh;
+    executable = true;
+  };
+
+  home.file.".p10k-theme.zsh" = {
+    source = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    executable = true;
+  };
+
+  programs.gitui.enable = true;
+
+  programs.dircolors.enable = true;
+
+  programs.fzf.enable = true;
+  programs.fzf.enableZshIntegration = true;
+
+  programs.bash = {
+    enable = true;
+    shellAliases = shellAliases;
+    sessionVariables = sessionVariables;
+    enableCompletion = true;
+  };
+
+  programs.zsh = {
+    enable = true;
+    shellAliases = shellAliases;
+    sessionVariables = sessionVariables;
+    enableCompletion = true;
+
+    dotDir = zshDotDir;
+    autosuggestion.enable = true;
+
+    # speed up zsh start time, see
+    # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
+    # (needs extended_glob)
+    completionInit = ''
+      # On slow systems, checking the cached .zcompdump file to see if it must
+      # be regenerated adds a noticable delay to zsh startup.  This little
+      # hack restricts it to once a day.  It should be pasted into your own
+      # completion file.
+      #
+      # The globbing is a little complicated here:
+      # - '#q' is an explicit glob qualifier that makes globbing work within
+      #   zsh's [[ ]] construct.
+      # - 'N' makes the glob pattern evaluate to nothing when it doesn't match
+      #   (rather than throw a globbing error)
+      # - '.' matches "regular files"
+      # - 'mh+24' matches files (or directories or whatever) that are older
+      #   than 24 hours.
+      setopt extended_glob
+      autoload -Uz compinit
+      export ZDOTDIR=~/${zshDotDir}
+      if [[ -n ~/${zshDotDir}/.zcompdump(#qN.mh+24) ]]; then
+        compinit;
+      else
+        compinit -C;
+      fi;
+    '';
+
+    #initExtraFirst = ''
+    #  zmodload zsh/zprof
+    #'';
+
+    initContent = ''
+      # be more bashy
+      setopt interactive_comments bashautolist nobeep nomenucomplete \
+             noautolist extended_glob
+
+      source ~/.p10k.zsh
+      source ~/.p10k-theme.zsh
+
+      ## Keybindings section
+      bindkey -e
+      bindkey '^I' fzf-completion                         # anything**<TAB>
+      bindkey '^[[7~' beginning-of-line                   # Home key
+      bindkey '^[[H' beginning-of-line                    # Home key
+      # [Home] - Go to beginning of line
+      if [[ "''${terminfo[khome]}" != "" ]]; then
+      bindkey "''${terminfo[khome]}" beginning-of-line
+      fi
+      bindkey '^[[8~' end-of-line                         # End key
+      bindkey '^[[F' end-of-line                          # End key
+      # [End] - Go to end of line
+      if [[ "''${terminfo[kend]}" != "" ]]; then
+      bindkey "''${terminfo[kend]}" end-of-line
+      fi
+      bindkey '^[[2~' overwrite-mode                      # Insert key
+      bindkey '^[[3~' delete-char                         # Delete key
+      bindkey '^[[C'  forward-char                        # Right key
+      bindkey '^[[D'  backward-char                       # Left key
+      bindkey '^[[5~' history-beginning-search-backward   # Page up key
+      bindkey '^[[6~' history-beginning-search-forward    # Page down key
+      # Navigate words with ctrl+arrow keys
+      bindkey '^[Oc' forward-word
+      bindkey '^[Od' backward-word
+      bindkey '^[[1;5D' backward-word
+      bindkey '^[[1;5C' forward-word
+      # delete previous word with ctrl+backspace
+      bindkey '^H' backward-kill-word
+
+      findup () {
+        # uses zsh extended globbing, https://unix.stackexchange.com/a/64164
+        echo (../)#$1(:a)
+      }
+
+      ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
+
+      #zprof
+    '';
+    plugins = [
+      {
+        name = "fast-syntax-highlighting";
+        src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
+      }
+    ];
+  };
+  
   # add this to ~/.gitconfig if this doesn't work
   # [credential]
   # 	helper =
@@ -38,106 +363,5 @@ args@{ pkgs, lib, ... }:
       "credential \"https://dev.azure.com\"".useHttpPath = "true";
     };
   };
-
-  # https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
-  programs.starship = {
-    enable = false;
-    settings = {
-      add_newline = false;
-      command_timeout = 5000;
-      format = ''
-        [](bg:#1C2023 fg:#7DF9AA)\\
-        [ ](bg:#7DF9AA fg:#090c0c)\\
-        [](fg:#7DF9AA bg:#3B76F0)\\
-        $directory\\
-        [](fg:#3B76F0 bg:#FCF392)\\
-        $git_branch\\
-        $git_status\\
-        $git_metrics\\
-        [](fg:#FCF392 bg:#1C2023)\\
-
-        $character'';
-      directory = {
-        truncation_length = 4;
-        truncate_to_repo = false;
-        truncation_symbol = "…/";
-        format = "[ $path ]($style)";
-        style = "fg:#E4E4E4 bg:#3B76F0";
-      };
-      git_branch = {
-        format = "[ $symbol$branch(:$remote_branch) ]($style)";
-        symbol = "  ";
-        style = "fg:#1C3A5E bg:#FCF392";
-      };
-      git_status = {
-        format = "[$all_status]($style)";
-        style = "fg:#1C3A5E bg:#FCF392";
-      };
-      git_metrics = {
-        format = "([+$added]($added_style))[]($added_style)";
-        added_style = "fg:#1C3A5E bg:#FCF392";
-        deleted_style = "fg:bright-red bg:235";
-        disabled = false;
-      };
-      cmd_duration = {
-        format = "[  $duration ]($style)";
-        style = "fg:bright-white bg:18";
-      };
-      character = {
-        #success_symbol = "[ ➜](bold green) ";
-        success_symbol = "[>](bold green)";
-        error_symbol = "[✗](#E84D44)";
-      };
-      time = {
-        disabled = true;
-        time_format = "%R"; # Hour:Minute Format
-        style = "bg:#1d2230";
-        format = "[[ 󱑍 $time ](bg:#1C3A5E fg:#8DFBD2)]($style)";
-      };
-    };
-  };
-
-  # # systemctl --user status nix-index.service
-  # systemd.user.services.nix-index = {
-  #   Unit = {
-  #     Description = "Run nix-index.";
-  #   };
-  #   Service = {
-  #     Type = "oneshot";
-  #     ExecStart = "${pkgs.nix-index}/bin/nix-index";
-  #   };
-  #   Install = {
-  #     WantedBy = [ "default.target" ];
-  #   };
-  # };
-
-  # # systemctl --user status nix-index.timer
-  # systemd.user.timers.nix-index = {
-  #   Unit = {
-  #     Description = "Timer for nix-index.";
-  #   };
-  #   Timer = {
-  #     Unit = "nix-index.service";
-  #     #OnCalendar = "*:0/5";
-  #     OnCalendar = "*-*-* 10:00:00";
-  #   };
-  #   Install = {
-  #     WantedBy = [ "timers.target" ];
-  #   };
-  # };
-
-  # systemd.user.services.watchintake = {
-  #   Unit = {
-  #     Description = "Run watchintake.";
-  #   };
-  #   Service = {
-  #     ExecStart = ''
-  #       ${watchintake}/bin/watchintake ${homedir}/intake
-  #     '';
-  #   };
-  #   Install = {
-  #     WantedBy = [ "default.target" ];
-  #   };
-  # };
 
 }
