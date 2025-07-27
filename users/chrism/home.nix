@@ -2,6 +2,13 @@ args@{ pkgs, lib, config, ... }:
 
 let
 
+  remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
+    cd /etc/nixos
+    fqdn="$1"
+    nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
+      --target-host chrism@$fqdn --ask-sudo-password
+  '';
+
   keithtemps = pkgs.writeShellScriptBin "keithtemps" ''
     sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
   '';
@@ -113,6 +120,7 @@ in
     yt-transcode
     edit
     typescript # for tsc for emacs
+    remoterebuild
   ];
 
   services.gpg-agent = {
