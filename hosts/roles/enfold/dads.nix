@@ -1,26 +1,7 @@
 { config, pkgs, lib, ... }:
 {
-  age.secrets."enfold-pat" = {
-    file = ../../../secrets/enfold-pat.age;
-    mode = "600";
-    owner = "chrism";
-    group = "wheel";
-  };
 
-  age.secrets."enfold-pydio-service-token" = {
-    file = ../../../secrets/enfold-pydio-service-token.age;
-    mode = "600";
-    owner = "chrism";
-    group = "wheel";
-  };
-
-  age.secrets."enfold-view-user-password" = {
-    file = ../../../secrets/enfold-view-user-password.age;
-    mode = "600";
-    owner = "chrism";
-    group = "wheel";
-  };
-  
+  imports = [ ./age.nix ];
   environment.systemPackages = [
     pkgs.curl
   ];

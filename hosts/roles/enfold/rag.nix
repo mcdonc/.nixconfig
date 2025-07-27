@@ -1,19 +1,5 @@
 { config, pkgs, lib, ... }:
 {
-  age.secrets."enfold-pat" = {
-    file = ../../secrets/enfold-pat.age;
-    mode = "600";
-    owner = "chrism";
-    group = "wheel";
-  };
-
-  age.secrets."enfold-openai-api-key" = {
-    file = ../../secrets/enfold-openai-api-key.age;
-    mode = "600";
-    owner = "chrism";
-    group = "wheel";
-  };
-
   environment.systemPackages = [
     pkgs.curl
   ];
