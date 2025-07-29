@@ -4,6 +4,15 @@
     pkgs.curl
   ];
 
+
+systemd.services.<your-service-name> = {
+  serviceConfig = {
+    Restart = "always";                 # or "on-failure", as appropriate
+    RestartSec = "5s";                  # Wait 5 seconds between restarts (adjust as needed)
+    StartLimitBurst = 5;                # Only allow 5 restarts in the interval
+    StartLimitIntervalSec = 10;         # Count restarts within a 10s window (adjust as needed)
+  };
+};  
   systemd.services.rag = {
     description = "Rag processes";
     after = [ "network.target" ];
@@ -13,6 +22,8 @@
 
     preStart = '''';
     script = ''
+      SLACK_NOTIFY_URL=$(cat "${config.age.secrets."enfold-slack-notify-url".path}"|xargs)
+      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes restarting\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
       export ENFOLD_GIT_USER=mcdonc
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
@@ -31,10 +42,13 @@
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
       $DEVENV_CMD shell -- flutterbuildandrunweb
+      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes stopped\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
     '';
     serviceConfig = {
       Restart = "always";
       RestartSec = "5s";
+      StartLimitBurst = 3; # Only allow 4 restarts in the interval
+      StartLimitIntervalSec = 200;  # Count restarts within a 200s window
       User = "chrism";
       Group = "users";
     };

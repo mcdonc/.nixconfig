@@ -35,5 +35,11 @@
     group = "users";
   };
 
+  age.secrets."enfold-slack-notify-url" = {
+    file = ../../../secrets/enfold-slack-notify-url.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
 
 }
