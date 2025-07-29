@@ -28,7 +28,12 @@
     group = "users";
   };
 
+  age.secrets."enfold-pydio-realm-pem" = {
+    file = ../../../secrets/enfold-pydio-realm-pem.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+
 
 }
-
-  
