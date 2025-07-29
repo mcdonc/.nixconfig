@@ -14,7 +14,6 @@
     preStart = '''';
     script = ''
       SLACK_NOTIFY_URL=$(cat "${config.age.secrets."enfold-slack-notify-url".path}"|xargs)
-      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes restarting\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
       export ENFOLD_GIT_USER=mcdonc
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
@@ -32,6 +31,7 @@
       oldtmpdir="$TMPDIR"
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
+      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes starting\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
       $DEVENV_CMD shell -- flutterbuildandrunweb
       curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes stopped\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
     '';
