@@ -4,15 +4,6 @@
     pkgs.curl
   ];
 
-
-systemd.services.<your-service-name> = {
-  serviceConfig = {
-    Restart = "always";                 # or "on-failure", as appropriate
-    RestartSec = "5s";                  # Wait 5 seconds between restarts (adjust as needed)
-    StartLimitBurst = 5;                # Only allow 5 restarts in the interval
-    StartLimitIntervalSec = 10;         # Count restarts within a 10s window (adjust as needed)
-  };
-};  
   systemd.services.rag = {
     description = "Rag processes";
     after = [ "network.target" ];
