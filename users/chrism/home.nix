@@ -150,6 +150,8 @@ in
       "lock802.repoze.org".forwardAgent = true;
       "optinix".forwardAgent = true;
       "win10".user = "user";
+      "enfold-mac-studio.repoze.org".port = 19911;
+      "enfold-mac-studio.repoze.org".forwardAgent = true;
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";
