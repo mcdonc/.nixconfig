@@ -33,7 +33,7 @@
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
       curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes starting\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
       $DEVENV_CMD shell -- flutterbuildandrunweb || \
-      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes did not start\", \"icon_emoji\": \":face_with_symbols_on_mouth:\"}" "$SLACK_NOTIFY_URL"
+      curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes did not start\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
     '';
     serviceConfig = {
       Restart = "always";
