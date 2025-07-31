@@ -145,8 +145,10 @@ let
 
 in
 {
-  services.keybase.enable = true;
-  services.kbfs.enable = true;
+
+  imports = [ ./keybase.nix ];
+  # services.keybase.enable = true;
+  # services.kbfs.enable = true;
   programs.gnome-terminal = termsettings;
 
   programs.bash = {

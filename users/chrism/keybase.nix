@@ -1,9 +1,9 @@
-{ pkgs, pkgs-kb-bumpversion, ... }:
+{ pkgs, pkgs-kb-bumpversion, lib, ... }:
 
 let
   # switch to pkgs-kb-bumpversion and switch to explicit config
   # if kb-pkgs craps out
-  kb-pkgs = pkgs-kb-bumpversion;
+  #kb-pkgs = pkgs-kb-bumpversion;
 in
 
 {
@@ -18,7 +18,7 @@ in
     [Desktop Entry]
     Comment[en_US]=Keybase Filesystem Service and GUI
     Comment=Keybase Filesystem Service and GUI
-    Exec=env KEYBASE_AUTOSTART=1 ${kb-pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
+    Exec=env KEYBASE_AUTOSTART=1 ${pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox
     GenericName[en_US]=
     GenericName=
     MimeType=
@@ -34,19 +34,19 @@ in
     X-KDE-Username=
   '';
 
-  home.packages = with kb-pkgs; [
+  home.packages = with pkgs; [
     keybase-gui
     keybase
   ];
 
-  #services.keybase.enable = true;
-  #services.kbfs.enable = true;
+  services.keybase.enable = true;
+  services.kbfs.enable = true;
 
   systemd.user.services.keybase = {
     Unit.Description = "Keybase service";
 
     Service = {
-      ExecStart = "${kb-pkgs.keybase}/bin/keybase service --auto-forked";
+      ExecStart = "${pkgs.keybase}/bin/keybase service --auto-forked";
       Restart = "on-failure";
       PrivateTmp = true;
     };
@@ -65,10 +65,13 @@ in
       let
         mountPoint = ''"%h/keybase"'';
       in
-      {
-        Environment = "PATH=/run/wrappers/bin KEYBASE_SYSTEMD=1";
+        {
+        Environment = [
+          "PATH=/run/wrappers/bin"
+          "KEYBASE_SYSTEMD=1"
+        ];
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
-        ExecStart = "${kb-pkgs.kbfs}/bin/kbfsfuse ${mountPoint}";
+        ExecStart = lib.mkForce "${pkgs.kbfs}/bin/kbfsfuse ${mountPoint}";
         ExecStopPost = "/run/wrappers/bin/fusermount -u ${mountPoint}";
         Restart = "on-failure";
         PrivateTmp = true;
