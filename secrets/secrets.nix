@@ -32,4 +32,5 @@ in
   "enfold-pydio-realm-pem.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
   "enfold-droplet-passwords.age".publicKeys = [ chrism alan tseaver ];
   "enfold-slack-notify-url.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
+  "enfold-cachix-authtoken.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
 }
