@@ -27,6 +27,7 @@
       fi
       cd $RAGENV_DIR
       git checkout -- .
+      git fetch --all
       git checkout prod
       git pull
       python3 ./bootstrap --unattended
