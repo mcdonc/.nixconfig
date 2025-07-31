@@ -42,4 +42,19 @@
     group = "users";
   };
 
+  age.secrets."mcdonc-cachix-authtoken" = {
+    file = ../../../secrets/mcdonc-cachix-authtoken.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+
+  age.secrets."enfold-cachix-authtoken" = {
+    file = ../../../secrets/enfold-cachix-authtoken.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+
+
 }
