@@ -337,7 +337,10 @@ in
       }
 
       ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-
+      authtoken_file=/run/agenix/enfold-cachix-authtoken
+      if [ -f $authtoken_file ]; then
+         export CACHIX_AUTH_TOKEN="$(cat "$authtoken_file"|xargs)"
+      fi
       #zprof
     '';
     plugins = [

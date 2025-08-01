@@ -22,6 +22,7 @@ args@{
     ./roles/speedtest
     ./roles/tailscale
     ./roles/rc505
+    ./roles/enfold/age.nix
     # (
     #   import ./roles/macos-ventura.nix (
     #     args // { mem = "16G"; cores = 4; enable = false; }

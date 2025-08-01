@@ -19,6 +19,16 @@
     ./roles/enfold/dads.nix
     ./roles/enfold/rag.nix
   ];
+  environment.extraInit =
+    let
+      apikey-file = config.age.secrets."enfold-openai-api-key".path;
+      cachix-file = config.age.secrets."enfold-cachix-authtoken".path;
+    in
+    ''
+      umask 002
+      export OPENAI_API_KEY=$(cat "${apikey-file}"|xargs)
+      export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
+    '';
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
@@ -88,15 +98,5 @@
 
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 
-  # allow running an afsoc-rag devshell by hand on enfold without setting
-  # envvars by hand
-  environment.extraInit =
-  let
-    apikey-file = config.age.secrets."enfold-openai-api-key".path;
-  in
-    ''
-      umask 002
-      export OPENAI_API_KEY=$(cat "${apikey-file}"|xargs)
-    '';
 
 }
