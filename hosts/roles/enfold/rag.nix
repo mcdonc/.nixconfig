@@ -17,7 +17,6 @@
       export ENFOLD_GIT_USER=mcdonc
       export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
-      export TOKEN_VALIDATION_PEM="$(cat "${config.age.secrets."enfold-pydio-realm-pem".path}"|xargs)"
       export CACHIX_AUTH_TOKEN="$(cat "${config.age.secrets."mcdonc-cachix-authtoken".path}"|xargs)"
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       mkdir -p /home/chrism/projects/enfold
