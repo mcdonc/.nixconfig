@@ -30,6 +30,9 @@
 
   system.stateVersion = "24.05";
 
+  services.ollama.host = "0.0.0.0";
+  services.open-webui.host = "0.0.0.0";
+
   services.idracfanctl.enable = true;
   services.idracfanctl.fan-percent-min = 15;
   services.idracfanctl.fan-percent-max = 65;
