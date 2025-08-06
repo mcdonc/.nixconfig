@@ -34,4 +34,5 @@ in
   "enfold-slack-notify-url.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
   "enfold-cachix-authtoken.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
   "mcdonc-cachix-authtoken.age".publicKeys = [ chrism tseaver keithmoon arctor enfold ];
+  "mcdonc-unhappy-cachix-authtoken.age".publicKeys = [ chrism keithmoon ];
 }
