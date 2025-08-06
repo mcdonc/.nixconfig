@@ -37,7 +37,6 @@
     group = "wheel";
   };
 
-
   environment.extraInit =
     let
       cachix-file = config.age.secrets."mcdonc-unhappy-cachix-authtoken".path;
@@ -392,7 +391,6 @@
     zstd
   ];
 
-  #sound.enable = lib.mkForce true; # use pulseaudio
   services.pulseaudio.enable = lib.mkForce true;
   services.pipewire.enable = lib.mkForce false;
   services.pipewire.jack.enable = lib.mkForce false;
