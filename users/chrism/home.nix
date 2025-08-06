@@ -20,7 +20,8 @@ let
   '';
 
   nvfantemps = pkgs.writeShellScriptBin "nvfantemps" ''
-    nvidia-smi --query-gpu=timestamp,utilization.gpu,fan.speed,temperature.gpu --format=csv -l 10
+    nvidia-smi --query-gpu=timestamp,utilization.gpu,fan.speed,temperature.gpu \
+      --format=csv -l 10
   '';
 
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
@@ -92,7 +93,9 @@ let
     yt-1080p = "${yt-1080p}";
     extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
-    nix-generations = ''sudo nix-env -p /nix/var/nix/profiles/system --list-generations'';
+    nix-generations = ''
+      sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+    '';
     dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads"'';
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag"'';
   };
