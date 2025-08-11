@@ -35,6 +35,7 @@
     22
     80
     443
+    11434
   ];
   networking.firewall.logRefusedConnections = false;
 
