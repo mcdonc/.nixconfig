@@ -18,6 +18,7 @@
     ./roles/journalwatch.nix
     ./roles/enfold/dads.nix
     ./roles/enfold/rag.nix
+    ./roles/mailrelayer.nix
   ];
   environment.extraInit =
     let
