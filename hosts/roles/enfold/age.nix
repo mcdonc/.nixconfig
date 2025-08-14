@@ -56,5 +56,11 @@
     group = "users";
   };
 
+  age.secrets."enfold-ngpt" = {
+    file = ../../../secrets/enfold-ngpt.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
 
 }

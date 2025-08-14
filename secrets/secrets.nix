@@ -35,4 +35,5 @@ in
   "enfold-cachix-authtoken.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold ];
   "mcdonc-cachix-authtoken.age".publicKeys = [ chrism tseaver keithmoon arctor enfold ];
   "mcdonc-unhappy-cachix-authtoken.age".publicKeys = [ chrism keithmoon ];
+  "enfold-ngpt.age".publicKeys = [ chrism tseaver enfold ];
 }
