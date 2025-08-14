@@ -63,4 +63,11 @@
     group = "users";
   };
 
+  age.secrets."enfold-oai" = {
+    file = ../../../secrets/enfold-oai.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+
 }
