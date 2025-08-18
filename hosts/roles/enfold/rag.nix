@@ -22,7 +22,7 @@
       export CACHIX_AUTH_TOKEN="$(cat "${config.age.secrets."mcdonc-cachix-authtoken".path}"|xargs)"
       export LOGFIRE_TOKEN="$(cat "${config.age.secrets."enfold-logfire-api-key".path}"|xargs)"
       export LOGFIRE_ENVIRONMENT="rag.repoze.org"
-      export LOGFIRE_SERVICENAME="ragserver"
+      export LOGFIRE_SERVICE_NAME="ragserver"
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       mkdir -p /home/chrism/projects/enfold
       RAGENV_DIR=/home/chrism/projects/enfold/afsoc-rag
