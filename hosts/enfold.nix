@@ -51,11 +51,18 @@
 
   virtualisation.docker.enable = true;
 
+  age.secrets."gandi-api" = {
+    file = ../secrets/gandi-api.age;
+    mode = "640";
+    owner = "root";
+    group = "acme";
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
     defaults.dnsProvider = "gandiv5";
-    defaults.environmentFile = "/var/lib/secrets/certs.secret";
+    defaults.environmentFile = config.age.secrets."gandi-api".path;
   };
 
   services.nginx = {
@@ -99,6 +106,5 @@
   users.users.nginx.extraGroups = [ "acme" ];
 
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
-
 
 }

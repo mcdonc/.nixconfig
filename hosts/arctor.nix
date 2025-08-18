@@ -92,6 +92,12 @@
     file = ../secrets/chris-mail-password-bcrypt.age;
     mode = "600";
   };
+  age.secrets."gandi-api" = {
+    file = ../secrets/gandi-api.age;
+    mode = "640";
+    owner = "root";
+    group = "acme";
+  };
 
   networking.hostId = "bd246190";
   networking.hostName = "arctor";
@@ -103,7 +109,7 @@
     acceptTerms = true;
     defaults.email = "chrism@plope.com";
     defaults.dnsProvider = "gandiv5";
-    defaults.environmentFile = "/var/lib/secrets/certs.secret";
+    defaults.environmentFile = config.age.secrets.gandi-api.path;
   };
 
   services.nginx = {

@@ -14,8 +14,8 @@
     preStart = '''';
     script = ''
       SLACK_NOTIFY_URL=$(cat "${config.age.secrets."enfold-slack-notify-url".path}"|xargs)
-      export ENFOLD_GIT_USER=mcdonc
-      export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-pat".path}"|xargs)
+      export ENFOLD_GIT_USER=runyaga
+      export ENFOLD_PAT=$(cat "${config.age.secrets."enfold-alan-pat".path}"|xargs)
       export OPENAI_API_KEY=$(cat "${config.age.secrets."enfold-openai-api-key".path}"|xargs)
       export NGPT_API_KEY=$(cat "${config.age.secrets."enfold-ngpt".path}"|xargs)
       export OAI_API_KEY=$(cat "${config.age.secrets."enfold-oai".path}"|xargs)
