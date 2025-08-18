@@ -20,6 +20,7 @@
     ./roles/enfold/rag.nix
     ./roles/mailrelayer.nix
   ];
+
   environment.extraInit =
     let
       apikey-file = config.age.secrets."enfold-openai-api-key".path;
@@ -30,6 +31,8 @@
       export OPENAI_API_KEY=$(cat "${apikey-file}"|xargs)
       export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
     '';
+
+  services.tailscale.enable = true;
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [

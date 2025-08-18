@@ -19,7 +19,7 @@
     ./roles/steam.nix
     ./roles/speedtest
     ./roles/idracfanctl.nix
-    ./roles/tailscale
+    #./roles/tailscale
     ./roles/rc505
     ./roles/ollama.nix
     ./roles/mailrelayer.nix
@@ -44,6 +44,9 @@
     ''
       export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
     '';
+
+
+  services.tailscale.enable = true;
 
   services.ollama.host = "0.0.0.0";
   services.open-webui.host = "0.0.0.0";
