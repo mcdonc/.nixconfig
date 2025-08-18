@@ -71,14 +71,14 @@
   };
 
   age.secrets."gandi-api" = {
-    file = ../secrets/gandi-api.age;
+    file = ../../../secrets/gandi-api.age;
     mode = "640";
     owner = "root";
     group = "acme";
   };
 
   age.secrets."enfold-alan-pat" = {
-    file = ../secrets/enfold-alan-pat.age;
+    file = ../../../secrets/enfold-alan-pat.age;
     mode = "640";
     owner = "root";
     group = "users";
