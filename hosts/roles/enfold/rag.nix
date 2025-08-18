@@ -36,6 +36,12 @@
       mkdir -p "$RAGENV_DIR/tmp"
       export TMPDIR="$RAGENV_DIR/tmp" # we run out of space on /tmp via pip
       curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes starting\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
+      cat <<EOF > "$RAGENV_DIR/devenv.local.nix"
+      { lib, config, ... }:
+      {
+        env.OLLAMA_BASE_URL = lib.mkForce "http://workshop:11434";
+      }
+      EOF
       $DEVENV_CMD --no-eval-cache shell -- flutterbuildandrunweb || \
       curl -X POST --data-urlencode "payload={\"channel\": \"#afsoc-rag\", \"username\": \"nixbot\", \"text\": \"rag.repoze.org processes did not start\", \"icon_emoji\": \":ghost:\"}" "$SLACK_NOTIFY_URL"
     '';
