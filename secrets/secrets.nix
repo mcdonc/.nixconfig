@@ -39,4 +39,5 @@ in
   "enfold-oai.age".publicKeys = [ chrism tseaver enfold ];
   "gandi-api.age".publicKeys = [ chrism tseaver arctor enfold keithmoon ];
   "enfold-alan-pat.age".publicKeys = [ chrism alan enfold ];
+  "mcdonc-logfire-api-key.age".publicKeys = [ chrism enfold ];
 }
