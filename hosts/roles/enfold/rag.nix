@@ -20,6 +20,7 @@
       export NGPT_API_KEY=$(cat "${config.age.secrets."enfold-ngpt".path}"|xargs)
       export OAI_API_KEY=$(cat "${config.age.secrets."enfold-oai".path}"|xargs)
       export CACHIX_AUTH_TOKEN="$(cat "${config.age.secrets."mcdonc-cachix-authtoken".path}"|xargs)"
+      export LOGFIRE_TOKEN="$(cat "${config.age.secrets."enfold-logfire-api-key".path}"|xargs)"
       DEVENV_CMD=/home/chrism/.nix-profile/bin/devenv
       mkdir -p /home/chrism/projects/enfold
       RAGENV_DIR=/home/chrism/projects/enfold/afsoc-rag

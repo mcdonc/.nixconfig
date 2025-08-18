@@ -84,4 +84,11 @@
     group = "users";
   };
 
+  age.secrets."enfold-logfire-api-key" = {
+    file = ../../../secrets/enfold-logfire-api-key.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+  
 }
