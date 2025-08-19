@@ -90,5 +90,12 @@
     owner = "root";
     group = "users";
   };
-  
+
+  age.secrets."enfold-asksage-api-key" = {
+    file = ../../../secrets/enfold-asksage-api-key.age;
+    mode = "640";
+    owner = "root";
+    group = "users";
+  };
+
 }
