@@ -150,4 +150,6 @@
     pulse.enable = true;
   };
 
+  services.opensnitch.enable = true;
+
 }
