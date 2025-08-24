@@ -9,6 +9,13 @@ let
       --target-host chrism@$fqdn --ask-sudo-password
   '';
 
+  enfoldrebuild = pkgs.writeShellScriptBin "enfoldrebuild" ''
+    cd $HOME/projects/enfold/nixos
+    fqdn="enfold.repoze.org"
+    nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
+      --target-host chrism@$fqdn --ask-sudo-password
+  '';
+
   keithtemps = pkgs.writeShellScriptBin "keithtemps" ''
     sudo ${pkgs.ipmitool}/bin/ipmitool sdr type temperature
   '';
@@ -124,6 +131,7 @@ in
     edit
     typescript # for tsc for emacs
     remoterebuild
+    enfoldrebuild
   ];
 
   services.gpg-agent = {
@@ -355,13 +363,13 @@ in
       }
     ];
   };
-  
+
   # add this to ~/.gitconfig if this doesn't work
   # [credential]
-  # 	helper =
-  # 	helper = /nix/store/m0mgy49ffnkdmqfrjx3z5s6dk66prq8q-git-credential-manager-2.6.1/bin/git-credential-manager
+  #   helper =
+  #   helper = /nix/store/m0mgy49ffnkdmqfrjx3z5s6dk66prq8q-git-credential-manager-2.6.1/bin/git-credential-manager
   # [credential "https://dev.azure.com"]
-  # 	useHttpPath = true
+  #   useHttpPath = true
   # [include]
   #   path = /home/chrism/.config/git/config
 
