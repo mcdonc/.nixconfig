@@ -21,7 +21,6 @@ args@{
     ./roles/tailscale
     ./roles/nix-serve-client.nix
     ./roles/rc505
-    ./roles/enfold/age.nix
     #./roles/sessile.nix
     # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
     # (
