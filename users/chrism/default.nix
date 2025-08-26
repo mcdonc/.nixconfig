@@ -11,6 +11,26 @@
     users.chrism = (import ./home.nix args);
   };
 
+  age.secrets."mcdonc-ubuntu-pro-attach" = {
+    file = ../../secrets/mcdonc-ubuntu-pro-attach.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+
+  age.secrets."enfold-alan-pat" = {
+    file = ../../secrets/enfold-alan-pat.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+
+  # to make available in /run/agenix/foo
+  environment.variables = {
+    UBUNTU_PRO_ATTACH = config.age.secrets."mcdonc-ubuntu-pro-attach".path;
+    ENFOLD_ALAN_PAT = config.age.secrets."enfold-alan-pat".path;
+  };
+
   # Define a user account.
   users.users.chrism = {
     isNormalUser = true;
