@@ -196,6 +196,7 @@ in
 
   programs.emacs.enable = true;
   programs.emacs.extraPackages = epkgs: [
+    epkgs.dockerfile-mode
     epkgs.nix-mode
     epkgs.nixpkgs-fmt
     epkgs.flycheck

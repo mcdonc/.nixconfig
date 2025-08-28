@@ -225,6 +225,7 @@ in
       geekbench
       geteltorito
       gimp
+      gitg
       github-desktop
       gitkraken
       gittyup
