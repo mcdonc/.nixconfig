@@ -43,4 +43,7 @@ in
   "enfold-logfire-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
   "enfold-asksage-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
   "mcdonc-ubuntu-pro-attach.age".publicKeys = [ chrism enfold keithmoon ];
+  "mcdonc-aws-secret-access-key.age".publicKeys = [ chrism keithmoon ];
+  "mcdonc-aws-access-key-id.age".publicKeys = [ chrism keithmoon ];
 }
+  
