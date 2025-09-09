@@ -62,6 +62,10 @@
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
 
+  # networking.hosts = {
+  #   "127.0.0.1" = [ "rag-logfire.enfoldsystems.net" ];
+  # };
+
   boot.initrd.availableKernelModules = [
     "ahci"
     "xhci_pci"

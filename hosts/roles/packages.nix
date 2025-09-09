@@ -57,6 +57,7 @@ let
         build # for pypa build package
         twine # for uploading to PyPI
         python-lsp-server # for emacs lsp
+        pyyaml # for runcontainer
       ]
     )
   );
