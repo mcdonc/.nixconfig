@@ -140,8 +140,6 @@ in
     enableSshSupport = true;
   };
 
-  services.opensnitch-ui.enable = true;
-
   xdg.configFile."black".text = ''
     [tool.black]
     line-length = 80
