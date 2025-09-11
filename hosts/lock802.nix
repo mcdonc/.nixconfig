@@ -215,6 +215,21 @@ in
       exten => 7008,2,Dial(PJSIP/7008,30)
       exten => 7008,3,Hangup()
     '';
+    "modules.conf" = ''
+      [modules]
+      autoload=yes
+      noload => res_websocket_client.so
+      noload => cdr_manager.so
+      noload => cdr_sqlite3_custom.so
+      noload => app_alarmreceiver.so
+      noload => pbx_lua declined.so
+      noload => app_followme.so
+      noload => app_festival.so
+      noload => res_hep_rtcp.so
+      noload => pbx_ael.so
+      noload => res_hep_pjsip.so
+      noload => res_prometheus.so
+'';
   };
 
   # XXX reads into nix store
