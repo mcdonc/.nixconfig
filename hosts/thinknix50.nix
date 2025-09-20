@@ -21,7 +21,7 @@ args@{
     ./roles/nix-serve-client.nix
     ./roles/speedtest
     ./roles/tailscale
-    ./roles/rc505
+    #./roles/rc505
     # (
     #   import ./roles/macos-ventura.nix (
     #     args // { mem = "16G"; cores = 4; enable = false; }
