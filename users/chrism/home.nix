@@ -163,6 +163,8 @@ in
       "win10".user = "user";
       "enfold-mac-studio.repoze.org".port = 19911;
       "enfold-mac-studio.repoze.org".forwardAgent = true;
+      "biggysmalls".forwardAgent = true;
+      "biggysmalls".user = "ec2-user";
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";
