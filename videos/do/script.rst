@@ -175,6 +175,9 @@ download it.::
 It's also possible to just upload it from a form on the DO website, but browser
 uploads of large files are always fraught.
 
+Importing the Image
+-------------------
+
 If we now navigate to the Digital Ocean "Backups and Snapshots" page, then the
 "Custom Images" tab, we can click "Import via URL."  Input the URL to the file
 we uploaded.
