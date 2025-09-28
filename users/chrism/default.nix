@@ -25,10 +25,19 @@
     group = "users";
   };
 
+  age.secrets."enfold-cachix-authtoken" = {
+    file = ../../secrets/enfold-cachix-authtoken.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+    
+
   # to make available in /run/agenix/foo
   environment.variables = {
     UBUNTU_PRO_ATTACH = config.age.secrets."mcdonc-ubuntu-pro-attach".path;
     ENFOLD_ALAN_PAT = config.age.secrets."enfold-alan-pat".path;
+    CACHIX_AUTHTOKEN = config.age.secrets."enfold-cachix-authtoken".path;
   };
 
   # Define a user account.
