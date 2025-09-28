@@ -19,7 +19,7 @@ args@{
     ./roles/dns/resolved-tls.nix # cannot be enabled for tpm
     ./roles/backupsource.nix
     ./roles/tailscale
-    ./roles/nix-serve-client.nix
+    #./roles/nix-serve-client.nix
     #./roles/rc505
     #./roles/sessile.nix
     # ./roles/vmount.nix  # no steam when this is enabled, but nec for dvresolve
