@@ -11,11 +11,11 @@ args@{ config, lib, nixos-hardware, ... }:
     ./roles/encryptedzfs.nix
     ./roles/tlp.nix
     ./roles/dns/resolved-tls.nix
-    (
-      import ./roles/macos-ventura.nix (
-        args // { mem = "12G"; cores = 4; enable = false; }
-      )
-    )
+    # (
+    #   import ./roles/macos-ventura.nix (
+    #     args // { mem = "12G"; cores = 4; enable = false; }
+    #   )
+    # )
   ];
   system.stateVersion = "22.05";
 
