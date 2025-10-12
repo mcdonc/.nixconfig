@@ -4,6 +4,7 @@
   pkgs-py37,
   pkgs-py39,
   pkgs-signal-7561,
+  pkgs-unstable,
   inputs,
   system,
   config,
@@ -265,7 +266,7 @@ in
       manim-slides
       meld
       mplayer
-      mpv
+      pkgs-unstable.mpv
       nickel
       nil # for nix emacs lsp-mode
       nrsc5
