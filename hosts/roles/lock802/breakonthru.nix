@@ -9,6 +9,8 @@
 # 2025-10-14.
 
 let
+  pigpio = pkgs.callPackage ./pigpio.nix {};
+
   breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
 
     pname = "breakonthru";

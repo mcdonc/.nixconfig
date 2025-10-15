@@ -1,0 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 383c445..1bb1fb6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.0)
++cmake_minimum_required(VERSION 3.5)
+ 
+ project(pigpio LANGUAGES C VERSION 0.71)
+ 
+@@ -124,4 +124,4 @@ endif()
+ 
+ # package project
+ 
+-include (CPack)
+\ No newline at end of file
++include (CPack)
