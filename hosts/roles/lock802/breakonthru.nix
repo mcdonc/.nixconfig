@@ -5,6 +5,9 @@
   ...
 }:
 
+# unstable pigpio stopped working (cmake too low) between 2025-10-6 and
+# 2025-10-14.
+
 let
   breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
 
