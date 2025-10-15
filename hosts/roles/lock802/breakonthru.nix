@@ -5,11 +5,15 @@
   ...
 }:
 
-# unstable pigpio stopped working (cmake too low) between 2025-10-6 and
-# 2025-10-14.
-
 let
-  pigpio = pkgs.callPackage ./pigpio.nix {};
+  # unstable pigpio stopped working (cmake too low) between 2025-10-7 and
+  # 2025-10-14.
+  pigpio-fixed = (
+    pkgs-unstable.pigpio.overrideAttrs (oldAttrs: {
+      cmakeFlags = (oldAttrs.cmakeFlags or []) ++
+                   ["-DCMAKE_POLICY_VERSION_MINIMUM=3.5"];
+    })
+  );
 
   breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
 
@@ -67,9 +71,9 @@ let
         websocket-client
         gpiozero
         rpi-gpio
-        # NB: lgpio, pigpio, rpgio need pkgs-gpio instead of pkgs
+        # NB: lgpio, pigpio, rpgio need pkgs-unstable instead of pkgs
         lgpio
-        pigpio
+        pigpio-fixed
         rgpio
       ]
     )
@@ -90,4 +94,5 @@ in
   pyenv = pyenv;
   pyenv-bin = pyenv-bin;
   doorclient-test = doorclient-test;
+  pigpio = pigpio-fixed;
 }

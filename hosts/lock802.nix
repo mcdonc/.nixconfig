@@ -126,7 +126,7 @@ in
     after = [ "network.target" ]; # XXX
     wantedBy = [ "multi-user.target" ]; # XXX
     description = "";
-    script = "${pkgs-unstable.pigpio}/bin/pigpiod -g -l";
+    script = "${breakonthru.pigpio}/bin/pigpiod -g -l";
     serviceConfig = {
       Restart = "always";
       RestartSec = "5s";
@@ -166,7 +166,7 @@ in
     pkgs.pciutils # lspci
     pkgs.wirelesstools # iwconfig
     pkgs.wpa_supplicant # wpa_passphrase
-    pkgs-unstable.pigpio # pigpiod
+    breakonthru.pigpio # pigpiod
     playwav
   ];
 
