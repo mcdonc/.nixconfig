@@ -7,7 +7,8 @@
 
 let
   # unstable pigpio stopped working (cmake too low) between 2025-10-7 and
-  # 2025-10-14.
+  # 2025-10-14.  Unnecessary after merge of
+  # https://github.com/NixOS/nixpkgs/pull/452193 into unstable.
   pigpio-fixed = (
     pkgs-unstable.pigpio.overrideAttrs (oldAttrs: {
       cmakeFlags = (oldAttrs.cmakeFlags or []) ++
