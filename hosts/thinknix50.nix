@@ -18,9 +18,9 @@ args@{
     ./roles/dns/resolved-tls.nix
     ./roles/backupsource.nix
     ./roles/davinci-resolve/studio.nix
-    ./roles/nix-serve-client.nix
-    ./roles/speedtest
-    ./roles/tailscale
+    #./roles/nix-serve-client.nix
+    #./roles/speedtest
+    #./roles/tailscale
     #./roles/rc505
     # (
     #   import ./roles/macos-ventura.nix (
