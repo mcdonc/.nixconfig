@@ -2,11 +2,11 @@
   description = "Chris' Jawns";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager";
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
     nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
