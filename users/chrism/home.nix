@@ -274,7 +274,7 @@ in
     sessionVariables = sessionVariables;
     enableCompletion = true;
 
-    dotDir = zshDotDir;
+    dotDir = zshDotDir; #config.home.homeDirectory + "/ " + zshDotDir;
     autosuggestion.enable = true;
 
     # speed up zsh start time, see
@@ -376,9 +376,9 @@ in
 
   programs.git = {
     enable = true;
-    userName = "Chris McDonough";
-    userEmail = "chrism@plope.com";
-    extraConfig = {
+    settings = {
+      user.name = "Chris McDonough";
+      user.email = "chrism@plope.com";
       pull.rebase = "true";
       # diff.guitool = "meld";
       # difftool.meld.path = "${pkgs.meld}/bin/meld";

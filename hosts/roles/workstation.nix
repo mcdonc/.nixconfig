@@ -24,11 +24,6 @@
     "usbcore.quirks=2357:0601:k,0bda:5411:k" # ethernet, hub
   ];
 
-  # restart faster
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=10s
-  '';
-
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
 
