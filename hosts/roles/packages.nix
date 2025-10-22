@@ -210,11 +210,11 @@ in
       calf
       cheese
       clinfo
-      cutecom
+      #cutecom # a dep has cmake problems
       discord
       dive # docker
-      dsd # for gprx dmr decoding
-      dsdcc # for gprx dmr decoding
+      #dsd # for gprx dmr decoding
+      #dsdcc # for gprx dmr decoding
       dtc # milkv
       dupe-krill
       dupeguru
@@ -273,10 +273,10 @@ in
       nvidia-offload
       nvtopPackages.nvidia
       odin2
-      olive-editor # 0.2
+      #olive-editor # 0.2 # a dep has cmake problems
       pico-sdk
       pinentry # dep of gpg
-      pkgs.vscode-fhs
+      #pkgs.vscode-fhs
       powertop
       protonvpn-gui
       qjackctl
@@ -310,7 +310,7 @@ in
       sqlite
       start-virsh
       stress-ng
-      surge-XT
+      # surge-XT # cmake problems
       tap-plugins
       thermald
       thinkfan
