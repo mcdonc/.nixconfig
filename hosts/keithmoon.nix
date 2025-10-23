@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixos-hardware,
+  inputs,
   options,
   ...
 }:
@@ -395,6 +396,8 @@
     mbuffer
     lzop
     zstd
+    inputs.winboat.packages.x86_64-linux.winboat
+    freerdp # for winboat
   ];
 
   # services.pulseaudio.enable = lib.mkForce true;
