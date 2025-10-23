@@ -5,17 +5,20 @@ let
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
     source ${gterm-color-funcs}
-    chcolor 5
+    pushcolor 5
     ${pkgs.openssh}/bin/ssh $@
     if [ $? -ne 0 ]; then
        trap 'colorbye' SIGINT
        echo -e "\e[31mSSH exited unexpectedly, hit enter to continue\e[0m"
        read -p ""
     fi
-    chcolor 1
+    popcolor
   '';
 
   gterm-color-funcs = pkgs.writeShellScript "gterm-color-funcs" ''
+    if [ -z "$COLORSTACK" ]; then
+      export COLORSTACK="1"
+    fi
     function chcolor() {
       # emulates right-clicking and selecting a numbered gnome-terminal
       # profile. hide output if it fails.  --clearmodifiers ignores any
@@ -26,8 +29,29 @@ let
     }
 
     function colorbye () {
-       chcolor 1
-       exit
+      popcolor
+      exit
+    }
+
+    pushcolor() {
+      chcolor $1
+      if [ -z "$COLORSTACK" ]; then
+        export COLORSTACK="$1"
+      else
+        export COLORSTACK="$COLORSTACK:$1"
+      fi
+    }
+
+    popcolor() {
+      export COLORSTACK="$(echo "$COLORSTACK" | rev | cut -d: -f2- | rev)"
+      if [ -z "$COLORSTACK" ]; then
+        export COLORSTACK="1"
+      fi
+      local top="$(awk -F: '{print $NF}' <<< "$COLORSTACK")"
+      if [ -z "$top" ]; then
+        local top=1
+      fi
+      chcolor "$top"
     }
   '';
 
@@ -158,21 +182,21 @@ in
   programs.zsh = {
     shellAliases = shellAliases;
     initContent = lib.mkAfter ''
+      source ${gterm-color-funcs}
       function nix-shell () {
          # turn term color blue
-         source ${gterm-color-funcs}
-         chcolor 2
+         pushcolor 2
          ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
-         chcolor 1
+         popcolor
       }
 
       function devenv () {
          # turn term color blue
-         source ${gterm-color-funcs}
-         chcolor 4
+         pushcolor 4
          $HOME/.nix-profile/bin/devenv "$@"
-         chcolor 1
+         popcolor
       }
+
     '';
   };
 
