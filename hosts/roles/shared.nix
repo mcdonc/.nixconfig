@@ -86,6 +86,8 @@
     hide_userland_threads = 1;
   };
 
+  services.fwupd.enable = true;
+
   users.groups.nixconfig = { };
 
   # enable nix-ld for pip and uv and friends

@@ -54,7 +54,6 @@
 
   programs.dconf.enable = true;
 
-  services.fwupd.enable = true;
   services.locate.enable = false;
 
   # wireshark without sudo; note that still necessary to add
