@@ -27,7 +27,6 @@
       "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
-    #winboat.url = "github:TibixDev/winboat";
   };
 
   outputs =
