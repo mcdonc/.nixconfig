@@ -71,6 +71,7 @@ in
 {
   nixpkgs.config.permittedInsecurePackages = [
     "python-2.7.18.8"
+    "python-2.7.18.12"
   ]; # unmaintained python
 
   environment.systemPackages =
