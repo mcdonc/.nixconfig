@@ -263,8 +263,8 @@ in
       libreoffice
       lm_sensors
       localsend
-      manim
-      manim-slides
+      # manim # single bogus test failure
+      # manim-slides
       meld
       mplayer
       pkgs-unstable.mpv
@@ -277,7 +277,7 @@ in
       #olive-editor # 0.2 # a dep has cmake problems
       pico-sdk
       pinentry # dep of gpg
-      #pkgs.vscode-fhs
+      #pkgs.vscode-fhs # dont remember but 25.11-related
       powertop
       protonvpn-gui
       qjackctl
