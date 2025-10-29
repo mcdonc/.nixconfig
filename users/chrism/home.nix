@@ -80,8 +80,8 @@ let
     ragenv = ''
       cd ~/projects/enfold/afsoc-rag && devenv shell
     '';
-    oldswnix = "sudo nixos-rebuild switch --verbose --show-trace";
-    swnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
+    swnix = "sudo nixos-rebuild switch --verbose --show-trace";
+    nhswnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
     rbnix = "sudo nixos-rebuild build --rollback";
