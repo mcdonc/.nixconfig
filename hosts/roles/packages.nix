@@ -207,7 +207,7 @@ in
       audacity
       audiowaveform
       baobab
-      bitwarden
+      bitwarden-desktop
       calf
       cheese
       clinfo
@@ -276,7 +276,7 @@ in
       odin2
       #olive-editor # 0.2 # a dep has cmake problems
       pico-sdk
-      pinentry # dep of gpg
+      pinentry-tty # dep of gpg
       #pkgs.vscode-fhs # dont remember but 25.11-related
       powertop
       protonvpn-gui
