@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  rbash = pkgs.runCommandNoCC "rbash-${pkgs.bashInteractive.version}" { } ''
+  rbash = pkgs.runCommand "rbash-${pkgs.bashInteractive.version}" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.bashInteractive}/bin/bash $out/bin/rbash
   '';
@@ -10,7 +10,7 @@ let
   # from sourcing global rcfiles; works interactively but not when sending
   # commands on ssh command line
   rbash-norc =
-    pkgs.runCommandNoCC "rbash-norc-${pkgs.bashInteractive.version}" { }
+    pkgs.runCommand "rbash-norc-${pkgs.bashInteractive.version}" { }
       ''
         mkdir -p $out/bin
         cat << EOF > $out/bin/rbash-norc
