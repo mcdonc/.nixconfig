@@ -69,7 +69,7 @@ let
 
   sessionVariables = { };
 
-  zshDotDir = ".config/zsh";
+  zshDotDir =  config.users.users."chrism".home  + "/.config/zsh";
 
   shellAliases = {
     fxdevenv = ''
@@ -147,6 +147,19 @@ in
 
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false; # useful for the following matchBlocks."*"
+    matchBlocks."*" = {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = false;
+      serverAliveInterval = 0;
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlMaster = "no";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPersist = "no";
+    };
     matchBlocks = {
       "192.168.1.*".forwardAgent = true;
       "lock802".forwardAgent = true;
@@ -296,8 +309,8 @@ in
       #   than 24 hours.
       setopt extended_glob
       autoload -Uz compinit
-      export ZDOTDIR=~/${zshDotDir}
-      if [[ -n ~/${zshDotDir}/.zcompdump(#qN.mh+24) ]]; then
+      export ZDOTDIR=${zshDotDir}
+      if [[ -n ${zshDotDir}/.zcompdump(#qN.mh+24) ]]; then
         compinit;
       else
         compinit -C;
