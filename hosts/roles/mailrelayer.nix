@@ -12,9 +12,8 @@
     in
     {
       enable = true;
-      relayHost = "arctor.repoze.org";
-      relayPort = 587;
-      config = {
+      settings.main = {
+        relayhost = ["arctor.repoze.org:587"];
         smtp_use_tls = "yes";
         smtp_sasl_auth_enable = "yes";
         smtp_sasl_security_options = "noanonymous";
