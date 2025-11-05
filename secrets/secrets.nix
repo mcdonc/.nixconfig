@@ -39,7 +39,7 @@ in
   "enfold-ngpt.age".publicKeys = [ chrism tseaver enfold ];
   "enfold-oai.age".publicKeys = [ chrism tseaver enfold ];
   "gandi-api.age".publicKeys = [ chrism tseaver arctor enfold keithmoon thinknix52 ];
-  "enfold-alan-pat.age".publicKeys = [ chrism alan enfold keithmoon ];
+  "enfold-alan-pat.age".publicKeys = [ chrism alan enfold keithmoon thinknix52 ];
   "mcdonc-logfire-api-key.age".publicKeys = [ chrism enfold ];
   "enfold-logfire-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
   "enfold-asksage-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
