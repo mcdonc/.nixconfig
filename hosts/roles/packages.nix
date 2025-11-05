@@ -311,7 +311,6 @@ in
       sqlite
       start-virsh
       stress-ng
-      # surge-XT # cmake problems
       tap-plugins
       thermald
       thinkfan
