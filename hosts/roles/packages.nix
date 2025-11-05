@@ -211,7 +211,7 @@ in
       calf
       cheese
       clinfo
-      #cutecom # a dep has cmake problems
+      cutecom
       discord
       dive # docker
       #dsd # for gprx dmr decoding
