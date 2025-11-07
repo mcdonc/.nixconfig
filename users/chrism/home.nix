@@ -90,6 +90,7 @@ let
     kbrestart = "systemctl --user restart keybase";
     toconsole = "sudo systemctl isolate multi-user.target";
     togui = "sudo systemctl isolate graphical.target";
+    ks = "loginctl terminate-session $XDG_SESSION_ID";
     open = "kioclient exec";
     sgrep = "rg -M 200 --hidden"; # dont display lines > 200 chars long
     ls = "ls --color=auto";
