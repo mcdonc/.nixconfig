@@ -9,7 +9,7 @@ if __name__ == '__main__':
     outfile = open(os.path.join(outdir, 'index.html'), 'w')
     inlist = []
     outlist = []
-    max = 30
+    max = 180
     order = ['Timestamp', 'Speed (Mbps)', 'Latency (ms)', 'Downloaded', 'Bloat']
     reader = csv.reader(infile, delimiter='\t')
     reader.__next__() # header
@@ -17,6 +17,7 @@ if __name__ == '__main__':
         if len(inlist) >= max:
             inlist.pop(0)
         inlist.append(row)
+    inlist.reverse()
 
     outlist.append('<html>')
     outlist.append('<head>')
