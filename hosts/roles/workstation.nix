@@ -89,7 +89,7 @@
   # desktop stuff
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "plasma"; # "plasmax11";
+  services.displayManager.defaultSession = "plasmax11"; # "plasma";
   services.desktopManager.plasma6.enable = true;
   services.xserver.displayManager.sessionCommands =
     let
