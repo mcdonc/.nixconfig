@@ -10,9 +10,11 @@ import sys
 
 username, password = os.environ["MODEMSECRET"].split(':', 1)
 
+url = "http://192.168.100.1/DocsisStatus.htm"
+
 try:
     resp = requests.get(
-        "http://192.168.100.1/DocsisStatus.htm",
+        url,
         auth=HTTPBasicAuth(username, password=password),
         timeout=10
     )
@@ -34,7 +36,7 @@ cookies = {name: val}
 
 try:
     body = requests.get(
-        "http://192.168.100.1/DocsisStatus.htm",
+        url,
         auth=HTTPBasicAuth(username, password=password),
         cookies=cookies,
         timeout=10,
