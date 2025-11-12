@@ -11,13 +11,18 @@ keymap = {
     "dled":"downloaded",
     "ltcy":"latency",
     "timestamp":"timestamp",
+    "channels":"channels",
     }
 
-order = [ "timestamp", "speed", "ltcy", "dled", "bloat" ]
+order = [ "timestamp", "speed", "ltcy", "dled", "bloat", "channels" ]
 default_fname = "/var/log/fast.csv"
 
 if __name__== "__main__":
     proc = subprocess.run(["fast", "--json"], capture_output=True)
+    numchannels = subprocess.run(
+        ["numchannels"], capture_output=True, text=True
+    ).stdout
+    print(f"numchannels: {numchannels}") 
     if proc.returncode != 0:
         sys.exit(proc.returncode)
     j = proc.stdout
@@ -39,6 +44,7 @@ if __name__== "__main__":
             data[k] = ""
         data["downloadSpeed"] = f"ERROR: {oneline}"
     data["timestamp"] = timestamp
+    data["channels"] = numchannels
     dataline = "\t".join([str(data[keymap[k]]) for k in order ])
     print(dataline)
     f.write(dataline + "\n")
