@@ -11,7 +11,9 @@ with open(input_path, newline="", encoding="utf-8") as inf, \
     reader = csv.DictReader(inf, delimiter='\t')
     # add the new column name to the output fieldnames
     fieldnames = reader.fieldnames + ["channels"]
-    writer = csv.DictWriter(outf, fieldnames=fieldnames, delimiter="\t")
+    writer = csv.DictWriter(
+        outf, fieldnames=fieldnames, delimiter="\t", lineterminator="\n"
+    )
     writer.writeheader()
 
     for row in reader:
