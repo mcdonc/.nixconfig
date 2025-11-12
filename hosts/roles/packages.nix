@@ -70,9 +70,11 @@ let
 in
 {
   nixpkgs.config.permittedInsecurePackages = [
+     # unmaintained python
     "python-2.7.18.8"
     "python-2.7.18.12"
-  ]; # unmaintained python
+    "jitsi-meet-1.0.8792"
+  ];
 
   environment.systemPackages =
     with pkgs;
