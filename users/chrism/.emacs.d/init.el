@@ -9,6 +9,9 @@
 (menu-bar-mode 1)
 (set-scroll-bar-mode nil)
 
+;; uncorrupt under wayland?  doesnt seem to work.
+(modify-all-frames-parameters '((inhibit-double-buffering . t)))
+
 ;;;; Presentation font sizing (emacsclient)
 ;; (setq default-frame-alist '((width . 80)
 ;;                             (height . 34)
