@@ -10,19 +10,44 @@ import sys
 
 username, password = os.environ["MODEMSECRET"].split(':', 1)
 
-resp = requests.get(
-    "http://192.168.100.1/DocsisStatus.htm",
-    auth=HTTPBasicAuth(username, password=password)
-)
+try:
+    resp = requests.get(
+        "http://192.168.100.1/DocsisStatus.htm",
+        auth=HTTPBasicAuth(username, password=password),
+        timeout=10
+    )
+    resp.raise_for_status()
+except requests.exceptions.Timeout:
+    sys.stdout.write("E")
+    sys.stdout.flush()
+    raise
+except requests.exceptions.RequestException:
+    if not resp.status_code == 401:
+        sys.stdout.write("E")
+        sys.stdout.flush()
+        raise
+
 xsrf= resp.headers['Set-Cookie'].split(";", 1)[0]
 
 name, val = xsrf.split("=", 1)
 cookies = {name: val}
-body = requests.get(
-    "http://192.168.100.1/DocsisStatus.htm",
-    auth=HTTPBasicAuth(username, password=password),
-    cookies=cookies,
-)
+
+try:
+    body = requests.get(
+        "http://192.168.100.1/DocsisStatus.htm",
+        auth=HTTPBasicAuth(username, password=password),
+        cookies=cookies,
+        timeout=10,
+    )
+    body.raise_for_status()
+except requests.exceptions.Timeout:
+    sys.stdout.write("E")
+    sys.stdout.flush()
+    raise
+except requests.exceptions.RequestException:
+    sys.stdout.write("E")
+    sys.stdout.flush()
+    raise
 
 result = [ -1, -1 ]
 
