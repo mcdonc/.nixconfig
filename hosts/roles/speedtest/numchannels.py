@@ -42,7 +42,10 @@ for line in body.text.split('\n'):
 # 2nd element of each row represents locked
 result = result[1:-1]
 rows = [result[i:i+9] for i in range(0, len(result), 9)]
-locked = sum(1 for row in rows if row[1] == "Locked")
+if rows:
+    locked = sum(1 for row in rows if row[1] == "Locked")
+else:
+    locked = "U"
 sys.stdout.write(str(locked))
 sys.stdout.flush()
 
