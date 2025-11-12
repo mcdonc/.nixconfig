@@ -279,7 +279,7 @@ in
       #olive-editor # 0.2 # a dep has cmake problems
       pico-sdk
       pinentry-tty # dep of gpg
-      pkgs.vscode-fhs # dont remember but 25.11-related
+      pkgs.vscode-fhs
       powertop
       protonvpn-gui
       qjackctl
