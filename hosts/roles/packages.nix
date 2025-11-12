@@ -265,8 +265,8 @@ in
       libreoffice
       lm_sensors
       localsend
-      # manim # single bogus test failure
-      # manim-slides
+      manim # single bogus test failure
+      manim-slides
       meld
       mplayer
       pkgs-unstable.mpv
