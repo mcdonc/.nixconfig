@@ -265,7 +265,7 @@ in
       libreoffice
       lm_sensors
       localsend
-      manim # single bogus test failure
+      manim
       manim-slides
       meld
       mplayer
