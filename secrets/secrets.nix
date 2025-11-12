@@ -47,4 +47,5 @@ in
   "mcdonc-ubuntu-pro-attach.age".publicKeys = [ chrism enfold keithmoon thinknix52 thinknix50 ];
   "mcdonc-aws-secret-access-key.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
   "mcdonc-aws-access-key-id.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
+  "netgear-cm1200-authorization.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
 }
