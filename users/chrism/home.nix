@@ -111,6 +111,7 @@ let
   graphicalimports =
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
+  # using emacs-pgtk for wayland
   emacswithpackages=(pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
       epkgs: [
         epkgs.dockerfile-mode
@@ -407,7 +408,8 @@ in
       # merge.tool = "meld";
       # mergetool.meld.path = "${pkgs.meld}/bin/meld";
       safe.directory = [ "/etc/nixos" ];
-      credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+      credential.helper = 
+        "${pkgs.git-credential-manager}/bin/git-credential-manager";
       "credential \"https://dev.azure.com\"".useHttpPath = "true";
     };
   };
