@@ -230,14 +230,6 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
-  # allow sender to be any domain if sasl-auth submitted
-  services.postfix.config.smtpd_sender_restrictions = lib.mkForce "
-    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
-
-  # allow recipient to be any domain if sasl-auth submitted
-  services.postfix.config.smtpd_recipient_restrictions = lib.mkForce "
-    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
-
   services.postfix.extraAliases = ''
     default: root
     root: chrism@repoze.org
@@ -248,9 +240,14 @@
     /^([^@]+)(@([^.@]+(\.localdomain)?)?)?$/       ''${1}@repoze.org
   '';
 
-  services.postfix.config = {
+  services.postfix.settings.main = {
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
+    # allow recipient to be any domain if sasl-auth submitted
+    smtpd_recipient_restrictions = lib.mkForce "
+    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";       # allow sender to be any domain if sasl-auth submitted
+    smtpd_sender_restrictions = lib.mkForce "
+    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
   };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
