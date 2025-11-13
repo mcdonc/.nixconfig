@@ -34,18 +34,18 @@ in
   "enfold-pydio-realm-pem.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
   "enfold-droplet-passwords.age".publicKeys = [ chrism alan tseaver ];
   "enfold-slack-notify-url.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
-  "enfold-cachix-authtoken.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
-  "mcdonc-cachix-authtoken.age".publicKeys = [ chrism tseaver keithmoon arctor enfold thinknix52 thinknix50];
-  "mcdonc-unhappy-cachix-authtoken.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
+  "enfold-cachix-authtoken.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 lock802 ];
+  "mcdonc-cachix-authtoken.age".publicKeys = [ chrism tseaver keithmoon arctor enfold thinknix52 thinknix50 lock802 ];
+  "mcdonc-unhappy-cachix-authtoken.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 lock802 ];
   "enfold-ngpt.age".publicKeys = [ chrism tseaver enfold ];
   "enfold-oai.age".publicKeys = [ chrism tseaver enfold ];
   "gandi-api.age".publicKeys = [ chrism tseaver arctor enfold keithmoon thinknix52 thinknix50 ];
-  "enfold-alan-pat.age".publicKeys = [ chrism alan enfold keithmoon thinknix52 thinknix50 ];
+  "enfold-alan-pat.age".publicKeys = [ chrism alan enfold keithmoon thinknix52 thinknix50 lock802 ];
   "mcdonc-logfire-api-key.age".publicKeys = [ chrism enfold ];
   "enfold-logfire-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
   "enfold-asksage-api-key.age".publicKeys = [ chrism enfold tseaver alan ];
-  "mcdonc-ubuntu-pro-attach.age".publicKeys = [ chrism enfold keithmoon thinknix52 thinknix50 ];
-  "mcdonc-aws-secret-access-key.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
-  "mcdonc-aws-access-key-id.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
-  "netgear-cm1200-authorization.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 ];
+  "mcdonc-ubuntu-pro-attach.age".publicKeys = [ chrism enfold keithmoon thinknix52 thinknix50 lock802 ];
+  "mcdonc-aws-secret-access-key.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 lock802 ];
+  "mcdonc-aws-access-key-id.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 lock802 ];
+  "netgear-cm1200-authorization.age".publicKeys = [ chrism keithmoon thinknix52 thinknix50 lock802 ];
 }
