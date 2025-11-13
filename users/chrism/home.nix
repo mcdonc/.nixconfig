@@ -111,7 +111,7 @@ let
   graphicalimports =
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
-  emacswithpackages = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
+  emacswithpackages=(pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
       epkgs: [
         epkgs.dockerfile-mode
         epkgs.nix-mode
