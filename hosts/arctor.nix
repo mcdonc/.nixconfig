@@ -202,7 +202,7 @@
     in
     {
       enable = true;
-      stateVersion = 1;
+      stateVersion = 3;
       openFirewall = true;
       fqdn = "arctor.repoze.org";
       domains = [ "repoze.org" ];
