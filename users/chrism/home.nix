@@ -111,6 +111,50 @@ let
   graphicalimports =
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
+  emacswithpackages = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
+      epkgs: [
+        epkgs.dockerfile-mode
+        epkgs.nix-mode
+        epkgs.nixpkgs-fmt
+        epkgs.flycheck
+        epkgs.json-mode
+        epkgs.python-mode
+        epkgs.auto-complete
+        epkgs.web-mode
+        epkgs.smart-tabs-mode
+        epkgs.whitespace-cleanup-mode
+        epkgs.flycheck-pyflakes
+        epkgs.flycheck-pos-tip
+        epkgs.nord-theme
+        epkgs.nordless-theme
+        epkgs.vscode-dark-plus-theme
+        epkgs.doom-modeline
+        epkgs.all-the-icons
+        epkgs.all-the-icons-dired
+        epkgs.magit
+        epkgs.markdown-mode
+        epkgs.markdown-preview-mode
+        epkgs.gptel
+        pkgs.emacs-all-the-icons-fonts
+        epkgs.yaml-mode
+        epkgs.multiple-cursors
+        epkgs.dts-mode
+        epkgs.rust-mode
+        epkgs.nickel-mode
+        epkgs.editorconfig
+        epkgs.terraform-mode
+        epkgs.lspce
+        epkgs.lsp-mode
+        epkgs.lsp-ui
+        epkgs.lsp-jedi
+        epkgs.company
+        epkgs.dart-mode
+        epkgs.adoc-mode
+        epkgs.typescript-mode
+        epkgs.tsc # maybe required for typescript-mode
+      ]
+  );
+
 in
 
 {
@@ -208,50 +252,13 @@ in
     };
   };
 
+  # bare emacs
   programs.emacs.enable = true;
-  programs.emacs.extraPackages = epkgs: [
-    epkgs.dockerfile-mode
-    epkgs.nix-mode
-    epkgs.nixpkgs-fmt
-    epkgs.flycheck
-    epkgs.json-mode
-    epkgs.python-mode
-    epkgs.auto-complete
-    epkgs.web-mode
-    epkgs.smart-tabs-mode
-    epkgs.whitespace-cleanup-mode
-    epkgs.flycheck-pyflakes
-    epkgs.flycheck-pos-tip
-    epkgs.nord-theme
-    epkgs.nordless-theme
-    epkgs.vscode-dark-plus-theme
-    epkgs.doom-modeline
-    epkgs.all-the-icons
-    epkgs.all-the-icons-dired
-    epkgs.magit
-    epkgs.markdown-mode
-    epkgs.markdown-preview-mode
-    epkgs.gptel
-    pkgs.emacs-all-the-icons-fonts
-    epkgs.yaml-mode
-    epkgs.multiple-cursors
-    epkgs.dts-mode
-    epkgs.rust-mode
-    epkgs.nickel-mode
-    epkgs.editorconfig
-    epkgs.terraform-mode
-    epkgs.lspce
-    epkgs.lsp-mode
-    epkgs.lsp-ui
-    epkgs.lsp-jedi
-    epkgs.company
-    epkgs.dart-mode
-    epkgs.adoc-mode
-    epkgs.typescript-mode
-    epkgs.tsc # maybe required for typescript-mode
-  ];
+  programs.emacs.package = emacswithpackages;
 
+  # emacsclient
   services.emacs.enable = true;
+  services.emacs.package = emacswithpackages;
 
   home.file.".emacs.d" = {
     source = ./.emacs.d;
