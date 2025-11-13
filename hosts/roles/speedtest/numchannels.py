@@ -56,9 +56,10 @@ result = [ -1, -1 ]
 # grep for "var tagValueList =" (downstream)
 # grep inside of that for 255000000
 # split that line on "|"
-for line in body.text.split('\n'):
+lines = body.text.split('\n')
+for line in lines:
     if "var tagValueList =" in line:
-        if "255000000" in line:
+        if "Locked|QAM256" in line:
             result = line.split('|')
             break
 
