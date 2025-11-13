@@ -170,9 +170,12 @@ let
 in
 {
 
-  imports = [ ./keybase.nix ];
-  # services.keybase.enable = true;
-  # services.kbfs.enable = true;
+  # uncomment imports and comment keybase services to go back to
+  # unsandboxed gpu setup if necessary
+  #imports = [ ./keybase.nix ];
+  services.keybase.enable = true;
+  services.kbfs.enable = true;
+
   programs.gnome-terminal = termsettings;
 
   programs.bash = {
@@ -240,10 +243,7 @@ in
     # see https://github.com/mpv-player/mpv/issues/10229
   '';
 
-  services.emacs = {
-    enable = true;
-    startWithUserSession = "graphical";
-  };
+  services.emacs.startWithUserSession = "graphical";
 
   home.packages = with pkgs; [
     keybase-gui
