@@ -230,6 +230,8 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
+  services.dovecot2.enable = lib.mkForce false; # forcibly stop
+
   services.postfix.extraAliases = ''
     default: root
     root: chrism@repoze.org
