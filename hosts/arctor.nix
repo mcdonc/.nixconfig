@@ -208,6 +208,9 @@
       domains = [ "repoze.org" ];
       enableImap = false;
       enableImapSsl = false;
+      enableSubmission = true;
+      enableSubmissionSsl = true;
+
       # To create the password hashes, use
       # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
 
