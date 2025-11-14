@@ -270,6 +270,7 @@ in
       meld
       #mplayer # broken under 25.11
       pkgs-unstable.mpv
+      networkmanager-openvpn
       nickel
       nil # for nix emacs lsp-mode
       nrsc5
