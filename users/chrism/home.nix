@@ -320,9 +320,9 @@ in
       autoload -Uz compinit
       export ZDOTDIR=${zshDotDir}
       if [[ -n ${zshDotDir}/.zcompdump(#qN.mh+24) ]]; then
-        compinit;
+        compinit -u;
       else
-        compinit -C;
+        compinit -u -C;
       fi;
     '';
 
