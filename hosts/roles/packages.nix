@@ -204,7 +204,7 @@ in
       alsa-scarlett-gui
       alsa-utils # aplay
       appimage-run
-      ardour
+      # ardour # broken under 25.11
       argyllcms
       audacity
       audiowaveform
@@ -216,8 +216,8 @@ in
       cutecom
       discord
       dive # docker
-      #dsd # for gprx dmr decoding
-      #dsdcc # for gprx dmr decoding
+      #dsd # for gprx dmr decoding, problems under 25.11
+      #dsdcc # for gprx dmr decoding, problems under 25.11
       dtc # milkv
       dupe-krill
       dupeguru
@@ -265,10 +265,10 @@ in
       libreoffice
       lm_sensors
       localsend
-      manim
-      manim-slides
+      # manim # broken under 25.11
+      # manim-slides
       meld
-      mplayer
+      #mplayer # broken under 25.11
       pkgs-unstable.mpv
       nickel
       nil # for nix emacs lsp-mode
@@ -276,17 +276,17 @@ in
       nvidia-offload
       nvtopPackages.nvidia
       odin2
-      #olive-editor # 0.2 # a dep has cmake problems
+      #olive-editor # 0.2 # a dep has cmake problems in 25.11
       pico-sdk
       pinentry-tty # dep of gpg
       pkgs.vscode-fhs
       powertop
-      protonvpn-gui
+      #protonvpn-gui # test failure under 25.11
       qjackctl
       qjournalctl
       quickemu
       remmina
-      rhythmbox
+      #rhythmbox # broken under 25.11
       rnnoise-plugin
       #rpi-imager
       rshell

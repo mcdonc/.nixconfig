@@ -7,7 +7,7 @@
     "codellama:7b"
     "codellama:13b"
   ];
-  services.open-webui.enable = true;
+  #services.open-webui.enable = true; # broken under 25.11
 
   nix.settings = {
     extra-substituters = [
