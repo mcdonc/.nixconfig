@@ -233,6 +233,7 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
+  # this also stops postfix from running
   services.dovecot2.enable = lib.mkForce false; # forcibly stop
 
   services.postfix.extraAliases = ''
