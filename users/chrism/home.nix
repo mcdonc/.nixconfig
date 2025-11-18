@@ -112,7 +112,7 @@ let
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
   # using emacs-pgtk for wayland
-  emacswithpackages=(pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (
+  emacswithpackages=(pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
       epkgs: [
         epkgs.dockerfile-mode
         epkgs.nix-mode
