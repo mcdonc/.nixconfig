@@ -5,7 +5,6 @@
   pkgs-py39,
   pkgs-signal-7561,
   pkgs-unstable,
-  pkgs-fix-protonvpn,
   inputs,
   system,
   config,
@@ -283,7 +282,7 @@ in
       pinentry-tty # dep of gpg
       pkgs.vscode-fhs
       powertop
-      #pkgs-fix-protonvpn.protonvpn-gui # test failure under 25.11
+      protonvpn-gui
       qjackctl
       qjournalctl
       quickemu
