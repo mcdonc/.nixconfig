@@ -104,8 +104,8 @@ let
     nix-generations = ''
       sudo nix-env -p /nix/var/nix/profiles/system --list-generations
     '';
-    dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads"'';
-    ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag"; ssh -t enfold.repoze.org "sudo journalctl -f -u rag.service"'';
+    dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads; journalctl -f -u dads.service"'';
+    ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
   graphicalimports =
