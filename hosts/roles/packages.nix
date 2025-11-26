@@ -299,7 +299,7 @@ in
       sanoid
       screenkey
       sdcc
-      sdrangel
+      # sdrangel # broken under 25.11
       setbfree
       sfizz
       signal-desktop
