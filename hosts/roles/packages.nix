@@ -326,6 +326,7 @@ in
       x42-avldrums
       x42-plugins
       xcalib
+      xdotool
       xorg.xev
       xorg.xkbcomp
       xorg.xmodmap
