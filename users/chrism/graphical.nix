@@ -159,7 +159,7 @@ let
     blackterm = "${gterm-change-profile} 3";
     purpleterm = "${gterm-change-profile} 4";
     yellowterm = "${gterm-change-profile} 5";
-    ssh = "${ssh-chcolor}";
+    #ssh = "${ssh-chcolor}";
     stopx = "${pkgs.systemd}/bin/systemctl stop display-manager.service";
     startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
     macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
@@ -184,23 +184,23 @@ in
 
   programs.zsh = {
     shellAliases = shellAliases;
-    initContent = lib.mkAfter ''
-      source ${gterm-color-funcs}
-      function nix-shell () {
-         # turn term color blue
-         pushcolor 2
-         ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
-         popcolor
-      }
+    # initContent = lib.mkAfter ''
+    #   source ${gterm-color-funcs}
+    #   function nix-shell () {
+    #      # turn term color blue
+    #      pushcolor 2
+    #      ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
+    #      popcolor
+    #   }
 
-      function devenv () {
-         # turn term color blue
-         pushcolor 4
-         $HOME/.nix-profile/bin/devenv "$@"
-         popcolor
-      }
+    #   function devenv () {
+    #      # turn term color blue
+    #      pushcolor 4
+    #      $HOME/.nix-profile/bin/devenv "$@"
+    #      popcolor
+    #   }
 
-    '';
+    # '';
   };
 
   xdg.configFile."environment.d/ssh_askpass.conf".text = ''
