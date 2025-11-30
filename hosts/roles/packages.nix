@@ -269,6 +269,7 @@ in
       # manim # broken under 25.11
       # manim-slides
       meld
+      mullvad-vpn
       #mplayer # broken under 25.11
       pkgs-unstable.mpv
       networkmanager-openvpn
