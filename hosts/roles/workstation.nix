@@ -144,4 +144,6 @@
     pulse.enable = true;
   };
 
+  services.mullvad-vpn.enable = true;
+
 }
