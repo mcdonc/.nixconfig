@@ -130,6 +130,7 @@ in
       ncdu
       neofetch
       netcat
+      net-tools
       nh
       nix-du
       nix-index # for nix-locate
