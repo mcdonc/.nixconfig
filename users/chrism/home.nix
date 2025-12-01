@@ -378,6 +378,8 @@ in
       #    export CACHIX_AUTH_TOKEN="$(cat "$authtoken_file"|xargs)"
       # fi
       #zprof
+
+      ulimit -n 65536
     '';
     plugins = [
       {
