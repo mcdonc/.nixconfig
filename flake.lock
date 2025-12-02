@@ -534,11 +534,11 @@
         "osx-kvm": "osx-kvm"
       },
       "locked": {
-        "lastModified": 1763116921,
-        "narHash": "sha256-3VVTu6U8/VWXbjI9yYkQsDF5593qxQptJu6p43mSfYM=",
+        "lastModified": 1764686341,
+        "narHash": "sha256-CnvesUXyktZygnHURa4bk9eCxNAI/Am9Y/b6vBNhS/A=",
         "owner": "matthewcroughan",
         "repo": "NixThePlanet",
-        "rev": "34afe2e9964181c9342095dbbdb330f92243786d",
+        "rev": "0c0e433fa01789d33a191adb0533a6bca817383f",
         "type": "github"
       },
       "original": {
