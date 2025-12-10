@@ -92,6 +92,9 @@ in
     pkgs.htop
   ];
 
+
+  system.primaryUser = "chrism";
+
   system.defaults = {
     # dock.autohide = true;
     loginwindow.GuestEnabled = false;
@@ -148,7 +151,6 @@ in
       home.username = username;
       home.homeDirectory = homedir;
       home.stateVersion = "24.05";
-
       home.packages = with pkgs; [
         bat
         nixpkgs-fmt # unnamed dependency of emacs
@@ -173,7 +175,7 @@ in
       programs.dircolors.enable = true;
 
       programs.emacs.enable = true;
-      #programs.emacs.package = pkgs.emacs29;
+      #programs.emacs.package = pkgs.emacsMac;
       programs.emacs.extraPackages = epkgs: [
         epkgs.nix-mode
         epkgs.nixpkgs-fmt
@@ -220,7 +222,7 @@ in
         recursive = true;
       };
       home.file.".p10k.zsh" = {
-        source = ../users/.p10k-fornax.zsh;
+        source = ../users/chrism/.p10k-fornax.zsh;
         executable = true;
       };
 
