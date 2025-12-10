@@ -208,6 +208,8 @@ in
     };
     matchBlocks = {
       "192.168.1.*".forwardAgent = true;
+      "quisling.local".forwardAgent = true;
+      "quisling".forwardAgent = true;
       "lock802".forwardAgent = true;
       "clonelock802".forwardAgent = true;
       "keithmoon".forwardAgent = true;
@@ -224,6 +226,8 @@ in
       "enfold-mac-studio.repoze.org".forwardAgent = true;
       "biggysmalls".forwardAgent = true;
       "biggysmalls".user = "ec2-user";
+      "smallysmalls".forwardAgent = true;
+      "smallysmalls".user = "chris";
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";
