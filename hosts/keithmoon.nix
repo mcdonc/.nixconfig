@@ -37,13 +37,13 @@
     group = "wheel";
   };
 
-  environment.extraInit =
-    let
-      cachix-file = config.age.secrets."mcdonc-unhappy-cachix-authtoken".path;
-    in
-    ''
-      export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
-    '';
+  # environment.extraInit =
+  #   let
+  #     cachix-file = config.age.secrets."mcdonc-unhappy-cachix-authtoken".path;
+  #   in
+  #   ''
+  #     export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
+  #   '';
 
 
   services.tailscale.enable = true;
