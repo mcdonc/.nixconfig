@@ -106,6 +106,7 @@ in
       findnixstorelinks
       fio
       fortune
+      gh
       gnumake
       gnutar
       go
