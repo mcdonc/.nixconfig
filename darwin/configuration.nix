@@ -14,7 +14,7 @@ let
     sgrep = "${pkgs.ripgrep}/bin/rg -M 200 --hidden";
     ls = "ls --color=auto";
     diff = "${pkgs.colordiff}/bin/colordiff";
-    swnix = "darwin-rebuild switch --flake ~/.nixconfig/darwin";
+    swnix = "sudo darwin-rebuild switch --flake /Users/chrism/.nixconfig/darwin";
     edit = "${emacspkg}/bin/emacsclient -n -c";
     restartemacs = "launchctl kickstart -k gui/$UID/org.nix-community.home.emacs";
     fxdevenv = "export FXDEV_CHDIR=\"`pwd`\"; cd ~/projects/fornax/fxdevenv; devenv shell; cd $FXDEV_CHDIR; unset FXDEV_CHDIR";
@@ -60,6 +60,7 @@ in
       "socat"
       "swtpm"
       "zsync"
+      "ruby"
       # /for quickemu
     ];
     casks = [
@@ -341,6 +342,7 @@ in
           }
 
           #zprof
+          export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
         '';
         plugins = [
           {
