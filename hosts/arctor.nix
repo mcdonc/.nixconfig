@@ -252,11 +252,7 @@
     /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
   '';
 
-  services.postfix.settings.main =
-    let
-      saslfile = config.age.secrets."chris-mail-sasl".path;
-    in
-      {
+  services.postfix.settings.main = {
     smtpd_sasl_security_options = lib.mkForce "noanonymous";
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
