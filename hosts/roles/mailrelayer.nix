@@ -15,7 +15,9 @@
     {
       enable = true;
       settings.main = {
-        relayhost = ["arctor.repoze.org:587"];
+        relayhost = ["[arctor.repoze.org]:587"];
+        myhostname = "${config.networking.hostName}.repoze.org";
+        myorigin = "$myhostname";
         smtp_use_tls = "yes";
         smtp_sasl_auth_enable = "yes";
         smtp_sasl_security_options = "noanonymous";
@@ -29,8 +31,8 @@
         root: chrism@repoze.org
       '';
       canonical = ''
-        /^(.*[^@]+)@(arctor|arctor\.repoze\.org)$/    ''${1}@repoze.org
-        /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
+        /^(.*?)$/   chrism@repoze.org
+        #/^(.*?)@([\w.-]+)$/       ''${1}@{2}.repoze.org
       '';
     };
 }

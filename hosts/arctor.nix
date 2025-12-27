@@ -94,6 +94,12 @@
     owner = "postfix";
     group = "postfix";
   };
+  age.secrets."chris-mail-sasl" = {
+    file = ../secrets/chris-mail-sasl.age;
+    mode = "600";
+    owner = "postfix";
+    group = "postfix";
+  };
   age.secrets."gandi-api" = {
     file = ../secrets/gandi-api.age;
     mode = "640";
@@ -246,14 +252,29 @@
     /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
   '';
 
-  services.postfix.settings.main = {
+  services.postfix.settings.main =
+    let
+      saslfile = config.age.secrets."chris-mail-sasl".path;
+    in
+      {
+    mynetworks = lib.mkForce [ "127.0.0.0/8" "[::1]/128" "98.169.127.190/32" ];
+    smtpd_client_restrictions = lib.mkForce "";
+    smtp_sasl_auth_enable = lib.mkForce "yes";
+    smtpd_sasl_security_options = lib.mkForce "noanonymous";
+    smtpd_tls_auth_only = lib.mkForce "yes";
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
+    smtp_sasl_password_maps = "texthash:${saslfile}";
     # allow recipient to be any domain if sasl-auth submitted
-    smtpd_recipient_restrictions = lib.mkForce "
-    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";       # allow sender to be any domain if sasl-auth submitted
-    smtpd_sender_restrictions = lib.mkForce "
-    permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination";
+    smtpd_recipient_restrictions = lib.mkForce ''
+    permit_mynetworks, permit_sasl_authenticated, reject
+    '';
+    # allow sender to be any domain if sasl-auth submitted
+    smtpd_sender_restrictions = lib.mkForce ''
+    permit_mynetworks, permit_sasl_authenticated, reject
+    '';
+    #debug_peer_list = lib.mkForce "98.169.127.190";
+    #debug_peer_level = lib.mkForce 3;
   };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
