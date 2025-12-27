@@ -257,11 +257,11 @@
       saslfile = config.age.secrets."chris-mail-sasl".path;
     in
       {
-    mynetworks = lib.mkForce [ "127.0.0.0/8" "[::1]/128" "98.169.127.190/32" ];
-    smtpd_client_restrictions = lib.mkForce "";
-    smtp_sasl_auth_enable = lib.mkForce "yes";
+    #mynetworks = lib.mkForce [ "127.0.0.0/8" "[::1]/128" "98.169.127.190/32" ];
+    #smtpd_client_restrictions = lib.mkForce "";
+    #smtp_sasl_auth_enable = lib.mkForce "yes";
     smtpd_sasl_security_options = lib.mkForce "noanonymous";
-    smtpd_tls_auth_only = lib.mkForce "yes";
+    #smtpd_tls_auth_only = lib.mkForce "yes";
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
     smtp_sasl_password_maps = "texthash:${saslfile}";
