@@ -217,9 +217,7 @@
       loginAccounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
-          aliases = [
-            "@repoze.org" # allow sending from any mail at repoze.org
-          ];
+          # setting "aliases = [ "@repoze.org" ] causes a reporting loop
           catchAll = [
             "repoze.org" # receive all mails destined for repoze.org
           ];
@@ -233,8 +231,8 @@
       certificateScheme = "acme"; # managed by service.ngnix above
     };
 
-  # this also stops postfix from running
-  services.dovecot2.enable = lib.mkForce false; # forcibly stop
+  # setting this to false also stops postfix from running
+  services.dovecot2.enable = lib.mkForce true;
 
   services.postfix.extraAliases = ''
     default: root
