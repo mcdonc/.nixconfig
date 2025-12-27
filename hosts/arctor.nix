@@ -91,6 +91,8 @@
   age.secrets."chris-mail-password-bcrypt" = {
     file = ../secrets/chris-mail-password-bcrypt.age;
     mode = "600";
+    owner = "postfix";
+    group = "postfix";
   };
   age.secrets."gandi-api" = {
     file = ../secrets/gandi-api.age;
