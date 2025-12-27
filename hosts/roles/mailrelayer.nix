@@ -30,9 +30,10 @@
         default: root
         root: chrism@repoze.org
       '';
+      # canonicalization needs work; every email will currently come from me
       canonical = ''
         /^(.*?)$/   chrism@repoze.org
-        #/^(.*?)@([\w.-]+)$/       ''${1}@{2}.repoze.org
+        #/^(.*?)@([\w.-]+)$/       ''${1}@repoze.org
       '';
     };
 }
