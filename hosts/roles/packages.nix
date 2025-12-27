@@ -153,6 +153,7 @@ in
       ripgrep
       shellcheck
       speedtest-cli
+      swaks
       syspython
       tldr
       tmux
