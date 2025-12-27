@@ -27,8 +27,8 @@
         root: chrism@repoze.org
       '';
       canonical = ''
-        /^([^@]+)(@(arctor|arctor\.repoze\.org))?$/    ''${1}@repoze.org
-        /^([^@]+)(@([^.@]+(\.localdomain)?)?)?$/       ''${1}@repoze.org
+        /^(.*[^@]+)@(arctor|arctor\.repoze\.org)$/    ''${1}@repoze.org
+        /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
       '';
     };
 }
