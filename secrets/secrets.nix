@@ -25,7 +25,7 @@ in
   "wifi.age".publicKeys = [ chrism lock802 ];
   "chris-mail-password-bcrypt.age".publicKeys = [ chrism arctor ];
   "chris-mail-password.age".publicKeys = [ keithmoon chrism ];
-  "chris-mail-sasl.age".publicKeys = [ chrism keithmoon lock802 ];
+  "chris-mail-sasl.age".publicKeys = [ chrism keithmoon arctor lock802 thinknix50 thinknix52 ];
   "enfold-gemini-key.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
   "enfold-pat.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
   "enfold-pydio-service-token.age".publicKeys = [ chrism alan tseaver keithmoon arctor enfold thinknix52 thinknix50 ];
