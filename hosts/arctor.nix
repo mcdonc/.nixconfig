@@ -94,12 +94,6 @@
     owner = "postfix";
     group = "postfix";
   };
-  age.secrets."chris-mail-sasl" = {
-    file = ../secrets/chris-mail-sasl.age;
-    mode = "600";
-    owner = "postfix";
-    group = "postfix";
-  };
   age.secrets."gandi-api" = {
     file = ../secrets/gandi-api.age;
     mode = "640";
