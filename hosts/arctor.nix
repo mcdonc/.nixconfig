@@ -225,7 +225,7 @@
       loginAccounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
-          # setting "aliases = [ "@repoze.org" ] causes a reporting loop
+          # aliases = [ "@repoze.org" ]
           catchAll = [
             "repoze.org" # receive all mails destined for repoze.org
           ];
