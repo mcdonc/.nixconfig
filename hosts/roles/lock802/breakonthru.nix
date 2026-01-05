@@ -6,34 +6,25 @@
 }:
 
 let
-  # unstable pigpio stopped working (cmake too low) between 2025-10-7 and
-  # 2025-10-14.  Unnecessary after merge of
-  # https://github.com/NixOS/nixpkgs/pull/452193 into unstable.
-  pigpio-fixed = (
-    pkgs-unstable.pigpio.overrideAttrs (oldAttrs: {
-      cmakeFlags = (oldAttrs.cmakeFlags or []) ++
-                   ["-DCMAKE_POLICY_VERSION_MINIMUM=3.5"];
-    })
-  );
 
-  breakonthru = pkgs-unstable.python312Packages.buildPythonPackage rec {
+  breakonthru = pkgs.python312Packages.buildPythonPackage rec {
 
     pname = "breakonthru";
     version = "0.0";
     pyproject = true;
 
-    src = pkgs-unstable.fetchFromGitHub {
+    src = pkgs.fetchFromGitHub {
       owner = "mcdonc";
       repo = "breakonthru";
       rev = "3a3d9465ae622a1a6d595f07943d20d8600b2478";
       sha256 = "sha256-RfX6erZIPDmCFgBRPgApU4718/zWyRpZ0ED1/3vQa4k=";
     };
 
-    build-system = with pkgs-unstable.python312Packages; [
+    build-system = with pkgs.python312Packages; [
       setuptools
     ];
 
-    dependencies = with pkgs-unstable.python312Packages; [
+    dependencies = with pkgs.python312Packages; [
       setuptools
       plaster-pastedeploy
       pyramid
@@ -55,7 +46,7 @@ let
   # https://arestless.rest/blog/lab--raspberry-pi-4b-gpio-debugging/
   # https://github.com/NixOS/nixpkgs/pull/352308 (doronbehar)
   pyenv = (
-    pkgs-unstable.python312.withPackages (
+    pkgs.python312.withPackages (
       p: with p; [
         breakonthru
         setuptools
@@ -72,9 +63,8 @@ let
         websocket-client
         gpiozero
         rpi-gpio
-        # NB: lgpio, pigpio, rpgio need pkgs-unstable instead of pkgs
         lgpio
-        pigpio-fixed
+        pigpio #-fixed
         rgpio
       ]
     )
@@ -95,5 +85,5 @@ in
   pyenv = pyenv;
   pyenv-bin = pyenv-bin;
   doorclient-test = doorclient-test;
-  pigpio = pigpio-fixed;
+  pigpio = pkgs.pigpio;
 }
