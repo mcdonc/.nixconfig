@@ -215,6 +215,7 @@ in
       bitwarden-desktop
       calf
       cheese
+      claude-code
       clinfo
       cutecom
       discord
