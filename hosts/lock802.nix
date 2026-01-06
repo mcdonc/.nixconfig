@@ -4,6 +4,7 @@
   inputs,
   config,
   pkgs-unstable,
+  pkgs-2411,
   ...
 }:
 
@@ -171,6 +172,11 @@ in
   ];
 
   services.asterisk.enable = true;
+  # 25.05+ asterisk: Cannot update type 'taskpool' in module 'stasis' because
+  # it has no existing documentation! If this module was recently built, run '
+  # xmldoc reload' to refresh documentation, then load the module again
+  # Stasis initialization failed.  ASTERISK EXITING!
+  services.asterisk.package = pkgs-2411.asterisk;
   services.asterisk.confFiles = {
     "extensions.conf" = ''
       [internal]
