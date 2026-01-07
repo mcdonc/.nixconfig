@@ -13,7 +13,7 @@
   ];
 
   hardware.nvidia-container-toolkit.enable = true;
-  virtualisation.docker.enableNvidia = true; # deprecated but necessary
+  virtualisation.docker.enableNvidia = true; # deprecated but necessary 4 solplx
   virtualisation.docker.enable = true;
 }
   
