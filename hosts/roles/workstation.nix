@@ -50,7 +50,15 @@
     };
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      # This is equivalent to enabling "features.buildkit: true" in daemon.json
+      "features" = {
+        "buildkit" = true;
+      };
+    };
+  };
 
   programs.dconf.enable = true;
 
