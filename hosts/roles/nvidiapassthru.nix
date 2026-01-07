@@ -2,9 +2,6 @@
   config,
   pkgs,
   lib,
-  nixos-hardware,
-  inputs,
-  options,
   ...
 }:
 {
