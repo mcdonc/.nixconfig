@@ -219,6 +219,7 @@ in
       clinfo
       cutecom
       discord
+      distrobox
       dive # docker
       #dsd # for gprx dmr decoding, problems under 25.11
       #dsdcc # for gprx dmr decoding, problems under 25.11
