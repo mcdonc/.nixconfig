@@ -70,6 +70,7 @@ in
       "iterm2"
       "docker"
       "discord"
+      "claude-code"
     ];
     #onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
