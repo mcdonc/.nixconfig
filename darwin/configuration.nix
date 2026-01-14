@@ -305,6 +305,9 @@ in
           setopt interactive_comments bashautolist nobeep nomenucomplete \
                  noautolist extended_glob
 
+          # source ~/.env if it exists
+          [[ -f ~/.env ]] && source ~/.env
+
           source ~/.p10k.zsh
           source ~/.p10k-theme.zsh
 
