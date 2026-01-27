@@ -258,6 +258,7 @@ in
       "15.200.113.205" = {
         user = "ec2-user";
         identityFile = "~/.ssh/id_ecdsa_enfold";
+        forwardAgent = true;
         extraOptions = {
           HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
           PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
