@@ -205,6 +205,7 @@ in
 
   xdg.configFile."environment.d/ssh_askpass.conf".text = ''
     SSH_ASKPASS="${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass"
+    SSH_ASKPASS_REQUIRE=prefer
   '';
 
   # relies on Nix programs.ssh.startAgent

@@ -196,7 +196,7 @@ in
     enableDefaultConfig = false; # useful for the following matchBlocks."*"
     matchBlocks."*" = {
       forwardAgent = false;
-      addKeysToAgent = "no";
+      addKeysToAgent = "yes";
       compression = false;
       serverAliveInterval = 0;
       serverAliveCountMax = 3;
