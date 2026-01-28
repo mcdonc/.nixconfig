@@ -259,6 +259,8 @@ in
         user = "ec2-user";
         identityFile = "~/.ssh/id_ecdsa_enfold";
         forwardAgent = true;
+        serverAliveInterval = 60;
+        serverAliveCountMax = 3;
         extraOptions = {
           HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
           PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
