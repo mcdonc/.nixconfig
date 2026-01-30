@@ -40,6 +40,8 @@
 
   environment.variables = {
     EDITOR = "emacs -nw";
+    # Prevent Docker images from showing "46 years ago" as creation date
+    SOURCE_DATE_EPOCH = "";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
