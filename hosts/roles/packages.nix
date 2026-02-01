@@ -215,7 +215,7 @@ in
       bitwarden-desktop
       calf
       cheese
-      claude-code
+      pkgs-unstable.claude-code
       clinfo
       cutecom
       discord
