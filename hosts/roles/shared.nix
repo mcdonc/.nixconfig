@@ -21,6 +21,8 @@
       tarball-ttl = 300;
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
+      max-jobs = "auto";
+      cores = 0;  # 0 = use all available cores
       trusted-users = [
         "root"
         "@wheel"
@@ -42,6 +44,8 @@
     EDITOR = "emacs -nw";
     # Prevent Docker images from showing "46 years ago" as creation date
     SOURCE_DATE_EPOCH = "";
+    # try to allow qemu-aarch64 to use all available CPUs
+    QEMU_CPU = "max";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";

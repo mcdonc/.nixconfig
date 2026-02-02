@@ -5,8 +5,10 @@ let
   remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
     cd /etc/nixos
     fqdn="$1"
-    nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
-      --target-host chrism@$fqdn --ask-sudo-password
+    export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
+    cachix watch-exec mcdonc -- \
+      nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
+        --target-host chrism@$fqdn --ask-sudo-password
   '';
 
   enfoldrebuild = pkgs.writeShellScriptBin "enfoldrebuild" ''
@@ -80,8 +82,8 @@ let
     ragenv = ''
       cd ~/projects/enfold/afsoc-rag && devenv shell
     '';
-    swnix = "sudo nixos-rebuild switch --verbose --show-trace";
-    nhswnix = "${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
+    swnix = "CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken) cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace";
+    nhswnix = "CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken) cachix watch-exec mcdonc -- ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace";
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
     rbnix = "sudo nixos-rebuild build --rollback";

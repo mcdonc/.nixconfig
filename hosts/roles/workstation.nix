@@ -8,6 +8,14 @@
 {
   jawns.isworkstation = true;
 
+  # cachix auth token for swnix/nhswnix aliases
+  age.secrets."mcdonc-unhappy-cachix-authtoken" = {
+    file = ../../secrets/mcdonc-unhappy-cachix-authtoken.age;
+    mode = "640";
+    owner = "chrism";
+    group = "users";
+  };
+
   imports = [
     ./shared.nix
     ./packages.nix

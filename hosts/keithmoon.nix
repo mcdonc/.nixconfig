@@ -31,13 +31,6 @@
 
   system.stateVersion = "24.05";
 
-  age.secrets."mcdonc-unhappy-cachix-authtoken" = {
-    file = ../secrets/mcdonc-unhappy-cachix-authtoken.age;
-    mode = "640";
-    owner = "chrism";
-    group = "users";
-  };
-
   # environment.extraInit =
   #   let
   #     cachix-file = config.age.secrets."mcdonc-unhappy-cachix-authtoken".path;

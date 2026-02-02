@@ -19,6 +19,7 @@ let
   pjsip = (
     pkgs.pjsip.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or [ ]) ++ [ ./pjsip-alsa.patch ];
+      enableParallelBuilding = true;
     })
   );
 in
