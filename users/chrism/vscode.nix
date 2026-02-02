@@ -1,4 +1,4 @@
-args@{ pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
   homedir = "/home/chrism";

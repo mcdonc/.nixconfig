@@ -1,4 +1,4 @@
-args@{
+{
   config,
   pkgs,
   lib,
