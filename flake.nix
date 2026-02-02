@@ -190,5 +190,12 @@
     in
     {
       nixosConfigurations = configs;
+      # Expose host architectures for scripts to query
+      hostArchitectures = builtins.listToAttrs (
+        builtins.map (h: {
+          name = h.hostname;
+          value = h.system;
+        }) hosts
+      );
     };
 }
