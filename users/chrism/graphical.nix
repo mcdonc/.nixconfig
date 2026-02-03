@@ -3,6 +3,31 @@
 let
   gterm-change-profile = "${pkgs.xdotool}/bin/xdotool key --clearmodifiers Shift+F10 r";
 
+  # ffmpeg scripts (workstation-only due to large closure size ~1.5GB)
+  ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
+
+  yt-transcode = pkgs.writeShellScriptBin "yt-transcode" ''
+    ffmpeg -i "$1" -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
+      -movflags +faststart output.mp4
+  '';
+
+  thumbnail = pkgs.writeShellScript "thumbnail" ''
+    # writes to ./thumbnail.png
+    # thumbnail eyedrops2.mp4 00:01:07
+    ${ffmpeg} -y -i "$1" -ss "$2" \
+      -vframes 1 thumbnail.png > /dev/null 2>&1
+  '';
+
+  extractmonopcm = pkgs.writeShellScript "extractmonopcm" ''
+    ${ffmpeg} -i "$1" -map 0:a:0 -ac 1 -f s16le -acodec pcm_s16le "$2"
+  '';
+
+  yt-1080p = pkgs.writeShellScript "yt-1080p" ''
+    # assumes 4k input
+    ${ffmpeg} -i "$1" -c:v h264_nvenc -rc:v vbr -b:v 10M \
+       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart "$2"
+  '';
+
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
     source ${gterm-color-funcs}
     pushcolor 5
@@ -165,6 +190,9 @@ let
     macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
     ubuntu = "quickemu --vm $HOME/.local/share/quickemu/ubuntu-24.04.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
     windows = "quickemu --vm $HOME/.local/share/quickemu/windows-10.conf --width 1920 --height 1200 --display spice";
+    thumbnail = "${thumbnail}";
+    yt-1080p = "${yt-1080p}";
+    extractmonopcm = "${extractmonopcm}";
   };
 
 in
@@ -249,6 +277,7 @@ in
   home.packages = with pkgs; [
     keybase-gui
     keybase
+    yt-transcode
   ];
 
   # uses nvidia-offload

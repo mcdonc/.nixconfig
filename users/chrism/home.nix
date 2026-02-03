@@ -42,30 +42,6 @@ let
     ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
   '';
 
-  ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
-
-  yt-transcode = pkgs.writeShellScriptBin "yt-transcode" ''
-    ffmpeg -i "$1" -c:v h264_nvenc -preset slow -cq 23 -c:a aac -b:a 192k \
-      -movflags +faststart output.mp4
-  '';
-
-  thumbnail = pkgs.writeShellScript "thumbnail" ''
-    # writes to ./thumbnail.png
-    # thumbnail eyedrops2.mp4 00:01:07
-    ${ffmpeg} -y -i "$1" -ss "$2" \
-      -vframes 1 thumbnail.png > /dev/null 2>&1
-  '';
-
-  extractmonopcm = pkgs.writeShellScript "extractmonopcm" ''
-    ${ffmpeg} -i "$1" -map 0:a:0 -ac 1 -f s16le -acodec pcm_s16le "$2"
-  '';
-
-  yt-1080p = pkgs.writeShellScript "yt-1080p" ''
-    # assumes 4k input
-    ${ffmpeg} -i "$1" -c:v h264_nvenc -rc:v vbr -b:v 10M \
-       -vf "scale=1920:1080" -r 30 -c:a aac -b:a 128k -movflags +faststart "$2"
-  '';
-
   edit = pkgs.writeShellScriptBin "edit" ''
     if [[ "$XDG_SESSION_TYPE" == "tty" ]]; then
       exec emacsclient -c $@
@@ -104,9 +80,6 @@ let
     ai = "shell-genie ask";
     diff = "${pkgs.colordiff}/bin/colordiff";
     disable-kvm = "sudo modprobe -r kvm-intel"; # for virtualbox
-    thumbnail = "${thumbnail}";
-    yt-1080p = "${yt-1080p}";
-    extractmonopcm = "${extractmonopcm}";
     cullimgs = ''docker rmi $(docker images --filter "dangling=true" -q)'';
     nix-generations = ''
       sudo nix-env -p /nix/var/nix/profiles/system --list-generations
@@ -182,7 +155,6 @@ in
     keithtemps
     whoosh
     nvfantemps
-    yt-transcode
     edit
     typescript # for tsc for emacs
     remoterebuild
