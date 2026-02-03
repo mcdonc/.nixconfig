@@ -50,6 +50,11 @@ in
 
   security.sudo.wheelNeedsPassword = false;
 
+  # prevent large GUI packages
+  hardware.raspberry-pi."4".fkms-3d.enable = lib.mkForce false;
+  services.fwupd.enable = lib.mkForce false;
+  # /
+
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "usbhid"

@@ -91,6 +91,7 @@ in
       bottom
       btop
       cachix
+      pkgs-unstable.claude-code
       cntr # for build debugging
       cowsay
       curl
@@ -129,7 +130,6 @@ in
       minicom
       moon-buggy
       ncdu
-      neofetch
       netcat
       net-tools
       nh
@@ -215,7 +215,6 @@ in
       bitwarden-desktop
       calf
       cheese
-      pkgs-unstable.claude-code
       clinfo
       cutecom
       discord
@@ -276,6 +275,7 @@ in
       mullvad-vpn
       #mplayer # broken under 25.11
       pkgs-unstable.mpv
+      neofetch
       networkmanager-openvpn
       nickel
       nil # for nix emacs lsp-mode

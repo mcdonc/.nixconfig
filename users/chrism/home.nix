@@ -118,8 +118,10 @@ let
   graphicalimports =
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
-  # using emacs-pgtk for wayland
-  emacswithpackages=(pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
+  # use emacs-nox for headless systems, full emacs for workstations
+  emacsBase = if config.jawns.isworkstation then pkgs.emacs else pkgs.emacs-nox;
+
+  emacswithpackages = (pkgs.emacsPackagesFor emacsBase).emacsWithPackages (
       epkgs: [
         epkgs.dockerfile-mode
         epkgs.nix-mode
@@ -151,15 +153,15 @@ let
         epkgs.nickel-mode
         epkgs.editorconfig
         epkgs.terraform-mode
-        epkgs.lspce
-        epkgs.lsp-mode
-        epkgs.lsp-ui
-        epkgs.lsp-jedi
+        # epkgs.lspce
+        # epkgs.lsp-mode
+        # epkgs.lsp-ui
+        # epkgs.lsp-jedi
         epkgs.company
         epkgs.dart-mode
         epkgs.adoc-mode
         epkgs.typescript-mode
-        epkgs.tsc # maybe required for typescript-mode
+        # epkgs.tsc # maybe required for typescript-mode
       ]
   );
 
