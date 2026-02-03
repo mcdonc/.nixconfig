@@ -7,12 +7,32 @@ let
     fqdn="$1"
     target_hostname="''${fqdn%%.*}"
     target_arch=$(nix eval --raw ".#hostArchitectures.$target_hostname" 2>/dev/null)
+    export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
     rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password)
     if [ "$target_arch" = "aarch64-linux" ]; then
-      export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
       cachix watch-exec mcdonc -- "''${rebuild_cmd[@]}"
     else
       "''${rebuild_cmd[@]}"
+    fi
+  '';
+
+  swnix = pkgs.writeShellScriptBin "swnix" ''
+    export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
+    target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
+    if [ "$target_arch" = "aarch64-linux" ]; then
+      cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace
+    else
+      sudo nixos-rebuild switch --verbose --show-trace
+    fi
+  '';
+
+  nhswnix = pkgs.writeShellScriptBin "nhswnix" ''
+    export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
+    target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
+    if [ "$target_arch" = "aarch64-linux" ]; then
+      cachix watch-exec mcdonc -- ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace
+    else
+      ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace
     fi
   '';
 
@@ -63,8 +83,6 @@ let
     ragenv = ''
       cd ~/projects/enfold/afsoc-rag && devenv shell
     '';
-    swnix = "target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null); if [ \"$target_arch\" = \"aarch64-linux\" ]; then CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken) cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace; else sudo nixos-rebuild switch --verbose --show-trace; fi";
-    nhswnix = "target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null); if [ \"$target_arch\" = \"aarch64-linux\" ]; then CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken) cachix watch-exec mcdonc -- ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace; else ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace; fi";
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
     rbnix = "sudo nixos-rebuild build --rollback";
@@ -159,6 +177,8 @@ in
     typescript # for tsc for emacs
     remoterebuild
     enfoldrebuild
+    swnix
+    nhswnix
   ];
 
   services.gpg-agent = {
