@@ -230,6 +230,7 @@ in
       "smallysmalls".forwardAgent = true;
       "smallysmalls".user = "ec2-user";
       "demo.toughserv.com".forwardAgent = true;
+      "demo.toughserv.com".user = "amia";
       "apex.firewall" = {
         hostname = "apex.firewall";
         proxyJump = "bouncer.palladion.com";

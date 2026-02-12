@@ -58,6 +58,11 @@
     };
   };
 
+  # DoD root CA for docker containers that need to trust DoD-signed certs
+  security.pki.certificateFiles = [
+    ../../static/dod-root-ca-6.crt
+  ];
+
   virtualisation.docker = {
     enable = true;
     daemon.settings = {
@@ -65,6 +70,7 @@
       "features" = {
         "buildkit" = true;
       };
+      "insecure-registries" = [ "artifact.dev.aws.cce.af.mil" ];
     };
   };
 
