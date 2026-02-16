@@ -14,19 +14,13 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-    mailserver.url =
-      "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
-    nixpkgs-py36.url =
-      "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
-    nixpkgs-py37.url =
-      "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
-    nixpkgs-py39.url =
-      "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
+    mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
+    nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
+    nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
+    nixpkgs-py39.url = "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
     # git rev-list -1 --before="2025-06-20 00:00" nixos-25.05
-    nixpkgs-signal-7561.url =
-      "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
-    nixpkgs-fix-protonvpn.url =
-      "github:mcdonc/nixpkgs/fix-protonvpn";
+    nixpkgs-signal-7561.url = "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
+    nixpkgs-fix-protonvpn.url = "github:mcdonc/nixpkgs/fix-protonvpn";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
@@ -112,8 +106,7 @@
               config.allowUnfree = true;
             };
           };
-          forks = builtins.listToAttrs
-            ((builtins.map (i: mkNpFork i)) forkInputs);
+          forks = builtins.listToAttrs ((builtins.map (i: mkNpFork i)) forkInputs);
           specialArgs =
             inputs
             // forks
@@ -150,7 +143,7 @@
           system = "x86_64-linux";
         }
         {
-          hostname = "thinkcentre";
+          hostname = "thinkcentre1";
           system = "x86_64-linux";
         }
         {
@@ -162,7 +155,7 @@
           system = "x86_64-linux";
         }
         {
-          hostname = "nixos_vm";
+          hostname = "nixos-vm";
           system = "x86_64-linux";
         }
         {
