@@ -334,6 +334,7 @@ in
       x42-avldrums
       x42-plugins
       xcalib
+      xclip  # unnamed dep of opencode
       xdotool
       xorg.xev
       xorg.xkbcomp
