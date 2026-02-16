@@ -206,6 +206,7 @@ in
       airspy
       alsa-scarlett-gui
       alsa-utils # aplay
+      antigravity
       appimage-run
       # ardour # broken under 25.11
       argyllcms
@@ -283,6 +284,7 @@ in
       nvidia-offload
       nvtopPackages.nvidia
       odin2
+      pkgs-unstable.opencode
       #olive-editor # 0.2 # a dep has cmake problems in 25.11
       pico-sdk
       pinentry-tty # dep of gpg

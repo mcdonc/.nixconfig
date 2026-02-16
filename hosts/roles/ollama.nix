@@ -1,13 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   services.ollama.enable = true;
+  services.ollama.package = pkgs-unstable.ollama-cuda;
   services.ollama.acceleration = "cuda";
   services.ollama.loadModels = [
     "codellama:7b"
-    "codellama:13b"
+    "qwen2.5-coder:7b"
   ];
-  services.open-webui.enable = true; # broken under 25.11
+  services.ollama.environmentVariables = {
+    "OLLAMA_CONTEXT_LENGTH" = "64000";
+  };
+
+  services.open-webui.enable = true;
+  services.open-webui.package = pkgs-unstable.open-webui;
 
   nix.settings = {
     extra-substituters = [
