@@ -4,6 +4,7 @@
   config,
   inputs,
   pkgs-unstable,
+  pkgs-pjsip,
   ...
 }:
 
@@ -17,7 +18,7 @@ let
       ;
   };
   pjsip = (
-    pkgs.pjsip.overrideAttrs (oldAttrs: {
+    pkgs-pjsip.pjsip.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or [ ]) ++ [ ./pjsip-alsa.patch ];
       enableParallelBuilding = true;
     })

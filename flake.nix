@@ -9,7 +9,7 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
-    nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
+    #nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -21,6 +21,8 @@
     # git rev-list -1 --before="2025-06-20 00:00" nixos-25.05
     nixpkgs-signal-7561.url = "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
     nixpkgs-fix-protonvpn.url = "github:mcdonc/nixpkgs/fix-protonvpn";
+    # locked revision of nixos-25.11 as of 2026-03-13, prevent recompiles below
+    nixpkgs-pjsip.url = "github:NixOS/nixpkgs/3e20095fe3c6cbb1ddcef89b26969a69a1570776";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
@@ -97,6 +99,10 @@
             {
               name = "pkgs-fix-protonvpn";
               value = nixpkgs-fix-protonvpn;
+            }
+            {
+              name = "pkgs-pjsip";
+              value = nixpkgs-pjsip;
             }
           ];
           mkNpFork = forkinput: {
