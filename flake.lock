@@ -290,6 +290,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-emacs": {
+      "locked": {
+        "lastModified": 1773814637,
+        "narHash": "sha256-GNU+ooRmrHLfjlMsKdn0prEKVa0faVanm0jrgu1J/gY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fea3b367d61c1a6592bc47c72f40a9f3e6a53e96",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fea3b367d61c1a6592bc47c72f40a9f3e6a53e96",
+        "type": "github"
+      }
+    },
     "nixpkgs-fix-protonvpn": {
       "locked": {
         "lastModified": 1763244716,
@@ -444,6 +460,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-2411": "nixpkgs-2411",
+        "nixpkgs-emacs": "nixpkgs-emacs",
         "nixpkgs-fix-protonvpn": "nixpkgs-fix-protonvpn",
         "nixpkgs-pjsip": "nixpkgs-pjsip",
         "nixpkgs-py36": "nixpkgs-py36",

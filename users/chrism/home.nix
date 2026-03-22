@@ -1,4 +1,4 @@
-args@{ pkgs, lib, config, ... }:
+args@{ pkgs, pkgs-emacs, lib, config, ... }:
 
 let
 
@@ -110,9 +110,10 @@ let
     lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
 
   # use emacs-nox for headless systems, full emacs for workstations
-  emacsBase = if config.jawns.isworkstation then pkgs.emacs else pkgs.emacs-nox;
+  # pkgs-emacs is pinned to prevent recompiles on every nix flake update
+  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
 
-  emacswithpackages = (pkgs.emacsPackagesFor emacsBase).emacsWithPackages (
+  emacswithpackages = (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages (
       epkgs: [
         epkgs.dockerfile-mode
         epkgs.nix-mode
@@ -136,7 +137,7 @@ let
         epkgs.markdown-mode
         epkgs.markdown-preview-mode
         epkgs.gptel
-        pkgs.emacs-all-the-icons-fonts
+        pkgs-emacs.emacs-all-the-icons-fonts
         epkgs.yaml-mode
         epkgs.multiple-cursors
         epkgs.dts-mode
