@@ -68,7 +68,7 @@ in
       #"firefox"
       "bitwarden"
       "iterm2"
-      "docker"
+      "docker-desktop"
       "discord"
       "claude-code"
     ];
