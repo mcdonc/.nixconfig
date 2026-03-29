@@ -7,6 +7,7 @@
   services.ollama.loadModels = [
     "codellama:7b"
     "qwen2.5-coder:7b"
+    "qwen3:8b"
   ];
   services.ollama.environmentVariables = {
     "OLLAMA_CONTEXT_LENGTH" = "64000";
