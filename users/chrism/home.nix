@@ -4,6 +4,8 @@ let
 
   remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
     cd /etc/nixos
+    # stage tracked files so nix sees a clean tree and avoids refetching
+    git add -u
     verbose=""
     if [ "$1" = "-v" ]; then
       verbose="-L --verbose"
@@ -22,6 +24,9 @@ let
   '';
 
   swnix = pkgs.writeShellScriptBin "swnix" ''
+    cd /etc/nixos
+    # stage tracked files so nix sees a clean tree and avoids refetching
+    git add -u
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
     target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
     if [ "$target_arch" = "aarch64-linux" ]; then
