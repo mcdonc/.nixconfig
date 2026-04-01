@@ -117,9 +117,9 @@
     "/steam2"
   ];
 
-  # 32 GB max ARC cache
+  # 20 GiB max ARC cache
   boot.kernelParams = [
-    "zfs.zfs_arc_max=34359738368"
+    "zfs.zfs_arc_max=21474836480"
     # required by wayland, see
     # https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
     "nvidia-drm.modeset=1"
