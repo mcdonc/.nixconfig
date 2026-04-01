@@ -4,11 +4,16 @@ let
 
   remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
     cd /etc/nixos
+    verbose=""
+    if [ "$1" = "-v" ]; then
+      verbose="-L --verbose"
+      shift
+    fi
     fqdn="$1"
     target_hostname="''${fqdn%%.*}"
     target_arch=$(nix eval --raw ".#hostArchitectures.$target_hostname" 2>/dev/null)
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
-    rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password)
+    rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
     if [ "$target_arch" = "aarch64-linux" ]; then
       cachix watch-exec mcdonc -- "''${rebuild_cmd[@]}"
     else
