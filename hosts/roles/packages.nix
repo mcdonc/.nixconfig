@@ -5,6 +5,7 @@
   pkgs-py39,
   pkgs-signal-7561,
   pkgs-unstable,
+  pkgs-claude-code,
   inputs,
   system,
   config,
@@ -91,7 +92,7 @@ in
       bottom
       btop
       cachix
-      pkgs-unstable.claude-code
+      pkgs-claude-code.claude-code
       cntr # for build debugging
       cowsay
       curl

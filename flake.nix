@@ -21,6 +21,8 @@
     # git rev-list -1 --before="2025-06-20 00:00" nixos-25.05
     nixpkgs-signal-7561.url = "github:NixOS/nixpkgs/6d1ec64b8381b62f7aeb754523fda3706e687210";
     nixpkgs-fix-protonvpn.url = "github:mcdonc/nixpkgs/fix-protonvpn";
+    # locked nixpkgs master with claude-code 2.1.92 (2.1.88 yanked from npm)
+    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/20e346320f6e089ab8621328d0399579d1dd3bff";
     # locked revision of nixos-25.11 as of 2026-03-13, prevent recompiles below
     nixpkgs-pjsip.url = "github:NixOS/nixpkgs/3e20095fe3c6cbb1ddcef89b26969a69a1570776";
     # locked revision of nixos-25.11 as of 2026-03-21, prevent emacs recompiles
@@ -107,6 +109,10 @@
               value = nixpkgs-pjsip;
             }
             {
+              name = "pkgs-claude-code";
+              value = nixpkgs-claude-code;
+            }
+            {
               name = "pkgs-emacs";
               value = nixpkgs-emacs;
             }
@@ -116,6 +122,7 @@
             value = import forkinput.value {
               system = host.system;
               config.allowUnfree = true;
+              overlays = forkinput.overlays or [];
             };
           };
           forks = builtins.listToAttrs ((builtins.map (i: mkNpFork i)) forkInputs);
