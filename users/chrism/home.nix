@@ -26,9 +26,9 @@ let
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
     target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
     if [ "$target_arch" = "aarch64-linux" ]; then
-      cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace
+      cachix watch-exec mcdonc -- sudo nixos-rebuild-ng switch --verbose --show-trace
     else
-      sudo nixos-rebuild switch --verbose --show-trace
+      sudo nixos-rebuild-ng switch --verbose --show-trace -L
     fi
   '';
 
