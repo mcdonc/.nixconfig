@@ -7,7 +7,8 @@
 (setq inhibit-startup-message t)
 (tool-bar-mode 0)
 (menu-bar-mode 1)
-(set-scroll-bar-mode nil)
+(when (fboundp 'set-scroll-bar-mode)
+  (set-scroll-bar-mode nil))
 
 ;; uncorrupt under wayland?  doesnt seem to work.
 (modify-all-frames-parameters '((inhibit-double-buffering . t)))
