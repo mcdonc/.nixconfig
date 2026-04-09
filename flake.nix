@@ -7,8 +7,8 @@
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
-    musnix.url = "github:musnix/musnix";
-    musnix.inputs.nixpkgs.follows = "nixpkgs";
+    # musnix.url = "github:musnix/musnix";
+    # musnix.inputs.nixpkgs.follows = "nixpkgs";
     #nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -122,7 +122,7 @@
             value = import forkinput.value {
               system = host.system;
               config.allowUnfree = true;
-              overlays = forkinput.overlays or [];
+              overlays = forkinput.overlays or [ ];
             };
           };
           forks = builtins.listToAttrs ((builtins.map (i: mkNpFork i)) forkInputs);

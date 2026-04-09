@@ -16,9 +16,7 @@ let
     ${yabc} add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
     ${yabc} sync
   '';
-  adevices = pkgs.writeShellScriptBin "adevices" (
-    builtins.readFile ./adevices.sh
-  );
+  adevices = pkgs.writeShellScriptBin "adevices" (builtins.readFile ./adevices.sh);
 in
 {
   imports = [
@@ -46,10 +44,10 @@ in
   ];
 
   # see https://github.com/musnix/musnix
-  musnix.enable = true;
-  musnix.rtirq.enable = true;
-  musnix.rtcqs.enable = true;
-  musnix.alsaSeq.enable = true;
+  # musnix.enable = true;
+  # musnix.rtirq.enable = true;
+  # musnix.rtcqs.enable = true;
+  # musnix.alsaSeq.enable = true;
 
   # Optimized for the Edirol UA-25 USB capture device
   #

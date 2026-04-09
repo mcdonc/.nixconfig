@@ -93,7 +93,7 @@ in
       btop
       cachix
       pkgs-claude-code.claude-code
-      pkgs-unstable.copilot-cli
+      pkgs-unstable.github-copilot-cli
       cntr # for build debugging
       cowsay
       curl
