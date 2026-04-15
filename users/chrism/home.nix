@@ -28,7 +28,7 @@ let
     if [ "$target_arch" = "aarch64-linux" ]; then
       cachix watch-exec mcdonc -- sudo nixos-rebuild-ng switch --verbose --show-trace
     else
-      sudo nixos-rebuild-ng switch --verbose --show-trace -L
+      sudo nixos-rebuild-ng switch --verbose --show-trace
     fi
   '';
 
