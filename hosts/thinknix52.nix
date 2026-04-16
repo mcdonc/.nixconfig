@@ -45,6 +45,9 @@
   # confirmed 07/12/2025 in 25.05
   hardware.nvidia.prime.sync.enable = lib.mkForce true;
 
+  # XXX26.05 Quadro P1000 dropped from mainline 595.xx, needs legacy 580.xx
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)
   boot.consoleLogLevel = 3;

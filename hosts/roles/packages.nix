@@ -122,7 +122,7 @@ in
       isd
       jq
       killall
-      lha
+      #lha # XXX26.05 broken in nixpkgs 26.05 (C compile errors with newer GCC)
       loccount
       lolcat
       lsof
@@ -139,7 +139,7 @@ in
       nix-index # for nix-locate
       nix-output-monitor
       nix-tree
-      nixfmt-rfc-style
+      nixfmt # was nixfmt-rfc-style, renamed in 26.05
       nixos-repl
       nmap
       openssl
@@ -168,7 +168,7 @@ in
       wol
       xz
       zstd
-      nixos-rebuild-ng
+      #nixos-rebuild-ng # XXX26.05 now the default nixos-rebuild in 26.05
     ]
     ++ lib.optionals (!config.jawns.isworkstation) [
       vim
@@ -195,9 +195,9 @@ in
       pkgs-py37.python37
       pkgs-py39.python38
       pkgs-py39.python39
-      python310
-      python311
-      python312
+      #python310 # XXX26.05 removed in nixpkgs 26.05
+      #python311 # XXX26.05 broken in nixpkgs 26.05 (sphinx/docutils crash building docs)
+      #python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
       pypy3
       python27
       (wrapOBS {
@@ -227,9 +227,9 @@ in
       #dsdcc # for gprx dmr decoding, problems under 25.11
       dtc # milkv
       dupe-krill
-      dupeguru
+      #dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
       element-desktop
-      fast-cli # wants chromium, wtf
+      #fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
       fdupes
       ffmpeg-full
       firefox
@@ -278,7 +278,8 @@ in
       mullvad-vpn
       #mplayer # broken under 25.11
       pkgs-unstable.mpv
-      neofetch
+      #neofetch # XXX26.05 removed in nixpkgs 26.05 (unmaintained, use fastfetch)
+      fastfetch
       networkmanager-openvpn
       nickel
       nil # for nix emacs lsp-mode
@@ -327,7 +328,7 @@ in
       tap-plugins
       thermald
       thinkfan
-      vdhcoapp # vdhcoapp install --user (https://github.com/NixOS/nixpkgs/issues/112046)
+      #vdhcoapp # XXX26.05 removed in nixpkgs 26.05 (VDH >= 10 doesn't need companion app)
       vim-full
       virt-manager
       virt-viewer # for remote-viewer
@@ -338,9 +339,9 @@ in
       xcalib
       xclip # unnamed dep of opencode
       xdotool
-      xorg.xev
-      xorg.xkbcomp
-      xorg.xmodmap
+      xev # was xorg.xev, xorg set deprecated in 26.05
+      xkbcomp # was xorg.xkbcomp
+      xmodmap # was xorg.xmodmap
       yt-dlp
       zam-plugins
       zgrviewer

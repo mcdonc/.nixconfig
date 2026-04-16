@@ -19,7 +19,7 @@ let
     target_hostname="''${fqdn%%.*}"
     target_arch=$(nix eval --raw ".#hostArchitectures.$target_hostname" 2>/dev/null)
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
-    rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
+    rebuild_cmd=(nixos-rebuild switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
     if [ "$target_arch" = "aarch64-linux" ]; then
       cachix watch-exec mcdonc -- "''${rebuild_cmd[@]}"
     else
@@ -32,9 +32,9 @@ let
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
     target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
     if [ "$target_arch" = "aarch64-linux" ]; then
-      cachix watch-exec mcdonc -- sudo nixos-rebuild-ng switch --verbose --show-trace
+      cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace
     else
-      sudo nixos-rebuild-ng switch --verbose --show-trace
+      sudo nixos-rebuild switch --verbose --show-trace
     fi
   '';
 
@@ -51,7 +51,7 @@ let
   enfoldrebuild = pkgs.writeShellScriptBin "enfoldrebuild" ''
     cd $HOME/projects/enfold/nixos
     fqdn="enfold.repoze.org"
-    nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
+    nixos-rebuild switch --flake ".#''${fqdn%%.*}" \
       --target-host chrism@$fqdn --ask-sudo-password
   '';
 
@@ -71,7 +71,7 @@ let
   '';
 
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
-    ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+    ${pkgs.nixfmt}/bin/nixfmt -w80 $@
   '';
 
   edit = pkgs.writeShellScriptBin "edit" ''

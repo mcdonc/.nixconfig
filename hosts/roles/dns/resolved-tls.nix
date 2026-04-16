@@ -8,16 +8,16 @@
 
   services.resolved = {
     enable = true;
-    dnssec = "false";
-    domains = [ "~." ]; # "use as default interface for all requests"
     # (see man resolved.conf)
-    extraConfig = ''
-      DNSOverTLS=opportunistic
-      MulticastDNS=yes
-    '';
-    # MulticastDNS=yes lets resolved publish and resolve mdns hostname
-    # records (=resolve lets it only resolve mDNS names)
-    llmnr = "true"; # handle single-name hostnames
+    settings.Resolve = {
+      DNSSEC = "false";
+      Domains = [ "~." ]; # "use as default interface for all requests"
+      DNSOverTLS = "opportunistic";
+      # MulticastDNS=yes lets resolved publish and resolve mdns hostname
+      # records (=resolve lets it only resolve mDNS names)
+      MulticastDNS = "yes";
+      LLMNR = "true"; # handle single-name hostnames
+    };
   };
 
   networking.nameservers = [

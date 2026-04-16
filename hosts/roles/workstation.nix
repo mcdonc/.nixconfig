@@ -134,7 +134,7 @@
         keycode 117 = Next NoSymbol End
       '';
     in
-    "${pkgs.xorg.xmodmap}/bin/xmodmap ${modmap}";
+    "${pkgs.xmodmap}/bin/xmodmap ${modmap}";
 
   services.xserver.xkb.layout = "us";
   services.xserver.xkb.options = "ctrl:nocaps,terminate:ctrl_alt_bksp";
