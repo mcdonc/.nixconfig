@@ -133,9 +133,6 @@ let
         epkgs.whitespace-cleanup-mode
         epkgs.flycheck-pyflakes
         epkgs.flycheck-pos-tip
-        epkgs.nord-theme
-        epkgs.nordless-theme
-        epkgs.vscode-dark-plus-theme
         epkgs.doom-modeline
         epkgs.all-the-icons
         epkgs.all-the-icons-dired
