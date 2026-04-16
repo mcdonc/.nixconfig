@@ -95,7 +95,7 @@ let
     mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
     kbrestart = "systemctl --user restart keybase";
-    toconsole = "sudo systemctl isolate multi-user.target";
+    toconsole = "sudo setsid -f bash -c 'systemctl stop display-manager; sleep 1; chvt 2'";
     togui = "sudo systemctl isolate graphical.target";
     #ks = "loginctl terminate-session $XDG_SESSION_ID";
     open = "kioclient exec";
