@@ -293,7 +293,7 @@ in
       pinentry-tty # dep of gpg
       pkgs.vscode-fhs
       powertop
-      protonvpn-gui
+      proton-vpn # was protonvpn-gui, renamed in 26.05
       qjackctl
       qjournalctl
       quickemu

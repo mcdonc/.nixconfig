@@ -432,6 +432,7 @@ in
 
   programs.git = {
     enable = true;
+    signing.format = "openpgp";
     settings = {
       user.name = "Chris McDonough";
       user.email = "chrism@plope.com";
