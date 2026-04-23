@@ -149,62 +149,62 @@
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  services.samba = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      global = {
-        workgroup = "WORKGROUP";
-        "server string" = "keithmoon";
-        "netbios name" = "keithmoon";
-        security = "user";
-        browseable = "yes";
-        "smb encrypt" = "required";
-        # note: localhost is the ipv6 localhost ::1
-        "hosts allow" = "192.168.1. 127.0.0.1 localhost";
-        "hosts deny" = "0.0.0.0/0";
-        "guest account" = "nobody";
-        "map to guest" = "bad user";
-        "log level" = "nmbd:0";
-      };
-      root = {
-        path = "/";
-        browseable = "yes";
-        writeable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "chrism";
-        "force group" = "users";
-      };
-      v = {
-        path = "/home/chrism/v";
-        browseable = "yes";
-        writeable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "chrism";
-        "force group" = "users";
-      };
-      homes = {
-        browseable = "no";
-        # note: each home will be browseable; the "homes" share will not.
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-      };
-    };
-  };
+  # services.samba = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   settings = {
+  #     global = {
+  #       workgroup = "WORKGROUP";
+  #       "server string" = "keithmoon";
+  #       "netbios name" = "keithmoon";
+  #       security = "user";
+  #       browseable = "yes";
+  #       "smb encrypt" = "required";
+  #       # note: localhost is the ipv6 localhost ::1
+  #       "hosts allow" = "192.168.1. 127.0.0.1 localhost";
+  #       "hosts deny" = "0.0.0.0/0";
+  #       "guest account" = "nobody";
+  #       "map to guest" = "bad user";
+  #       "log level" = "nmbd:0";
+  #     };
+  #     root = {
+  #       path = "/";
+  #       browseable = "yes";
+  #       writeable = "yes";
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #       "force user" = "chrism";
+  #       "force group" = "users";
+  #     };
+  #     v = {
+  #       path = "/home/chrism/v";
+  #       browseable = "yes";
+  #       writeable = "yes";
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #       "force user" = "chrism";
+  #       "force group" = "users";
+  #     };
+  #     homes = {
+  #       browseable = "no";
+  #       # note: each home will be browseable; the "homes" share will not.
+  #       "read only" = "no";
+  #       "guest ok" = "no";
+  #       "create mask" = "0644";
+  #       "directory mask" = "0755";
+  #     };
+  #   };
+  # };
 
-  # filter out stupid samba nmdb messages from log (doesnt seem to work)
-  systemd.services.samba-nmbd.serviceConfig = {
-    StandardOutput = "null";
-    StandardError = "null";
-  };
+  # # filter out stupid samba nmdb messages from log (doesnt seem to work)
+  # systemd.services.samba-nmbd.serviceConfig = {
+  #   StandardOutput = "null";
+  #   StandardError = "null";
+  # };
 
   # none of this seems to be necessary 7/13/2025.
   #
@@ -223,10 +223,10 @@
 
   # avahi config is required for samba to work (maybe?  untested)
 
-  services.samba-wsdd = {
-    enable = true;
-    openFirewall = true;
-  };
+  # services.samba-wsdd = {
+  #   enable = true;
+  #   openFirewall = true;
+  # };
 
   system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ] ''
     chmod o+x /home/chrism
