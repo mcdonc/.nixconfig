@@ -404,12 +404,15 @@
  security.pam.loginLimits = [
     { domain = "*"; type = "soft"; item = "nofile"; value = "65536"; }
     { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
+    { domain = "*"; type = "hard"; item = "core"; value = "0"; }
  ];
 
  environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users
     * soft nofile 65536
     * hard nofile 1048576
+    # disable core dumps
+    * hard core 0
   '';
 
 }
