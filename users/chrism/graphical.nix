@@ -1,7 +1,23 @@
 { pkgs, lib, ... }:
 
 let
-  gterm-change-profile = "${pkgs.xdotool}/bin/xdotool key --clearmodifiers Shift+F10 r";
+  mkCaseEntry = scheme:
+    ''${toString scheme.num}) BG="${scheme.bg}"; FG="${scheme.fg}"
+         PAL="${paletteToShellStr scheme.palette}" ;;'';
+
+  gterm-change-profile = pkgs.writeShellScript "gterm-change-profile" ''
+    case "$1" in
+      ${builtins.concatStringsSep "\n      " (map mkCaseEntry colorschemes)}
+      *) return ;;
+    esac
+    printf "\e]10;%s\a" "$FG"
+    printf "\e]11;%s\a" "$BG"
+    i=0
+    for color in $PAL; do
+      printf "\e]4;%d;%s\a" "$i" "$color"
+      i=$((i + 1))
+    done
+  '';
 
   # ffmpeg scripts (workstation-only due to large closure size ~1.5GB)
   ffmpeg = "${pkgs.ffmpeg-full}/bin/ffmpeg";
@@ -45,12 +61,8 @@ let
       export COLORSTACK="1"
     fi
     function chcolor() {
-      # emulates right-clicking and selecting a numbered gnome-terminal
-      # profile. hide output if it fails.  --clearmodifiers ignores any
-      # modifier keys you're physically holding before sending the command
-      if [ -n "$GNOME_TERMINAL_SERVICE" ]; then
-         ${gterm-change-profile} $1 > /dev/null 2>&1
-      fi
+      # switches terminal colors using OSC escape sequences
+      ${gterm-change-profile} $1
     }
 
     function colorbye () {
@@ -99,6 +111,25 @@ let
     "#FFFFFF"
   ];
 
+  colorschemes = [
+    { num = 1; name = "grey";   uuid = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
+      bg = "#1C2023"; fg = "#FFFFFF"; palette = defaultpalette; default = true; }
+    { num = 2; name = "blue";   uuid = "ec7087d3-ca76-46c3-a8ec-aba2f3a65db7";
+      bg = "#00008E"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
+    { num = 3; name = "black";  uuid = "ea1f3ac4-cfca-4fc1-bba7-fdf26666d188";
+      bg = "#000000"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
+    { num = 4; name = "purple"; uuid = "a37ed5e4-99f5-4eba-acef-e491965a6076";
+      bg = "#2C0035"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
+    { num = 5; name = "yellow"; uuid = "f9a98c86-a974-42bb-98a0-be84f87b9076";
+      bg = "#F1F168"; fg = "#000000"; default = false;
+      palette = [
+        "#171421" "#ED1515" "#11D116" "#FF6D03" "#1D99F3" "#A347BA" "#2AA1B3" "#D0CFCC"
+        "#5E5C64" "#F66151" "#33D17A" "#D8D8D7" "#2A7BDE" "#C061CB" "#33C7DE" "#FFFFFF"
+      ]; }
+  ];
+
+  paletteToShellStr = pal: builtins.concatStringsSep " " pal;
+
   defaultprofile = {
     default = true;
     visibleName = "1grey";
@@ -117,74 +148,32 @@ let
     };
   };
 
-  termsettings = {
-    enable = true;
-    showMenubar = false;
-
-    profile.b1dcc9dd-5262-4d8d-a863-c897e6d979b9 = defaultprofile;
-    profile.ec7087d3-ca76-46c3-a8ec-aba2f3a65db7 = defaultprofile // {
-      default = false;
-      visibleName = "2blue";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#00008E";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.ea1f3ac4-cfca-4fc1-bba7-fdf26666d188 = defaultprofile // {
-      default = false;
-      visibleName = "3black";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#000000";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.a37ed5e4-99f5-4eba-acef-e491965a6076 = defaultprofile // {
-      default = false;
-      visibleName = "4purple";
-      colors = {
-        palette = defaultpalette;
-        backgroundColor = "#2C0035";
-        foregroundColor = "#D0CFCC";
-      };
-    };
-    profile.f9a98c86-a974-42bb-98a0-be84f87b9076 = defaultprofile // {
-      default = false;
-      visibleName = "5yellow";
-      colors = {
-        palette = [
-          "#171421"
-          "#ED1515"
-          "#11D116"
-          "#FF6D03"
-          "#1D99F3"
-          "#A347BA"
-          "#2AA1B3"
-          "#D0CFCC"
-
-          "#5E5C64"
-          "#F66151"
-          "#33D17A"
-          "#D8D8D7"
-          "#2A7BDE"
-          "#C061CB"
-          "#33C7DE"
-          "#FFFFFF"
-        ];
-        backgroundColor = "#F1F168";
-        foregroundColor = "#000000";
-      };
+  mkProfile = scheme: defaultprofile // {
+    default = scheme.default;
+    visibleName = "${toString scheme.num}${scheme.name}";
+    colors = {
+      palette = scheme.palette;
+      backgroundColor = scheme.bg;
+      foregroundColor = scheme.fg;
     };
   };
 
-  shellAliases = {
-    greyterm = "${gterm-change-profile} 1";
-    blueterm = "${gterm-change-profile} 2";
-    blackterm = "${gterm-change-profile} 3";
-    purpleterm = "${gterm-change-profile} 4";
-    yellowterm = "${gterm-change-profile} 5";
-    #ssh = "${ssh-chcolor}";
+  termsettings = {
+    enable = true;
+    showMenubar = false;
+    profile = builtins.listToAttrs (map (scheme: {
+      name = scheme.uuid;
+      value = mkProfile scheme;
+    }) colorschemes);
+  };
+
+  termAliases = builtins.listToAttrs (map (scheme: {
+    name = "${scheme.name}term";
+    value = "${gterm-change-profile} ${toString scheme.num}";
+  }) colorschemes);
+
+  shellAliases = termAliases // {
+    ssh = "${ssh-chcolor}";
     stopx = "${pkgs.systemd}/bin/systemctl stop display-manager.service";
     startx = "${pkgs.systemd}/bin/systemctl start display-manager.service";
     macos = "quickemu --vm $HOME/.local/share/quickemu/macos-sonoma.conf --width 1920 --height 1080 --display spice --viewer remote-viewer";
@@ -212,23 +201,23 @@ in
 
   programs.zsh = {
     shellAliases = shellAliases;
-    # initContent = lib.mkAfter ''
-    #   source ${gterm-color-funcs}
-    #   function nix-shell () {
-    #      # turn term color blue
-    #      pushcolor 2
-    #      ${pkgs.any-nix-shell}/bin/.any-nix-shell-wrapper zsh "$@"
-    #      popcolor
-    #   }
+    initContent = lib.mkAfter ''
+      source ${gterm-color-funcs}
+      function nix-shell () {
+         # turn term color blue
+         pushcolor 2
+         command nix-shell "$@"
+         popcolor
+      }
 
-    #   function devenv () {
-    #      # turn term color blue
-    #      pushcolor 4
-    #      $HOME/.nix-profile/bin/devenv "$@"
-    #      popcolor
-    #   }
+      function devenv () {
+         # turn term color blue
+         pushcolor 4
+         command devenv "$@"
+         popcolor
+      }
 
-    # '';
+    '';
   };
 
   xdg.configFile."environment.d/ssh_askpass.conf".text = ''
