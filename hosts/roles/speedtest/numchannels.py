@@ -11,7 +11,6 @@ import sys
 username, password = os.environ["MODEMSECRET"].split(':', 1)
 
 url = "http://192.168.100.1/DocsisStatus.htm"
-
 try:
     resp = requests.get(
         url,
@@ -20,12 +19,12 @@ try:
     )
     resp.raise_for_status()
 except requests.exceptions.Timeout:
-    sys.stdout.write("E")
+    sys.stdout.write("T1")
     sys.stdout.flush()
     raise
 except requests.exceptions.RequestException:
     if not resp.status_code == 401:
-        sys.stdout.write("E")
+        sys.stdout.write("E1")
         sys.stdout.flush()
         raise
 
@@ -43,11 +42,11 @@ try:
     )
     body.raise_for_status()
 except requests.exceptions.Timeout:
-    sys.stdout.write("E")
+    sys.stdout.write("T2")
     sys.stdout.flush()
     raise
 except requests.exceptions.RequestException:
-    sys.stdout.write("E")
+    sys.stdout.write("E2")
     sys.stdout.flush()
     raise
 
