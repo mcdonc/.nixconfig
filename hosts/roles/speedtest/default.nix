@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgs-2511, config, ... }:
 
 let
 
@@ -41,7 +41,7 @@ in
       path = with pkgs; [
         fastlog
         fasthtml
-        fast-cli
+        pkgs-2511.fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
         numchannels
         python313WithPackages
       ];
