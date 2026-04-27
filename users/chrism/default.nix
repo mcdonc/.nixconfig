@@ -31,7 +31,6 @@
     owner = "chrism";
     group = "users";
   };
-    
 
   # to make available in /run/agenix/foo
   environment.variables = {

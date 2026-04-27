@@ -1,4 +1,11 @@
-{ lib, pkgs, nixpkgs, nixos-generators, system, ... }:
+{
+  lib,
+  pkgs,
+  nixpkgs,
+  nixos-generators,
+  system,
+  ...
+}:
 
 {
   imports = [
@@ -21,7 +28,10 @@
       tarball-ttl = 300;
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
     gc = {
       automatic = true;
@@ -33,7 +43,11 @@
   nixpkgs.config.allowUnfree = true;
 
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    80
+    443
+  ];
 
   time.timeZone = "America/New_York";
 

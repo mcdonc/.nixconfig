@@ -15,7 +15,7 @@
     {
       enable = true;
       settings.main = {
-        relayhost = ["[arctor.repoze.org]:587"];
+        relayhost = [ "[arctor.repoze.org]:587" ];
         myhostname = "${config.networking.hostName}.repoze.org";
         myorigin = "$myhostname";
         smtp_use_tls = "yes";

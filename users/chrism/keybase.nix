@@ -1,4 +1,9 @@
-{ pkgs, pkgs-kb-bumpversion, lib, ... }:
+{
+  pkgs,
+  pkgs-kb-bumpversion,
+  lib,
+  ...
+}:
 
 let
   # switch to pkgs-kb-bumpversion and switch to explicit config
@@ -65,7 +70,7 @@ in
       let
         mountPoint = ''"%h/keybase"'';
       in
-        {
+      {
         Environment = [
           "PATH=/run/wrappers/bin"
           "KEYBASE_SYSTEMD=1"

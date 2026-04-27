@@ -9,7 +9,7 @@ let
     sha256 = "sha256-4GQeKLIxoWfYiOraJub5RsHNVQBr2H+3bfPP22PegdU=";
   };
 in
-pkgs.stdenv.mkDerivation  {
+pkgs.stdenv.mkDerivation {
   pname = "hello";
   version = version;
   src = hello;

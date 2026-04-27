@@ -60,7 +60,7 @@
     failregex = warning: [\w\.\-]+\[<HOST>\]: SASL LOGIN authentication failed.*$
     journalmatch = _SYSTEMD_UNIT=postfix.service
   '';
-  environment.etc."fail2ban/filter.d/postfix-unresolving.conf".text =''
+  environment.etc."fail2ban/filter.d/postfix-unresolving.conf".text = ''
     [Definition]
     failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
     journalmatch = _SYSTEMD_UNIT=postfix.service
@@ -252,11 +252,11 @@
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
     # allow recipient to be any domain if sasl-auth submitted
     smtpd_recipient_restrictions = lib.mkForce ''
-    permit_mynetworks, permit_sasl_authenticated, reject
+      permit_mynetworks, permit_sasl_authenticated, reject
     '';
     # allow sender to be any domain if sasl-auth submitted
     smtpd_sender_restrictions = lib.mkForce ''
-    permit_mynetworks, permit_sasl_authenticated, reject
+      permit_mynetworks, permit_sasl_authenticated, reject
     '';
     #debug_peer_list = lib.mkForce "98.169.127.190";
     #debug_peer_level = lib.mkForce 3;

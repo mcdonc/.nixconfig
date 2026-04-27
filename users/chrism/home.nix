@@ -1,4 +1,10 @@
-args@{ pkgs, pkgs-emacs, lib, config, ... }:
+args@{
+  pkgs,
+  pkgs-emacs,
+  lib,
+  config,
+  ...
+}:
 
 let
 
@@ -78,7 +84,7 @@ let
 
   sessionVariables = { };
 
-  zshDotDir =  config.users.users."chrism".home  + "/.config/zsh";
+  zshDotDir = config.users.users."chrism".home + "/.config/zsh";
 
   shellAliases = {
     fxdevenv = ''
@@ -112,15 +118,18 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
-  graphicalimports =
-    lib.optionals config.jawns.isworkstation [ ./graphical.nix ];
+  graphicalimports = lib.optionals config.jawns.isworkstation [
+    ./graphical.nix
+  ];
 
   # use emacs-nox for headless systems, full emacs for workstations
   # pkgs-emacs is pinned to prevent recompiles on every nix flake update
-  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
+  emacsBase =
+    if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
 
-  emacswithpackages = (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages (
-      epkgs: [
+  emacswithpackages =
+    (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages
+      (epkgs: [
         epkgs.dockerfile-mode
         epkgs.nix-mode
         epkgs.nixpkgs-fmt
@@ -157,8 +166,7 @@ let
         epkgs.adoc-mode
         epkgs.typescript-mode
         # epkgs.tsc # maybe required for typescript-mode
-      ]
-  );
+      ]);
 
 in
 
@@ -320,7 +328,7 @@ in
     sessionVariables = sessionVariables;
     enableCompletion = true;
 
-    dotDir = zshDotDir; #config.home.homeDirectory + "/ " + zshDotDir;
+    dotDir = zshDotDir; # config.home.homeDirectory + "/ " + zshDotDir;
     autosuggestion.enable = true;
 
     # speed up zsh start time, see
@@ -434,8 +442,7 @@ in
       # merge.tool = "meld";
       # mergetool.meld.path = "${pkgs.meld}/bin/meld";
       safe.directory = [ "/etc/nixos" ];
-      credential.helper = 
-        "${pkgs.git-credential-manager}/bin/git-credential-manager";
+      credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
       "credential \"https://dev.azure.com\"".useHttpPath = "true";
     };
   };

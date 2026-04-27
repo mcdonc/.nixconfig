@@ -11,48 +11,61 @@
   };
 
   nixConfig = {
-    extra-trusted-public-keys =
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
     extra-substituters = "https://devenv.cachix.org";
   };
 
   outputs =
-    { self, nixpkgs, devenv, systems, nix2container, mk-shell-bin, ... }@inputs:
+    {
+      self,
+      nixpkgs,
+      devenv,
+      systems,
+      nix2container,
+      mk-shell-bin,
+      ...
+    }@inputs:
     let
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
-      overlays = (self: super: {
-        openssl = super.openssl.override {
-          # overrides etc/ssl/openssl.cnf because SQL Server 2008 needs TLS 1.0
-          conf = ./openssl.cnf;
-        };
-        python311 = super.python311.override {
-          # nixos-23.11 sphinx wont build (tests fail), might work on unstable
-          # need to override config.languages.python.package I think instead
-          packageOverrides = pyself: pysuper: {
-            sphinx = pysuper.sphinx.overrideAttrs (_: {
-              pytestCheckPhase = "true";
-              doCheck = false;
-            });
+      overlays = (
+        self: super: {
+          openssl = super.openssl.override {
+            # overrides etc/ssl/openssl.cnf because SQL Server 2008 needs TLS 1.0
+            conf = ./openssl.cnf;
           };
-        };
-      });
-    in {
+          python311 = super.python311.override {
+            # nixos-23.11 sphinx wont build (tests fail), might work on unstable
+            # need to override config.languages.python.package I think instead
+            packageOverrides = pyself: pysuper: {
+              sphinx = pysuper.sphinx.overrideAttrs (_: {
+                pytestCheckPhase = "true";
+                doCheck = false;
+              });
+            };
+          };
+        }
+      );
+    in
+    {
       packages = forEachSystem (system: {
         devenv-up = self.devShells.${system}.default.config.procfileScript;
       });
 
-      devShells = forEachSystem (system:
+      devShells = forEachSystem (
+        system:
         let
           pkgs = import nixpkgs {
             overlays = [ overlays ];
             inherit system;
             config.allowUnfree = true;
           };
-        in {
+        in
+        {
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [ ./devenv.nix ];
           };
-        });
+        }
+      );
     };
 }

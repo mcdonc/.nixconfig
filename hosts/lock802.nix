@@ -240,7 +240,7 @@ in
       noload => pbx_ael.so
       noload => res_hep_pjsip.so
       noload => res_prometheus.so
-'';
+    '';
   };
 
   # XXX reads into nix store

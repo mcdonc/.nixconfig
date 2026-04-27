@@ -71,7 +71,7 @@ let
 in
 {
   nixpkgs.config.permittedInsecurePackages = [
-     # unmaintained python
+    # unmaintained python
     "python-2.7.18.8"
     "python-2.7.18.12"
     "jitsi-meet-1.0.8792"
@@ -336,7 +336,7 @@ in
       x42-avldrums
       x42-plugins
       xcalib
-      xclip  # unnamed dep of opencode
+      xclip # unnamed dep of opencode
       xdotool
       xorg.xev
       xorg.xkbcomp

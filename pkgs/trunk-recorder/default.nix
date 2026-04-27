@@ -41,7 +41,12 @@ let
     ];
     postInstall = ''
       wrapProgram $out/bin/trunk-recorder \
-       --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.sox pkgs.fdk-aac-encoder ]}
+       --prefix PATH : ${
+         pkgs.lib.makeBinPath [
+           pkgs.sox
+           pkgs.fdk-aac-encoder
+         ]
+       }
     '';
     meta = with pkgs.lib; {
       description = "Record calls on trunked and conventional radio systems.";

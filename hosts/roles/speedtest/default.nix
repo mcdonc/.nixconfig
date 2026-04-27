@@ -17,7 +17,9 @@ let
     dontUnpack = true;
     installPhase = "install -Dm755 ${./numchannels.py} $out/bin/numchannels";
   };
-  python313WithPackages = (pkgs.python313.withPackages (p: with p; [requests]));
+  python313WithPackages = (
+    pkgs.python313.withPackages (p: with p; [ requests ])
+  );
 in
 {
   age.secrets."netgear-cm1200-authorization" = {
@@ -29,27 +31,27 @@ in
     let
       secretfile = config.age.secrets."netgear-cm1200-authorization".path;
     in
-      {
-        serviceConfig = {
-          Type = "oneshot";
-          LoadCredential = [
-            "NETGEAR_CM1200_AUTHORIZATION:${secretfile}"
-          ];
-        };
-        path = with pkgs; [
-          fastlog
-          fasthtml
-          fast-cli
-          numchannels
-          python313WithPackages
+    {
+      serviceConfig = {
+        Type = "oneshot";
+        LoadCredential = [
+          "NETGEAR_CM1200_AUTHORIZATION:${secretfile}"
         ];
-        script = ''
-          #!/bin/sh
-          export MODEMSECRET=$(cat "$CREDENTIALS_DIRECTORY/NETGEAR_CM1200_AUTHORIZATION")
-          fastlog
-          fasthtml
-       '';
       };
+      path = with pkgs; [
+        fastlog
+        fasthtml
+        fast-cli
+        numchannels
+        python313WithPackages
+      ];
+      script = ''
+        #!/bin/sh
+        export MODEMSECRET=$(cat "$CREDENTIALS_DIRECTORY/NETGEAR_CM1200_AUTHORIZATION")
+        fastlog
+        fasthtml
+      '';
+    };
 
   systemd.timers.speedtest = {
     wantedBy = [ "timers.target" ];

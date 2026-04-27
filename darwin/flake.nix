@@ -42,7 +42,9 @@
       overlay = final: prev: {
         emacs = prev.emacs.overrideAttrs (old: {
           # ensure configure disables native compilation (libgccjit)
-          configureFlags = (old.configureFlags or []) ++ [ "--without-native-compilation" ];
+          configureFlags = (old.configureFlags or [ ]) ++ [
+            "--without-native-compilation"
+          ];
         });
       };
       shared-modules = [
@@ -50,12 +52,12 @@
         home-manager.darwinModules.home-manager
         nix-homebrew.darwinModules.nix-homebrew
         hm-config
-#        (
-#          { config, pkgs, ... }:
-#          {
-#            nixpkgs.overlays = [ overlay ];
-#          }
-#        )
+        #        (
+        #          { config, pkgs, ... }:
+        #          {
+        #            nixpkgs.overlays = [ overlay ];
+        #          }
+        #        )
       ];
     in
     {
@@ -91,10 +93,13 @@
           username = "chrism";
         };
       };
-     darwinConfigurations."quisling" = nix-darwin.lib.darwinSystem {
-         modules = shared-modules ++ [ homebrew-config-arm ];
-        specialArgs = { inherit inputs; system="aarch64-darwin"; username="chrism";};
-      };
+      darwinConfigurations."quisling" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-arm ];
+        specialArgs = {
+          inherit inputs;
+          system = "aarch64-darwin";
+          username = "chrism";
         };
+      };
+    };
 }
-

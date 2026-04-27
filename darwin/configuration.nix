@@ -94,7 +94,6 @@ in
     pkgs.htop
   ];
 
-
   system.primaryUser = "chrism";
 
   system.defaults = {

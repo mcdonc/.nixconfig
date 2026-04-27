@@ -1,6 +1,9 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 let
-  pyedid = with pkgs.python3Packages;
+  pyedid =
+    with pkgs.python3Packages;
     buildPythonPackage rec {
       pname = "pyedid";
       version = "1.0.1";
@@ -21,4 +24,5 @@ let
         #maintainers = with maintainers; [ fridh ];
       };
     };
-in pkgs.mkShell { buildInputs = [ pyedid ]; }
+in
+pkgs.mkShell { buildInputs = [ pyedid ]; }

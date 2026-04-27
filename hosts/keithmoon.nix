@@ -40,7 +40,6 @@
   #     export CACHIX_AUTH_TOKEN=$(cat "${cachix-file}"|xargs)
   #   '';
 
-
   services.tailscale.enable = true;
 
   services.ollama.host = "0.0.0.0";
@@ -401,13 +400,28 @@
   # services.pipewire.alsa.enable = lib.mkForce false;
   # services.pipewire.pulse.enable = lib.mkForce false;
 
- security.pam.loginLimits = [
-    { domain = "*"; type = "soft"; item = "nofile"; value = "65536"; }
-    { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
-    { domain = "*"; type = "hard"; item = "core"; value = "0"; }
- ];
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "65536";
+    }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nofile";
+      value = "1048576";
+    }
+    {
+      domain = "*";
+      type = "hard";
+      item = "core";
+      value = "0";
+    }
+  ];
 
- environment.etc."security/limits.conf".text = ''
+  environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users
     * soft nofile 65536
     * hard nofile 1048576

@@ -1,5 +1,10 @@
 # configuration.nix
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [ ./demo.nix ];
   boot.loader.systemd-boot.enable = true;

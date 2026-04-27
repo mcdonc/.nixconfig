@@ -16,7 +16,9 @@ let
     ${yabc} add $HOME/.wine/drive_c/Program\ Files/Common\ Files/VST3
     ${yabc} sync
   '';
-  adevices = pkgs.writeShellScriptBin "adevices" (builtins.readFile ./adevices.sh);
+  adevices = pkgs.writeShellScriptBin "adevices" (
+    builtins.readFile ./adevices.sh
+  );
 in
 {
   imports = [

@@ -1,7 +1,15 @@
 # demo.nix
-{ config, lib, pkgs, ... }:
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   users.users.chrism = {
     initialPassword = "123";
     isNormalUser = true;
@@ -15,7 +23,10 @@
   };
   networking.networkmanager.enable = true;
   services.openssh.enable = true;
-  environment.systemPackages = with pkgs; [ vim-full git ];
+  environment.systemPackages = with pkgs; [
+    vim-full
+    git
+  ];
   system.stateVersion = "25.05";
   security.sudo.wheelNeedsPassword = false;
   services.getty.autologinUser = "chrism";

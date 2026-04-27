@@ -64,7 +64,7 @@ let
         gpiozero
         rpi-gpio
         lgpio
-        pigpio #-fixed
+        pigpio # -fixed
         rgpio
       ]
     )

@@ -1,9 +1,9 @@
 { pkgs, lib, ... }:
 
 let
-  mkCaseEntry = scheme:
-    ''${toString scheme.num}) BG="${scheme.bg}"; FG="${scheme.fg}"
-         PAL="${paletteToShellStr scheme.palette}" ;;'';
+  mkCaseEntry = scheme: ''
+    ${toString scheme.num}) BG="${scheme.bg}"; FG="${scheme.fg}"
+             PAL="${paletteToShellStr scheme.palette}" ;;'';
 
   gterm-change-profile = pkgs.writeShellScript "gterm-change-profile" ''
     case "$1" in
@@ -112,20 +112,68 @@ let
   ];
 
   colorschemes = [
-    { num = 1; name = "grey";   uuid = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
-      bg = "#1C2023"; fg = "#FFFFFF"; palette = defaultpalette; default = true; }
-    { num = 2; name = "blue";   uuid = "ec7087d3-ca76-46c3-a8ec-aba2f3a65db7";
-      bg = "#00008E"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
-    { num = 3; name = "black";  uuid = "ea1f3ac4-cfca-4fc1-bba7-fdf26666d188";
-      bg = "#000000"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
-    { num = 4; name = "purple"; uuid = "a37ed5e4-99f5-4eba-acef-e491965a6076";
-      bg = "#2C0035"; fg = "#D0CFCC"; palette = defaultpalette; default = false; }
-    { num = 5; name = "yellow"; uuid = "f9a98c86-a974-42bb-98a0-be84f87b9076";
-      bg = "#F1F168"; fg = "#000000"; default = false;
+    {
+      num = 1;
+      name = "grey";
+      uuid = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
+      bg = "#1C2023";
+      fg = "#FFFFFF";
+      palette = defaultpalette;
+      default = true;
+    }
+    {
+      num = 2;
+      name = "blue";
+      uuid = "ec7087d3-ca76-46c3-a8ec-aba2f3a65db7";
+      bg = "#00008E";
+      fg = "#D0CFCC";
+      palette = defaultpalette;
+      default = false;
+    }
+    {
+      num = 3;
+      name = "black";
+      uuid = "ea1f3ac4-cfca-4fc1-bba7-fdf26666d188";
+      bg = "#000000";
+      fg = "#D0CFCC";
+      palette = defaultpalette;
+      default = false;
+    }
+    {
+      num = 4;
+      name = "purple";
+      uuid = "a37ed5e4-99f5-4eba-acef-e491965a6076";
+      bg = "#2C0035";
+      fg = "#D0CFCC";
+      palette = defaultpalette;
+      default = false;
+    }
+    {
+      num = 5;
+      name = "yellow";
+      uuid = "f9a98c86-a974-42bb-98a0-be84f87b9076";
+      bg = "#F1F168";
+      fg = "#000000";
+      default = false;
       palette = [
-        "#171421" "#ED1515" "#11D116" "#FF6D03" "#1D99F3" "#A347BA" "#2AA1B3" "#D0CFCC"
-        "#5E5C64" "#F66151" "#33D17A" "#D8D8D7" "#2A7BDE" "#C061CB" "#33C7DE" "#FFFFFF"
-      ]; }
+        "#171421"
+        "#ED1515"
+        "#11D116"
+        "#FF6D03"
+        "#1D99F3"
+        "#A347BA"
+        "#2AA1B3"
+        "#D0CFCC"
+        "#5E5C64"
+        "#F66151"
+        "#33D17A"
+        "#D8D8D7"
+        "#2A7BDE"
+        "#C061CB"
+        "#33C7DE"
+        "#FFFFFF"
+      ];
+    }
   ];
 
   paletteToShellStr = pal: builtins.concatStringsSep " " pal;
@@ -148,29 +196,36 @@ let
     };
   };
 
-  mkProfile = scheme: defaultprofile // {
-    default = scheme.default;
-    visibleName = "${toString scheme.num}${scheme.name}";
-    colors = {
-      palette = scheme.palette;
-      backgroundColor = scheme.bg;
-      foregroundColor = scheme.fg;
+  mkProfile =
+    scheme:
+    defaultprofile
+    // {
+      default = scheme.default;
+      visibleName = "${toString scheme.num}${scheme.name}";
+      colors = {
+        palette = scheme.palette;
+        backgroundColor = scheme.bg;
+        foregroundColor = scheme.fg;
+      };
     };
-  };
 
   termsettings = {
     enable = true;
     showMenubar = false;
-    profile = builtins.listToAttrs (map (scheme: {
-      name = scheme.uuid;
-      value = mkProfile scheme;
-    }) colorschemes);
+    profile = builtins.listToAttrs (
+      map (scheme: {
+        name = scheme.uuid;
+        value = mkProfile scheme;
+      }) colorschemes
+    );
   };
 
-  termAliases = builtins.listToAttrs (map (scheme: {
-    name = "${scheme.name}term";
-    value = "${gterm-change-profile} ${toString scheme.num}";
-  }) colorschemes);
+  termAliases = builtins.listToAttrs (
+    map (scheme: {
+      name = "${scheme.name}term";
+      value = "${gterm-change-profile} ${toString scheme.num}";
+    }) colorschemes
+  );
 
   shellAliases = termAliases // {
     ssh = "${ssh-chcolor}";

@@ -22,14 +22,16 @@
       auto-optimise-store = true;
       experimental-features = "nix-command flakes";
       max-jobs = "auto";
-      cores = 0;  # 0 = use all available cores
+      cores = 0; # 0 = use all available cores
       trusted-users = [
         "root"
         "@wheel"
       ];
       # CUDA
       extra-trusted-substituters = [ "https://cache.flox.dev" ];
-      extra-trusted-public-keys = [ "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=" ];
+      extra-trusted-public-keys = [
+        "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+      ];
       download-buffer-size = 268435456; # 256 MiB
     };
     gc = {
@@ -104,12 +106,22 @@
     zlib # numpy
   ];
 
- security.pam.loginLimits = [
-    { domain = "*"; type = "soft"; item = "nofile"; value = "65536"; }
-    { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
- ];
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "65536";
+    }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nofile";
+      value = "1048576";
+    }
+  ];
 
- environment.etc."security/limits.conf".text = ''
+  environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users
     * soft nofile 65536
     * hard nofile 1048576

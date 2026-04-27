@@ -364,7 +364,8 @@
       "kglobalshortcutsrc"."kaccess"."_k_friendly_name" = "Accessibility";
       "kglobalshortcutsrc"."kcm_touchpad"."_k_friendly_name" = "Touchpad";
       "kglobalshortcutsrc"."kded5"."_k_friendly_name" = "KDE Daemon";
-      "kglobalshortcutsrc"."khotkeys"."_k_friendly_name" = "Custom Shortcuts Service";
+      "kglobalshortcutsrc"."khotkeys"."_k_friendly_name" =
+        "Custom Shortcuts Service";
       "kglobalshortcutsrc"."kmix"."_k_friendly_name" = "Audio Volume";
       "kglobalshortcutsrc"."konversation"."_k_friendly_name" = "Konversation";
       "kglobalshortcutsrc"."ksmserver"."_k_friendly_name" = "Session Management";
@@ -1442,7 +1443,8 @@
       "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."location" = 4;
       "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."plugin" =
         "org.kde.plasma.private.systemtray";
-      "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."popupHeight" = 576;
+      "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."popupHeight" =
+        576;
       "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."popupWidth" = 576;
       "plasma-org.kde.plasma.desktop-appletsrc"."Containments.37"."wallpaperplugin" =
         "org.kde.image";

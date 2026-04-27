@@ -6,8 +6,8 @@
 }:
 {
   # for soliplex container gpu passthrough
-  
-  environment.systemPackages =  with pkgs; [
+
+  environment.systemPackages = with pkgs; [
     cudatoolkit
     nvidia-container-toolkit
   ];
@@ -19,4 +19,3 @@
   # and https://discourse.nixos.org/t/nvidia-docker-container-runtime-doesnt-detect-my-gpu/51336/4
   virtualisation.docker.enable = true;
 }
-  

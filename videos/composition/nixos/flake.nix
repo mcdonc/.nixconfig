@@ -2,7 +2,13 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.home-manager.url = "github:nix-community/home-manager";
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }:
     let
       system = "x86_64-linux";
     in
@@ -17,9 +23,11 @@
                 read -n 1
                 QEMU_KERNEL_PARAMS=console=ttyS0 \
                   ${nixosConfigurations.nixos.config.system.build.vm}/bin/run-nixos-vm -nographic'';
-              script = builtins.trace script_text pkgs.writeShellScript "wuddevz" script_text;
+              script =
+                builtins.trace script_text pkgs.writeShellScript "wuddevz"
+                  script_text;
             in
-              "${script}";
+            "${script}";
         };
       };
       nixosConfigurations = {

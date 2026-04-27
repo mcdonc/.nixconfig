@@ -1,7 +1,7 @@
 { ... }:
 
 {
-# https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
+  # https://dev.to/therubberduckiee/how-to-configure-starship-to-look-exactly-like-p10k-zsh-warp-h9h
   programs.starship = {
     enable = false;
     settings = {
