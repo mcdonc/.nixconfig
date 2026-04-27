@@ -97,6 +97,7 @@ let
     '';
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
+    bootnix = "sudo nixos-rebuild boot";
     rbnix = "sudo nixos-rebuild build --rollback";
     mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
