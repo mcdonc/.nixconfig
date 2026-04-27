@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-2511, 
   pkgs-py36,
   pkgs-py37,
   pkgs-py39,
@@ -122,7 +123,7 @@ in
       isd
       jq
       killall
-      #lha # XXX26.05 broken in nixpkgs 26.05 (C compile errors with newer GCC)
+      pkgs-2511.lha # XXX26.05 broken in nixpkgs 26.05 (C compile errors with newer GCC)
       loccount
       lolcat
       lsof
@@ -168,7 +169,6 @@ in
       wol
       xz
       zstd
-      #nixos-rebuild-ng # XXX26.05 now the default nixos-rebuild in 26.05
     ]
     ++ lib.optionals (!config.jawns.isworkstation) [
       vim
@@ -195,9 +195,9 @@ in
       pkgs-py37.python37
       pkgs-py39.python38
       pkgs-py39.python39
-      #python310 # XXX26.05 removed in nixpkgs 26.05
-      #python311 # XXX26.05 broken in nixpkgs 26.05 (sphinx/docutils crash building docs)
-      #python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
+      pkgs-2511.python310 # XXX26.05 removed in nixpkgs 26.05
+      pkgs-2511.python311 # XXX26.05 broken in nixpkgs 26.05 (sphinx/docutils crash building docs)
+      pkgs-2511.python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
       pypy3
       python27
       (wrapOBS {
@@ -227,9 +227,9 @@ in
       #dsdcc # for gprx dmr decoding, problems under 25.11
       dtc # milkv
       dupe-krill
-      #dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
+      pkgs-2511.dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
       element-desktop
-      #fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
+      pkgs-2511.fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
       fdupes
       ffmpeg-full
       firefox

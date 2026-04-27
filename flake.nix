@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager"; # unstable until release-26.05 branch exists
     # musnix.url = "github:musnix/musnix";
@@ -79,6 +80,10 @@
             {
               name = "pkgs-2411";
               value = nixpkgs-2411;
+            }
+            {
+              name = "pkgs-2511";
+              value = nixpkgs-2511;
             }
             # {
             #   name = "pkgs-olive";
