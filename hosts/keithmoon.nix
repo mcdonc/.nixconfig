@@ -70,7 +70,7 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
   # see prepserver.sh
   boot.initrd.secrets."/key.txt" = /key.txt;
   boot.extraModulePackages = [ ];
