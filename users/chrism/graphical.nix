@@ -248,6 +248,32 @@ in
   services.keybase.enable = true;
   services.kbfs.enable = true;
 
+  # Wrapper script that launches keybase-gui then restarts the keybase
+  # service after a short delay.  The gregor push handler often ends up
+  # in a stale "client unset" state, causing "disconnected from chat
+  # server" in the GUI.  The restart fixes it (what kbrestart does
+  # manually).  --disable-gpu-sandbox is needed for NVIDIA.
+  xdg.desktopEntries.keybase = {
+    name = "Keybase";
+    comment = "Keybase Filesystem Service and GUI";
+    icon = "keybase";
+    exec = toString (pkgs.writeShellScript "keybase-gui-wrapper" ''
+      ${pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox &
+      sleep 5
+      systemctl --user restart keybase.service
+      wait
+    '');
+    terminal = false;
+    type = "Application";
+    startupNotify = true;
+    mimeType = [
+      "x-scheme-handler/web+stellar"
+      "x-scheme-handler/keybase"
+      "application/x-saltpack"
+    ];
+    categories = [ "Network" ];
+  };
+
   programs.gnome-terminal = termsettings;
 
   programs.bash = {
