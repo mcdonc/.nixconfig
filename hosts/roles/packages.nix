@@ -277,7 +277,7 @@ in
       meld
       mullvad-vpn
       #mplayer # broken under 25.11
-      pkgs-unstable.mpv
+      (pkgs-unstable.mpv.override { youtubeSupport = false; }) # no deno dep
       #neofetch # XXX26.05 removed in nixpkgs 26.05 (unmaintained, use fastfetch)
       fastfetch
       networkmanager-openvpn
@@ -342,7 +342,7 @@ in
       xev # was xorg.xev, xorg set deprecated in 26.05
       xkbcomp # was xorg.xkbcomp
       xmodmap # was xorg.xmodmap
-      yt-dlp
+      # yt-dlp # a dependency, deno, takes too long to compile
       zam-plugins
       zgrviewer
       zoom-us
