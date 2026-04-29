@@ -94,7 +94,7 @@ in
       btop
       cachix
       pkgs-claude-code.claude-code
-      pkgs-unstable.github-copilot-cli
+      github-copilot-cli
       cntr # for build debugging
       cowsay
       curl
@@ -140,7 +140,7 @@ in
       nix-index # for nix-locate
       nix-output-monitor
       nix-tree
-      nixfmt # was nixfmt-rfc-style, renamed in 26.05
+      nixfmt
       nixos-repl
       nmap
       openssl
@@ -210,7 +210,7 @@ in
       alsa-utils # aplay
       antigravity
       appimage-run
-      # ardour # broken under 25.11
+      ardour
       argyllcms
       audacity
       audiowaveform
@@ -223,8 +223,7 @@ in
       discord
       distrobox
       dive # docker
-      #dsd # for gprx dmr decoding, problems under 25.11
-      #dsdcc # for gprx dmr decoding, problems under 25.11
+      dsdcc # for gprx dmr decoding 
       dtc # milkv
       dupe-krill
       pkgs-2511.dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
@@ -272,12 +271,10 @@ in
       libreoffice
       lm_sensors
       localsend
-      # manim # broken under 25.11
-      # manim-slides
+      manim
       meld
       mullvad-vpn
-      #mplayer # broken under 25.11
-      (pkgs-unstable.mpv.override { youtubeSupport = false; }) # no deno dep
+      (mpv.override { youtubeSupport = false; }) # no deno dep
       #neofetch # XXX26.05 removed in nixpkgs 26.05 (unmaintained, use fastfetch)
       fastfetch
       networkmanager-openvpn
@@ -287,7 +284,7 @@ in
       nvidia-offload
       nvtopPackages.nvidia
       odin2
-      pkgs-unstable.opencode
+      opencode
       #olive-editor # 0.2 # a dep has cmake problems in 25.11
       pico-sdk
       pinentry-tty # dep of gpg
@@ -298,9 +295,9 @@ in
       qjournalctl
       quickemu
       remmina
-      #rhythmbox # broken under 25.11
+      rhythmbox
       rnnoise-plugin
-      #rpi-imager
+      rpi-imager
       rshell
       rst2pdf
       ruby
@@ -310,7 +307,7 @@ in
       sanoid
       screenkey
       sdcc
-      # sdrangel # broken under 25.11
+      sdrangel
       setbfree
       sfizz
       signal-desktop
