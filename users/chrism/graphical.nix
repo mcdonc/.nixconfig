@@ -292,11 +292,21 @@ in
       }
 
       function devenv () {
-         # turn term color blue
+         # turn term color purple
          pushcolor 4
+         # devenv shell execs into a new shell, so popcolor after
+         # command devenv may never run; export a flag so the new
+         # shell sets up a trap to popcolor on exit
+         export __DEVENV_POPCOLOR=1
          command devenv "$@"
+         # in case devenv doesn't exec (e.g. devenv build)
+         unset __DEVENV_POPCOLOR 2>/dev/null
          popcolor
       }
+      if [[ -n "$__DEVENV_POPCOLOR" ]]; then
+         unset __DEVENV_POPCOLOR
+         trap 'popcolor' EXIT
+      fi
 
     '';
   };
