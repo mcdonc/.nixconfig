@@ -11,6 +11,7 @@
   ];
   services.ollama.environmentVariables = {
     "OLLAMA_CONTEXT_LENGTH" = "64000";
+    "OLLAMA_ORIGINS" = "*";
   };
 
   services.open-webui.enable = true;
