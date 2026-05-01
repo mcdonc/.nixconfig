@@ -128,6 +128,25 @@
           autoindex_localtime on;
         '';
       };
+      locations."/openai-proxy/" = {
+        proxyPass = "https://ollama.com/v1/";
+        extraConfig = ''
+          proxy_set_header Host ollama.com;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_ssl_server_name on;
+
+          # CORS headers
+          add_header Access-Control-Allow-Origin "*" always;
+          add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+          add_header Access-Control-Allow-Headers "Authorization, Content-Type" always;
+
+          # Handle preflight requests
+          if ($request_method = OPTIONS) {
+            return 204;
+          }
+        '';
+      };
     };
     virtualHosts."repoze.org" = {
       addSSL = true;
@@ -216,7 +235,7 @@
       # To create the password hashes, use
       # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
 
-      loginAccounts = {
+      accounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
           # aliases = [ "@repoze.org" ]
@@ -230,7 +249,7 @@
         "chrism@repoze.org" = "chrism@plope.com";
       };
 
-      certificateScheme = "acme"; # managed by service.ngnix above
+      x509.useACMEHost = "arctor.repoze.org"; # managed by services.nginx above
     };
 
   # setting this to false also stops postfix from running
