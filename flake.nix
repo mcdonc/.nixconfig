@@ -5,7 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    # pinned: newer revs have LOCALVERSION serialization bug breaking rpi4 kernel
+    nixos-hardware.url = "github:NixOS/nixos-hardware/2096f3f411ce46e88a79ae4eafcfc9df8ed41c61";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     # musnix.url = "github:musnix/musnix";
     # musnix.inputs.nixpkgs.follows = "nixpkgs";
