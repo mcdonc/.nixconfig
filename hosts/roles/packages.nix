@@ -274,7 +274,8 @@ in
       manim
       meld
       mullvad-vpn
-      (mpv.override { youtubeSupport = false; }) # no deno dep
+      #(mpv.override { youtubeSupport = false; }) # no deno dep
+      mpv
       #neofetch # XXX26.05 removed in nixpkgs 26.05 (unmaintained, use fastfetch)
       fastfetch
       networkmanager-openvpn
@@ -290,7 +291,7 @@ in
       pinentry-tty # dep of gpg
       pkgs.vscode-fhs
       powertop
-      proton-vpn # was protonvpn-gui, renamed in 26.05
+      proton-vpn
       qjackctl
       qjournalctl
       quickemu
@@ -325,7 +326,6 @@ in
       tap-plugins
       thermald
       thinkfan
-      #vdhcoapp # XXX26.05 removed in nixpkgs 26.05 (VDH >= 10 doesn't need companion app)
       vim-full
       virt-manager
       virt-viewer # for remote-viewer
@@ -336,10 +336,10 @@ in
       xcalib
       xclip # unnamed dep of opencode
       xdotool
-      xev # was xorg.xev, xorg set deprecated in 26.05
-      xkbcomp # was xorg.xkbcomp
-      xmodmap # was xorg.xmodmap
-      # yt-dlp # a dependency, deno, takes too long to compile
+      xev
+      xkbcomp
+      xmodmap
+      yt-dlp
       zam-plugins
       zgrviewer
       zoom-us
