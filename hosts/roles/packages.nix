@@ -330,7 +330,7 @@ in
       virt-manager
       virt-viewer # for remote-viewer
       vlc
-      #wireshark
+      wireshark
       x42-avldrums
       x42-plugins
       xcalib

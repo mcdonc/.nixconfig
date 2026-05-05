@@ -80,7 +80,7 @@
 
   # wireshark without sudo; note that still necessary to add
   # wireshark to systemPackages to get gui I think
-  #programs.wireshark.enable = true; # XXX26.05
+  programs.wireshark.enable = true;
 
   #programs.direnv.enable = true;
   #programs.direnv.enableZshIntegration = true;

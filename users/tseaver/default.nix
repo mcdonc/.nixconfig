@@ -18,7 +18,7 @@
       "docker"
       "nixconfig"
       "dialout"
-      #"wireshark" # XXX26.05
+      "wireshark"
       "vboxusers"
       "libvirtd"
       "kvm"
