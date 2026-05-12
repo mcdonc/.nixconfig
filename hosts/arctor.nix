@@ -128,6 +128,18 @@
           autoindex_localtime on;
         '';
       };
+      locations."/meshextend" = {
+        return = "301 /meshextend/";
+      };
+      locations."/meshextend/" = {
+        proxyPass = "http://localhost:8079/";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+        '';
+      };
       locations."/openai-proxy/" = {
         proxyPass = "https://ollama.com/v1/";
         extraConfig = ''
