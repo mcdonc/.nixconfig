@@ -306,7 +306,7 @@
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "/home/chrism/meshextend-web/serve.sh";
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
       User = "chrism";
       Group = "users";
       WorkingDirectory = "/home/chrism/meshextend-web";
