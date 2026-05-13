@@ -301,6 +301,20 @@
 
   # rpi: https://blog.janissary.xyz/posts/nixos-install-custom-image
 
+  systemd.services.meshextend-web = {
+    description = "Meshextend Web Server";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "/home/chrism/meshextend-web/serve.sh";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/meshextend-web";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 
 }
