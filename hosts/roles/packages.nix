@@ -61,6 +61,7 @@ let
         twine # for uploading to PyPI
         python-lsp-server # for emacs lsp
         pyyaml # for runcontainer
+        meshcore
       ]
     )
   );
@@ -229,6 +230,7 @@ in
       pkgs-2511.dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
       element-desktop
       pkgs-2511.fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
+      fastfetch
       fdupes
       ffmpeg-full
       firefox
@@ -273,11 +275,11 @@ in
       localsend
       manim
       meld
+      #python313Packages.meshcore
+      #meshtastic
       mullvad-vpn
       #(mpv.override { youtubeSupport = false; }) # no deno dep
       mpv
-      #neofetch # XXX26.05 removed in nixpkgs 26.05 (unmaintained, use fastfetch)
-      fastfetch
       networkmanager-openvpn
       nickel
       nil # for nix emacs lsp-mode
