@@ -19,11 +19,7 @@ let
     target_hostname="''${fqdn%%.*}"
     target_arch=$(nix eval --raw ".#hostArchitectures.$target_hostname" 2>/dev/null)
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
-<<<<<<< Updated upstream
     rebuild_cmd=(nixos-rebuild switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
-=======
-    rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password)
->>>>>>> Stashed changes
     if [ "$target_arch" = "aarch64-linux" ]; then
       cachix watch-exec mcdonc -- "''${rebuild_cmd[@]}"
     else
@@ -99,11 +95,6 @@ let
     ragenv = ''
       cd ~/projects/enfold/afsoc-rag && devenv shell
     '';
-<<<<<<< Updated upstream
-=======
-    swnix = "export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken); target_arch=$(nix eval --raw '/etc/nixos#hostArchitectures.'$(hostname) 2>/dev/null); if [ \"$target_arch\" = \"aarch64-linux\" ]; then cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace; else sudo nixos-rebuild switch --verbose --show-trace; fi";
-    nhswnix = "export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken); target_arch=$(nix eval --raw '/etc/nixos#hostArchitectures.'$(hostname) 2>/dev/null); if [ \"$target_arch\" = \"aarch64-linux\" ]; then cachix watch-exec mcdonc -- ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace; else ${pkgs.nh}/bin/nh os switch /etc/nixos -- --show-trace; fi";
->>>>>>> Stashed changes
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
     bootnix = "sudo nixos-rebuild boot";
