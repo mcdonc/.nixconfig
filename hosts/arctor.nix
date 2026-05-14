@@ -326,6 +326,7 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
       User = "chrism";
       Group = "users";
       WorkingDirectory = "/home/chrism/meshextend-web";
@@ -340,6 +341,7 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
       User = "chrism";
       Group = "users";
       WorkingDirectory = "/home/chrism/bark";
