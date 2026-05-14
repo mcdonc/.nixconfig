@@ -145,11 +145,18 @@
       };
       locations."/bark/" = {
         proxyPass = "http://localhost:8997/";
+        proxyWebsockets = true;
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Real-IP $remote_addr;
+
+          # Rewrite base href for subpath hosting
+          sub_filter '<base href="/">' '<base href="/bark/">';
+          sub_filter_once on;
+          sub_filter_types text/html;
+          proxy_set_header Accept-Encoding "";
         '';
       };
       locations."/openai-proxy/" = {
@@ -332,7 +339,7 @@
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "devenv processes up";
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
       User = "chrism";
       Group = "users";
       WorkingDirectory = "/home/chrism/bark";
