@@ -140,6 +140,18 @@
           proxy_set_header X-Real-IP $remote_addr;
         '';
       };
+      locations."/bark" = {
+        return = "301 /bark/";
+      };
+      locations."/bark/" = {
+        proxyPass = "http://localhost:8997/";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+        '';
+      };
       locations."/openai-proxy/" = {
         proxyPass = "https://ollama.com/v1/";
         extraConfig = ''
@@ -315,6 +327,20 @@
     };
   };
 
+  systemd.services.bark = {
+    description = "Bark";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "devenv processes up";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/bark";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+  
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 
 }
