@@ -26,6 +26,10 @@
     80
     443
   ];
+  # for bark
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 9000; to = 9500; }
+  ];
   networking.firewall.logRefusedConnections = false;
 
   services.fail2ban.enable = true;
@@ -151,12 +155,13 @@
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Prefix /bark;
+          proxy_set_header Accept-Encoding "";
 
           # Rewrite base href for subpath hosting
           sub_filter '<base href="/">' '<base href="/bark/">';
           sub_filter_once on;
           sub_filter_types text/html;
-          proxy_set_header Accept-Encoding "";
         '';
       };
       locations."/openai-proxy/" = {
