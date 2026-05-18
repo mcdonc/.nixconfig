@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
 
   # see https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/resolved.nix
@@ -17,6 +17,23 @@
       # records (=resolve lets it only resolve mDNS names)
       MulticastDNS = "yes";
       LLMNR = "true"; # handle single-name hostnames
+    };
+  };
+
+  # Override Tailscale's DNS server to use the local MagicDNS proxy
+  # (100.100.100.100) instead of the public ts.net nameserver that the
+  # admin console pushes.  This ensures private tailnet names resolve.
+  # See: https://github.com/tailscale/tailscale/issues/16558
+  systemd.services.tailscale-dns-fix = {
+    description = "Fix Tailscale DNS to use local MagicDNS proxy";
+    after = [ "tailscaled.service" ];
+    requires = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStartPre = "/bin/sh -c 'until ${pkgs.tailscale}/bin/tailscale status --json 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q Online; do sleep 2; done'";
+      ExecStart = "${pkgs.systemd}/bin/resolvectl dns tailscale0 100.100.100.100";
     };
   };
 
