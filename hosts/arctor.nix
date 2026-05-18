@@ -145,7 +145,7 @@
           proxy_set_header Accept-Encoding "";
 
           # Rewrite base href for subpath hosting
-          sub_filter '<base href="/">' '<base href="/bark/">';
+          sub_filter '<base href="/" />' '<base href="/bark/" />';
           sub_filter_once on;
           sub_filter_types text/html;
         '';
