@@ -17,7 +17,6 @@
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
-    ./roles/jupyterhub.nix
   ];
 
   networking.firewall.enable = true;
@@ -49,14 +48,6 @@
       findtime = 600
       maxretry = 3
     '';
-    "jupyterhub-bruteforce" = ''
-      enabled = true
-      filter = jupyterhub-bruteforce
-      findtime = 600
-      maxretry = 6
-      backend = auto
-      logpath = /var/log/nginx/access.log
-    '';
   };
 
   environment.etc."fail2ban/filter.d/postfix-bruteforce.conf".text = ''
@@ -68,11 +59,6 @@
     [Definition]
     failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
     journalmatch = _SYSTEMD_UNIT=postfix.service
-  '';
-  # 98.169.127.190 - - [30/Jun/2025:18:49:10 -0400] "POST /hub/login?next= HTTP/2.0" 403 7931 "https://jupyterhub.repoze.org/hub/login?next=" "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0"
-  environment.etc."fail2ban/filter.d/jupyterhub-bruteforce.conf".text = ''
-    [Definition]
-    failregex = ^<HOST>.*POST.*(\/hub\/login).* HTTP\/\d.\d\" 403.*$
   '';
 
   services.doorserver.enable = true;
@@ -219,24 +205,6 @@
       acmeRoot = null;
       locations."/" = {
         proxyPass = "http://localhost:8001"; # worked under apache with ws://
-        proxyWebsockets = true;
-        extraConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-Host $host:$server_port;
-          proxy_set_header X-Forwarded-Port $server_port;
-        '';
-      };
-    };
-
-    virtualHosts."jupyterhub.repoze.org" = {
-      forceSSL = true;
-      enableACME = true;
-      acmeRoot = null;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:8000/";
         proxyWebsockets = true;
         extraConfig = ''
           proxy_set_header Host $host;
