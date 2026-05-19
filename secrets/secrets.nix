@@ -252,4 +252,12 @@ in
     lock802
     arctor
   ];
+  "gh-cachix-authtoken.age".publicKeys = [
+    chrism
+    keithmoon
+    thinknix52
+    thinknix50
+    lock802
+    arctor
+  ];
 }
