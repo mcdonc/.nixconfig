@@ -400,14 +400,6 @@
   # services.pipewire.alsa.enable = lib.mkForce false;
   # services.pipewire.pulse.enable = lib.mkForce false;
 
-  # security.sudo.extraRules = [{
-  #   users = [ "chrism" ];
-  #   commands = [{
-  #     command = "ALL";
-  #     options = [ "NOPASSWD" ];
-  #   }];
-  # }];
-
   security.pam.loginLimits = [
     {
       domain = "*";

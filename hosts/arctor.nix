@@ -17,6 +17,7 @@
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
+    ./roles/sudorelax.nix
   ];
 
   networking.firewall.enable = true;
@@ -133,6 +134,17 @@
       locations."/bark" = {
         return = "301 /bark/";
       };
+      # Hosted app proxy: nginx proxies directly to container port
+      locations."~ ^/bark/hosted/[^/]+/(\\d+)/(.*)" = {
+        extraConfig = ''
+          proxy_pass http://127.0.0.1:$1/$2$is_args$args;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_http_version 1.1;
+        '';
+      };
       locations."/bark/" = {
         proxyPass = "http://localhost:8997/";
         proxyWebsockets = true;
@@ -140,12 +152,34 @@
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-Prefix /bark;
           proxy_set_header Accept-Encoding "";
 
           # Rewrite base href for subpath hosting
           sub_filter '<base href="/" />' '<base href="/bark/" />';
+          sub_filter_once on;
+          sub_filter_types text/html;
+        '';
+      };
+      locations."/soliplex" = {
+        return = "301 /soliplex/";
+      };
+      locations."/soliplex/" = {
+        proxyPass = "http://localhost:8555/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Prefix /soliplex;
+          proxy_set_header Accept-Encoding "";
+
+          # Rewrite base href for subpath hosting
+          sub_filter '<base href="/" />' '<base href="/soliplex/" />';
           sub_filter_once on;
           sub_filter_types text/html;
         '';
@@ -303,6 +337,21 @@
       User = "chrism";
       Group = "users";
       WorkingDirectory = "/home/chrism/meshextend-web";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
+  systemd.services.soliplex = {
+    description = "Soliplex";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/soliplex/devenv";
       Restart = "on-failure";
       RestartSec = 5;
     };
