@@ -254,6 +254,7 @@
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
+  users.users.chrism.extraGroups = [ "postdrop" ];  # for sendmail maildrop queue (bark email verification)
 
   mailserver =
     let

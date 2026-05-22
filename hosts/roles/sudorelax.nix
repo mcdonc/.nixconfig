@@ -2,7 +2,7 @@
 
 {
   security.sudo.extraRules = [{
-    users = [ "chrism" ];
+    groups = [ "wheel" ];
     commands = [{
       command = "ALL";
       options = [ "NOPASSWD" ];

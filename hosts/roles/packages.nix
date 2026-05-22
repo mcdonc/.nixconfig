@@ -143,11 +143,13 @@ in
       nix-tree
       nixfmt
       nixos-repl
+      nodejs
       nmap
       openssl
       openvpn
       pbzip2
       pciutils
+      pi-coding-agent
       pokete
       pre-commit
       progress
