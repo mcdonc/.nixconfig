@@ -82,7 +82,9 @@ let
     fi
   '';
 
-  sessionVariables = { };
+  sessionVariables = {
+    PI_SKIP_VERSION_CHECK = "1";
+  };
 
   zshDotDir = config.users.users."chrism".home + "/.config/zsh";
 
@@ -117,6 +119,7 @@ let
     '';
     dadsupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart dads; journalctl -f -u dads.service"'';
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
+    agent = "${pkgs.pi-coding-agent}/bin/pi --append-system-prompt ~/.pi/system-prompt.md";
   };
 
   graphicalimports = lib.optionals config.jawns.isworkstation [
