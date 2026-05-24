@@ -392,6 +392,7 @@
     zstd
     #inputs.winboat.packages.x86_64-linux.winboat
     #freerdp # for winboat
+    inputs.herdr.packages."${system}".default
   ];
 
   # services.pulseaudio.enable = lib.mkForce true;

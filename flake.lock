@@ -125,6 +125,27 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779548865,
+        "narHash": "sha256-NR145qB5QaZEcLXVhDW17ibOZibl6z+HPgtRWV2Ti7M=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "0491d7688fc4671d3dbf275f01668c57c1d0e1ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "ref": "v0.6.2",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -464,6 +485,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "herdr": "herdr",
         "home-manager": "home-manager_2",
         "mailserver": "mailserver",
         "nixos-generators": "nixos-generators",

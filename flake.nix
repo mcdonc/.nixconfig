@@ -28,6 +28,8 @@
     nixpkgs-pjsip.url = "github:NixOS/nixpkgs/3e20095fe3c6cbb1ddcef89b26969a69a1570776";
     # locked revision of nixos-25.11 as of 2026-03-21, prevent emacs recompiles
     nixpkgs-emacs.url = "github:NixOS/nixpkgs/fea3b367d61c1a6592bc47c72f40a9f3e6a53e96";
+    herdr.url = "github:ogulcancelik/herdr/v0.6.2";
+    herdr.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
