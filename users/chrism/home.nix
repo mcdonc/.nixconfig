@@ -87,10 +87,6 @@ let
     "${pkgs.pi-coding-agent}/bin/pi --append-system-prompt ~/.pi/prompt.md
   '';
 
-  home.file.".pi/prompt.md" = {
-    source = ./pi-prompt.md;
-  };
-
   zshDotDir = config.users.users."chrism".home + "/.config/zsh";
 
   shellAliases = {
@@ -206,6 +202,10 @@ in
     swnix
     nhswnix
   ];
+
+  home.file.".pi/prompt.md" = {
+    source = ./pi-prompt.md;
+  };
 
   services.gpg-agent = {
     enable = true;
