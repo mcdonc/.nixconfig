@@ -89,6 +89,12 @@ Testing:
   then re-run the tests to confirm everything is back to normal)
   without stopping to ask.
   
+Orchestration:
+
+  The user sometimes uses `herdr` (https://herdr.dev/) to orchestrate multiple
+  coding agent processes.  If he asks you to do something using `herdr`, run
+  the `herdr --help` command to familiarize yourself with the software.
+
 Committing and Pushing (Git):
 
 - Always ask the user before pushing.
