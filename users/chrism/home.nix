@@ -126,7 +126,9 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
-sessionVariables = {};
+sessionVariables = {
+    PATH = "$HOME/.local/bin:$PATH";
+  };
 
   graphicalimports = lib.optionals config.jawns.isworkstation [
     ./graphical.nix
@@ -186,6 +188,8 @@ in
   imports = [ (import ../home.nix args) ] ++ graphicalimports;
 
   home.stateVersion = "22.05";
+
+  home.sessionPath = [ "~/.local/bin" ];
 
   home.packages = with pkgs; [
     fd # fd is an unnamed dependency of fzf

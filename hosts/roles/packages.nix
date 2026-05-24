@@ -149,7 +149,6 @@ in
       openvpn
       pbzip2
       pciutils
-      pi-coding-agent
       pokete
       pre-commit
       progress

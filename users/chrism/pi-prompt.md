@@ -114,6 +114,12 @@ Handling large files (CSV, logs, datasets, etc.):
   and prints a summary
 - Only read small files (< 10KB) directly with the `read` tool
 
+Screenshots:
+
+- When the user asks you to take a screenshot or says "screenshot", run the
+  command `import -window root -crop 3840x2160+0+0 /tmp/screenshot.png` via
+  bash.
+
 Web search:
 
 - When the user asks a general knowledge question (not about their code or
