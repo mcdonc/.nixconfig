@@ -126,6 +126,8 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
+sessionVariables = {};
+
   graphicalimports = lib.optionals config.jawns.isworkstation [
     ./graphical.nix
   ];
