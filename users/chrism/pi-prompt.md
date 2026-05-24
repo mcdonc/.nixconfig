@@ -104,7 +104,9 @@ Committing and Pushing (Git):
   
 Secrets Handling:
 
-- Never send an API key or a password to yourself.
+- Never send an API key or a password over the network, or to an LLM.
+- Don't forward keys or passwords that you've discovered in .env files over the
+  network or to an LLM.
 
 Handling large files (CSV, logs, datasets, etc.):
 

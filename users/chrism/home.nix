@@ -82,9 +82,9 @@ let
     fi
   '';
 
-  pi = pkgs.WriteShellScriptBin "pi" ''
+  pi = pkgs.writeShellScriptBin "pi" ''
      PI_SKIP_VERSION_CHECK=1
-    "${pkgs.pi-coding-agent}/bin/pi --append-system-prompt ~/.pi/prompt.md
+     $HOME/.local/bin/pi --append-system-prompt $HOME/.pi/prompt.md "$@"
   '';
 
   zshDotDir = config.users.users."chrism".home + "/.config/zsh";
@@ -122,9 +122,7 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
-sessionVariables = {
-    PATH = "$HOME/.local/bin:$PATH";
-  };
+  sessionVariables = {};
 
   graphicalimports = lib.optionals config.jawns.isworkstation [
     ./graphical.nix
@@ -185,8 +183,6 @@ in
 
   home.stateVersion = "22.05";
 
-  home.sessionPath = [ "~/.local/bin" ];
-
   home.packages = with pkgs; [
     fd # fd is an unnamed dependency of fzf
     shell-genie
@@ -201,6 +197,7 @@ in
     enfoldrebuild
     swnix
     nhswnix
+    pi
   ];
 
   home.file.".pi/prompt.md" = {
