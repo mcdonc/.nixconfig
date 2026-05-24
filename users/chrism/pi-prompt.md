@@ -101,6 +101,10 @@ Committing and Pushing (Git):
 - The relevant tests should be run before committing.
 - If a feature branch is merged to main, ask the user if he wants to delete the
   feature branch.
+  
+Secrets Handling:
+
+- Never send an API key or a password to yourself.
 
 Handling large files (CSV, logs, datasets, etc.):
 
