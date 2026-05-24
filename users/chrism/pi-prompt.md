@@ -97,8 +97,7 @@ Orchestration:
 
 Committing and Pushing (Git):
 
-- Always ask the user before pushing.
-- If the branch is main, ask the user before committing.
+- Don't commit or push without user confirmation.
 - The relevant tests should be run before committing.
 - If a feature branch is merged to main, ask the user if he wants to delete the
   feature branch.
