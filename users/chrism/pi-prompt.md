@@ -97,8 +97,9 @@ Orchestration:
 
 Committing and Pushing (Git):
 
-- Don't commit or push without user confirmation.
-- The relevant tests should be run before committing.
+- NEVER commit or push without user confirmation.
+- NEVER add files you didn't create to a repository if they are uncommitted.
+- Run relevant tests before committing.
 - If a feature branch is merged to main, ask the user if he wants to delete the
   feature branch.
   
