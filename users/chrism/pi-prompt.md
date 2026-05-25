@@ -89,11 +89,23 @@ Testing:
   then re-run the tests to confirm everything is back to normal)
   without stopping to ask.
   
-Orchestration:
+Orchestration (Herdr):
 
-  The user sometimes uses `herdr` (https://herdr.dev/) to orchestrate multiple
-  coding agent processes.  If he asks you to do something using `herdr`, run
-  the `herdr --help` command to familiarize yourself with the software.
+  The user often uses `herdr` (https://herdr.dev/) to orchestrate multiple
+  coding agent processes.  If you need to something using `herdr`, run the
+  `herdr --help` command to familiarize yourself with the software.
+
+  When asked to work on a TODO item:
+
+  1. Search TODO.md for the item name to find the exact description
+  2. Derive a slug: lowercase, spaces → hyphens, remove punctuation
+  3. Create git worktree: git worktree add ../<projectname>-<slug> -b <slug>
+  4. Create herdr workspace: herdr workspace create --cwd
+     /home/chrism/projects/<projectname>-<slug> --label <slug> --focus
+
+  Example: "Let's work on rate-limit login attempts todo" while in the "bark"
+  project → slug rate-limit-login → branch --rate-limit-login → worktree at
+  /home/chrism/projects/bark-rate-limit-login
 
 Committing and Pushing (Git):
 
