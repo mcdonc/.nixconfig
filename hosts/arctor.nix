@@ -30,6 +30,8 @@
   networking.firewall.allowedTCPPortRanges = [
     { from = 9000; to = 9500; }
   ];
+  # Allow Docker containers to reach Bark nginx (bridge endpoint)
+  networking.firewall.interfaces.docker0.allowedTCPPorts = [ 8995 ];
   networking.firewall.logRefusedConnections = false;
 
   services.fail2ban.enable = true;
