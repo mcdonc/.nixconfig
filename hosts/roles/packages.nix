@@ -76,6 +76,7 @@ in
     # unmaintained python
     "python-2.7.18.8"
     "python-2.7.18.12"
+    "electron-39.8.10"
     "jitsi-meet-1.0.8792"
   ];
 
