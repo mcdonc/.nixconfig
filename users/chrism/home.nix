@@ -82,11 +82,6 @@ let
     fi
   '';
 
-  pi = pkgs.writeShellScriptBin "pi" ''
-     PI_SKIP_VERSION_CHECK=1
-     $HOME/.local/bin/pi --append-system-prompt $HOME/.pi/prompt.md "$@"
-  '';
-
   zshDotDir = config.users.users."chrism".home + "/.config/zsh";
 
   shellAliases = {
@@ -197,10 +192,9 @@ in
     enfoldrebuild
     swnix
     nhswnix
-    pi
   ];
 
-  home.file.".pi/prompt.md" = {
+  home.file."AGENT.md" = {
     source = ./pi-prompt.md;
   };
 
