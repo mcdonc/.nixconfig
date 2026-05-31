@@ -325,6 +325,10 @@ in
     shellAliases = shellAliases;
     sessionVariables = sessionVariables;
     enableCompletion = true;
+    # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
+    initExtra = ''
+      export PATH="$HOME/.local/bin:$PATH"
+    '';
   };
 
   programs.zsh = {
@@ -366,6 +370,11 @@ in
     #initExtraFirst = ''
     #  zmodload zsh/zprof
     #'';
+
+    # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
+    initExtra = ''
+      export PATH="$HOME/.local/bin:$PATH"
+    '';
 
     initContent = ''
       # be more bashy
