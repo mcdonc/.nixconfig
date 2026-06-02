@@ -27,6 +27,7 @@
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
     ./roles/nvidiapassthru.nix
+    ./roles/dictation.nix
     #./roles/vllm.nix
   ];
 
