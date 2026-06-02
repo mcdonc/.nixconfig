@@ -167,6 +167,7 @@ in
       unzip
       usbutils
       util-linux # wipefs
+      uv
       wakeonlan
       wget
       wol
