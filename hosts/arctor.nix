@@ -306,20 +306,21 @@
     /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
   '';
 
+  services.postfix.submissionOptions = {
+    smtpd_sender_restrictions = lib.mkForce "permit_sasl_authenticated,reject";
+    smtpd_sender_login_maps = lib.mkForce "";
+  };
+
   services.postfix.settings.main = {
     smtpd_sasl_security_options = lib.mkForce "noanonymous";
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
-    # allow recipient to be any domain if sasl-auth submitted
     smtpd_recipient_restrictions = lib.mkForce ''
       permit_mynetworks, permit_sasl_authenticated, reject
     '';
-    # allow sender to be any domain if sasl-auth submitted
     smtpd_sender_restrictions = lib.mkForce ''
       permit_mynetworks, permit_sasl_authenticated, reject
     '';
-    #debug_peer_list = lib.mkForce "98.169.127.190";
-    #debug_peer_level = lib.mkForce 3;
   };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
