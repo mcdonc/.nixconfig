@@ -211,81 +211,75 @@ in
 
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false; # useful for the following matchBlocks."*"
-    matchBlocks."*" = {
-      forwardAgent = false;
-      addKeysToAgent = "yes";
-      compression = false;
-      serverAliveInterval = 0;
-      serverAliveCountMax = 3;
-      hashKnownHosts = false;
-      userKnownHostsFile = "~/.ssh/known_hosts";
-      controlMaster = "no";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "no";
-    };
-    matchBlocks = {
-      "192.168.1.*".forwardAgent = true;
-      "quisling.local".forwardAgent = true;
-      "quisling".forwardAgent = true;
-      "lock802".forwardAgent = true;
-      "clonelock802".forwardAgent = true;
-      "keithmoon".forwardAgent = true;
-      "optinix.".forwardAgent = true;
-      "arctor.repoze.org".forwardAgent = true;
-      "enfold.repoze.org".forwardAgent = true;
-      "thinknix*".forwardAgent = true;
-      "nixcentre".forwardAgent = true;
-      "bouncer.repoze.org".forwardAgent = true;
-      "lock802.repoze.org".forwardAgent = true;
-      "optinix".forwardAgent = true;
-      "win10".user = "user";
-      "enfold-mac-studio.repoze.org".port = 19911;
-      "enfold-mac-studio.repoze.org".forwardAgent = true;
-      "biggysmalls".forwardAgent = true;
-      "biggysmalls".user = "ec2-user";
-      "smallysmalls".forwardAgent = true;
-      "smallysmalls".user = "ec2-user";
-      "demo.toughserv.com".forwardAgent = true;
-      "demo.toughserv.com".user = "amia";
+    enableDefaultConfig = false;
+    settings = {
+      "*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "yes";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+      };
+      "192.168.1.*".ForwardAgent = true;
+      "quisling.local".ForwardAgent = true;
+      "quisling".ForwardAgent = true;
+      "lock802".ForwardAgent = true;
+      "clonelock802".ForwardAgent = true;
+      "keithmoon".ForwardAgent = true;
+      "optinix.".ForwardAgent = true;
+      "arctor.repoze.org".ForwardAgent = true;
+      "enfold.repoze.org".ForwardAgent = true;
+      "thinknix*".ForwardAgent = true;
+      "nixcentre".ForwardAgent = true;
+      "bouncer.repoze.org".ForwardAgent = true;
+      "lock802.repoze.org".ForwardAgent = true;
+      "optinix".ForwardAgent = true;
+      "win10".User = "user";
+      "enfold-mac-studio.repoze.org" = {
+        Port = 19911;
+        ForwardAgent = true;
+      };
+      "biggysmalls" = {
+        ForwardAgent = true;
+        User = "ec2-user";
+      };
+      "smallysmalls" = {
+        ForwardAgent = true;
+        User = "ec2-user";
+      };
+      "demo.toughserv.com" = {
+        ForwardAgent = true;
+        User = "amia";
+      };
       "apex.firewall" = {
-        hostname = "apex.firewall";
-        proxyJump = "bouncer.palladion.com";
-        forwardAgent = true;
-        serverAliveInterval = 60;
-        localForwards = [
+        HostName = "apex.firewall";
+        ProxyJump = "bouncer.palladion.com";
+        ForwardAgent = true;
+        ServerAliveInterval = 60;
+        LocalForward = [
           # windresource
-          {
-            bind.port = 56526;
-            host.port = 56526;
-            host.address = "apex-gis.ace.apexcleanenergy.com";
-          }
+          "56526 apex-gis.ace.apexcleanenergy.com:56526"
           # 8760, techdash, gisproject
-          {
-            bind.port = 1433;
-            host.port = 1433;
-            host.address = "ace-ra-sql1.ace.apexcleanenergy.com";
-          }
+          "1433 ace-ra-sql1.ace.apexcleanenergy.com:1433"
           # mongo
-          {
-            bind.port = 27017;
-            host.port = 27017;
-            host.address = "ace-web-test.ace.apexcleanenergy.com";
-          }
+          "27017 ace-web-test.ace.apexcleanenergy.com:27017"
         ];
       };
       "15.200.113.205" = {
-        user = "ec2-user";
-        identityFile = "~/.ssh/id_ecdsa_enfold";
-        forwardAgent = true;
-        serverAliveInterval = 60;
-        serverAliveCountMax = 3;
-        extraOptions = {
-          HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
-          PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
-          StrictHostKeyChecking = "no";
-          AddKeysToAgent = "yes";
-        };
+        User = "ec2-user";
+        IdentityFile = "~/.ssh/id_ecdsa_enfold";
+        ForwardAgent = true;
+        ServerAliveInterval = 60;
+        ServerAliveCountMax = 3;
+        HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
+        PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
+        StrictHostKeyChecking = "no";
+        AddKeysToAgent = "yes";
       };
     };
   };
@@ -371,12 +365,10 @@ in
     #  zmodload zsh/zprof
     #'';
 
-    # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
-    initExtra = ''
-      export PATH="$HOME/.local/bin:$PATH"
-    '';
-
     initContent = ''
+      # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
+      export PATH="$HOME/.local/bin:$PATH"
+
       # be more bashy
       setopt interactive_comments bashautolist nobeep nomenucomplete \
              noautolist extended_glob

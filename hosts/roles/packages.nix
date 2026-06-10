@@ -8,7 +8,6 @@
   pkgs-unstable,
   pkgs-claude-code,
   inputs,
-  system,
   config,
   ...
 }:
@@ -38,7 +37,7 @@ let
     spawn -noecho nix --extra-experimental-features repl nixpkgs
     expect "nix-repl> " {
       send ":a builtins\n"
-      send "pkgs = legacyPackages.${system}\n"
+      send "pkgs = legacyPackages.${pkgs.stdenv.hostPlatform.system}\n"
       interact
     }
   '';
@@ -120,7 +119,7 @@ in
       html-tidy
       inetutils # for telnet
       inotify-tools
-      inputs.agenix.packages."${system}".default
+      inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
       iperf
       isd
       jq

@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, inputs, system, config, lib, ... }:
+{ pkgs, pkgs-unstable, inputs, config, lib, ... }:
 
 let
   # ── whisper model ──────────────────────────────────────────────
@@ -7,7 +7,7 @@ let
   whisperModelName = "base.en";
 
   # herdr binary (from flake input or nixpkgs)
-  herdrBin = "${inputs.herdr.packages.${system}.default}/bin/herdr";
+  herdrBin = "${inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/herdr";
 
   # ── the main voice→pi script ───────────────────────────────────
   voice-pi = pkgs.writeShellScriptBin "voice-pi" ''
@@ -147,7 +147,7 @@ in
 {
   # ── packages ──────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    inputs.herdr.packages."${system}".default
+    inputs.herdr.packages."${pkgs.stdenv.hostPlatform.system}".default
     voice-pi
     voice-transcribe
     whisper-cpp

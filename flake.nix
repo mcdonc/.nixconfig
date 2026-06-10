@@ -137,7 +137,6 @@
             inputs
             // forks
             // {
-              system = host.system;
               inherit inputs;
             };
 
@@ -145,9 +144,11 @@
         {
           name = host.hostname;
           value = inputs.nixpkgs.lib.nixosSystem {
-            system = host.system;
             inherit specialArgs;
-            modules = shared-mods ++ [ (./. + "/hosts/${host.hostname}.nix") ];
+            modules = shared-mods ++ [
+              { nixpkgs.hostPlatform.system = host.system; }
+              (./. + "/hosts/${host.hostname}.nix")
+            ];
           };
         };
 
