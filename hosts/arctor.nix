@@ -25,11 +25,11 @@
     80
     443
   ];
-  # for bark
+  # for klangk
   networking.firewall.allowedTCPPortRanges = [
     { from = 9000; to = 9500; }
   ];
-  # Allow Docker containers to reach Bark nginx (bridge endpoint)
+  # Allow Docker containers to reach Klangk nginx (bridge endpoint)
   networking.firewall.interfaces.docker0.allowedTCPPorts = [ 8995 ];
   networking.firewall.logRefusedConnections = false;
 
@@ -132,11 +132,11 @@
           proxy_set_header X-Real-IP $remote_addr;
         '';
       };
-      locations."/bark" = {
-        return = "301 /bark/";
+      locations."/klangk" = {
+        return = "301 /klangk/";
       };
       # Hosted app proxy: nginx proxies directly to container port
-      locations."~ ^/bark/hosted/[^/]+/(\\d+)/(.*)" = {
+      locations."~ ^/klangk/hosted/[^/]+/(\\d+)/(.*)" = {
         extraConfig = ''
           proxy_pass http://127.0.0.1:$1/$2$is_args$args;
           proxy_set_header Host $host;
@@ -146,7 +146,7 @@
           proxy_http_version 1.1;
         '';
       };
-      locations."/bark/" = {
+      locations."/klangk/" = {
         proxyPass = "http://localhost:8997/";
         proxyWebsockets = true;
         extraConfig = ''
@@ -155,11 +155,11 @@
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Forwarded-Host $host;
           proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-Prefix /bark;
+          proxy_set_header X-Forwarded-Prefix /klangk;
           proxy_set_header Accept-Encoding "";
 
           # Rewrite base href for subpath hosting
-          sub_filter '<base href="/" />' '<base href="/bark/" />';
+          sub_filter '<base href="/" />' '<base href="/klangk/" />';
           sub_filter_once on;
           sub_filter_types text/html;
         '';
@@ -255,7 +255,7 @@
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
-  users.users.chrism.extraGroups = [ "postdrop" ];  # for sendmail maildrop queue (bark email verification)
+  users.users.chrism.extraGroups = [ "postdrop" ];  # for sendmail maildrop queue (klangk email verification)
 
   mailserver =
     let
@@ -360,8 +360,8 @@
     };
   };
 
-  systemd.services.bark = {
-    description = "Bark";
+  systemd.services.klangk = {
+    description = "Klangk";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -369,10 +369,11 @@
       Environment = "DEVENV_TUI=false";
       User = "chrism";
       Group = "users";
-      WorkingDirectory = "/home/chrism/bark";
+      WorkingDirectory = "/home/chrism/klangk";
       Restart = "on-failure";
       RestartSec = 5;
     };
+    path = [ "/run/wrappers" ];
   };
   
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
