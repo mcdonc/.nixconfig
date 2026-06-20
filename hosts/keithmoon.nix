@@ -33,6 +33,18 @@
 
   system.stateVersion = "24.05";
 
+  # Podman: enable the NixOS module (provides policy.json, subuid/subgid, etc.)
+  # Storage on ext4 — ZFS lacks idmapped mount support, causing
+  # storage-chown-by-maps to hang with --userns=keep-id.
+  virtualisation.podman.enable = true;
+  virtualisation.containers.storage.settings = {
+    storage = {
+      driver = "overlay";
+      graphroot = "/steam2/podman/storage";
+      runroot = "/steam2/podman/run";
+    };
+  };
+
   # environment.extraInit =
   #   let
   #     cachix-file = config.age.secrets."mcdonc-unhappy-cachix-authtoken".path;

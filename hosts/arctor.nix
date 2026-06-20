@@ -252,6 +252,15 @@
       };
     };
 
+    virtualHosts."klangk.org" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        root = "/home/chrism/klangk/website";
+      };
+    };
+
   };
 
   users.users.nginx.extraGroups = [ "acme" ];
