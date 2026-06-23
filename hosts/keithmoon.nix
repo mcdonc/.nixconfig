@@ -436,6 +436,37 @@
     }
   ];
 
+  systemd.services.klangk = {
+    description = "Klangk";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/projects/klangk";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    path = [ "/run/wrappers" ];
+  };
+
+  systemd.services.soliplex = {
+    description = "Soliplex";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/projects/soliplex/devenv";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
   environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users
     * soft nofile 65536
