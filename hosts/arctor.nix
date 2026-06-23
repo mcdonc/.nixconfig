@@ -255,13 +255,23 @@
     virtualHosts."klangk.org" = {
       forceSSL = true;
       enableACME = true;
-      acmeRoot = null;
       locations."/" = {
         root = "/home/chrism/klangk/website";
       };
     };
 
   };
+
+  security.acme.certs."klangk.org" = {
+    dnsProvider = lib.mkForce null;
+    environmentFile = lib.mkForce null;
+  };
+
+  systemd.services.nginx.serviceConfig.ProtectHome = lib.mkForce false;
+  # Allow nginx to traverse /home/chrism for serving klangk.org
+  systemd.tmpfiles.rules = [
+    "d /home/chrism 0701 chrism users -"
+  ];
 
   users.users.nginx.extraGroups = [ "acme" ];
   users.users.chrism.extraGroups = [ "postdrop" ];  # for sendmail maildrop queue (klangk email verification)
