@@ -121,6 +121,16 @@ in
     thinknix52
     thinknix50
   ];
+  "enfold-openrouter-api-key.age".publicKeys = [
+    chrism
+    alan
+    tseaver
+    keithmoon
+    arctor
+    enfold
+    thinknix52
+    thinknix50
+  ];
   "enfold-pydio-realm-pem.age".publicKeys = [
     chrism
     alan
