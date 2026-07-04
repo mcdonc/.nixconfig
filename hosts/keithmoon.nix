@@ -407,6 +407,7 @@
     #freerdp # for winboat
     inputs.herdr.packages."${pkgs.stdenv.hostPlatform.system}".default
     input-leap
+    matchbox # for screenrecordings
   ];
 
   # services.pulseaudio.enable = lib.mkForce true;

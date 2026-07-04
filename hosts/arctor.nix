@@ -256,7 +256,7 @@
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        root = "/home/chrism/klangk/website";
+        root = "/srv/klangk/website";
       };
     };
 
