@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./alsa-pulse.nix
+  ];
   environment.systemPackages = [
     pkgs.davinci-resolve
   ];
@@ -10,7 +13,7 @@
       davinci-nvidia = {
         name = "DaVinci Resolve Free (via nvidia-offload)";
         genericName = "DaVinci Resolve Video Editor";
-        exec = "nvidia-offload davinci-resolve";
+        exec = "env PULSE_LATENCY_MSEC=60 nvidia-offload davinci-resolve";
         terminal = false;
         categories = [
           "AudioVideo"

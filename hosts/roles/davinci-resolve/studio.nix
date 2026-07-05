@@ -5,6 +5,9 @@
 }:
 
 {
+  imports = [
+    ./alsa-pulse.nix
+  ];
 
   # 25.05 gjs 1.82.2 tests fail for i686
   # 24.11 uses gjs 1.82.1; these tests also fail on i686 when only overriding
@@ -27,7 +30,7 @@
       davinci-nvidia = {
         name = "DaVinci Resolve Studio (via nvidia-offload)";
         genericName = "DaVinci Resolve Video Editor";
-        exec = "nvidia-offload davinci-resolve-studio";
+        exec = "env PULSE_LATENCY_MSEC=60 nvidia-offload davinci-resolve-studio";
         terminal = false;
         categories = [
           "AudioVideo"
