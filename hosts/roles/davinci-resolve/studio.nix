@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  pkgs-2411,
   ...
 }:
 
@@ -20,7 +19,7 @@
   # ];
 
   environment.systemPackages = [
-    pkgs-2411.davinci-resolve-studio
+    pkgs.davinci-resolve-studio
   ];
 
   home-manager.users.chrism = {
