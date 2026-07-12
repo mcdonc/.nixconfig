@@ -286,4 +286,12 @@ in
     lock802
     arctor
   ];
+  "zai-authtoken-alan.age".publicKeys = [
+    chrism
+    keithmoon
+    thinknix52
+    thinknix50
+    lock802
+    arctor
+  ];
 }
