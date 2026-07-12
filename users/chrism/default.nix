@@ -39,6 +39,13 @@
     group = "users";
   };
 
+  age.secrets."zai-authtoken-chrism2" = {
+    file = ../../secrets/zai-authtoken-chrism2.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+
   # to make available in /run/agenix/foo
   environment.variables = {
     UBUNTU_PRO_ATTACH = config.age.secrets."mcdonc-ubuntu-pro-attach".path;
