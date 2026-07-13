@@ -45,6 +45,12 @@
     owner = "chrism";
     group = "users";
   };
+  age.secrets."zai-authtoken-alan" = {
+    file = ../../secrets/zai-authtoken-alan.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
 
   # to make available in /run/agenix/foo
   environment.variables = {
