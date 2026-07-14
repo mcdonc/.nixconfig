@@ -441,7 +441,9 @@
   systemd.services.klangk = {
     description = "Klangk";
     after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    # Auto-start disabled: won't start at boot or on-rebuild, but remains
+    # manually startable via `systemctl start klangk`.
+    wantedBy = lib.mkForce [ ];
     serviceConfig = {
       ExecStart = "${pkgs.devenv}/bin/devenv processes up";
       Environment = "DEVENV_TUI=false";
