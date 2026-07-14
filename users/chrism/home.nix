@@ -194,8 +194,8 @@ in
     nhswnix
   ];
 
-  home.file."AGENT.md" = {
-    source = ./pi-prompt.md;
+  home.file."AGENTS.md" = {
+    source = ./AGENTS.md;
   };
 
   services.gpg-agent = {

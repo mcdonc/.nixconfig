@@ -22,7 +22,7 @@
     ./roles/idracfanctl.nix
     #./roles/tailscale
     #./roles/rc505
-    ./roles/ollama.nix
+    #./roles/ollama.nix
     ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
