@@ -439,21 +439,85 @@
   ];
 
   systemd.services.klangk = {
-    description = "Klangk";
+    description = "Klangk (test deployment, #1546)";
     after = [ "network.target" ];
     # Auto-start disabled: won't start at boot or on-rebuild, but remains
     # manually startable via `systemctl start klangk`.
     wantedBy = lib.mkForce [ ];
     serviceConfig = {
-      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      # Self-contained checkout at /tmp/temp-klangk (shallow clone of main).
+      # `devenv shell -- klangkd` runs klangkd with the checkout's full
+      # devenv toolchain on PATH (nginx, podman, etc.) — dotenv is disabled
+      # (-O dotenv.enable:bool false), so no .env is loaded; config comes only
+      # from /tmp/temp-klangk/state/klangkd.yaml (+ devenv.nix's infra env for
+      # state_dir/data_dir). Serves browser :28997 + egress :28995.
+      ExecStart = "${pkgs.devenv}/bin/devenv --quiet -O dotenv.enable:bool false shell -- klangkd --config /tmp/temp-klangk/state/klangkd.yaml";
       Environment = "DEVENV_TUI=false";
       User = "chrism";
       Group = "users";
-      WorkingDirectory = "/home/chrism/projects/klangk";
+      WorkingDirectory = "/tmp/temp-klangk";
+      # nginx's config opens `access_log /dev/stdout; error_log stderr;` by
+      # path (/proc/self/fd/1). Under systemd the inherited stdout fd is a
+      # journald socket that can't be reopened by path, so nginx fails with
+      # `open() "/dev/stdout" failed`. Route the unit's stdout/stderr to a
+      # real file so /dev/stdout resolves to an openable regular file.
+      StandardOutput = "append:/tmp/temp-klangk/state/klangkd.stdout.log";
+      StandardError = "append:/tmp/temp-klangk/state/klangkd.stderr.log";
       Restart = "on-failure";
       RestartSec = 5;
     };
     path = [ "/run/wrappers" ];
+  };
+
+  # --- #1546: declarative NixOS container that acts as a non-localhost HTTPS
+  # reverse proxy in front of the klangk service above. The container has its
+  # own network namespace + a non-loopback veth IP (10.100.0.2), so klangk's
+  # nginx sees $remote_addr=10.100.0.2 — faithfully simulating a proxy on a
+  # separate host. It terminates TLS (self-signed cert) and reverse-proxies to
+  # the host's klangk browser listener (0.0.0.0:28997) reached via the host
+  # bridge IP (10.100.0.1). KLANGK_TRUSTED_PROXY_CIDRS in the klangkd config
+  # includes 10.100.0.0/24 so X-Forwarded-* / X-Real-IP are honored.
+  #
+  # Caddy is used (not nginx) because the NixOS nginx module emits a duplicate
+  # Host header on the upstream request (HTTP/2 :authority + proxy_set_header
+  # Host interaction) that the klangk upstream correctly rejects with 400 per
+  # RFC 7230 §5.4. Caddy's reverse_proxy sends a single, well-formed Host.
+  # The point of #1546 is to validate klangk's proxy-trust behavior behind an
+  # *arbitrary* well-behaved proxy, not to debug a specific proxy's quirks.
+  containers.klangk-proxy = {
+    # Manual start only (matches the klangk service's wantedBy = []).
+    autoStart = false;
+    privateNetwork = true;
+    hostAddress = "10.100.0.1";
+    localAddress = "10.100.0.2";
+    # The container reaches the host's klangk browser listener directly at
+    # 10.100.0.1:28997 (klangk binds 0.0.0.0, option a, #1546).
+    bindMounts = {
+      "/etc/klangk-proxy/certs" = {
+        hostPath = "/tmp/temp-klangk/state/certs";
+        isReadOnly = true;
+      };
+    };
+    config =
+      { config, pkgs, ... }:
+      {
+        services.caddy = {
+          enable = true;
+          # Self-signed internal cert (Caddy's tls internal) terminates HTTPS
+          # on :443. reverse_proxy forwards to the host bridge IP. Caddy sets
+          # X-Forwarded-For / X-Forwarded-Proto / a single Host by default.
+          config = ''
+            :443 {
+              tls /etc/klangk-proxy/certs/klangk-test.crt /etc/klangk-proxy/certs/klangk-test.key
+              reverse_proxy 10.100.0.1:28997 {
+                header_up X-Forwarded-Proto https
+                header_up X-Real-IP {remote_host}
+              }
+            }
+          '';
+        };
+        networking.firewall.allowedTCPPorts = [ 443 ];
+      };
   };
 
   systemd.services.soliplex = {
