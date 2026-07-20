@@ -159,6 +159,16 @@ us repeatedly (the docs once claimed `gh issue create --body -` and
 `gh issue edit --body -` read stdin; they do not — `--body` is never a stdin
 reader).
 
+**Never pass a process-substitution path (`<(...)`) to `--body` or
+`--body-file`.** `--body <(cat ...)` sets the body to the literal path string
+(e.g. `/dev/fd/63`) — the same literal-text trap as `--body -`, producing an
+issue/PR/comment whose entire body is `/dev/fd/63`. And `--body-file <(...)` is
+unreliable when the `gh` call is wrapped (e.g. by a `devenv shell --` layer):
+the process-substitution fd often does not survive the wrapper, leaving an
+empty or truncated body. Always write the body to a **real temp file** first
+and pass `--body-file <path>` (the recommended form below). This has shipped
+at least one issue with the body literally `/dev/fd/63`.
+
 To supply a body from a pipe or heredoc, use `--body-file -` (reads stdin):
 
 ```bash
