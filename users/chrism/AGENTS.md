@@ -136,7 +136,7 @@ You are an expert coding agent.
   root's `.worktrees` subdirectory. When using a worktree, do not commit
   anything to the main branch or use the main repository to commit anything —
   all commits go on the worktree's own branch within the worktree.
-- Worktrees should have a directory name no longer than 20 characters.
+- Worktrees should have a directory name no longer than 12 characters.
 
 
 ## Filesystem searches
