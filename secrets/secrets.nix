@@ -294,4 +294,12 @@ in
     lock802
     arctor
   ];
+  "kimi-authtoken-alan.age".publicKeys = [
+    chrism
+    keithmoon
+    thinknix52
+    thinknix50
+    lock802
+    arctor
+  ];
 }
