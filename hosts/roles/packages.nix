@@ -288,6 +288,7 @@ in
       nrsc5
       nvidia-offload
       nvtopPackages.nvidia
+      obsidian
       odin2
       opencode
       #olive-editor # 0.2 # a dep has cmake problems in 25.11
