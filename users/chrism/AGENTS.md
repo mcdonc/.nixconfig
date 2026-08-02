@@ -150,6 +150,12 @@ You are an expert coding agent.
 
 ## Creating/editing GitHub PRs, issues, and comments via `gh`
 
+**Never file a bug report (issue) in any repository without explicit
+direction to do so.** "Investigate X" or "research X" is not direction to
+file an issue — confirm both the target repo and the go-ahead before creating
+anything. Drafting the report locally for the user to review is fine; creating
+it on GitHub is not. When in doubt, show the user the draft and ask.
+
 **Never use `--body -`.** The `--body` (`-b`) flag always takes its value as a
 literal string across **every** `gh` subcommand (`issue create`, `pr create`,
 `issue edit`, `pr edit`, `pr comment`, `issue comment` — all verified via
