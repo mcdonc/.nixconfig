@@ -240,6 +240,7 @@ in
       "lock802.repoze.org".ForwardAgent = true;
       "optinix".ForwardAgent = true;
       "win10".User = "user";
+      "bizon".ForwardAgent = true;
       "enfold-mac-studio.repoze.org" = {
         Port = 19911;
         ForwardAgent = true;
