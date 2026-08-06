@@ -83,8 +83,10 @@ in
     with pkgs;
     [
       age
+      aha
       alsa-utils
       any-nix-shell
+      ansi2html
       asciiquarium
       banner
       bastet # tetris
