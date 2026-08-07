@@ -297,6 +297,7 @@ in
       pico-sdk
       pinentry-tty # dep of gpg
       pkgs.vscode-fhs
+      psmisc
       powertop
       proton-vpn
       qjackctl

@@ -29,7 +29,7 @@
     ./roles/nvidiapassthru.nix
     ./roles/dictation.nix
     #./roles/vllm.nix
-    #./roles/sudorelax.nix
+    ./roles/sudorelax.nix
   ];
 
   system.stateVersion = "24.05";
