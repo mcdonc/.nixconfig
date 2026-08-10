@@ -29,7 +29,7 @@
     ./roles/nvidiapassthru.nix
     ./roles/dictation.nix
     #./roles/vllm.nix
-    ./roles/sudorelax.nix
+    #./roles/sudorelax.nix
   ];
 
   system.stateVersion = "24.05";
@@ -397,7 +397,35 @@
     };
   };
 
+  # Loopback btrfs volume on ext4 (avoids ZFS double-CoW).
+  # Image lives on /steam2; mounted at /steam2/btrfs.
+  systemd.services.btrfs-loopback = {
+    description = "Mount btrfs loopback image";
+    after = [ "local-fs.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = with pkgs; [ btrfs-progs util-linux coreutils ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "mount-btrfs-loopback" ''
+        IMG=/steam2/btrfs.img
+        MNT=/steam2/btrfs
+        if [ ! -f "$IMG" ]; then
+          truncate -s 50G "$IMG"
+          mkfs.btrfs "$IMG"
+        fi
+        mkdir -p "$MNT"
+        if ! mountpoint -q "$MNT"; then
+          mount -o loop "$IMG" "$MNT"
+        fi
+        chown chrism:users "$MNT"
+      '';
+      ExecStop = "${pkgs.util-linux}/bin/umount /steam2/btrfs";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
+    btrfs-progs
     cifs-utils
     # used by zfs send/receive
     pv
