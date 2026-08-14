@@ -335,6 +335,15 @@ in
     dotDir = zshDotDir; # config.home.homeDirectory + "/ " + zshDotDir;
     autosuggestion.enable = true;
 
+    # Don't write every command to $HISTFILE in real time (the default
+    # SHARE_HISTORY); instead append this session's new commands to the
+    # file once, on shell exit. Other sessions' commands are only picked
+    # up when a new shell starts.
+    history = {
+      share = false;
+      append = true;
+    };
+
     # speed up zsh start time, see
     # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
     # (needs extended_glob)
