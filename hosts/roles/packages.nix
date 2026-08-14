@@ -164,6 +164,7 @@ in
       syspython
       tldr
       tmux
+      tcpdump
       tree
       unzip
       usbutils
