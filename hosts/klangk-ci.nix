@@ -54,10 +54,7 @@
     description = "Prune nix DB entries orphaned by the tmpfs store overlay";
     after = [ "nix-daemon.service" ];
     wants = [ "nix-daemon.service" ];
-    before = [
-      "github-runner-klangk-1.service"
-      "github-runner-klangk-2.service"
-    ];
+    before = [ "github-runner-klangk-1.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
@@ -65,8 +62,8 @@
     };
   };
 
-  # Sizing: two concurrent e2e jobs, each -n 2 xdist + container stacks.
-  # Disk: default 1G is far too small for two runners' podman stores + nix
+  # Sizing: one e2e job at a time (each is -n 2 xdist + container stacks).
+  # Disk: default 1G is far too small for the runner's podman store + nix
   # roots; 100G virtual (thin qcow2, actual use much smaller).
   virtualisation.diskSize = 102400;
   virtualisation.memorySize = 32768;
@@ -91,7 +88,6 @@
     trusted-users = [
       "root"
       "ci-1"
-      "ci-2"
     ];
   };
 
@@ -110,14 +106,6 @@
     linger = true;
   };
   users.groups.ci-1 = { };
-  users.users.ci-2 = {
-    isNormalUser = true;
-    group = "ci-2";
-    createHome = true;
-    uid = 1102; # see ci-1
-    linger = true; # see ci-1
-  };
-  users.groups.ci-2 = { };
 
   # SUID wrappers for rootless podman (uid maps). Enabled by default via
   # virtualisation.podman below + wrappers, but explicit for clarity.
@@ -158,97 +146,93 @@
     ];
   };
 
-  services.github-runners = lib.genAttrs [ "klangk-1" "klangk-2" ] (
-    name:
-    let
-      idx = lib.elemAt (lib.splitString "-" name) 1;
-    in
-    {
-      enable = true;
-      url = "https://github.com/mcdonc/klangk";
-      tokenFile = config.age.secrets."github-runner-klangk".path;
-      extraLabels = [
-        "nix"
-        "klangk-ci"
+  # Single runner: both e2e workflows share one suite action; one job at
+  # a time keeps podman/cgroup state simple (queueing serializes runs).
+  services.github-runners.klangk-1 = {
+    enable = true;
+    url = "https://github.com/mcdonc/klangk";
+    tokenFile = config.age.secrets."github-runner-klangk".path;
+    extraLabels = [
+      "nix"
+      "klangk-ci"
+    ];
+    # Non-ephemeral: the ephemeral restart/re-register cycle between jobs
+    # raced the lingering user manager (logind user@<uid>) — the first
+    # job's podman userns setup hit newuidmap EPERM intermittently.
+    # Keeping the service (and its session) alive removes that window;
+    # job hygiene is preserved by checkout wiping the workspace anyway.
+    ephemeral = false;
+    replace = true;
+    user = "ci-1";
+    group = "ci-1";
+    extraPackages = with pkgs; [
+      git
+      git-lfs
+      devenv
+      # SUID helpers: job shells get the runner's constructed PATH (no
+      # /run/wrappers/bin), so expose the wrappers via symlinks. The
+      # kernel applies SUID on the target, not the symlink.
+      (pkgs.runCommand "setuid-wrappers-shims" { } ''
+        mkdir -p $out/bin
+        ln -s /run/wrappers/bin/newuidmap $out/bin/newuidmap
+        ln -s /run/wrappers/bin/newgidmap $out/bin/newgidmap
+        ln -s /run/wrappers/bin/fusermount3 $out/bin/fusermount3
+      '')
+    ];
+    # Rootless podman needs the ci user's session bus (systemd cgroup
+    # manager); linger keeps it alive, this points jobs at it.
+    extraEnvironment = {
+      XDG_RUNTIME_DIR = "/run/user/" + toString config.users.users.ci-1.uid;
+    };
+    serviceOverrides = {
+      # Pre-warm the ci user's session before the runner listens: establish
+      # the lingering user manager + rootless podman state (pause process,
+      # /run/user/<uid> mounts) once at service start, so a job's first
+      # userns setup never races logind (the newuidmap EPERM class).
+      # `podman unshare true` (not `podman info`): info initializes the DB
+      # but never creates the pause process / runs SUID newuidmap — unshare
+      # exercises the exact failing path. Without it, the first job after
+      # boot runs two concurrent builds (devenv tasks run a b) against
+      # cold per-user state and their userns inits race (uid_map EPERM).
+      ExecStartPre = [
+        "+${pkgs.writeShellScript "warm-podman-session" ''
+          runuser -u "ci-1" -- \
+            env HOME=/home/ci-1 \
+            XDG_RUNTIME_DIR=/run/user/${toString config.users.users.ci-1.uid} \
+            podman unshare true >/dev/null 2>&1 || true
+        ''}"
       ];
-      # Non-ephemeral: the ephemeral restart/re-register cycle between jobs
-      # raced the lingering user manager (logind user@<uid>) — the first
-      # job's podman userns setup hit newuidmap EPERM intermittently.
-      # Keeping the service (and its session) alive removes that window;
-      # job hygiene is preserved by checkout wiping the workspace anyway.
-      ephemeral = false;
-      replace = true;
-      user = "ci-${idx}";
-      group = "ci-${idx}";
-      extraPackages = with pkgs; [
-        git
-        git-lfs
-        devenv
-        # SUID helpers: job shells get the runner's constructed PATH (no
-        # /run/wrappers/bin), so expose the wrappers via symlinks. The
-        # kernel applies SUID on the target, not the symlink.
-        (pkgs.runCommand "setuid-wrappers-shims" { } ''
-          mkdir -p $out/bin
-          ln -s /run/wrappers/bin/newuidmap $out/bin/newuidmap
-          ln -s /run/wrappers/bin/newgidmap $out/bin/newgidmap
-          ln -s /run/wrappers/bin/fusermount3 $out/bin/fusermount3
-        '')
-      ];
-      # Rootless podman needs the ci user's session bus (systemd cgroup
-      # manager); linger keeps it alive, this points jobs at it.
-      extraEnvironment = {
-        XDG_RUNTIME_DIR = "/run/user/" + toString config.users.users."ci-${idx}".uid;
-      };
-      serviceOverrides = {
-        # Pre-warm the ci user's session before the runner listens: establish
-        # the lingering user manager + rootless podman state (pause process,
-        # /run/user/<uid> mounts) once at service start, so a job's first
-        # userns setup never races logind (the newuidmap EPERM class).
-        # `podman unshare true` (not `podman info`): info initializes the DB
-        # but never creates the pause process / runs SUID newuidmap — unshare
-        # exercises the exact failing path. Without it, the first job after
-        # boot runs two concurrent builds (devenv tasks run a b) against
-        # cold per-user state and their userns inits race (uid_map EPERM).
-        ExecStartPre = [
-          "+${pkgs.writeShellScript "warm-podman-session" ''
-            runuser -u "ci-${idx}" -- \
-              env HOME=/home/ci-${idx} \
-              XDG_RUNTIME_DIR=/run/user/${toString config.users.users."ci-${idx}".uid} \
-              podman unshare true >/dev/null 2>&1 || true
-          ''}"
-        ];
-        # Same relaxation set validated on the host runner — podman-in-jobs
-        # needs namespaces, writable caches, visible uid_maps.
-        # CapabilityBoundingSet: the module default is empty (drop all), which
-        # masks the capabilities SUID newuidmap gains on exec — euid 0 with no
-        # CAP_SETUID, so every rootless userns setup under the unit fails
-        # with "newuidmap: open of uid_map failed: Permission denied".
-        # null renders as the bare drop-all line in this nixpkgs, so use
-        # systemd's inverted-empty-list idiom (CapabilityBoundingSet=~)
-        # instead: retains all capabilities.
-        CapabilityBoundingSet = lib.mkForce [ "~" ];
-        # ProtectControlGroups: the module default mounts /sys/fs/cgroup
-        # read-only in the unit's mount namespace, so crun inside a job
-        # cannot mkdir its container cgroups under the user's delegated
-        # subtree — "create directory .../crun-buildah-....scope/container:
-        # Read-only file system" on the first RUN step of every build.
-        ProtectControlGroups = false;
-        ProtectSystem = "full";
-        ProtectHome = false;
-        PrivateUsers = false;
-        RestrictNamespaces = false;
-        SystemCallFilter = lib.mkForce [ ];
-        NoNewPrivileges = false;
-        RestrictSUIDSGID = false;
-        PrivateDevices = false;
-        PrivateMounts = false;
-        ProtectProc = "default";
-        ProtectHostname = false;
-        PrivateTmp = false;
-        UMask = lib.mkForce "0022";
-      };
-    }
-  );
+      # Same relaxation set validated on the host runner — podman-in-jobs
+      # needs namespaces, writable caches, visible uid_maps.
+      # CapabilityBoundingSet: the module default is empty (drop all), which
+      # masks the capabilities SUID newuidmap gains on exec — euid 0 with no
+      # CAP_SETUID, so every rootless userns setup under the unit fails
+      # with "newuidmap: open of uid_map failed: Permission denied".
+      # null renders as the bare drop-all line in this nixpkgs, so use
+      # systemd's inverted-empty-list idiom (CapabilityBoundingSet=~)
+      # instead: retains all capabilities.
+      CapabilityBoundingSet = lib.mkForce [ "~" ];
+      # ProtectControlGroups: the module default mounts /sys/fs/cgroup
+      # read-only in the unit's mount namespace, so crun inside a job
+      # cannot mkdir its container cgroups under the user's delegated
+      # subtree — "create directory .../crun-buildah-....scope/container:
+      # Read-only file system" on the first RUN step of every build.
+      ProtectControlGroups = false;
+      ProtectSystem = "full";
+      ProtectHome = false;
+      PrivateUsers = false;
+      RestrictNamespaces = false;
+      SystemCallFilter = lib.mkForce [ ];
+      NoNewPrivileges = false;
+      RestrictSUIDSGID = false;
+      PrivateDevices = false;
+      PrivateMounts = false;
+      ProtectProc = "default";
+      ProtectHostname = false;
+      PrivateTmp = false;
+      UMask = lib.mkForce "0022";
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     vim
