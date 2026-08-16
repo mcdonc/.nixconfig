@@ -80,6 +80,7 @@ let
               runuser -u "${user}" -- \
                 env HOME=/home/${user} \
                 XDG_RUNTIME_DIR=/run/user/${uid} \
+                DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus \
                 podman unshare true >/dev/null 2>&1 || true
             ''}"
           ];
