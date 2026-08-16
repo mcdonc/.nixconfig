@@ -140,7 +140,12 @@
         "nix"
         "klangk-ci"
       ];
-      ephemeral = true;
+      # Non-ephemeral: the ephemeral restart/re-register cycle between jobs
+      # raced the lingering user manager (logind user@<uid>) — the first
+      # job's podman userns setup hit newuidmap EPERM intermittently.
+      # Keeping the service (and its session) alive removes that window;
+      # job hygiene is preserved by checkout wiping the workspace anyway.
+      ephemeral = false;
       replace = true;
       user = "ci-${idx}";
       group = "ci-${idx}";
@@ -164,6 +169,18 @@
         XDG_RUNTIME_DIR = "/run/user/" + toString config.users.users."ci-${idx}".uid;
       };
       serviceOverrides = {
+        # Pre-warm the ci user's session before the runner listens: establish
+        # the lingering user manager + rootless podman state (pause process,
+        # /run/user/<uid> mounts) once at service start, so a job's first
+        # userns setup never races logind (the newuidmap EPERM class).
+        ExecStartPre = [
+          "+${pkgs.writeShellScript "warm-podman-session" ''
+            runuser -u "ci-${idx}" -- \
+              env HOME=/home/ci-${idx} \
+              XDG_RUNTIME_DIR=/run/user/${toString config.users.users."ci-${idx}".uid} \
+              podman info >/dev/null 2>&1 || true
+          ''}"
+        ];
         # Same relaxation set validated on the host runner — podman-in-jobs
         # needs namespaces, writable caches, visible uid_maps.
         ProtectSystem = "full";
