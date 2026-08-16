@@ -43,25 +43,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLXUsGqUIEMfcXoIiiItmGNqOucJjx5D6ZEE3KgLKYV ednesia"
   ];
 
-  # qemu-vm boots /nix/store as an overlay: read-only 9p share of the host
-  # store below a tmpfs upper layer (/nix/.rw-store, x-initrd.mount). Paths
-  # built inside the VM (devenv shells, image deps) live in the tmpfs; the
-  # nix DB lives on the persistent qcow2. Every reboot therefore leaves DB
-  # entries whose files vanished — devenv then fails with
-  # "opening file '...-devenv-shell.drv': No such file or directory".
-  # Prune the ghosts once per boot before jobs run.
-  systemd.services.nix-store-reconcile = {
-    description = "Prune nix DB entries orphaned by the tmpfs store overlay";
-    after = [ "nix-daemon.service" ];
-    wants = [ "nix-daemon.service" ];
-    before = [ "github-runner-klangk-1.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.nix}/bin/nix-store --verify --repair";
-    };
-  };
-
   # Sizing: one e2e job at a time (each is -n 2 xdist + container stacks).
   # Disk: default 1G is far too small for the runner's podman store + nix
   # roots; 100G virtual (thin qcow2, actual use much smaller).
@@ -69,6 +50,11 @@
   virtualisation.memorySize = 32768;
   virtualisation.cores = 8;
   virtualisation.graphics = false;
+  # Persist the nix store overlay on the qcow2 disk instead of tmpfs.
+  # Without this, paths built inside the VM vanish on reboot while the
+  # nix DB (on the persistent disk) still references them — causing
+  # "No such file or directory" errors until a nix-store --verify --repair.
+  virtualisation.writableStoreUseTmpfs = false;
   # Host ssh access: forward host 2222 -> guest 22 (key extraction, debugging).
   virtualisation.forwardPorts = [
     {
@@ -183,6 +169,11 @@
     # manager); linger keeps it alive, this points jobs at it.
     extraEnvironment = {
       XDG_RUNTIME_DIR = "/run/user/" + toString config.users.users.ci-1.uid;
+      # crun uses sd-bus to create systemd scopes for build containers;
+      # without this, podman falls back to cgroupfs but crun still tries
+      # sd-bus and fails with "Permission denied" (surfaced as "mount
+      # proc: Operation not permitted" in the build log).
+      DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/" + toString config.users.users.ci-1.uid + "/bus";
     };
     serviceOverrides = {
       # Pre-warm the ci user's session before the runner listens: establish

@@ -578,27 +578,36 @@
   };
 
   # Autostart the klangk-ci VM at boot (system-level unit, independent of
-  # any login session). The boot script is a nix package: it reads the
-  # current VM closure from ~/vm/klangk-ci/vmout and boots it with a
-  # persistent qcow2 (NIX_DISK_IMAGE) so state survives reboots.
-  systemd.services.klangk-ci-vm = {
-    description = "klangk-ci GitHub Actions runner VM (QEMU/KVM)";
-    after = [
-      "network.target"
-      "libvirtd.service"
-    ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      User = "chrism";
-      Group = "users";
-      ExecStart = "${(pkgs.writers.writeBashBin "klangk-ci-vm-boot" (builtins.readFile ../scripts/klangk-ci-vm-boot.sh))}/bin/klangk-ci-vm-boot";
-      KillMode = "mixed";
-      TimeoutStopSec = 60;
-      Restart = "on-failure";
-      RestartSec = 10;
+  # any login session). The VM closure is resolved at NixOS evaluation time
+  # from the klangk-ci nixosConfiguration, so `nixos-rebuild switch` on
+  # keithmoon automatically picks up klangk-ci config changes and restarts
+  # the VM with the new closure — no manual vmout step needed.
+  systemd.services.klangk-ci-vm =
+    let
+      vmClosure = inputs.self.nixosConfigurations.klangk-ci.config.system.build.vm;
+      bootScript = pkgs.writeShellScript "klangk-ci-vm-boot" (
+        builtins.replaceStrings [ "@vmClosure@" ] [ "${vmClosure}" ]
+          (builtins.readFile ../scripts/klangk-ci-vm-boot.sh)
+      );
+    in
+    {
+      description = "klangk-ci GitHub Actions runner VM (QEMU/KVM)";
+      after = [
+        "network.target"
+        "libvirtd.service"
+      ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        User = "chrism";
+        Group = "users";
+        ExecStart = "${bootScript}";
+        KillMode = "mixed";
+        TimeoutStopSec = 60;
+        Restart = "on-failure";
+        RestartSec = 10;
+      };
     };
-  };
 
   environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users

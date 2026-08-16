@@ -3,13 +3,13 @@
 # unit on keithmoon). qemu-vm.nix's run script seeds NIX_DISK_IMAGE from its
 # temp image on first boot — pointing it at a fixed path gives persistence.
 #
-# vmout (the current VM closure path) and klangk-ci.qcow2 (the persistent
-# disk) live in ~/vm/klangk-ci, managed outside this script: writing a new
-# closure path to vmout and restarting the unit switches the VM generation.
+# The VM closure path is baked in by keithmoon's NixOS config at evaluation
+# time (via klangk-ci's system.build.vm), so `nixos-rebuild switch` on
+# keithmoon automatically picks up klangk-ci config changes — no manual
+# vmout step needed.
 set -euo pipefail
 
 vm_dir="$HOME/vm/klangk-ci"
-out=$(cat "$vm_dir/vmout")
 export NIX_DISK_IMAGE="$vm_dir/klangk-ci.qcow2"
 cd "$vm_dir"
-exec "$out/bin/run-klangk-ci-vm"
+exec "@vmClosure@/bin/run-klangk-ci-vm"
