@@ -84,7 +84,11 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_drm"
+  ];
   # see prepserver.sh
   boot.initrd.secrets."/key.txt" = /key.txt;
   boot.extraModulePackages = [ ];
@@ -403,7 +407,11 @@
     description = "Mount btrfs loopback image";
     after = [ "local-fs.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = with pkgs; [ btrfs-progs util-linux coreutils ];
+    path = with pkgs; [
+      btrfs-progs
+      util-linux
+      coreutils
+    ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -563,79 +571,31 @@
     };
   };
 
-  # Self-hosted GitHub Actions runner for klangk CI (stock nixpkgs module).
-  # Registration PAT: fine-grained, repo mcdonc/klangk, Administration RW.
-  # Create/rotate with: cd /etc/nixos && agenix -e secrets/github-runner-klangk.age
+  # klangk CI now runs on the klangk-ci VM (two runners, label "nix"); the
+  # host-side runner was retired when the VM proved green.
   age.secrets."github-runner-klangk" = {
     file = ../secrets/github-runner-klangk.age;
   };
 
-  services.github-runners.klangk = {
-    enable = true;
-    url = "https://github.com/mcdonc/klangk";
-    tokenFile = config.age.secrets."github-runner-klangk".path;
-    # Match with `runs-on: nix` (or keithmoon) in workflow YAML.
-    extraLabels = [
-      "nix"
-      "keithmoon"
+  # Autostart the klangk-ci VM at boot (system-level unit, independent of
+  # any login session). Boot script + closure path live in ~/vm/klangk-ci;
+  # persistent qcow2 + NIX_DISK_IMAGE so state survives reboots.
+  systemd.services.klangk-ci-vm = {
+    description = "klangk-ci GitHub Actions runner VM (QEMU/KVM)";
+    after = [
+      "network.target"
+      "libvirtd.service"
     ];
-    # Fresh runner registration per job; no state drift between runs.
-    ephemeral = true;
-    # Persistent caches for job shells. HOME is the (per-job) RuntimeDirectory,
-    # and checkout wipes the repo (incl. .devenv/state/venv), so without this
-    # every job re-downloads every wheel. StateDirectory persists across jobs.
-    extraEnvironment = {
-      UV_CACHE_DIR = "/var/lib/github-runner/klangk/uv-cache";
-    };
-    # Replace any GitHub-side runner with the same name on (re)registration —
-    # without this, a lingering registration (e.g. after a stop that lost the
-    # race to deregister) makes every restart fail with "A runner exists
-    # with the same name".
-    replace = true;
-    # klangk CI runs as chrism: rootless podman only works for users with a
-    # subuid/subgid range (the global containers.storage graphroot on
-    # /steam2 is chrism-owned), matching the local klangk service unit.
-    user = "chrism";
-    group = "users";
-    extraPackages = with pkgs; [
-      git
-      git-lfs
-      # Jobs call devenv directly (no bootstrap on NixOS; jobs don't source
-      # /etc/profile, so a user-profile devenv wouldn't be on PATH either).
-      devenv
-      # SUID helpers for rootless podman: job shells get the runner's
-      # constructed PATH (no /run/wrappers/bin), so expose the wrappers via
-      # symlinks. The kernel applies SUID on the target, not the symlink.
-      (pkgs.runCommand "setuid-wrappers-shims" { } ''
-        mkdir -p $out/bin
-        ln -s /run/wrappers/bin/newuidmap $out/bin/newuidmap
-        ln -s /run/wrappers/bin/newgidmap $out/bin/newgidmap
-        ln -s /run/wrappers/bin/fusermount3 $out/bin/fusermount3
-      '')
-    ];
-    # The module's default sandbox (all mkDefault, so overridable here)
-    # breaks klangk jobs in several places: devenv/nix write caches under
-    # $HOME; rootless podman needs the SUID newuidmap helpers to actually
-    # elevate (blocked by NoNewPrivileges/RestrictSUIDSGID), mount syscalls
-    # + writable storage on /steam2, and /proc/<pid>/uid_map visibility for
-    # setting up nested user namespaces (ProtectProc=invisible breaks it).
-    # Empirically bisected with systemd-run; a trusted home-server runner
-    # approximates an interactive login, so relax everything that touches
-    # namespaces/caps/proc visibility and keep only path hardening.
-    serviceOverrides = {
-      ProtectSystem = "full"; # strict -> full: keep /usr,/boot,/etc RO, allow /nix,/steam2,/var writes
-      ProtectHome = false; # devenv/nix caches live under /home/chrism
-      PrivateUsers = false; # nested userns confuses rootless podman uid maps
-      RestrictNamespaces = false; # podman unshares namespaces
-      SystemCallFilter = lib.mkForce [ ]; # default blocks @mount/@resources, needed by podman
-      NoNewPrivileges = false; # SUID newuidmap/newgidmap must elevate for rootless userns
-      RestrictSUIDSGID = false; # ditto — blocks setuid exec by policy
-      PrivateDevices = false; # container runtime device setup
-      PrivateMounts = false; # podman re-arranges mounts
-      ProtectProc = "default"; # invisible hides /proc/<pid>/uid_map from newuidmap
-      ProtectHostname = false; # seccomp-denies sethostname, inherited by crun in the build container
-      PrivateTmp = false; # podman's copier unshares mountns and loses private /tmp staging dirs (COPY sources)
-      UMask = lib.mkForce "0022"; # 0066 breaks image layer file modes
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "simple";
+      User = "chrism";
+      Group = "users";
+      ExecStart = "/home/chrism/vm/klangk-ci/boot.sh";
+      KillMode = "mixed";
+      TimeoutStopSec = 60;
+      Restart = "on-failure";
+      RestartSec = 10;
     };
   };
 
