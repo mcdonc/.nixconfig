@@ -223,8 +223,10 @@
         # masks the capabilities SUID newuidmap gains on exec — euid 0 with no
         # CAP_SETUID, so every rootless userns setup under the unit fails
         # with "newuidmap: open of uid_map failed: Permission denied".
-        # null suppresses the setting entirely.
-        CapabilityBoundingSet = lib.mkForce null;
+        # null renders as the bare drop-all line in this nixpkgs, so use
+        # systemd's inverted-empty-list idiom (CapabilityBoundingSet=~)
+        # instead: retains all capabilities.
+        CapabilityBoundingSet = lib.mkForce [ "~" ];
         ProtectSystem = "full";
         ProtectHome = false;
         PrivateUsers = false;
