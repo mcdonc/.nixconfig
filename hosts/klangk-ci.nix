@@ -43,6 +43,28 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLXUsGqUIEMfcXoIiiItmGNqOucJjx5D6ZEE3KgLKYV ednesia"
   ];
 
+  # qemu-vm boots /nix/store as an overlay: read-only 9p share of the host
+  # store below a tmpfs upper layer (/nix/.rw-store, x-initrd.mount). Paths
+  # built inside the VM (devenv shells, image deps) live in the tmpfs; the
+  # nix DB lives on the persistent qcow2. Every reboot therefore leaves DB
+  # entries whose files vanished — devenv then fails with
+  # "opening file '...-devenv-shell.drv': No such file or directory".
+  # Prune the ghosts once per boot before jobs run.
+  systemd.services.nix-store-reconcile = {
+    description = "Prune nix DB entries orphaned by the tmpfs store overlay";
+    after = [ "nix-daemon.service" ];
+    wants = [ "nix-daemon.service" ];
+    before = [
+      "github-runner-klangk-1.service"
+      "github-runner-klangk-2.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.nix}/bin/nix-store --verify --repair";
+    };
+  };
+
   # Sizing: two concurrent e2e jobs, each -n 2 xdist + container stacks.
   # Disk: default 1G is far too small for two runners' podman stores + nix
   # roots; 100G virtual (thin qcow2, actual use much smaller).
