@@ -139,6 +139,7 @@
   # Let the ci users create transient units (systemd-run --scope) so job
   # podman calls can escape the runner's node-inherited seccomp filter
   # (see scripts/podman-userns-diag.sh in the klangk repo).
+  security.polkit.enable = true;
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&
