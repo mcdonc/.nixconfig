@@ -71,6 +71,7 @@ let
           '')
         ];
         extraEnvironment = {
+          HOME = "/home/${user}";
           XDG_RUNTIME_DIR = "/run/user/${uid}";
           DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${uid}/bus";
         };
@@ -161,32 +162,6 @@ in
   };
 
   virtualisation.containers.storage.settings = { };
-
-  # Pin each ci user's rootless podman graphroot to their home on ext4.
-  # The GitHub runner sets HOME=/run/github-runner/klangk-N (on tmpfs),
-  # so without this podman defaults graphroot to tmpfs. Overlay-on-tmpfs
-  # in a user namespace triggers "VFS: Mount too revealing" on kernel
-  # 6.12+ because tmpfs lacks idmapped-mount support — every podman
-  # build RUN step fails with "mount proc to proc: Operation not
-  # permitted". Pinning to ext4 avoids this entirely.
-  system.activationScripts.podman-ci-storage = lib.stringAfter [ "users" ] (
-    builtins.concatStringsSep "\n" (map (idx:
-      let
-        user = "ci-${toString idx}";
-        uid = toString (1100 + idx);
-        confDir = "/home/${user}/.config/containers";
-        storageConf = pkgs.writeText "ci-${toString idx}-storage.conf" ''
-          [storage]
-          driver = "overlay"
-          graphroot = "/home/${user}/.local/share/containers/storage"
-          runroot = "/run/user/${uid}/containers"
-        '';
-      in ''
-        install -d -o ${uid} -g ${uid} ${confDir}
-        install -o ${uid} -g ${uid} -m 644 ${storageConf} ${confDir}/storage.conf
-      ''
-    ) runnerIndices)
-  );
 
   environment.etc."ssh/ssh_host_ed25519_key" = {
     source = ../secrets/klangk-ci-host-key.priv;
