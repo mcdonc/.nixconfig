@@ -14,6 +14,13 @@ let
   thinknix50 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFPTy0vRtyQq5wSllW/41cqGP0BvbJpnLnGfZHlhRY5G";
 
   keithmoon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKM2Y/WyecPzlYwodof33IhLgazClRN+T1SHoaNM9Yv";
+  # klangk-ci age identity strings
+  klangk-ci = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDdW6BYCnD10pxKJzhCBkWMvPeF/Si2eZ/Sq2fe0L4G";
+  # Bootstrap age identity baked into the VM closure (secrets/klangk-ci-bootstrap.age.key):
+  # agenix activation on a fresh boot needs a readable identity BEFORE /etc is
+  # populated (agenixNewGeneration runs before the etc snippet), so the
+  # ssh-host-key path cannot serve as first-boot identity.
+  klangk-ci-bootstrap = "age1hqdyjvn0reanyf5nvacwp0nhp7ytfymfqch8ssaahz9pc5hmn4wsj7kfdl";
   arctor = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0HfCNzDF+l0pM/u5D3aLGXu2ICxcJ/85rHElIHrI3v";
   enfold = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKHgIJDWfZbCNOS5F7f7xp7QhN8v7deNfY5QZRkQsAkO";
   systems = [
@@ -301,5 +308,16 @@ in
     thinknix50
     lock802
     arctor
+  ];
+  "github-runner-klangk.age".publicKeys = [
+    chrism
+    keithmoon
+    klangk-ci
+    klangk-ci-bootstrap
+  ];
+  # The VM's fixed ssh host key (see klangk-ci-host-key.README). Encrypted
+  # so it can be deployed into the VM without a plaintext copy in the repo.
+  "klangk-ci-host-key.age".publicKeys = [
+    chrism
   ];
 }

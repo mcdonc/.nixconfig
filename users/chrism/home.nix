@@ -48,6 +48,34 @@ let
     fi
   '';
 
+  # Rekey all agenix secrets with one passphrase entry (agenix -r prompts
+  # per-file otherwise). Expect drives the interactive prompt.
+  agenix-rekey = pkgs.writeScriptBin "agenix-rekey" ''
+    #!${pkgs.expect}/bin/expect -f
+    set timeout -1
+    log_user 1
+    stty -echo
+    send_user "Enter passphrase for ssh key: "
+    expect_user -re "(.*)\n"
+    set passphrase $expect_out(1,string)
+    stty echo
+    send_user "\n"
+    spawn agenix -r
+    expect {
+        -re {Enter passphrase for .*:} {
+            send -- "$passphrase\r"
+            exp_continue
+        }
+        -re {(?i)yes/no} {
+            send -- "yes\r"
+            exp_continue
+        }
+        eof
+    }
+    catch wait result
+    exit [lindex $result 3]
+  '';
+
   enfoldrebuild = pkgs.writeShellScriptBin "enfoldrebuild" ''
     cd $HOME/projects/enfold/nixos
     fqdn="enfold.repoze.org"
@@ -117,7 +145,7 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
-  sessionVariables = {};
+  sessionVariables = { };
 
   graphicalimports = lib.optionals config.jawns.isworkstation [
     ./graphical.nix
@@ -125,49 +153,46 @@ let
 
   # use emacs-nox for headless systems, full emacs for workstations
   # pkgs-emacs is pinned to prevent recompiles on every nix flake update
-  emacsBase =
-    if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
+  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
 
-  emacswithpackages =
-    (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages
-      (epkgs: [
-        epkgs.dockerfile-mode
-        epkgs.nix-mode
-        epkgs.nixpkgs-fmt
-        epkgs.flycheck
-        epkgs.json-mode
-        epkgs.python-mode
-        epkgs.auto-complete
-        epkgs.web-mode
-        epkgs.smart-tabs-mode
-        epkgs.whitespace-cleanup-mode
-        epkgs.flycheck-pyflakes
-        epkgs.flycheck-pos-tip
-        epkgs.doom-modeline
-        epkgs.all-the-icons
-        epkgs.all-the-icons-dired
-        epkgs.magit
-        epkgs.markdown-mode
-        epkgs.markdown-preview-mode
-        epkgs.gptel
-        pkgs-emacs.emacs-all-the-icons-fonts
-        epkgs.yaml-mode
-        epkgs.multiple-cursors
-        epkgs.dts-mode
-        epkgs.rust-mode
-        epkgs.nickel-mode
-        epkgs.editorconfig
-        epkgs.terraform-mode
-        # epkgs.lspce
-        # epkgs.lsp-mode
-        # epkgs.lsp-ui
-        # epkgs.lsp-jedi
-        epkgs.company
-        epkgs.dart-mode
-        epkgs.adoc-mode
-        epkgs.typescript-mode
-        # epkgs.tsc # maybe required for typescript-mode
-      ]);
+  emacswithpackages = (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages (epkgs: [
+    epkgs.dockerfile-mode
+    epkgs.nix-mode
+    epkgs.nixpkgs-fmt
+    epkgs.flycheck
+    epkgs.json-mode
+    epkgs.python-mode
+    epkgs.auto-complete
+    epkgs.web-mode
+    epkgs.smart-tabs-mode
+    epkgs.whitespace-cleanup-mode
+    epkgs.flycheck-pyflakes
+    epkgs.flycheck-pos-tip
+    epkgs.doom-modeline
+    epkgs.all-the-icons
+    epkgs.all-the-icons-dired
+    epkgs.magit
+    epkgs.markdown-mode
+    epkgs.markdown-preview-mode
+    epkgs.gptel
+    pkgs-emacs.emacs-all-the-icons-fonts
+    epkgs.yaml-mode
+    epkgs.multiple-cursors
+    epkgs.dts-mode
+    epkgs.rust-mode
+    epkgs.nickel-mode
+    epkgs.editorconfig
+    epkgs.terraform-mode
+    # epkgs.lspce
+    # epkgs.lsp-mode
+    # epkgs.lsp-ui
+    # epkgs.lsp-jedi
+    epkgs.company
+    epkgs.dart-mode
+    epkgs.adoc-mode
+    epkgs.typescript-mode
+    # epkgs.tsc # maybe required for typescript-mode
+  ]);
 
 in
 
@@ -183,6 +208,7 @@ in
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
+    agenix-rekey
     keithtemps
     whoosh
     nvfantemps

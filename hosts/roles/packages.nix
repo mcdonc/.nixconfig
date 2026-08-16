@@ -97,6 +97,7 @@ in
       btop
       cachix
       pkgs-claude-code.claude-code
+      devenv
       github-copilot-cli
       cntr # for build debugging
       cowsay

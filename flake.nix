@@ -190,6 +190,10 @@
           system = "x86_64-linux";
         }
         {
+          hostname = "klangk-ci";
+          system = "x86_64-linux";
+        }
+        {
           hostname = "arctor";
           system = "x86_64-linux";
         }
