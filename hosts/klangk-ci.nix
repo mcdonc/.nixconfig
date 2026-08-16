@@ -247,5 +247,10 @@
   environment.systemPackages = with pkgs; [
     vim
     curl
+    # Direct-on-VM test runs (bypassing the GitHub runner chain) need the
+    # same toolchain the runner units carry via extraPackages.
+    git
+    git-lfs
+    devenv
   ];
 }
