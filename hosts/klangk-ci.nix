@@ -59,10 +59,19 @@
     }
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    # devenv builds pass client settings (e.g. 'system'); untrusted users
+    # get them silently ignored and the shell realization fails.
+    trusted-users = [
+      "root"
+      "ci-1"
+      "ci-2"
+    ];
+  };
 
   # ---------------------------------------------------------------- runners
   # Per-runner service users. Rootless podman is per-user; distinct users
