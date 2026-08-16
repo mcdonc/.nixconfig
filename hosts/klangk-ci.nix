@@ -219,6 +219,12 @@
         ];
         # Same relaxation set validated on the host runner — podman-in-jobs
         # needs namespaces, writable caches, visible uid_maps.
+        # CapabilityBoundingSet: the module default is empty (drop all), which
+        # masks the capabilities SUID newuidmap gains on exec — euid 0 with no
+        # CAP_SETUID, so every rootless userns setup under the unit fails
+        # with "newuidmap: open of uid_map failed: Permission denied".
+        # null suppresses the setting entirely.
+        CapabilityBoundingSet = lib.mkForce null;
         ProtectSystem = "full";
         ProtectHome = false;
         PrivateUsers = false;
