@@ -578,8 +578,9 @@
   };
 
   # Autostart the klangk-ci VM at boot (system-level unit, independent of
-  # any login session). Boot script + closure path live in ~/vm/klangk-ci;
-  # persistent qcow2 + NIX_DISK_IMAGE so state survives reboots.
+  # any login session). The boot script is a nix package: it reads the
+  # current VM closure from ~/vm/klangk-ci/vmout and boots it with a
+  # persistent qcow2 (NIX_DISK_IMAGE) so state survives reboots.
   systemd.services.klangk-ci-vm = {
     description = "klangk-ci GitHub Actions runner VM (QEMU/KVM)";
     after = [
@@ -591,10 +592,7 @@
       Type = "simple";
       User = "chrism";
       Group = "users";
-      # boot.sh uses bare `cat`; system services don't inherit the profile
-      # PATH, so give them the system sw path.
-      Environment = [ "PATH=/run/current-system/sw/bin" ];
-      ExecStart = "/home/chrism/vm/klangk-ci/boot.sh";
+      ExecStart = "${(pkgs.writers.writeBashBin "klangk-ci-vm-boot" (builtins.readFile ../scripts/klangk-ci-vm-boot.sh))}/bin/klangk-ci-vm-boot";
       KillMode = "mixed";
       TimeoutStopSec = 60;
       Restart = "on-failure";
