@@ -227,6 +227,12 @@
         # systemd's inverted-empty-list idiom (CapabilityBoundingSet=~)
         # instead: retains all capabilities.
         CapabilityBoundingSet = lib.mkForce [ "~" ];
+        # ProtectControlGroups: the module default mounts /sys/fs/cgroup
+        # read-only in the unit's mount namespace, so crun inside a job
+        # cannot mkdir its container cgroups under the user's delegated
+        # subtree — "create directory .../crun-buildah-....scope/container:
+        # Read-only file system" on the first RUN step of every build.
+        ProtectControlGroups = false;
         ProtectSystem = "full";
         ProtectHome = false;
         PrivateUsers = false;
