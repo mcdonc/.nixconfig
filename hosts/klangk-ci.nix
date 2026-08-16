@@ -182,12 +182,17 @@
         # the lingering user manager + rootless podman state (pause process,
         # /run/user/<uid> mounts) once at service start, so a job's first
         # userns setup never races logind (the newuidmap EPERM class).
+        # `podman unshare true` (not `podman info`): info initializes the DB
+        # but never creates the pause process / runs SUID newuidmap — unshare
+        # exercises the exact failing path. Without it, the first job after
+        # boot runs two concurrent builds (devenv tasks run a b) against
+        # cold per-user state and their userns inits race (uid_map EPERM).
         ExecStartPre = [
           "+${pkgs.writeShellScript "warm-podman-session" ''
             runuser -u "ci-${idx}" -- \
               env HOME=/home/ci-${idx} \
               XDG_RUNTIME_DIR=/run/user/${toString config.users.users."ci-${idx}".uid} \
-              podman info >/dev/null 2>&1 || true
+              podman unshare true >/dev/null 2>&1 || true
           ''}"
         ];
         # Same relaxation set validated on the host runner — podman-in-jobs
