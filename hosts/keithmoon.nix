@@ -591,6 +591,9 @@
       Type = "simple";
       User = "chrism";
       Group = "users";
+      # boot.sh uses bare `cat`; system services don't inherit the profile
+      # PATH, so give them the system sw path.
+      Environment = [ "PATH=/run/current-system/sw/bin" ];
       ExecStart = "/home/chrism/vm/klangk-ci/boot.sh";
       KillMode = "mixed";
       TimeoutStopSec = 60;
