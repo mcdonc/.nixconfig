@@ -159,6 +159,17 @@ in
     dockerSocket.enable = false;
   };
 
+  # Skip per-file UID remapping (storage-chown-by-maps) in rootless overlay.
+  # The recursive chown is the single biggest CPU cost when creating
+  # containers — force_mask avoids it entirely by masking permissions
+  # in the overlay mount instead. Safe for CI where in-layer file
+  # permissions don't matter.
+  virtualisation.containers.storage.settings = {
+    storage.options.overlay = {
+      force_mask = "700";
+    };
+  };
+
   environment.etc."ssh/ssh_host_ed25519_key" = {
     source = ../secrets/klangk-ci-host-key.priv;
     mode = "0600";
