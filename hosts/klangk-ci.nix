@@ -136,19 +136,6 @@
     ];
   };
 
-  # Let the ci users create transient units (systemd-run --scope) so job
-  # podman calls can escape the runner's node-inherited seccomp filter
-  # (see scripts/podman-userns-diag.sh in the klangk repo).
-  security.polkit.enable = true;
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id == "org.freedesktop.systemd1.manage-units" &&
-          (subject.user == "ci-1" || subject.user == "ci-2")) {
-        return polkit.Result.YES;
-      }
-    });
-  '';
-
   services.github-runners = lib.genAttrs [ "klangk-1" "klangk-2" ] (
     name:
     let
@@ -171,13 +158,7 @@
       replace = true;
       user = "ci-${idx}";
       group = "ci-${idx}";
-      extraPackages = [
-        (pkgs.runCommand "podman-diag-shim" { } ''
-          mkdir -p $out/bin
-          install -m555 ${/home/chrism/projects/klangk/.worktrees/vm-runner-debug/scripts/podman-userns-diag.sh} $out/bin/podman
-        '')
-      ]
-      ++ (with pkgs; [
+      extraPackages = with pkgs; [
         git
         git-lfs
         devenv
@@ -190,7 +171,7 @@
           ln -s /run/wrappers/bin/newgidmap $out/bin/newgidmap
           ln -s /run/wrappers/bin/fusermount3 $out/bin/fusermount3
         '')
-      ]);
+      ];
       # Rootless podman needs the ci user's session bus (systemd cgroup
       # manager); linger keeps it alive, this points jobs at it.
       extraEnvironment = {
