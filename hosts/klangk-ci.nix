@@ -163,6 +163,15 @@ in
 
   virtualisation.containers.storage.settings = { };
 
+  # Remount /proc with hidepid=0 (most permissive) at boot. systemd 260+
+  # defaults to hidepid=invisible for user@UID services, which causes the
+  # kernel's mnt_already_visible() check to reject proc mounts inside
+  # nested user namespaces as "VFS: Mount too revealing". This breaks
+  # concurrent rootless podman builds (crun fails with "mount proc to
+  # proc: Operation not permitted"). hidepid=0 is safe for a single-
+  # tenant CI VM with no untrusted users.
+  boot.specialFileSystems."/proc".options = [ "hidepid=0" ];
+
   environment.etc."ssh/ssh_host_ed25519_key" = {
     source = ../secrets/klangk-ci-host-key.priv;
     mode = "0600";
