@@ -28,14 +28,20 @@ let
   runnerUidStr = toString runnerUid;
 
   # Read the JIT token qemu hands over via fw_cfg. Empty (or absent) means
-  # a tokenless boot (pool smoke test): power off immediately.
+  # a tokenless boot (pool smoke test): power off immediately. All output is
+  # tee'd to /dev/console so the pool's qemu console log shows guest progress
+  # (the guest journal is not otherwise reachable — no ssh, no forwarded
+  # ports).
   jitRunnerScript = pkgs.writeShellScript "klangk-jit-runner" ''
     set -euo pipefail
+    exec > >(tee -a /dev/console) 2>&1
+    echo "klangk-jit: runner script starting (pid $$)"
     token="$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/klangk/jitconfig/raw 2>/dev/null || true)"
     if [ -z "''${token// /}" ]; then
       echo "klangk-jit: no jitconfig token present; nothing to do"
       exit 0
     fi
+    echo "klangk-jit: token present (length ''${#token}); configuring runner"
     cd /home/${runnerUser}/runner
     exec ${pkgs.github-runner}/bin/run.sh --jitconfig "$token"
   '';
@@ -126,6 +132,7 @@ in
     wantedBy = [ "multi-user.target" ];
 
     preStart = ''
+      echo "klangk-jit: preStart (creating runner dir)" > /dev/console
       install -d -o ${runnerUser} -g ${runnerUser} /home/${runnerUser}/runner
     '';
 
@@ -133,11 +140,13 @@ in
     # listens, so the job's first userns setup (pause process, SUID
     # newuidmap) never races logind.
     serviceConfig.ExecStartPre = "+${pkgs.writeShellScript "warm-podman-jit" ''
+      echo "klangk-jit: warming podman session" > /dev/console
       runuser -u ${runnerUser} -- \
         env HOME=/home/${runnerUser} \
         XDG_RUNTIME_DIR=/run/user/${runnerUidStr} \
         DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus \
         /run/current-system/sw/bin/podman unshare true >/dev/null 2>&1 || true
+      echo "klangk-jit: podman warm done" > /dev/console
     ''}";
 
     serviceConfig = {
