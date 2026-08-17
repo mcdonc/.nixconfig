@@ -27,16 +27,15 @@ let
   runnerUid = 1101;
   runnerUidStr = toString runnerUid;
 
-  # Read the JIT token qemu hands over via fw_cfg. Empty (or absent) means
-  # a tokenless boot (pool smoke test): power off immediately. Output goes to
-  # the service stdout, which the unit directs to ttyS0 (TTYPath below) — the
-  # pool's qemu console log then shows guest progress; the guest journal is
-  # not otherwise reachable (no ssh, no forwarded ports). Writing
-  # /dev/console directly from the service would EPERM (ci is not root).
+  # Read the JIT token from /tmp/xchg/jitconfig — the pool writes it into a
+  # per-job TMPDIR before booting the VM; qemu-vm.nix shares $TMPDIR/xchg as
+  # a 9p mount at /tmp/xchg inside the guest. This is more reliable than
+  # fw_cfg (which silently failed to expose the entry under by_name). Empty
+  # (or absent) means a tokenless boot (pool smoke test): power off immediately.
   jitRunnerScript = pkgs.writeShellScript "klangk-jit-runner" ''
     set -euo pipefail
     echo "klangk-jit: runner script starting (pid $$)"
-    token="$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/klangk/jitconfig/raw 2>/dev/null || true)"
+    token="$(cat /tmp/xchg/jitconfig 2>/dev/null || true)"
     if [ -z "''${token// /}" ]; then
       echo "klangk-jit: no jitconfig token present; nothing to do"
       exit 0
@@ -75,15 +74,9 @@ in
   # networking provides outbound access.
   virtualisation.forwardPorts = [ ];
 
-  # The pool writes the JIT token to this fixed host path under a start
-  # lock, so concurrent VM boots each read their own token at qemu start.
-  virtualisation.qemu.options = [
-    "-fw_cfg"
-    "name=opt/klangk/jitconfig,file=/run/klangk-jit-pool/jitconfig"
-  ];
-
-  # Expose fw_cfg files under /sys/firmware/qemu_fw_cfg/by_name/.
-  boot.kernelModules = [ "qemu_fw_cfg" ];
+  # Token passing: the pool writes the JIT token into $TMPDIR/xchg/jitconfig
+  # before boot; qemu-vm.nix shares $TMPDIR/xchg as a 9p mount at /tmp/xchg
+  # inside the guest. No fw_cfg needed.
 
   nix.settings = {
     experimental-features = [

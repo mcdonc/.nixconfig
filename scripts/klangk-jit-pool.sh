@@ -50,13 +50,15 @@ active_count() {
 # deregistration (a completed JIT runner deregisters itself → 404 is fine).
 cleanup_job() {
   local jobid=$1 dir=$2
-  local runner_id disk
+  local runner_id disk tmpdir
   runner_id=$(cat "$dir/runner_id" 2>/dev/null || true)
   disk=$(cat "$dir/disk" 2>/dev/null || true)
+  tmpdir=$(cat "$dir/tmpdir" 2>/dev/null || true)
   if [ -n "$runner_id" ]; then
     api DELETE "actions/runners/$runner_id" >/dev/null 2>&1 || true
   fi
   [ -n "$disk" ] && rm -f -- "$disk"
+  [ -n "$tmpdir" ] && rm -rf -- "$tmpdir"
   rm -rf -- "$dir"
   : >"$STATE/done-$jobid"
 }
@@ -140,15 +142,18 @@ dispatch() {
   # from the host); the sparse image is created on demand by the run script.
   rm -f -- "$disk"
 
-  # Serialize VM starts: the fw_cfg token file is a fixed path shared by all
-  # VMs; qemu reads it at start, so the write+spawn must be atomic. The pid
-  # is written from inside the subshell (assignment would not propagate).
-  (
-    flock 9
-    printf '%s' "$token" >"$RUN/jitconfig"
-    NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$RUN/console-$jobid.log" 2>&1 &
-    printf '%s' "$!" >"$dir/pid"
-  ) 9>"$RUN/start.lock"
+  # Per-job TMPDIR: qemu-vm.nix shares $TMPDIR/xchg as a 9p mount at
+  # /tmp/xchg inside the guest. Writing the JIT token there makes it
+  # available to the guest runner script without fw_cfg. Each job gets its
+  # own TMPDIR so concurrent VMs don't collide.
+  local tmpdir
+  tmpdir=$(mktemp -d "$RUN/vm-$jobid.XXXXXX")
+  mkdir -p "$tmpdir/xchg"
+  printf '%s' "$token" >"$tmpdir/xchg/jitconfig"
+  printf '%s' "$tmpdir" >"$dir/tmpdir"
+
+  TMPDIR="$tmpdir" NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$RUN/console-$jobid.log" 2>&1 &
+  printf '%s' "$!" >"$dir/pid"
 
   echo "pool: job $jobid dispatched (runner $runner_id), console $RUN/console-$jobid.log"
 }
