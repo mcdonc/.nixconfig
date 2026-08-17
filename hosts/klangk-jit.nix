@@ -1,0 +1,168 @@
+# NixOS VM "klangk-jit" — disposable per-job GitHub Actions runner.
+#
+# The klangk-jit-pool service on keithmoon boots one fresh copy of this VM
+# for every queued e2e job (label "nix"): it passes a just-in-time runner
+# token via qemu fw_cfg (opt/klangk/jitconfig, a host-side file the pool
+# rewrites under a start lock), boots with a brand-new sparse qcow2 rootfs
+# (the nix store arrives read-only over 9p from the host, with a writable
+# overlay on the fresh rootfs), the runner below executes exactly one job
+# (ephemeral JIT registration), and the VM powers off. No state survives a
+# job — stale sessions, leaked podman state, and ghost nix DB entries are
+# structurally impossible.
+#
+# There is no services.github-runners instance here: registration happens
+# per job through the JIT config handed in by the pool.
+{
+  lib,
+  pkgs,
+  config,
+  modulesPath,
+  ...
+}:
+
+let
+  # Single runner user. Rootless podman is per-user; every job gets a
+  # fresh VM, so one user suffices.
+  runnerUser = "ci";
+  runnerUid = 1101;
+  runnerUidStr = toString runnerUid;
+
+  # Read the JIT token qemu hands over via fw_cfg. Empty (or absent) means
+  # a tokenless boot (pool smoke test): power off immediately.
+  jitRunnerScript = pkgs.writeShellScript "klangk-jit-runner" ''
+    set -euo pipefail
+    token="$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/klangk/jitconfig/raw 2>/dev/null || true)"
+    if [ -z "''${token// /}" ]; then
+      echo "klangk-jit: no jitconfig token present; nothing to do"
+      exit 0
+    fi
+    cd /home/${runnerUser}/runner
+    exec ${pkgs.github-runner}/bin/run.sh --jitconfig "$token"
+  '';
+in
+{
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/virtualisation/qemu-vm.nix")
+  ];
+
+  system.stateVersion = "26.05";
+
+  networking.hostId = "6b61a6ad";
+  networking.hostName = "klangk-jit";
+
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
+
+  # Sizing per concurrent e2e job (xdist workers + container stacks). The
+  # pool caps concurrency (MAX_VMS) against keithmoon's 72 cores / 128G.
+  virtualisation.diskSize = 51200;
+  virtualisation.memorySize = 49152;
+  virtualisation.cores = 24;
+  virtualisation.graphics = false;
+  # Persist the store overlay on the (per-job, disposable) rootfs instead
+  # of tmpfs; the nix DB and store upper layer then live and die together.
+  virtualisation.writableStoreUseTmpfs = false;
+  # No forwarded ports: concurrent per-job VMs would collide, and the job
+  # log reaches GitHub through the runner's own connection. qemu's user
+  # networking provides outbound access.
+  virtualisation.forwardPorts = [ ];
+
+  # The pool writes the JIT token to this fixed host path under a start
+  # lock, so concurrent VM boots each read their own token at qemu start.
+  virtualisation.qemu.options = [
+    "-fw_cfg"
+    "name=opt/klangk/jitconfig,file=/run/klangk-jit-pool/jitconfig"
+  ];
+
+  # Expose fw_cfg files under /sys/firmware/qemu_fw_cfg/by_name/.
+  boot.kernelModules = [ "qemu_fw_cfg" ];
+
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      runnerUser
+    ];
+  };
+
+  users.users.${runnerUser} = {
+    isNormalUser = true;
+    group = runnerUser;
+    createHome = true;
+    uid = runnerUid;
+    # Rootless podman's systemd cgroup manager needs the user session bus
+    # (DBUS_SESSION_BUS_ADDRESS below); linger keeps user@<uid> alive.
+    linger = true;
+  };
+  users.groups.${runnerUser} = { };
+
+  virtualisation.podman = {
+    enable = true;
+    dockerSocket.enable = false;
+  };
+
+  # systemd 260+ defaults to hidepid=invisible for user@UID services, which
+  # makes the kernel reject proc mounts inside nested user namespaces
+  # ("VFS: Mount too revealing" → crun "mount proc: Operation not
+  # permitted"). hidepid=0 is safe on a single-tenant throwaway CI VM.
+  boot.specialFileSystems."/proc".options = [ "hidepid=0" ];
+
+  environment.systemPackages = with pkgs; [
+    git
+    git-lfs
+    devenv
+  ];
+
+  # One JIT registration per boot: run.sh --jitconfig executes exactly one
+  # job, then exits (GitHub deregisters the runner). Power off afterwards
+  # either way — success or failure — so the pool reaps the VM.
+  systemd.services.klangk-jit-runner = {
+    description = "klangk JIT ephemeral GitHub Actions runner (one job per boot)";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    preStart = ''
+      install -d -o ${runnerUser} -g ${runnerUser} /home/${runnerUser}/runner
+    '';
+
+    # Warm the ci user's rootless podman session once before the runner
+    # listens, so the job's first userns setup (pause process, SUID
+    # newuidmap) never races logind.
+    serviceConfig.ExecStartPre = "+${pkgs.writeShellScript "warm-podman-jit" ''
+      runuser -u ${runnerUser} -- \
+        env HOME=/home/${runnerUser} \
+        XDG_RUNTIME_DIR=/run/user/${runnerUidStr} \
+        DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus \
+        /run/current-system/sw/bin/podman unshare true >/dev/null 2>&1 || true
+    ''}";
+
+    serviceConfig = {
+      User = runnerUser;
+      Group = runnerUser;
+      Type = "simple";
+      WorkingDirectory = "/home/${runnerUser}/runner";
+      # /run/wrappers/bin first: the SUID newuidmap/newgidmap wrappers must
+      # shadow any non-SUID copies. This unit carries no systemd sandbox
+      # restrictions — podman-in-jobs needs namespaces, delegated cgroups,
+      # and full capabilities for its SUID helpers.
+      Environment = [
+        "PATH=/run/wrappers/bin:/run/current-system/sw/bin"
+        "HOME=/home/${runnerUser}"
+        "XDG_RUNTIME_DIR=/run/user/${runnerUidStr}"
+        "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus"
+      ];
+      ExecStart = "${jitRunnerScript}";
+      ExecStopPost = [
+        "+/run/current-system/sw/bin/systemctl"
+        "poweroff"
+      ];
+      Restart = "no";
+      # One job (plus image builds) fits comfortably; guard runaway logs.
+      LogRateLimitIntervalSec = "0";
+    };
+  };
+}

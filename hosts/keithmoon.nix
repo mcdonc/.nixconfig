@@ -582,12 +582,18 @@
   # from the klangk-ci nixosConfiguration, so `nixos-rebuild switch` on
   # keithmoon automatically picks up klangk-ci config changes and restarts
   # the VM with the new closure — no manual vmout step needed.
+  #
+  # DISABLED since the JIT pool (klangk-jit-pool below) replaced it: the
+  # long-lived multi-runner VM's shared state caused every class of e2e
+  # flake we chased (stale sessions, leaked podman state, ghost nix DB
+  # entries). Keep the unit definition for rollback.
   systemd.services.klangk-ci-vm =
     let
       vmClosure = inputs.self.nixosConfigurations.klangk-ci.config.system.build.vm;
       bootScript = pkgs.writeShellScript "klangk-ci-vm-boot" (
-        builtins.replaceStrings [ "@vmClosure@" ] [ "${vmClosure}" ]
-          (builtins.readFile ../scripts/klangk-ci-vm-boot.sh)
+        builtins.replaceStrings [ "@vmClosure@" ] [ "${vmClosure}" ] (
+          builtins.readFile ../scripts/klangk-ci-vm-boot.sh
+        )
       );
     in
     {
@@ -596,7 +602,7 @@
         "network.target"
         "libvirtd.service"
       ];
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = lib.mkForce [ ];
       serviceConfig = {
         Type = "simple";
         User = "chrism";
@@ -605,6 +611,52 @@
         KillMode = "mixed";
         TimeoutStopSec = 60;
         Restart = "on-failure";
+        RestartSec = 10;
+      };
+    };
+
+  # klangk JIT runner pool: polls for queued e2e jobs (label "nix") and
+  # boots one disposable klangk-jit VM per job with a just-in-time runner
+  # token. Replaces the long-lived klangk-ci VM above. The pool script and
+  # the VM closure are resolved at evaluation time; the PAT comes from the
+  # same agenix secret the old runner module used.
+  systemd.services.klangk-jit-pool =
+    let
+      vmClosure = inputs.self.nixosConfigurations.klangk-jit.config.system.build.vm;
+      poolScript = pkgs.writeShellScript "klangk-jit-pool" (
+        builtins.replaceStrings
+          [
+            "@vmClosure@"
+            "@tokenFile@"
+          ]
+          [
+            "${vmClosure}"
+            "${config.age.secrets."github-runner-klangk".path}"
+          ]
+          (builtins.readFile ../scripts/klangk-jit-pool.sh)
+      );
+    in
+    {
+      description = "klangk JIT ephemeral runner pool (per-job VMs)";
+      after = [
+        "network-online.target"
+        "libvirtd.service"
+      ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${poolScript}";
+        # jq/curl/qemu-img/flock for the pool; the VM script needs qemu & co.
+        Path = with pkgs; [
+          curl
+          jq
+          qemu_kvm
+          util-linux
+        ];
+        StateDirectory = "klangk-jit-pool";
+        RuntimeDirectory = "klangk-jit-pool";
+        Restart = "always";
         RestartSec = 10;
       };
     };
