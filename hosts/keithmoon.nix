@@ -30,6 +30,7 @@
     ./roles/dictation.nix
     #./roles/vllm.nix
     #./roles/sudorelax.nix
+    ./roles/klangk-jit-pool-sudo.nix
   ];
 
   system.stateVersion = "24.05";
