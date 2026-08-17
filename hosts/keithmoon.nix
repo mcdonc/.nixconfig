@@ -644,16 +644,16 @@
       ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
+      # jq/curl/qemu-img/flock for the pool; the VM run script needs qemu & co.
+      path = with pkgs; [
+        curl
+        jq
+        qemu_kvm
+        util-linux
+      ];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${poolScript}";
-        # jq/curl/qemu-img/flock for the pool; the VM script needs qemu & co.
-        Path = with pkgs; [
-          curl
-          jq
-          qemu_kvm
-          util-linux
-        ];
         StateDirectory = "klangk-jit-pool";
         RuntimeDirectory = "klangk-jit-pool";
         Restart = "always";
