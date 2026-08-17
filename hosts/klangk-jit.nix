@@ -28,13 +28,13 @@ let
   runnerUidStr = toString runnerUid;
 
   # Read the JIT token qemu hands over via fw_cfg. Empty (or absent) means
-  # a tokenless boot (pool smoke test): power off immediately. All output is
-  # tee'd to /dev/console so the pool's qemu console log shows guest progress
-  # (the guest journal is not otherwise reachable — no ssh, no forwarded
-  # ports).
+  # a tokenless boot (pool smoke test): power off immediately. Output goes to
+  # the service stdout, which the unit directs to ttyS0 (TTYPath below) — the
+  # pool's qemu console log then shows guest progress; the guest journal is
+  # not otherwise reachable (no ssh, no forwarded ports). Writing
+  # /dev/console directly from the service would EPERM (ci is not root).
   jitRunnerScript = pkgs.writeShellScript "klangk-jit-runner" ''
     set -euo pipefail
-    exec > >(tee -a /dev/console) 2>&1
     echo "klangk-jit: runner script starting (pid $$)"
     token="$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/klangk/jitconfig/raw 2>/dev/null || true)"
     if [ -z "''${token// /}" ]; then
@@ -132,7 +132,7 @@ in
     wantedBy = [ "multi-user.target" ];
 
     preStart = ''
-      echo "klangk-jit: preStart (creating runner dir)" > /dev/console
+      echo "klangk-jit: preStart (creating runner dir)"
       install -d -o ${runnerUser} -g ${runnerUser} /home/${runnerUser}/runner
     '';
 
@@ -140,13 +140,13 @@ in
     # listens, so the job's first userns setup (pause process, SUID
     # newuidmap) never races logind.
     serviceConfig.ExecStartPre = "+${pkgs.writeShellScript "warm-podman-jit" ''
-      echo "klangk-jit: warming podman session" > /dev/console
+      echo "klangk-jit: warming podman session"
       runuser -u ${runnerUser} -- \
         env HOME=/home/${runnerUser} \
         XDG_RUNTIME_DIR=/run/user/${runnerUidStr} \
         DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus \
         /run/current-system/sw/bin/podman unshare true >/dev/null 2>&1 || true
-      echo "klangk-jit: podman warm done" > /dev/console
+      echo "klangk-jit: podman warm done"
     ''}";
 
     serviceConfig = {
@@ -154,6 +154,14 @@ in
       Group = runnerUser;
       Type = "simple";
       WorkingDirectory = "/home/${runnerUser}/runner";
+      # Service stdout/stderr → serial console: systemd opens ttyS0 as root
+      # before dropping privileges, so the ci user's output reaches the
+      # pool's qemu console log.
+      StandardOutput = "tty";
+      StandardError = "tty";
+      TTYPath = "/dev/ttyS0";
+      TTYReset = false;
+      TTYVHangup = false;
       # /run/wrappers/bin first: the SUID newuidmap/newgidmap wrappers must
       # shadow any non-SUID copies. This unit carries no systemd sandbox
       # restrictions — podman-in-jobs needs namespaces, delegated cgroups,
