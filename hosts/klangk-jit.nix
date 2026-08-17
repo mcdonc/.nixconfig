@@ -42,6 +42,7 @@ let
       exit 0
     fi
     echo "klangk-jit: token present (length ''${#token}); configuring runner"
+    mkdir -p /home/${runnerUser}/runner
     cd /home/${runnerUser}/runner
     exec ${pkgs.github-runner}/bin/run.sh --jitconfig "$token"
   '';
@@ -57,6 +58,7 @@ in
   networking.hostId = "6b61a6ad";
   networking.hostName = "klangk-jit";
 
+  users.users.root.password = ""; # serial-console debugging only (per-job VM, no network ingress)
   services.openssh.settings.PermitRootLogin = "prohibit-password";
 
   # Sizing per concurrent e2e job (xdist workers + container stacks). The
@@ -131,11 +133,6 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
 
-    preStart = ''
-      echo "klangk-jit: preStart (creating runner dir)"
-      install -d -o ${runnerUser} -g ${runnerUser} /home/${runnerUser}/runner
-    '';
-
     # Warm the ci user's rootless podman session once before the runner
     # listens, so the job's first userns setup (pause process, SUID
     # newuidmap) never races logind.
@@ -153,7 +150,10 @@ in
       User = runnerUser;
       Group = runnerUser;
       Type = "simple";
-      WorkingDirectory = "/home/${runnerUser}/runner";
+      # Must exist before the unit starts: systemd chdir()s here before
+      # running ANY command (incl. ExecStartPre), so it cannot be the
+      # runner dir (that is created by the ExecStart script itself).
+      WorkingDirectory = "/home/${runnerUser}";
       # Service stdout/stderr → serial console: systemd opens ttyS0 as root
       # before dropping privileges, so the ci user's output reaches the
       # pool's qemu console log.
