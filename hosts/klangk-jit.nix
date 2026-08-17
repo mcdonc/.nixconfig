@@ -43,6 +43,15 @@ let
     echo "klangk-jit: token present (length ''${#token}); configuring runner"
     mkdir -p /home/${runnerUser}/runner
     cd /home/${runnerUser}/runner
+    # The runner reads .env from its working directory. Variables here
+    # reach job steps without per-step export hacks — the runner passes
+    # them through to child processes (unlike systemd Environment= which
+    # GitHub's runner filters out).
+    cat > .env <<DOTENV
+    XDG_CACHE_HOME=/home/${runnerUser}/.cache
+    XDG_RUNTIME_DIR=/run/user/${runnerUidStr}
+    DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus
+    DOTENV
     exec ${pkgs.github-runner}/bin/run.sh --jitconfig "$token"
   '';
 in
