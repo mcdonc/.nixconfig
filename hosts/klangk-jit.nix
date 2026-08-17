@@ -78,6 +78,18 @@ in
   # before boot; qemu-vm.nix shares $TMPDIR/xchg as a 9p mount at /tmp/xchg
   # inside the guest. No fw_cfg needed.
 
+  # Share the host's nix tarball cache read-only so the guest doesn't
+  # re-download nixpkgs/devenv/git-hooks archives (~25s saved per job).
+  virtualisation.qemu.options = [
+    "-virtfs" "local,path=/home/chrism/.cache/nix/tarball-cache-v2,security_model=none,mount_tag=nix-tarball-cache,readonly=on"
+  ];
+
+  fileSystems."/home/${runnerUser}/.cache/nix/tarball-cache-v2" = {
+    device = "nix-tarball-cache";
+    fsType = "9p";
+    options = [ "trans=virtio" "version=9p2000.L" "cache=loose" "ro" ];
+  };
+
   nix.settings = {
     experimental-features = [
       "nix-command"
