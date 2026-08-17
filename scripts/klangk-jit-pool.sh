@@ -152,7 +152,9 @@ dispatch() {
   printf '%s' "$token" >"$tmpdir/xchg/jitconfig"
   printf '%s' "$tmpdir" >"$dir/tmpdir"
 
-  TMPDIR="$tmpdir" NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$RUN/console-$jobid.log" 2>&1 &
+  # USE_TMPDIR=1 tells the qemu-vm.nix run script to reuse our TMPDIR
+  # instead of creating a fresh one (it checks both vars).
+  USE_TMPDIR=1 TMPDIR="$tmpdir" NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$RUN/console-$jobid.log" 2>&1 &
   printf '%s' "$!" >"$dir/pid"
 
   echo "pool: job $jobid dispatched (runner $runner_id), console $RUN/console-$jobid.log"
