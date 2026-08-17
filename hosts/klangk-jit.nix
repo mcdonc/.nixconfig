@@ -117,12 +117,36 @@ in
     devenv
   ];
 
+  # Import the host's nix DB so the guest can resolve all host store paths
+  # (visible read-only over 9p) without re-downloading or re-evaluating.
+  # The pool copies the host's db.sqlite into the xchg dir before boot.
+  systemd.services.nix-import-host-db = {
+    description = "Import host nix DB from xchg share";
+    after = [ "nix-daemon.service" ];
+    wants = [ "nix-daemon.service" ];
+    before = [ "klangk-jit-runner.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "nix-import-host-db" ''
+        db="/tmp/xchg/host-nix-db.sqlite"
+        if [ -f "$db" ]; then
+          echo "nix-import-host-db: replacing guest DB with host DB ($(stat -c%s "$db") bytes)"
+          cp "$db" /nix/var/nix/db/db.sqlite
+          echo "nix-import-host-db: done"
+        else
+          echo "nix-import-host-db: no host DB in xchg, skipping"
+        fi
+      '';
+    };
+  };
+
   # One JIT registration per boot: run.sh --jitconfig executes exactly one
   # job, then exits (GitHub deregisters the runner). Power off afterwards
   # either way — success or failure — so the pool reaps the VM.
   systemd.services.klangk-jit-runner = {
     description = "klangk JIT ephemeral GitHub Actions runner (one job per boot)";
-    after = [ "network-online.target" ];
+    after = [ "network-online.target" "nix-import-host-db.service" ];
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
 

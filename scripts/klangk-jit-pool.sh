@@ -150,6 +150,12 @@ dispatch() {
   tmpdir=$(mktemp -d "$RUN/vm-$jobid.XXXXXX")
   mkdir -p "$tmpdir/xchg"
   printf '%s' "$token" >"$tmpdir/xchg/jitconfig"
+  # Copy the host's nix DB so the guest can see all host store paths
+  # (visible read-only over 9p but not in the guest's empty DB). The
+  # guest boot service replaces its DB with this copy — the VM's own
+  # closure paths are re-registered via regInfo at initrd time, so they
+  # survive the replacement.
+  cp /nix/var/nix/db/db.sqlite "$tmpdir/xchg/host-nix-db.sqlite"
   printf '%s' "$tmpdir" >"$dir/tmpdir"
 
   # USE_TMPDIR=1 tells the qemu-vm.nix run script to reuse our TMPDIR
