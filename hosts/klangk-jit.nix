@@ -203,6 +203,11 @@ in
       ];
       ExecStart = "${jitRunnerScript}";
       ExecStopPost = [
+        # Dump the journal to xchg so the pool's host can inspect it
+        # after the VM powers off (guest journal is otherwise unreachable).
+        "+${pkgs.writeShellScript "dump-journal" ''
+          journalctl --no-pager > /tmp/xchg/journal.log 2>&1 || true
+        ''}"
         "+/run/current-system/sw/bin/systemctl"
         "poweroff"
       ];
