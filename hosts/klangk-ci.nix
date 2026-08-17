@@ -71,7 +71,6 @@ let
           '')
         ];
         extraEnvironment = {
-          HOME = "/home/${user}";
           XDG_RUNTIME_DIR = "/run/user/${uid}";
           DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${uid}/bus";
         };
@@ -127,7 +126,7 @@ in
   # stacks. The host (keithmoon) has 72 cores / 128G RAM.
   virtualisation.diskSize = 102400;
   virtualisation.memorySize = 65536;
-  virtualisation.cores = 32;
+  virtualisation.cores = 48;
   virtualisation.graphics = false;
   virtualisation.writableStoreUseTmpfs = false;
   virtualisation.forwardPorts = [
@@ -162,6 +161,31 @@ in
   };
 
   virtualisation.containers.storage.settings = { };
+
+  # Pin each ci user's rootless podman graphroot to their home on ext4.
+  # The GitHub runner sets HOME=/run/github-runner/klangk-N (on tmpfs);
+  # we can't override HOME (it breaks the runner's workspace resolution)
+  # so we install a per-user storage.conf and point CONTAINERS_STORAGE_CONF
+  # at it in every CI step. Without this, podman defaults graphroot to
+  # tmpfs, which triggers "VFS: Mount too revealing" on kernel 6.12+.
+  system.activationScripts.podman-ci-storage = lib.stringAfter [ "users" ] (
+    builtins.concatStringsSep "\n" (map (idx:
+      let
+        user = "ci-${toString idx}";
+        uid = toString (1100 + idx);
+        confDir = "/home/${user}/.config/containers";
+        storageConf = pkgs.writeText "ci-${toString idx}-storage.conf" ''
+          [storage]
+          driver = "overlay"
+          graphroot = "/home/${user}/.local/share/containers/storage"
+          runroot = "/run/user/${uid}/containers"
+        '';
+      in ''
+        install -d -o ${uid} -g ${uid} ${confDir}
+        install -o ${uid} -g ${uid} -m 644 ${storageConf} ${confDir}/storage.conf
+      ''
+    ) runnerIndices)
+  );
 
   # Remount /proc with hidepid=0 (most permissive) at boot. systemd 260+
   # defaults to hidepid=invisible for user@UID services, which causes the
