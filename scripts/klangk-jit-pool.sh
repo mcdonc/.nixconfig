@@ -83,18 +83,14 @@ reap() {
     age=$(( $(date +%s) - started ))
 
     if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
-      # VM is alive. Kill if timed out or if the GitHub job finished
-      # (cancelled/completed) but the guest didn't power off.
       if [ "$age" -ge "$JOB_TIMEOUT_SECS" ]; then
         echo "pool: job $jobid exceeded ${JOB_TIMEOUT_SECS}s; killing VM pid $pid"
-      elif [ "$age" -ge 600 ] && ! job_still_active "$jobid"; then
-        echo "pool: job $jobid no longer active on GitHub; killing VM pid $pid"
+        kill "$pid" 2>/dev/null || true
+        sleep 2
+        kill -9 "$pid" 2>/dev/null || true
       else
         continue
       fi
-      kill "$pid" 2>/dev/null || true
-      sleep 2
-      kill -9 "$pid" 2>/dev/null || true
     fi
     echo "pool: reaping job $jobid (age ${age}s)"
     cleanup_job "$jobid" "$dir"
