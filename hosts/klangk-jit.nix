@@ -203,6 +203,7 @@ in
       Environment = [
         "PATH=/run/wrappers/bin:/run/current-system/sw/bin"
         "HOME=/home/${runnerUser}"
+        "XDG_CACHE_HOME=/home/${runnerUser}/.cache"
         "XDG_RUNTIME_DIR=/run/user/${runnerUidStr}"
         "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${runnerUidStr}/bus"
       ];
