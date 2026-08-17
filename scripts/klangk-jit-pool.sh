@@ -63,24 +63,38 @@ cleanup_job() {
   : >"$STATE/done-$jobid"
 }
 
-# Reap dead or timed-out job VMs.
+# Check if a GitHub job is still running (queued or in_progress).
+job_still_active() {
+  local jobid=$1
+  local status
+  status=$(api GET "actions/jobs/$jobid" 2>/dev/null |
+    jq -r '.status // empty' 2>/dev/null) || return 1
+  [ "$status" = "queued" ] || [ "$status" = "in_progress" ]
+}
+
+# Reap dead, timed-out, or completed job VMs.
 reap() {
-  local dir jobid pid started age runner_id
+  local dir jobid pid started age
   for dir in "$RUN/active"/*; do
     [ -d "$dir" ] || continue
     jobid=$(basename "$dir")
     pid=$(cat "$dir/pid" 2>/dev/null || true)
     started=$(cat "$dir/started" 2>/dev/null || echo 0)
     age=$(( $(date +%s) - started ))
+
     if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+      # VM is alive. Kill if timed out or if the GitHub job finished
+      # (cancelled/completed) but the guest didn't power off.
       if [ "$age" -ge "$JOB_TIMEOUT_SECS" ]; then
         echo "pool: job $jobid exceeded ${JOB_TIMEOUT_SECS}s; killing VM pid $pid"
-        kill "$pid" 2>/dev/null || true
-        sleep 2
-        kill -9 "$pid" 2>/dev/null || true
+      elif [ "$age" -ge 120 ] && ! job_still_active "$jobid"; then
+        echo "pool: job $jobid no longer active on GitHub; killing VM pid $pid"
       else
         continue
       fi
+      kill "$pid" 2>/dev/null || true
+      sleep 2
+      kill -9 "$pid" 2>/dev/null || true
     fi
     echo "pool: reaping job $jobid (age ${age}s)"
     cleanup_job "$jobid" "$dir"

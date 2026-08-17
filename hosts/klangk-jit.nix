@@ -227,6 +227,9 @@ in
         "poweroff"
       ];
       Restart = "no";
+      # If the runner hangs on stop (e.g. cancelled job), kill it after
+      # 30s so ExecStopPost (journal dump + poweroff) can proceed.
+      TimeoutStopSec = 30;
       # One job (plus image builds) fits comfortably; guard runaway logs.
       LogRateLimitIntervalSec = "0";
     };
