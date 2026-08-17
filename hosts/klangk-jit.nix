@@ -223,8 +223,7 @@ in
         "+${pkgs.writeShellScript "dump-journal" ''
           journalctl --no-pager > /tmp/xchg/journal.log 2>&1 || true
         ''}"
-        "+/run/current-system/sw/bin/systemctl"
-        "poweroff"
+        "+/run/current-system/sw/bin/systemctl poweroff"
       ];
       Restart = "no";
       # If the runner hangs on stop (e.g. cancelled job), kill it after
