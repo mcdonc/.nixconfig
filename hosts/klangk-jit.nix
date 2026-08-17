@@ -140,6 +140,11 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
+      StandardOutput = "tty";
+      StandardError = "tty";
+      TTYPath = "/dev/ttyS0";
+      TTYReset = false;
+      TTYVHangup = false;
       ExecStart = pkgs.writeShellScript "nix-import-host-db" ''
         db="/tmp/xchg/host-nix-db.sqlite"
         if [ -f "$db" ]; then
