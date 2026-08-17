@@ -18,7 +18,7 @@ REPO="mcdonc/klangk"
 LABEL="nix"
 STATE=/var/lib/klangk-jit-pool
 RUN=/run/klangk-jit-pool
-MAX_VMS=2
+MAX_VMS=4
 JOB_TIMEOUT_SECS=5400 # 90 min hard kill per job VM
 POLL_SECS=20
 
