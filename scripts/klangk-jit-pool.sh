@@ -87,7 +87,7 @@ reap() {
       # (cancelled/completed) but the guest didn't power off.
       if [ "$age" -ge "$JOB_TIMEOUT_SECS" ]; then
         echo "pool: job $jobid exceeded ${JOB_TIMEOUT_SECS}s; killing VM pid $pid"
-      elif [ "$age" -ge 120 ] && ! job_still_active "$jobid"; then
+      elif [ "$age" -ge 600 ] && ! job_still_active "$jobid"; then
         echo "pool: job $jobid no longer active on GitHub; killing VM pid $pid"
       else
         continue
