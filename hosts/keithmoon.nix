@@ -26,6 +26,7 @@
     ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
+    ./roles/klangk-jit-pool.nix
     ./roles/klangk-jit-pool-sudo.nix
     ./roles/nvidiapassthru.nix
     ./roles/dictation.nix
@@ -574,10 +575,8 @@
   };
 
   # klangk CI now runs on the klangk-ci VM (two runners, label "nix"); the
-  # host-side runner was retired when the VM proved green.
-  age.secrets."github-runner-klangk" = {
-    file = ../secrets/github-runner-klangk.age;
-  };
+  # host-side runner was retired when the VM proved green. The PAT secret
+  # itself lives in roles/klangk-jit-pool.nix now.
 
   # Autostart the klangk-ci VM at boot (system-level unit, independent of
   # any login session). The VM closure is resolved at NixOS evaluation time
@@ -619,49 +618,13 @@
 
   # klangk JIT runner pool: polls for queued e2e jobs (label "nix") and
   # boots one disposable klangk-jit VM per job with a just-in-time runner
-  # token. Replaces the long-lived klangk-ci VM above. The pool script and
-  # the VM closure are resolved at evaluation time; the PAT comes from the
-  # same agenix secret the old runner module used.
-  systemd.services.klangk-jit-pool =
-    let
-      vmClosure = inputs.self.nixosConfigurations.klangk-jit.config.system.build.vm;
-      poolScript = pkgs.writeShellScript "klangk-jit-pool" (
-        builtins.replaceStrings
-          [
-            "@vmClosure@"
-            "@tokenFile@"
-          ]
-          [
-            "${vmClosure}"
-            "${config.age.secrets."github-runner-klangk".path}"
-          ]
-          (builtins.readFile ../scripts/klangk-jit-pool.sh)
-      );
-    in
-    {
-      description = "klangk JIT ephemeral runner pool (per-job VMs)";
-      after = [
-        "network-online.target"
-        "libvirtd.service"
-      ];
-      wants = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
-      # jq/curl/qemu-img/flock for the pool; the VM run script needs qemu & co.
-      path = with pkgs; [
-        curl
-        jq
-        qemu_kvm
-        util-linux
-      ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${poolScript}";
-        StateDirectory = "klangk-jit-pool";
-        RuntimeDirectory = "klangk-jit-pool";
-        Restart = "always";
-        RestartSec = 10;
-      };
-    };
+  # token. Replaces the long-lived klangk-ci VM above. The pool service
+  # and the PAT secret are defined in roles/klangk-jit-pool.nix;
+  # thinknix52 runs the same role with two laptop-sized klangk-jit52 VMs.
+  services.klangk-jit-pool = {
+    enable = true;
+    maxVms = 4;
+  };
 
   environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users

@@ -312,6 +312,7 @@ in
   "github-runner-klangk.age".publicKeys = [
     chrism
     keithmoon
+    thinknix52
     klangk-ci
     klangk-ci-bootstrap
   ];
