@@ -91,15 +91,18 @@ cleanup_vm() {
   echo "pool: reaped VM $vmid (pid $pid)"
 }
 
-# True if the VM's runner is registered, connected, and idle ("online"):
-# it came up but was never assigned a job. API errors count as not-idle
-# so a flaky response never kills a healthy VM.
+# True if the VM's runner is registered, connected, and idle (online
+# and NOT executing a job): it came up but was never assigned one, or
+# has finished. A runner mid-job also reports status "online" — its
+# busy flag is what distinguishes the two — so busy MUST be checked or
+# the reaper kills VMs whose jobs are still running. API errors count
+# as not-idle so a flaky response never kills a healthy VM.
 runner_is_idle() {
   local runner_id=$1 status
   [ -n "$runner_id" ] || return 1
   status=$(api GET "actions/runners/$runner_id" |
-    jq -r '.status // empty' 2>/dev/null) || return 1
-  [ "$status" = "online" ]
+    jq -r '"\(.status) \(.busy)"' 2>/dev/null) || return 1
+  [ "$status" = "online false" ]
 }
 
 # Reap dead, timed-out, or idle-loser VMs.
