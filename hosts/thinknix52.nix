@@ -20,6 +20,7 @@
     ./roles/backupsource.nix
     ./roles/tailscale
     ./roles/nvidiapassthru.nix
+    ./roles/klangk-jit-pool.nix
     #./roles/nix-serve-client.nix
     #./roles/rc505
     #./roles/sessile.nix
@@ -47,6 +48,18 @@
 
   # XXX26.05 Quadro P1000 dropped from mainline 595.xx, needs legacy 580.xx
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+
+  # klangk CI: JIT ephemeral runner pool sharing the "nix"-labeled job
+  # queue with keithmoon's pool. Two concurrent laptop-sized VMs
+  # (klangk-jit52); the pool's own runner prefix keeps the two hosts from
+  # pruning each other's registrations, and idle losers of the boot race
+  # are killed after 10 minutes (see scripts/klangk-jit-pool.sh).
+  services.klangk-jit-pool = {
+    enable = true;
+    maxVms = 2;
+    vmHost = "klangk-jit52";
+    runnerNamePrefix = "jit-thinknix52";
+  };
 
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)

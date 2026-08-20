@@ -198,6 +198,10 @@
           system = "x86_64-linux";
         }
         {
+          hostname = "klangk-jit52";
+          system = "x86_64-linux";
+        }
+        {
           hostname = "arctor";
           system = "x86_64-linux";
         }

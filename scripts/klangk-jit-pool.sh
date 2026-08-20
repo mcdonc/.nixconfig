@@ -1,28 +1,45 @@
 #!/usr/bin/env bash
-# klangk JIT runner pool (runs as a systemd service on keithmoon).
+# klangk JIT runner pool (systemd service; see hosts/roles/klangk-jit-pool.nix).
 #
 # Polls the GitHub Actions API for queued jobs carrying the "nix" label;
 # boots fresh disposable klangk-jit VMs (up to MAX_VMS) so GitHub can
 # assign jobs to them. The pool does NOT track which job goes to which
 # VM — the JIT runner picks up whatever GitHub assigns.
 #
-# Injected by the NixOS module (substituted at build time):
-#   @vmClosure@  — klangk-jit VM closure (…/bin/run-klangk-jit-vm)
-#   @tokenFile@  — age-secret path holding a PAT with repo administration
+# Multiple hosts may run pools against the same queue. Every runner this
+# pool registers carries RUNNER_PREFIX in its name; prune_stale_runners
+# only ever touches this pool's own runners, and a VM whose runner came
+# online but was never assigned a job (it lost the boot race against
+# another pool's runner) is killed after IDLE_KILL_SECS instead of
+# idling until the hard timeout.
+#
+# Injected by the NixOS role (substituted at build time):
+#   @vmRun@        — full path to the VM closure's run-*-vm script
+#   @tokenFile@    — age-secret path holding a PAT with repo administration
+#   @maxVms@       — pool concurrency cap
+#   @runnerPrefix@ — GitHub runner name prefix for this host's pool
 # Environment (PATH): curl, jq, qemu-img, flock, coreutils.
 set -euo pipefail
 
 REPO="mcdonc/klangk"
 LABEL="nix"
-RUN=/run/klangk-jit-pool
-MAX_VMS=4
+STATE=/var/lib/klangk-jit-pool # persistent: per-job qcow2 disks + console logs
+RUN=/run/klangk-jit-pool # volatile: active-VM bookkeeping
+MAX_VMS="@maxVms@"
 VM_TIMEOUT_SECS=3600 # 60 min hard kill per VM
+IDLE_KILL_SECS=600 # kill online-but-never-assigned runners after 10 min
 POLL_SECS=20
 
-VM_RUN="@vmClosure@/bin/run-klangk-jit-vm"
+VM_RUN="@vmRun@"
 TOKEN_FILE="@tokenFile@"
+PREFIX="@runnerPrefix@"
 
-mkdir -p "$RUN/active"
+mkdir -p "$STATE" "$RUN/active"
+
+# The VM closure 9p-shares the host's nix tarball cache read-only
+# (see klangk-jit.nix); qemu refuses to start if the path is missing.
+mkdir -p /home/chrism/.cache/nix/tarball-cache-v2
+chown chrism:users /home/chrism/.cache/nix/tarball-cache-v2 2>/dev/null || true
 
 api() {
   local method=$1 path=$2 body=${3:-}
@@ -69,23 +86,41 @@ cleanup_vm() {
   fi
   [ -n "$disk" ] && rm -f -- "$disk"
   [ -n "$tmpdir" ] && rm -rf -- "$tmpdir"
+  rm -f -- "$STATE/console-$vmid.log"
   rm -rf -- "$dir"
   echo "pool: reaped VM $vmid (pid $pid)"
 }
 
-# Reap dead or timed-out VMs.
+# True if the VM's runner is registered, connected, and idle ("online"):
+# it came up but was never assigned a job. API errors count as not-idle
+# so a flaky response never kills a healthy VM.
+runner_is_idle() {
+  local runner_id=$1 status
+  [ -n "$runner_id" ] || return 1
+  status=$(api GET "actions/runners/$runner_id" |
+    jq -r '.status // empty' 2>/dev/null) || return 1
+  [ "$status" = "online" ]
+}
+
+# Reap dead, timed-out, or idle-loser VMs.
 reap() {
-  local dir vmid pid started age
+  local dir vmid pid started age runner_id
   for dir in "$RUN/active"/*; do
     [ -d "$dir" ] || continue
     vmid=$(basename "$dir")
     pid=$(cat "$dir/pid" 2>/dev/null || true)
     started=$(cat "$dir/started" 2>/dev/null || echo 0)
     age=$(( $(date +%s) - started ))
+    runner_id=$(cat "$dir/runner_id" 2>/dev/null || true)
 
     if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
       if [ "$age" -ge "$VM_TIMEOUT_SECS" ]; then
         echo "pool: VM $vmid exceeded ${VM_TIMEOUT_SECS}s; killing pid $pid"
+        kill "$pid" 2>/dev/null || true
+        sleep 2
+        kill -9 "$pid" 2>/dev/null || true
+      elif [ "$age" -ge "$IDLE_KILL_SECS" ] && runner_is_idle "$runner_id"; then
+        echo "pool: VM $vmid runner idle since boot (${age}s; lost assignment race); killing pid $pid"
         kill "$pid" 2>/dev/null || true
         sleep 2
         kill -9 "$pid" 2>/dev/null || true
@@ -104,8 +139,8 @@ boot_vm() {
   ts=$(date +%s)
   vmid="vm-$ts-$$-$RANDOM"
   dir="$RUN/active/$vmid"
-  disk="$RUN/$vmid.qcow2"
-  name="jit-$vmid"
+  disk="$STATE/$vmid.qcow2"
+  name="$PREFIX-$vmid"
 
   mkdir -p "$dir"
 
@@ -129,24 +164,25 @@ boot_vm() {
 
   rm -f -- "$disk"
 
-  tmpdir=$(mktemp -d "$RUN/$vmid.XXXXXX")
+  tmpdir=$(mktemp -d "$STATE/$vmid.XXXXXX")
   mkdir -p "$tmpdir/xchg"
   printf '%s' "$token" >"$tmpdir/xchg/jitconfig"
   cp /nix/var/nix/db/db.sqlite "$tmpdir/xchg/host-nix-db.sqlite"
   printf '%s' "$tmpdir" >"$dir/tmpdir"
 
-  USE_TMPDIR=1 TMPDIR="$tmpdir" NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$RUN/console-$vmid.log" 2>&1 &
+  USE_TMPDIR=1 TMPDIR="$tmpdir" NIX_DISK_IMAGE="$disk" "$VM_RUN" >"$STATE/console-$vmid.log" 2>&1 &
   printf '%s' "$!" >"$dir/pid"
 
   echo "pool: booted $vmid (runner $runner_id, pid $!)"
 }
 
-# Delete offline jit-* runners left over from crashed pools/VMs.
+# Delete offline runners left over from crashed pools/VMs — only those
+# our own prefix (another host's pool may be mid-boot with its own).
 prune_stale_runners() {
   local id name runner_status
   while IFS=$'\t' read -r id name runner_status; do
     [ -n "$id" ] || continue
-    if [ "$runner_status" = "offline" ] && [[ "$name" == jit-* ]]; then
+    if [ "$runner_status" = "offline" ] && [[ "$name" == "$PREFIX"-vm-* ]]; then
       echo "pool: pruning stale runner $name ($id)"
       api DELETE "actions/runners/$id" >/dev/null 2>&1 || true
     fi
@@ -154,7 +190,7 @@ prune_stale_runners() {
     jq -r '.runners[]? | [.id, .name, .status] | @tsv' 2>/dev/null || true)
 }
 
-echo "pool: starting (max $MAX_VMS VMs, poll ${POLL_SECS}s)"
+echo "pool: starting (max $MAX_VMS VMs, prefix $PREFIX, poll ${POLL_SECS}s)"
 prune_stale_runners
 
 while true; do
