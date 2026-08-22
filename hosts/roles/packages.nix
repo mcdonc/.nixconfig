@@ -336,6 +336,7 @@ in
       tap-plugins
       thermald
       thinkfan
+      usbimager
       vim-full
       virt-manager
       virt-viewer # for remote-viewer
