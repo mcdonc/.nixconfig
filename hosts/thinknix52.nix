@@ -21,6 +21,7 @@
     ./roles/tailscale
     ./roles/nvidiapassthru.nix
     ./roles/klangk-jit-pool.nix
+    ./roles/sudorelax.nix
     #./roles/nix-serve-client.nix
     #./roles/rc505
     #./roles/sessile.nix

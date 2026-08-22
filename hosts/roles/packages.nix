@@ -207,9 +207,9 @@ in
       pkgs-2511.python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
       pypy3
       python27
-      (wrapOBS {
-        plugins = [ pkgs.obs-studio-plugins.obs-backgroundremoval ];
-      })
+      # obs; plugin wrap retired with obs-backgroundremoval, plain package is
+      # fine (overlay in flake.nix adds cudaSupport for NVENC)
+      obs-studio
 
       agebox
       airspy

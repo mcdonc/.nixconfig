@@ -38,7 +38,14 @@
     inputs:
     let
 
-      my_overlay = (self: super: { });
+      my_overlay = (
+        self: super:
+        {
+          # NVENC in OBS: patches the obs-nvenc test executable with the
+          # NVIDIA driver runpath so it can dlopen libnvidia-encode
+          obs-studio = super.obs-studio.override { cudaSupport = true; };
+        }
+      );
 
       mkSystem =
         host:
