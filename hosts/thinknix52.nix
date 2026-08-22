@@ -54,8 +54,10 @@
   # (klangk-jit52); the pool's own runner prefix keeps the two hosts from
   # pruning each other's registrations, and idle losers of the boot race
   # are killed after 10 minutes (see scripts/klangk-jit-pool.sh).
+  # Disabled: prevent this host's GitHub runners from starting. Set back
+  # to true (and `systemctl start klangk-jit-pool`) to rejoin the queue.
   services.klangk-jit-pool = {
-    enable = true;
+    enable = false;
     maxVms = 2;
     vmHost = "klangk-jit52";
     runnerNamePrefix = "jit-thinknix52";
