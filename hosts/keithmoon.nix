@@ -562,7 +562,9 @@
   systemd.services.soliplex = {
     description = "Soliplex";
     after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    # Auto-start disabled: won't start at boot or on-rebuild, but remains
+    # manually startable via `systemctl start soliplex`.
+    wantedBy = lib.mkForce [ ];
     serviceConfig = {
       ExecStart = "${pkgs.devenv}/bin/devenv processes up";
       Environment = "DEVENV_TUI=false";
@@ -623,7 +625,7 @@
   # thinknix52 runs the same role with two laptop-sized klangk-jit52 VMs.
   services.klangk-jit-pool = {
     enable = true;
-    maxVms = 4;
+    maxVms = 5;
   };
 
   environment.etc."security/limits.conf".text = ''

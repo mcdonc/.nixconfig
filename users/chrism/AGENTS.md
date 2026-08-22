@@ -147,6 +147,10 @@ You are an expert coding agent.
   `nix-locate` for Nix store contents, or search only the standard
   application-specific directories (e.g. `~/.config`,
   `/run/current-system/sw/share`, `/usr/share`).
+- Never launch a content search (e.g. a recursive `grep`/`rg` over file
+  contents) from the root of the filesystem or in `/nix/store` — for the
+  same reason: the trees are enormous and the search is slow and wasteful.
+  Scope content searches to a specific project directory.
 
 ## Creating/editing GitHub PRs, issues, and comments via `gh`
 
