@@ -45,6 +45,10 @@ let
   '';
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
+    if [ -n "$SSH_NO_COLOR" ]; then
+      # bypass color switching entirely (see termAliases below)
+      exec ${pkgs.openssh}/bin/ssh "$@"
+    fi
     source ${gterm-color-funcs}
     pushcolor 5
     ${pkgs.openssh}/bin/ssh $@
