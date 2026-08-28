@@ -145,6 +145,41 @@
     "nvidia-drm.modeset=1"
   ];
 
+  # Allow non-root loading of eBPF (socket-filter-class programs). The
+  # kernel default is 2 (disabled at boot and locked until reboot), so a
+  # REBOOT is required for this to take effect — systemd-sysctl cannot
+  # change it at switch time. Note: tracing/kprobe/XDP-class eBPF still
+  # requires CAP_BPF/CAP_PERFMON regardless; this only unlocks the
+  # unprivileged subset, and slightly widens the kernel attack surface
+  # (why upstream defaults it off).
+  boot.kernel.sysctl."kernel.unprivileged_bpf_disabled" = 0;
+
+  # Grant chrism's eBPF tooling the capabilities it needs without root.
+  # The nix store is immutable, so caps are applied via security.wrappers
+  # (setcap'd copies in /run/wrappers/bin, which precede store paths on
+  # PATH). File caps only work on ELF binaries — never wrap scripts or
+  # shells. Cap set: CAP_BPF (program load), CAP_PERFMON (kprobes/
+  # tracepoints; bypasses perf_event_paranoid), CAP_NET_ADMIN (tc/XDP
+  # attach), CAP_SYS_ADMIN (bpftrace's docs-recommended trio + BTF paths;
+  # add CAP_SYSLOG if kptr_restrict=1 hides kallsyms addresses). Anything
+  # these tools exec also runs with these caps, so keep the set minimal.
+  # Note: by default any local user can exec these wrappers; restrict with
+  # group/permissions if that matters on multi-user hosts.
+  security.wrappers = {
+    bpftool = {
+      source = "${pkgs.bpftools}/bin/bpftool";
+      owner = "root";
+      group = "root";
+      capabilities = "cap_bpf,cap_perfmon,cap_net_admin,cap_sys_admin+ep";
+    };
+    bpftrace = {
+      source = "${pkgs.bpftrace}/bin/bpftrace";
+      owner = "root";
+      group = "root";
+      capabilities = "cap_bpf,cap_perfmon,cap_net_admin,cap_sys_admin+ep";
+    };
+  };
+
   # Enable OpenGL
   hardware.graphics.enable = true;
 
