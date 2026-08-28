@@ -180,6 +180,30 @@
     };
   };
 
+  # Let the klangk dev build apply eBPF file caps unattended (#2520):
+  # the procleddy-ebpf build task runs `sudo -n setcap
+  # cap_bpf,cap_perfmon+ep <binary>` after every compile (rebuilds wipe
+  # file caps). Scoped to the exact capability set and the klangk
+  # checkout/worktree paths; the glob covers both the main checkout and
+  # any .worktrees/<name>/ checkout (sudoers wildcards match '/').
+  # Broaden (drop the args) if the paths churn; tighten further with a
+  # wrapper script on multi-user hosts.
+  security.sudo.extraRules = [
+    {
+      users = [ "chrism" ];
+      commands = [
+        {
+          # NB: the comma in the cap set must be escaped in sudoers (\,),
+          # and that backslash must itself be doubled in the Nix string —
+          # a single \, is silently stripped by Nix's lexer, yielding an
+          # unparseable sudoers line ("expected a fully-qualified path").
+          command = "/run/current-system/sw/bin/setcap cap_bpf\\,cap_perfmon+ep /home/chrism/projects/klangk/*/src/klangk/klangk/procleddy-ebpf";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
   # Enable OpenGL
   hardware.graphics.enable = true;
 
@@ -539,6 +563,13 @@
       StandardError = "append:/tmp/temp-klangk/state/klangkd.stderr.log";
       Restart = "on-failure";
       RestartSec = 5;
+      # NOTE: deliberately NO AmbientCapabilities for the eBPF ledger
+      # tier (#2520). Ambient caps would hand CAP_BPF+CAP_PERFMON to the
+      # entire klangkd exec tree (devenv, python, podman helpers...) —
+      # kernel-program-loading rights for anything a compromised
+      # backend runs. The narrower path is the per-binary file-cap
+      # grant via the sudoers setcap rule below, applied by the build
+      # task to procleddy-ebpf alone.
     };
     path = [ "/run/wrappers" ];
   };
