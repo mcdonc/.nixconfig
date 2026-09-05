@@ -45,6 +45,12 @@
     owner = "chrism";
     group = "users";
   };
+  age.secrets."zai-authtoken-chrism3" = {
+    file = ../../secrets/zai-authtoken-chrism3.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
   age.secrets."zai-authtoken-alan" = {
     file = ../../secrets/zai-authtoken-alan.age;
     mode = "600";
