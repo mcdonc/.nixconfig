@@ -30,6 +30,8 @@
     nixpkgs-emacs.url = "github:NixOS/nixpkgs/fea3b367d61c1a6592bc47c72f40a9f3e6a53e96";
     herdr.url = "github:ogulcancelik/herdr/v0.6.2";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
+    microvm.url = "github:microvm-nix/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
