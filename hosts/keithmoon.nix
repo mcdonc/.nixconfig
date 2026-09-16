@@ -32,7 +32,8 @@
     ./roles/dictation.nix
     #./roles/vllm.nix
 
-    ./roles/sudorelax.nix
+    #./roles/sudorelax.nix
+    ./roles/msks-networking.nix
 
     # microvm.nix host module: declares microvm.vms below as systemd units
     # (microvm@<name>.service) with state under /var/lib/microvms/<name>/.
