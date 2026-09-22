@@ -229,6 +229,27 @@
         "type": "github"
       }
     },
+    "msks": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790052892,
+        "narHash": "sha256-pd2rrHRIFxwbVqmOmdX8DqGW9HQEdCxgHdO/M2ehZAo=",
+        "owner": "mcdonc",
+        "repo": "msks",
+        "rev": "12bec196ba8bef655b189528151579c47c6cc39f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mcdonc",
+        "ref": "i231-the-msks-fl",
+        "repo": "msks",
+        "type": "github"
+      }
+    },
     "nixlib": {
       "locked": {
         "lastModified": 1736643958,
@@ -527,6 +548,7 @@
         "home-manager": "home-manager_2",
         "mailserver": "mailserver",
         "microvm": "microvm",
+        "msks": "msks",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",

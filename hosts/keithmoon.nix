@@ -32,8 +32,14 @@
     ./roles/dictation.nix
     #./roles/vllm.nix
 
-    #./roles/sudorelax.nix
-    ./roles/msks-networking.nix
+    ./roles/sudorelax.nix
+
+    # msks (#229, #231): the deployment-host module — msksd and
+    # cloud-hypervisor run directly on this host, workspace microvms
+    # first-level on /dev/kvm. The old appliance host-network role is
+    # gone with the appliance: the daemon mints its own per-VM taps
+    # and masquerades out the real uplink (eno4 below).
+    inputs.msks.nixosModules.msks
 
     # microvm.nix host module: declares microvm.vms below as systemd units
     # (microvm@<name>.service) with state under /var/lib/microvms/<name>/.
@@ -252,6 +258,16 @@
   #   enable = true;
   #   openFirewall = true;
   # };
+
+  # --- msks deployment host (#229, #231)
+  # API on https://<host>:8660; the first credential rides
+  # MSKSD_BOOTSTRAP_TOKEN from the environment file (see
+  # services.msksd.environmentFile).
+  services.msksd = {
+    enable = true;
+    egress.uplink = "eno4";
+    environmentFile = "/etc/msksd/env";
+  };
 
   # --- microvm.nix trial VMs (msks research)
   # Two fully-declarative MicroVMs, started manually:
