@@ -32,14 +32,7 @@
     ./roles/dictation.nix
     #./roles/vllm.nix
 
-    ./roles/sudorelax.nix
-
-    # msks (#229, #231): the deployment-host module — msksd and
-    # cloud-hypervisor run directly on this host, workspace microvms
-    # first-level on /dev/kvm. The old appliance host-network role is
-    # gone with the appliance: the daemon mints its own per-VM taps
-    # and masquerades out the real uplink (eno4 below).
-    inputs.msks.nixosModules.msks
+    #./roles/sudorelax.nix
 
     # microvm.nix host module: declares microvm.vms below as systemd units
     # (microvm@<name>.service) with state under /var/lib/microvms/<name>/.
@@ -260,13 +253,25 @@
   # };
 
   # --- msks deployment host (#229, #231)
-  # API on https://<host>:8660; the first credential rides
-  # MSKSD_BOOTSTRAP_TOKEN from the environment file (see
-  # services.msksd.environmentFile).
-  services.msksd = {
-    enable = true;
-    egress.uplink = "eno4";
-    environmentFile = "/etc/msksd/env";
+  # --- msks dev mode (#231): the capability wrapper the devenv msksd
+  # process execs — setpriv carrying the two ambient caps the
+  # daemon's egress stack needs (per-VM taps, nftables/NFQUEUE,
+  # DHCP 67, DNS 53). The whole grant: root-owned in /run/wrappers,
+  # usable only as
+  #   msks-caps --inh-caps=+net_admin,+net_bind_service \
+  #     --ambient-caps=+net_admin,+net_bind_service -- <cmd>
+  # (both flags required: ambient needs the caps inheritable first,
+  # and file caps alone never reach exec'd children). The wrapper
+  # path is store-free and stable, unlike devenv's capability broker
+  # whose root helper rides a rotating store path and wildcard
+  # sudoers — tried and rejected as more machinery for the same
+  # grant.
+  security.wrappers.msks-caps = {
+    source = "${pkgs.util-linux}/bin/setpriv";
+    capabilities = "cap_net_admin,cap_net_bind_service+ep";
+    owner = "root";
+    group = "users";
+    permissions = "u+rx,g+rx";
   };
 
   # --- microvm.nix trial VMs (msks research)

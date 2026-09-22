@@ -32,10 +32,6 @@
     herdr.inputs.nixpkgs.follows = "nixpkgs";
     microvm.url = "github:microvm-nix/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
-    # msks (#229): the deployment-host daemon module. Branch ref until
-    # the #231 rework merges; flip to github:mcdonc/msks (main) then.
-    msks.url = "github:mcdonc/msks/i231-the-msks-fl";
-    msks.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
