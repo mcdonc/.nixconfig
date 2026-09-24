@@ -127,6 +127,11 @@ You are an expert coding agent.
 
 - Do not add Co-Authored-By lines to commit messages.
 
+## PRs and Issues
+
+- Do not add "Generated with" or "Co-Authored-By" attribution lines to PR or
+  issue descriptions.
+
 ## Verbosity
 
 - Use half as many words as you normally would to respond, explain, and ask clarifying questions.

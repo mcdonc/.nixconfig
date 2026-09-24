@@ -8,6 +8,36 @@ args@{
 
 let
 
+  # TRAMP's entry into msks workspaces (the "msks" tramp-method in
+  # .emacs.d/init.el): reproduce the devenv shell's client presets
+  # for the dev daemon of the main msks checkout, then run the
+  # checkout's venv CLI. An Emacs daemon started from the graphical
+  # session inherits none of these, so TRAMP cannot call `msks`
+  # directly.
+  msks-tramp = pkgs.writeShellScriptBin "msks-tramp" ''
+    set -euo pipefail
+
+    root=/home/chrism/projects/msks
+    state=$root/.devenv/state/msksd
+
+    if [ ! -s "$state/bootstrap-token" ]; then
+      echo "msks-tramp: no daemon state under $state (start the dev daemon first)" >&2
+      exit 1
+    fi
+
+    export MSKSC_TOKEN="$(<"$state/bootstrap-token")"
+    export MSKSC_URL="https://127.0.0.1:$(<"$state/port")"
+    export MSKSC_CAFILE="$state/msks-ca.pem"
+    # Per-worktree client state (#251): the same roots the devenv
+    # shell presets, so TRAMP sessions share the known_hosts cache
+    # and minted identities with interactive msks sessions from the
+    # checkout.
+    export MSKSC_CACHE_DIR=$root/.devenv/state/msksc/cache
+    export MSKSC_DATA_DIR=$root/.devenv/state/msksc/data
+
+    exec "$root/.devenv/state/venv/bin/msks" "$@"
+  '';
+
   remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
     cd /etc/nixos
     verbose=""
@@ -213,6 +243,7 @@ in
     whoosh
     nvfantemps
     edit
+    msks-tramp
     typescript # for tsc for emacs
     remoterebuild
     enfoldrebuild
