@@ -287,93 +287,93 @@
   # the interface to type = "tap" (needs a bridge; see
   # https://microvm-nix.github.io/microvm.nix/simple-network.html). The
   # virtiofs ro-store share below already exercises the CH-style stack.
-  microvm.vms =
-    let
-      guest =
-        {
-          name,
-          hostPort,
-          mac,
-        }:
-        {
-          config =
-            { pkgs, ... }:
-            {
-              networking.hostName = name;
+  # microvm.vms =
+  #   let
+  #     guest =
+  #       {
+  #         name,
+  #         hostPort,
+  #         mac,
+  #       }:
+  #       {
+  #         config =
+  #           { pkgs, ... }:
+  #           {
+  #             networking.hostName = name;
 
-              # Share the host's nix store read-only over virtiofs (no
-              # squashfs/erofs image build), plus a tmpfs-backed writable
-              # overlay so the guest can install packages.
-              microvm.shares = [
-                {
-                  proto = "virtiofs";
-                  tag = "ro-store";
-                  source = "/nix/store";
-                  mountPoint = "/nix/.ro-store";
-                }
-              ];
-              microvm.writableStoreOverlay = "/nix/.rw-store";
+  #             # Share the host's nix store read-only over virtiofs (no
+  #             # squashfs/erofs image build), plus a tmpfs-backed writable
+  #             # overlay so the guest can install packages.
+  #             microvm.shares = [
+  #               {
+  #                 proto = "virtiofs";
+  #                 tag = "ro-store";
+  #                 source = "/nix/store";
+  #                 mountPoint = "/nix/.ro-store";
+  #               }
+  #             ];
+  #             microvm.writableStoreOverlay = "/nix/.rw-store";
 
-              microvm.hypervisor = "qemu";
-              microvm.vcpu = 2;
-              microvm.mem = 1024;
+  #             microvm.hypervisor = "qemu";
+  #             microvm.vcpu = 2;
+  #             microvm.mem = 1024;
 
-              # slirp user networking; hostfwd bound to localhost only, so
-              # the VMs are reachable from this host but not from the LAN.
-              microvm.interfaces = [
-                {
-                  type = "user";
-                  id = "vm-${name}";
-                  inherit mac;
-                }
-              ];
-              microvm.forwardPorts = [
-                {
-                  from = "host";
-                  proto = "tcp";
-                  host.address = "127.0.0.1";
-                  host.port = hostPort;
-                  guest.port = 22;
-                }
-              ];
+  #             # slirp user networking; hostfwd bound to localhost only, so
+  #             # the VMs are reachable from this host but not from the LAN.
+  #             microvm.interfaces = [
+  #               {
+  #                 type = "user";
+  #                 id = "vm-${name}";
+  #                 inherit mac;
+  #               }
+  #             ];
+  #             microvm.forwardPorts = [
+  #               {
+  #                 from = "host";
+  #                 proto = "tcp";
+  #                 host.address = "127.0.0.1";
+  #                 host.port = hostPort;
+  #                 guest.port = 22;
+  #               }
+  #             ];
 
-              # Persistent /var (image volume under /var/lib/microvms/<name>)
-              microvm.volumes = [
-                {
-                  mountPoint = "/var";
-                  image = "var.img";
-                  size = 2048;
-                }
-              ];
+  #             # Persistent /var (image volume under /var/lib/microvms/<name>)
+  #             microvm.volumes = [
+  #               {
+  #                 mountPoint = "/var";
+  #                 image = "var.img";
+  #                 size = 2048;
+  #               }
+  #             ];
 
-              services.openssh.enable = true;
-              services.openssh.settings.PermitRootLogin = "yes";
-              # /etc is ephemeral (read-only root image): persist host keys on
-              # the /var volume so they survive VM restarts.
-              services.openssh.hostKeys = [
-                {
-                  path = "/var/lib/ssh/ssh_host_ed25519_key";
-                  type = "ed25519";
-                }
-              ];
-              users.users.root.password = "demo123";
+  #             services.openssh.enable = true;
+  #             services.openssh.settings.PermitRootLogin = "yes";
+  #             # /etc is ephemeral (read-only root image): persist host keys on
+  #             # the /var volume so they survive VM restarts.
+  #             services.openssh.hostKeys = [
+  #               {
+  #                 path = "/var/lib/ssh/ssh_host_ed25519_key";
+  #                 type = "ed25519";
+  #               }
+  #             ];
+  #             users.users.root.password = "demo123";
 
-              system.stateVersion = "25.11";
-            };
-        };
-    in
-    {
-      vm-a = guest {
-        name = "vm-a";
-        hostPort = 2222;
-        mac = "02:00:00:00:0a:01";
-      };
-      vm-b = guest {
-        name = "vm-b";
-        hostPort = 2223;
-        mac = "02:00:00:00:0b:01";
-      };
-    };
+  #             system.stateVersion = "25.11";
+  #           };
+  #       };
+  #   in
+  #   {
+  #     vm-a = guest {
+  #       name = "vm-a";
+  #       hostPort = 2222;
+  #       mac = "02:00:00:00:0a:01";
+  #     };
+  #     vm-b = guest {
+  #       name = "vm-b";
+  #       hostPort = 2223;
+  #       mac = "02:00:00:00:0b:01";
+  #     };
+  #   };
 
   system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ] ''
     chmod o+x /home/chrism
