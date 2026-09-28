@@ -46,8 +46,8 @@ let
     builtins.readFile ./bin/findnixstorelinks.py
   );
 
-  python313WithPackages = (
-    pkgs.python313.withPackages (
+  python314WithPackages = (
+    pkgs.python314.withPackages (
       p: with p; [
         pyserial # for pico-w-go in vscode
         pyflakes # for emacs
@@ -66,7 +66,7 @@ let
   );
 
   syspython = pkgs.writeScriptBin "syspython" ''
-    exec ${python313WithPackages}/bin/python $@
+    exec ${python314WithPackages}/bin/python $@
   '';
 
 in
@@ -156,7 +156,7 @@ in
       pre-commit
       progress
       pv
-      python313WithPackages # order intentional; python313 will be first
+      python314WithPackages # order intentional; python314 will be first
       rig
       ripgrep
       shellcheck
@@ -281,7 +281,7 @@ in
       localsend
       manim
       meld
-      #python313Packages.meshcore
+      #python314Packages.meshcore
       #meshtastic
       mullvad-vpn
       #(mpv.override { youtubeSupport = false; }) # no deno dep
