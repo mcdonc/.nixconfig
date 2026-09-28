@@ -283,6 +283,25 @@ in
         ControlPersist = "no";
       };
       "192.168.1.*".ForwardAgent = true;
+      # msks workspaces (docs/networking.md alias workflow): ssh,
+      # rsync, git, and VS Code Remote-SSH against `msks-<workspace>`;
+      # the ProxyCommand opens the daemon's authenticated forward, so
+      # run ssh where the msks client and its MSKSC_* environment live
+      # (a devenv shell presets them). ForwardAgent carries the host
+      # agent into every session. Per-workspace identity files land at
+      # ~/.cache/msks/msks-<name>.key (copied from the client data
+      # root's <id>/identity, mode 0600).
+      "msks-*" = {
+        ForwardAgent = true;
+        ProxyCommand = "sh -c 'exec msks forward \"\${1#msks-}\" 22' _ %h";
+        UserKnownHostsFile = "~/.cache/msks/%h/known_hosts";
+        StrictHostKeyChecking = "accept-new";
+        IdentityFile = "~/.cache/msks/%h.key";
+        IdentitiesOnly = true;
+        ControlMaster = "auto";
+        ControlPath = "~/.cache/msks/%h.ctl";
+        ControlPersist = "10m";
+      };
       "quisling.local".ForwardAgent = true;
       "quisling".ForwardAgent = true;
       "lock802".ForwardAgent = true;
