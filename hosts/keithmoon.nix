@@ -755,6 +755,34 @@
     maxVms = 5;
   };
 
+  # --- TEST: password-protected page on :8090 ------------------------------
+  # Standalone nginx vhost gated by HTTP basic auth, for testing auth
+  # wiring end-to-end (curl / browser / proxies). It is the only listener
+  # on :8090, so any Host header reaches it. Remove this block when done.
+  # NOTE: the apr1 hash below lands world-readable in /nix/store — fine for
+  # a throwaway test; for anything real use basicAuthFile with an agenix
+  # secret instead.
+  services.nginx.virtualHosts."protected-test" = {
+    listen = [ { addr = "0.0.0.0"; port = 8090; } ];
+    root = "${
+      pkgs.writeTextDir "index.html" ''
+        <!doctype html>
+        <html>
+          <head><title>protected test page</title></head>
+          <body>
+            <h1>It worked.</h1>
+            <p>If you can read this, basic auth on :8090 is doing its job.</p>
+          </body>
+        </html>
+      ''
+    }";
+    # NB: the module's basicAuth option treats values as plaintext (it
+    # prefixes them with {PLAIN} in the generated htpasswd), so to keep a
+    # crypt-hashed entry we write the htpasswd ourselves via basicAuthFile.
+    basicAuthFile = pkgs.writeText "protected-test.htpasswd"
+      "test:$apr1$4zokz5xU$RvgmtPdcxIDAM8Iw96Gn1.";
+  };
+
   environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users
     * soft nofile 65536
