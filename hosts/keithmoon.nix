@@ -19,6 +19,7 @@
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
+    ./roles/gitea.nix
     ./roles/idracfanctl.nix
     #./roles/tailscale
     #./roles/rc505
