@@ -107,12 +107,18 @@ in
         proxy_set_header X-Forwarded-Proto https;
       '';
     };
-    # No trailing slash on proxyPass: Gitea serves its routes under /gitea/
-    # (ROOT_URL subpath), so the prefix must be passed through unchanged.
+    # Gitea 1.27 does not serve its routes under a subpath (all /gitea/*
+    # paths 404), so nginx strips the prefix before proxying; ROOT_URL still
+    # contains /gitea/ so every generated absolute URL (links, redirects,
+    # OAuth redirect_uri, clone URLs) carries the prefix back through nginx.
+    locations."/gitea" = {
+      return = "301 /gitea/";
+    };
     locations."/gitea/" = {
       proxyPass = "http://127.0.0.1:3000";
       proxyWebsockets = true;
       extraConfig = ''
+        rewrite ^/gitea/(.*)$ /$1 break;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
