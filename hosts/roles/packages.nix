@@ -163,6 +163,7 @@ in
       speedtest-cli
       swaks
       syspython
+      tea
       tldr
       tmux
       tcpdump
