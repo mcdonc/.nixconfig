@@ -20,6 +20,7 @@
     ./roles/steam.nix
     ./roles/speedtest
     ./roles/gitea.nix
+    ./roles/pocket-id.nix
     ./roles/idracfanctl.nix
     #./roles/tailscale
     #./roles/rc505

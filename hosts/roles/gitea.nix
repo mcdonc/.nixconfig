@@ -9,6 +9,13 @@
 #     or a personal access token. Enable via the built-in SSH server on a
 #     spare port if/when needed.
 #   - sqlite backend; all state under /var/lib/gitea (module default)
+#   - fronted by nginx at https://keithmoon.tail33f8f4.ts.net/gitea/ (see
+#     roles/pocket-id.nix); plain HTTP on :3000 still serves git operations
+#     directly (use http://<host-ip>:3000/gitea/<owner>/<repo>.git)
+#   - Gitea Actions enabled; existing repos still need the Actions unit
+#     turned on per repo (repo Settings -> Repository -> Actions). A
+#     runner must be registered separately (Site Administration ->
+#     Actions -> Runners) before workflows can execute.
 {
   config,
   ...
@@ -20,8 +27,8 @@
     database.type = "sqlite3";
     settings = {
       server = {
-        DOMAIN = "keithmoon";
-        ROOT_URL = "http://keithmoon:3000/";
+        DOMAIN = "keithmoon.tail33f8f4.ts.net";
+        ROOT_URL = "https://keithmoon.tail33f8f4.ts.net/gitea/";
         HTTP_ADDR = "0.0.0.0";
         HTTP_PORT = 3000;
         DISABLE_SSH = true;
@@ -29,6 +36,22 @@
       service = {
         DISABLE_REGISTRATION = true;
         REQUIRE_SIGNIN_VIEW = true;
+      };
+      # Global defaults for the OIDC auth source (the source itself —
+      # discovery URL + client id/secret — lives in Gitea's database and is
+      # added once via `gitea admin auth add-oauth`; see the comment at the
+      # bottom of this file).
+      oauth2_client = {
+        OPENID_CONNECT_SCOPES = "email profile";
+        # map the IdP's preferred_username claim to Gitea usernames
+        USERNAME = "preferred_username";
+        # never auto-create accounts from the IdP (single-user instance);
+        # first SSO login shows the account-linking page instead
+        ENABLE_AUTO_REGISTRATION = false;
+        ACCOUNT_LINKING = "login";
+      };
+      actions = {
+        ENABLED = true;
       };
     };
   };
