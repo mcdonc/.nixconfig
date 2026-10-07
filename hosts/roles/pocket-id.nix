@@ -30,6 +30,8 @@ in
 {
   age.secrets."pocket-id-encryption-key".file =
     ../../secrets/pocket-id-encryption-key.age;
+  age.secrets."pocket-id-static-api-key".file =
+    ../../secrets/pocket-id-static-api-key.age;
 
   services.pocket-id = {
     enable = true;
@@ -42,8 +44,12 @@ in
       TRUST_PROXY = true;
       ANALYTICS_DISABLED = true;
     };
-    credentials.ENCRYPTION_KEY =
-      config.age.secrets."pocket-id-encryption-key".path;
+    credentials = {
+      ENCRYPTION_KEY = config.age.secrets."pocket-id-encryption-key".path;
+      # Full-admin API key (X-API-KEY header) for declarative management of
+      # Pocket ID — client/user provisioning without a browser session.
+      STATIC_API_KEY = config.age.secrets."pocket-id-static-api-key".path;
+    };
   };
 
   # --- TLS certificate ---------------------------------------------------
