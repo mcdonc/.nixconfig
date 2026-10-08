@@ -101,5 +101,13 @@
           username = "chrism";
         };
       };
+      darwinConfigurations."angryinch" = nix-darwin.lib.darwinSystem {
+        modules = shared-modules ++ [ homebrew-config-arm ];
+        specialArgs = {
+          inherit inputs;
+          system = "aarch64-darwin";
+          username = "chrism";
+        };
+      };
     };
 }
