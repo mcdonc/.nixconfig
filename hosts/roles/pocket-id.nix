@@ -75,7 +75,11 @@ in
     # Note: nginx on NixOS runs as the nginx user (not a root master), so the
     # key must be group-readable by nginx: dir 0750 root:nginx, key 0640.
     script = ''
-      ${pkgs.coreutils}/bin/install -d -m 0750 -o root -g nginx ${certDir}
+      # dir 0755 (world-traversable): the .crt is the public trust anchor —
+      # apps running as non-root/non-nginx users (e.g. klangkd under a user
+      # devenv) must be able to read it for OIDC ca-cert; only the key stays
+      # locked down (0640 root:nginx below).
+      ${pkgs.coreutils}/bin/install -d -m 0755 -o root -g root ${certDir}
       if [ ! -s ${certDir}/${host}.crt ]; then
         ${pkgs.openssl}/bin/openssl req -x509 -newkey ec \
           -pkeyopt ec_paramgen_curve:prime256v1 \

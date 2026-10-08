@@ -31,7 +31,16 @@
         ROOT_URL = "https://keithmoon.tail33f8f4.ts.net/gitea/";
         HTTP_ADDR = "0.0.0.0";
         HTTP_PORT = 3000;
-        DISABLE_SSH = true;
+        # Built-in SSH server on :2222 (separate from host sshd on :22).
+        # Users enroll public keys in their Gitea account (web UI or API);
+        # the account is the same one provisioned via Pocket ID SSO, which
+        # is as close to "one SSO identity for ssh + web" as the SSH
+        # protocol allows (SSH cannot speak OIDC/WebAuthn).
+        DISABLE_SSH = false;
+        START_SSH_SERVER = true;
+        SSH_DOMAIN = "keithmoon.tail33f8f4.ts.net";
+        SSH_PORT = 2222;
+        SSH_LISTEN_PORT = 2222;
       };
       service = {
         DISABLE_REGISTRATION = true;
