@@ -21,10 +21,11 @@
     ./roles/speedtest
     ./roles/gitea.nix
     ./roles/pocket-id.nix
+    ./roles/strata.nix
     ./roles/idracfanctl.nix
     #./roles/tailscale
     #./roles/rc505
-    ./roles/ollama.nix
+    #./roles/ollama.nix
     ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
@@ -756,6 +757,8 @@
     enable = true;
     maxVms = 5;
   };
+
+  services.strata.enable = true;
 
   # --- TEST: password-protected page on :8090 ------------------------------
   # Standalone nginx vhost gated by HTTP basic auth, for testing auth
