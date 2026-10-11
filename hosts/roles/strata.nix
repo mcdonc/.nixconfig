@@ -16,9 +16,12 @@
 # everything is guarded and starts straight away.
 #
 # Engine args mirror what setup.py generates for this exact hardware
-# (single RTX 3060 sm_86, 126 GB RAM, 32K context, int8 KV, no vision):
-# no kv-resident (ctx < 64K), no pool-workers (uniform Xeon), no rope
-# scaling (32K is native).
+# (single RTX 3060 sm_86, 126 GB RAM, 64K context, int8 KV, no vision):
+# kv-resident 32768 (ctx >= 64K: the ~0.9 GB streamed KV fits beside the
+# 48 GB of experts in RAM), no pool-workers (uniform Xeon), no rope scaling
+# (64K is within the trained 262144). Verified against the pinned setup.py:
+# kv_streaming_wanted('IQ2_XS', 65536, 'int8', 126) = True,
+# resolve_rope(65536, None, None) = (None, None).
 {
   config,
   lib,
@@ -54,7 +57,8 @@ let
       "--spec" "4"
       "--spec-min-p" "0.5"
       "--mtp" "${mtpDir}/rt"
-      "--max-context" "32768"
+      "--max-context" "65536"
+      "--kv-resident" "32768"
       "--kv" "int8"
     ];
     cwd = dataDir;

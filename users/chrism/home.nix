@@ -288,15 +288,20 @@ in
       # the ProxyCommand opens the daemon's authenticated forward, so
       # run ssh where the msks client and its MSKSC_* environment live
       # (a devenv shell presets them). ForwardAgent carries the host
-      # agent into every session. Per-workspace identity files land at
-      # ~/.cache/msks/msks-<name>.key (copied from the client data
-      # root's <id>/identity, mode 0600).
+      # agent into every session. The identity is the operator's own
+      # key (#497: the daemon holds no workspace private halves; the
+      # private material is never a file in the cache) — the private
+      # half of pubkey_file in the msks client config, seeded into
+      # each workspace's authorized_keys at first boot. No User line:
+      # ssh's default local username is the workspace's recorded
+      # login user (#248 — the creating operator's own name); `ssh -l
+      # root` is the recovery login (#500).
       "msks-*" = {
         ForwardAgent = true;
         ProxyCommand = "sh -c 'exec msks forward \"\${1#msks-}\" 22' _ %h";
         UserKnownHostsFile = "~/.cache/msks/%h/known_hosts";
         StrictHostKeyChecking = "accept-new";
-        IdentityFile = "~/.cache/msks/%h.key";
+        IdentityFile = "~/.ssh/id_ed25519";
         IdentitiesOnly = true;
         ControlMaster = "auto";
         ControlPath = "~/.cache/msks/%h.ctl";
