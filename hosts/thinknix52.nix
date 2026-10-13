@@ -19,6 +19,8 @@
     ./roles/dns/resolved-tls.nix # cannot be enabled for tpm
     ./roles/backupsource.nix
     ./roles/tailscale
+    ./roles/pocket-id.nix
+    ./roles/pocket-id-sso.nix
     ./roles/nvidiapassthru.nix
     ./roles/klangk-jit-pool.nix
     ./roles/sudorelax.nix

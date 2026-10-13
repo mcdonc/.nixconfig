@@ -317,6 +317,16 @@ in
     lock802
     arctor
   ];
+  "pocket-id-encryption-key.age".publicKeys = [
+    chrism
+    keithmoon
+    thinknix52
+  ];
+  "pocket-id-static-api-key.age".publicKeys = [
+    chrism
+    keithmoon
+    thinknix52
+  ];
   "github-runner-klangk.age".publicKeys = [
     chrism
     keithmoon
