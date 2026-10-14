@@ -21,6 +21,7 @@
     ./roles/speedtest
     ./roles/gitea.nix
     ./roles/pocket-id.nix
+    ./roles/pocket-id-sso.nix
     ./roles/strata.nix
     ./roles/idracfanctl.nix
     #./roles/tailscale
@@ -81,9 +82,15 @@
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
 
-  # networking.hosts = {
-  #   "127.0.0.1" = [ "rag-logfire.enfoldsystems.net" ];
-  # };
+  # SAME-SITE AUTH-FETCH TEST MODE (reversible — comment out + rebuild
+  # to remove): the klangkd dev UI answers at
+  # https://klangkd.tail33f8f4.ts.net:8997 via loopback, so its origin
+  # shares a registrable domain with the oauth2-proxy gates
+  # (*.tail33f8f4.ts.net is one site; ts.net is a public suffix) —
+  # popup-login cookies then ride the tab's same-site fetches.
+  networking.hosts = {
+    "127.0.0.1" = [ "klangkd.tail33f8f4.ts.net" ];
+  };
 
   boot.initrd.availableKernelModules = [
     "ahci"
@@ -758,7 +765,7 @@
     maxVms = 5;
   };
 
-  services.strata.enable = true;
+  services.strata.enable = false;
 
   # --- TEST: password-protected page on :8090 ------------------------------
   # Standalone nginx vhost gated by HTTP basic auth, for testing auth
