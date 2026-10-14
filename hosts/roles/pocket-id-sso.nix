@@ -46,6 +46,16 @@ let
   # Satisfies Pocket ID's client_id pattern ^[a-z0-9][a-z0-9._-]*$.
   clientId = "oauth2-proxy";
   protectedPort = 9443;
+  # Origin of the klangk web app that cross-origin fetches authenticated
+  # content from the protected vhost (CORS + credentials). Change here (or
+  # lift into an option) when klangkd moves off localhost.
+  corsOrigin = "http://localhost:8997";
+  corsHeaders = ''
+    add_header Access-Control-Allow-Origin "${corsOrigin}" always;
+    add_header Access-Control-Allow-Credentials "true" always;
+    add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
+    add_header Access-Control-Allow-Headers "Content-Type, Authorization" always;
+  '';
 in
 {
   assertions = [
@@ -77,9 +87,16 @@ in
       # Pocket ID's front door uses the self-signed cert from <host>-tls;
       # trust exactly that cert rather than disabling verification.
       provider-ca-file = "${certDir}/${fqdn}.crt";
-      # Accept rd= redirects back to any port on this host (the protected
-      # vhost lives on :${toString protectedPort}).
-      whitelist-domain = fqdn;
+      # Accept rd= redirects back to any port on this host: oauth2-proxy
+      # matches whitelist entries against host INCLUDING the port.
+      whitelist-domain = [
+        fqdn
+        "${fqdn}:${toString protectedPort}"
+      ];
+      # The klangk web app is on a different site (localhost), so its
+      # background fetches only carry the session cookie when the cookie
+      # is SameSite=None (Secure is already set).
+      cookie-samesite = "none";
     };
   };
 
@@ -139,7 +156,9 @@ in
 
       if [ ! -s ${stateDir}/cookie-secret ]; then
         umask 077
-        openssl rand -base64 32 > ${stateDir}/cookie-secret
+        # oauth2-proxy needs a byte-exact 16/24/32-char secret: $( ) + printf
+        # avoid the trailing newline openssl adds (45 bytes -> hard fail)
+        printf '%s' "$(openssl rand -hex 16)" > ${stateDir}/cookie-secret
       fi
     '';
   };
@@ -152,12 +171,19 @@ in
 
   # --- nginx wiring ---------------------------------------------------------
   # oauth2-proxy's endpoints ride on the (public) pocket-id vhost...
-  services.nginx.virtualHosts."${fqdn}".locations."/oauth2/" = {
-    proxyPass = "http://127.0.0.1:4180";
-    extraConfig = ''
-      proxy_set_header X-Scheme                $scheme;
-      proxy_set_header X-Auth-Request-Redirect $request_uri;
-    '';
+  services.nginx.virtualHosts."${fqdn}".locations = {
+    "/oauth2/" = {
+      proxyPass = "http://127.0.0.1:4180";
+      extraConfig = ''
+        proxy_set_header X-Scheme $scheme;
+      '';
+    };
+    # Friendly full logout: oauth2-proxy's bare /oauth2/sign_out loops when
+    # no proxy session is present, and logout at the IdP alone doesn't clear
+    # the proxy cookie. This chains both (proxy cookie, then Pocket ID).
+    "= /oauth2/signout" = {
+      return = "302 https://${fqdn}/oauth2/sign_out?rd=https%3A%2F%2F${fqdn}%2Flogout";
+    };
   };
 
   # ...and everything on the protected vhost requires a Pocket ID session.
@@ -187,23 +213,117 @@ in
     '';
     extraConfig = ''
       auth_request /oauth2/auth;
+      # identity relayed by oauth2-proxy's auth subrequest (--set-xauthrequest)
+      auth_request_set $auth_user $upstream_http_x_auth_request_user;
+      auth_request_set $auth_email $upstream_http_x_auth_request_email;
       error_page 401 = @redirectToAuth2ProxyLogin;
+
+      # CORS for the klangk web app: it fetches authenticated content here
+      # with credentials from a different origin (${corsOrigin}).
+      ${corsHeaders}
+      # Preflight bypasses auth (and everything else).
+      if ($request_method = OPTIONS) {
+        return 204;
+      }
     '';
-    locations."= /oauth2/auth" = {
-      proxyPass = "http://127.0.0.1:4180/oauth2/auth";
-      extraConfig = ''
-        auth_request off;
-        proxy_set_header X-Scheme $scheme;
-        # $http_host (not $host) keeps the :${toString protectedPort} port
-        proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
-        # auth subrequest must not forward the body
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-      '';
-    };
-    locations."@redirectToAuth2ProxyLogin" = {
-      return = "307 https://${fqdn}/oauth2/start?rd=$scheme://$http_host$request_uri";
-      extraConfig = ''auth_request off;'';
+    locations = {
+      # Headless auth probe for browser-side fetches (klangk auth-fetch
+      # feature): 401 plain — no login redirect, background fetches must be
+      # able to read the status — until the oauth2-proxy session cookie
+      # exists, then 200 "authenticated" with the identity headers. Served
+      # via try_files (content phase) so auth_request actually runs; a bare
+      # `return` executes in the rewrite phase and would skip auth.
+      "= /auth-fetch" = {
+        root = pkgs.writeTextDir "auth-fetch.txt" "authenticated\n";
+        extraConfig = ''
+          default_type text/plain;
+          try_files /auth-fetch.txt =404;
+          error_page 401 = @plainUnauthorized;
+          ${corsHeaders}
+          add_header X-Auth-User $auth_user always;
+          add_header X-Auth-Email $auth_email always;
+        '';
+      };
+      "@plainUnauthorized" = {
+        return = "401";
+      };
+      # Generic content relay for the klangk auth-fetch feature: opened as
+      # a popup, it fetches ?target=<same-origin url> with the session
+      # cookie (same-origin fetch inside the popup — top-level cookie
+      # rules apply, no cross-site restrictions), postMessages the body to
+      # the opener, and closes. The target page itself never cooperates;
+      # this location is site infrastructure like /auth-fetch. Auth-gated
+      # by the server-level auth_request: an unauthenticated popup runs
+      # the normal 307 login dance and comes back here afterwards.
+      "= /klangk-relay" = {
+        root = pkgs.writeTextDir "klangk-relay.html" ''
+          <!doctype html>
+          <html>
+            <head><title>auth relay</title></head>
+            <body>
+              <p>Completing authentication…</p>
+              <script>
+                (function () {
+                  var opener = window.opener;
+                  if (!opener || opener.closed) return;
+                  var target = '';
+                  var targetOrigin = '*';
+                  try {
+                    var params = new URLSearchParams(window.location.search);
+                    target = params.get('target') || (window.location.origin + '/');
+                    var want = params.get('origin') || '*';
+                    if (/^https?:\/\//.test(want)) targetOrigin = want;
+                    // same-origin only: the relay may only fetch its own site
+                    if (new URL(target, window.location.href).origin !== window.location.origin) {
+                      target = window.location.origin + '/';
+                    }
+                  } catch (e) { return; }
+                  var deliver = function (status, text, identity) {
+                    opener.postMessage({
+                      type: 'klangk-auth-fetch',
+                      origin: window.location.origin,
+                      status: status,
+                      identity: identity || '',
+                      pageText: text || ''
+                    }, targetOrigin);
+                    window.close();
+                  };
+                  var identity = '';
+                  fetch('/auth-fetch', {credentials: 'same-origin'}).then(function (r) {
+                    if (r.status !== 200) { deliver(r.status, '', ''); return; }
+                    identity = ((r.headers.get('x-auth-user') || '') + ' ' +
+                                (r.headers.get('x-auth-email') || '')).trim();
+                    return fetch(target, {credentials: 'same-origin'});
+                  }).then(function (r) {
+                    if (!r) return;
+                    return r.text().then(function (t) { deliver(r.status, t, identity); });
+                  }).catch(function () { deliver(0, '', ''); });
+                })();
+              </script>
+            </body>
+          </html>
+        '';
+        extraConfig = ''
+          default_type text/html;
+          try_files /klangk-relay.html =404;
+        '';
+      };
+      "= /oauth2/auth" = {
+        proxyPass = "http://127.0.0.1:4180/oauth2/auth";
+        extraConfig = ''
+          auth_request off;
+          proxy_set_header X-Scheme $scheme;
+          # $http_host (not $host) keeps the :${toString protectedPort} port
+          proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
+          # auth subrequest must not forward the body
+          proxy_pass_request_body off;
+          proxy_set_header Content-Length "";
+        '';
+      };
+      "@redirectToAuth2ProxyLogin" = {
+        return = "307 https://${fqdn}/oauth2/start?rd=$scheme://$http_host$request_uri";
+        extraConfig = ''auth_request off;'';
+      };
     };
   };
 }
