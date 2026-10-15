@@ -244,6 +244,7 @@ in
       freepats
       geekbench
       geteltorito
+      ghostty
       gimp
       gitg
       github-desktop
