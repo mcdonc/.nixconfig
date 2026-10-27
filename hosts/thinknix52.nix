@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   nixos-hardware,
   ...
 }:
@@ -69,5 +70,20 @@
   # silence ACPI "errors" at boot shown before NixOS stage 1 output (default
   # is 4)
   boot.consoleLogLevel = 3;
+
+  # --- msks dev mode (#231): the capability wrapper the devenv msksd
+  # process execs — setpriv carrying the two ambient caps the
+  # daemon's egress stack needs (per-VM taps, nftables/NFQUEUE,
+  # DHCP 67, DNS 53). Same grant as keithmoon: root-owned in
+  # /run/wrappers, usable only as
+  #   msks-caps --inh-caps=+net_admin,+net_bind_service \
+  #     --ambient-caps=+net_admin,+net_bind_service -- <cmd>
+  security.wrappers.msks-caps = {
+    source = "${pkgs.util-linux}/bin/setpriv";
+    capabilities = "cap_net_admin,cap_net_bind_service+ep";
+    owner = "root";
+    group = "users";
+    permissions = "u+rx,g+rx";
+  };
 
 }
