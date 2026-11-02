@@ -64,13 +64,15 @@ in
       # /for quickemu
     ];
     casks = [
-      #"google-chrome"
+      "google-chrome"
       #"firefox"
       "bitwarden"
       "iterm2"
       "docker-desktop"
       "discord"
       "claude-code"
+      "keybase"
+      "ghostty"
     ];
     #onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
@@ -152,6 +154,8 @@ in
       home.username = username;
       home.homeDirectory = homedir;
       home.stateVersion = "24.05";
+      # user-local binaries such as herdr (`herdr update` installs to ~/.local/bin)
+      home.sessionPath = [ "${homedir}/.local/bin" ];
       home.packages = with pkgs; [
         bat
         nixpkgs-fmt # unnamed dependency of emacs
