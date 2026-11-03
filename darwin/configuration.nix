@@ -81,6 +81,25 @@ in
 
   nix-homebrew.user = username;
 
+  # Classic Homebrew links <prefix>/share/zsh/site-functions/_brew ->
+  # ../../../completions/zsh/_brew, which expects the brew repo to live at the
+  # prefix root.  With nix-homebrew the repo is at <prefix>/Library/Homebrew
+  # (a symlink into the nix store), so the link dangles and compinit errors on
+  # shell startup:
+  #   compinit:527: no such file or directory: <prefix>/share/zsh/site-functions/_brew
+  # Relink it through the nix-managed repo symlink (which auto-tracks brew
+  # updates); if it still doesn't resolve, remove it rather than break compinit.
+  system.activationScripts.postActivation.text = ''
+    for prefix in /opt/homebrew /usr/local; do
+      [ -e "$prefix/Library/Homebrew" ] || continue
+      mkdir -p "$prefix/share/zsh/site-functions"
+      ln -sfn "../../../Library/Homebrew/../../completions/zsh/_brew" \
+        "$prefix/share/zsh/site-functions/_brew"
+      [ -e "$prefix/share/zsh/site-functions/_brew" ] \
+        || rm -f "$prefix/share/zsh/site-functions/_brew"
+    done
+  '';
+
   fonts.packages = [
     pkgs.nerd-fonts.ubuntu-mono
   ];
@@ -387,6 +406,10 @@ in
             controlPath = "~/.ssh/master-%r@%n:%p";
             controlPersist = "no";
             extraOptions = {
+              # non-Apple ssh builds (nixpkgs openssh, e.g. inside devenv
+              # shells) reject UseKeychain; IgnoreUnknown renders first
+              # (attrs sort lexicographically) so they skip it instead
+              IgnoreUnknown = "UseKeychain";
               UseKeychain = "yes";
             };
           };
