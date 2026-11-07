@@ -281,7 +281,7 @@ in
       libreoffice
       lm_sensors
       localsend
-      manim
+      #manim # disabled: build fails - test_ImageMobject/test_ImageInterpolation "ValueError: Invalid mode for data type" with manim 0.20.1
       meld
       #python314Packages.meshcore
       #meshtastic
@@ -300,7 +300,7 @@ in
       #olive-editor # 0.2 # a dep has cmake problems in 25.11
       pico-sdk
       pinentry-tty # dep of gpg
-      pkgs.vscode-fhs
+      #pkgs.vscode-fhs # 1.144.0 fails patchPhase: @vscode/ripgrep/bin/rg missing
       psmisc
       powertop
       proton-vpn
