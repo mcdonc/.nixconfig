@@ -677,12 +677,17 @@
     config =
       { config, pkgs, ... }:
       {
+        # declarative containers are separate NixOS evals; without this
+        # nixpkgs >= 26.05 emits "stateVersion is not set" at eval time.
+        # Ephemeral test container (caddy only, manual start), no stateful
+        # services, so current release is fine.
+        system.stateVersion = "26.05";
         services.caddy = {
           enable = true;
           # Self-signed internal cert (Caddy's tls internal) terminates HTTPS
           # on :443. reverse_proxy forwards to the host bridge IP. Caddy sets
           # X-Forwarded-For / X-Forwarded-Proto / a single Host by default.
-          config = ''
+          extraConfig = ''
             :443 {
               tls /etc/klangk-proxy/certs/klangk-test.crt /etc/klangk-proxy/certs/klangk-test.key
               reverse_proxy 10.100.0.1:28997 {
