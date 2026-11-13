@@ -9,6 +9,7 @@ args@{ config, pkgs, ... }:
 
   programs.git = {
     enable = true;
+    signing.format = "openpgp";
     userName = "Larry";
     userEmail = "larry@agendaless.com";
     extraConfig = {

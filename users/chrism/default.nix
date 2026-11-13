@@ -32,6 +32,32 @@
     group = "users";
   };
 
+  age.secrets."zai-authtoken" = {
+    file = ../../secrets/zai-authtoken.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+
+  age.secrets."zai-authtoken-chrism2" = {
+    file = ../../secrets/zai-authtoken-chrism2.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+  age.secrets."zai-authtoken-chrism3" = {
+    file = ../../secrets/zai-authtoken-chrism3.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+  age.secrets."zai-authtoken-alan" = {
+    file = ../../secrets/zai-authtoken-alan.age;
+    mode = "600";
+    owner = "chrism";
+    group = "users";
+  };
+
   # to make available in /run/agenix/foo
   environment.variables = {
     UBUNTU_PRO_ATTACH = config.age.secrets."mcdonc-ubuntu-pro-attach".path;

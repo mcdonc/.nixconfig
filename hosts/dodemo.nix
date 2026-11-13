@@ -3,7 +3,6 @@
   pkgs,
   nixpkgs,
   nixos-generators,
-  system,
   ...
 }:
 

@@ -14,6 +14,8 @@
   services.zfs.autoScrub.interval = "quarterly";
   services.zfs.trim.enable = true;
 
+  boot.zfs.forceImportRoot = true; # squash warning in 26.05+
+    
   fileSystems."/" = {
     device = "NIXROOT/root";
     fsType = "zfs";

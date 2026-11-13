@@ -1,0 +1,173 @@
+# Pocket ID OIDC identity provider + HTTPS front door, general enough for
+# any host on the tailnet (FQDN is derived from networking.hostName, so on
+# keithmoon this is unchanged; on thinknix52 it serves
+# https://thinknix52.tail33f8f4.ts.net/):
+#
+#   https://<host>.tail33f8f4.ts.net/       -> Pocket ID (login UI + OIDC)
+#   https://<host>.tail33f8f4.ts.net/gitea/ -> Gitea (ROOT_URL moved under
+#                                                  the same origin; proxied
+#                                                  only where services.gitea
+#                                                  is enabled)
+#
+# TLS is a self-signed cert for now: passkeys (WebAuthn) need a secure
+# context, so Pocket ID must be HTTPS; the tailnet's "HTTPS Certificates"
+# feature is not enabled, so `tailscale cert` is unavailable (it errors with
+# "account does not support getting TLS certs"). Desktop browsers accept the
+# self-signed cert once and remain a valid secure context. To get publicly
+# trusted certs (needed for passkeys from phones), enable HTTPS Certificates
+# in the Tailscale admin console and swap the <host>-tls service for the
+# commented `tailscale cert` variant below.
+#
+# Pocket ID listens on 127.0.0.1:1411 only. Browsers reach it via nginx over
+# HTTPS (APP_URL). Server-side consumers (Gitea's OIDC discovery fetch) use
+# INTERNAL_APP_URL, so the discovery document advertises loopback endpoints
+# and Go HTTP clients never have to trust the self-signed cert.
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  # MagicDNS suffix shared by every host on the tailnet (stable per tailnet;
+# cannot be discovered at eval time — roles/dns/resolved-tls.nix reads it
+# at runtime from `tailscale status --json` instead).
+  tailnet = "tail33f8f4.ts.net";
+  # Must match the host's Tailscale MagicDNS name (tailscale derives it from
+  # the hostname unless overridden in the admin console).
+  host = "${config.networking.hostName}.${tailnet}";
+  # TLS unit + cert dir are named after the host: keithmoon keeps its
+  # existing keithmoon-tls unit and /var/lib/keithmoon-tls cert (no
+  # regeneration, no browser re-trust); other hosts get their own.
+  tlsUnit = "${config.networking.hostName}-tls";
+  certDir = "/var/lib/${tlsUnit}";
+  # The /gitea/ proxy locations only make sense where Gitea actually runs.
+  giteaUpstream = config.services.gitea.enable;
+in
+{
+  age.secrets."pocket-id-encryption-key".file =
+    ../../secrets/pocket-id-encryption-key.age;
+  age.secrets."pocket-id-static-api-key".file =
+    ../../secrets/pocket-id-static-api-key.age;
+
+  services.pocket-id = {
+    enable = true;
+    settings = {
+      APP_URL = "https://${host}";
+      INTERNAL_APP_URL = "http://127.0.0.1:1411";
+      HOST = "127.0.0.1";
+      PORT = "1411";
+      # nginx on localhost is the only client
+      TRUST_PROXY = true;
+      ANALYTICS_DISABLED = true;
+    };
+    credentials = {
+      ENCRYPTION_KEY = config.age.secrets."pocket-id-encryption-key".path;
+      # Full-admin API key (X-API-KEY header) for declarative management of
+      # Pocket ID — client/user provisioning without a browser session.
+      STATIC_API_KEY = config.age.secrets."pocket-id-static-api-key".path;
+    };
+  };
+
+  # --- TLS certificate ---------------------------------------------------
+  # Generates a self-signed cert on first boot (idempotent). Replace with the
+  # tailscale variant once tailnet HTTPS certificates are enabled:
+  #
+  #   script = ''
+  #     mkdir -p ${certDir}
+  #     ${pkgs.tailscale}/bin/tailscale cert \
+  #       --cert-file ${certDir}/${host}.crt \
+  #       --key-file ${certDir}/${host}.key ${host}
+  #     systemctl reload nginx || true
+  #   '';
+  #
+  # (tailscale cert renews automatically when re-run before expiry — keep a
+  # daily timer on this unit either way.)
+  systemd.services.${tlsUnit} = {
+    description = "TLS certificate for ${host}";
+    after = [ "network.target" ];
+    before = [ "nginx.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    # Note: nginx on NixOS runs as the nginx user (not a root master), so the
+    # key must be group-readable by nginx: dir 0750 root:nginx, key 0640.
+    script = ''
+      # dir 0755 (world-traversable): the .crt is the public trust anchor —
+      # apps running as non-root/non-nginx users (e.g. klangkd under a user
+      # devenv) must be able to read it for OIDC ca-cert; only the key stays
+      # locked down (0640 root:nginx below).
+      ${pkgs.coreutils}/bin/install -d -m 0755 -o root -g root ${certDir}
+      if [ ! -s ${certDir}/${host}.crt ]; then
+        ${pkgs.openssl}/bin/openssl req -x509 -newkey ec \
+          -pkeyopt ec_paramgen_curve:prime256v1 \
+          -keyout ${certDir}/${host}.key -out ${certDir}/${host}.crt \
+          -days 3650 -nodes -subj "/CN=${host}" \
+          -addext "subjectAltName=DNS:${host}"
+      fi
+      # perms fixed unconditionally: nginx (running as the nginx user) needs
+      # group read access even on certs generated by an older version
+      ${pkgs.coreutils}/bin/chown root:nginx ${certDir}/${host}.crt ${certDir}/${host}.key
+      ${pkgs.coreutils}/bin/chmod 0644 ${certDir}/${host}.crt
+      ${pkgs.coreutils}/bin/chmod 0640 ${certDir}/${host}.key
+    '';
+  };
+  systemd.timers.${tlsUnit} = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Unit = "${tlsUnit}.service";
+    };
+  };
+
+  # --- HTTPS reverse proxy ------------------------------------------------
+  # The role's front door is nginx: without this, virtualHosts below is
+  # silently ignored, the nginx user/group never exists (so the chown in the
+  # <host>-tls unit above fails with "invalid group: root:nginx"), and
+  # https://<host>.<tailnet> is never served.
+  services.nginx.enable = true;
+
+  services.nginx.virtualHosts."${host}" = {
+    onlySSL = true;
+    sslCertificate = "${certDir}/${host}.crt";
+    sslCertificateKey = "${certDir}/${host}.key";
+    locations =
+      {
+        "/" = {
+          proxyPass = "http://127.0.0.1:1411";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+          '';
+        };
+      }
+      // lib.optionalAttrs giteaUpstream {
+        # Gitea 1.27 does not serve its routes under a subpath (all /gitea/*
+        # paths 404), so nginx strips the prefix before proxying; ROOT_URL still
+        # contains /gitea/ so every generated absolute URL (links, redirects,
+        # OAuth redirect_uri, clone URLs) carries the prefix back through nginx.
+        "/gitea" = {
+          return = "301 /gitea/";
+        };
+        "/gitea/" = {
+          proxyPass = "http://127.0.0.1:3000";
+          proxyWebsockets = true;
+          extraConfig = ''
+            rewrite ^/gitea/(.*)$ /$1 break;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+          '';
+        };
+      };
+  };
+
+  systemd.services.nginx = {
+    wants = [ "${tlsUnit}.service" ];
+    after = [ "${tlsUnit}.service" ];
+  };
+}

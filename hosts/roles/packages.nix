@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-2511, 
   pkgs-py36,
   pkgs-py37,
   pkgs-py39,
@@ -7,7 +8,6 @@
   pkgs-unstable,
   pkgs-claude-code,
   inputs,
-  system,
   config,
   ...
 }:
@@ -37,7 +37,7 @@ let
     spawn -noecho nix --extra-experimental-features repl nixpkgs
     expect "nix-repl> " {
       send ":a builtins\n"
-      send "pkgs = legacyPackages.${system}\n"
+      send "pkgs = legacyPackages.${pkgs.stdenv.hostPlatform.system}\n"
       interact
     }
   '';
@@ -46,8 +46,8 @@ let
     builtins.readFile ./bin/findnixstorelinks.py
   );
 
-  python313WithPackages = (
-    pkgs.python313.withPackages (
+  python314WithPackages = (
+    pkgs.python314.withPackages (
       p: with p; [
         pyserial # for pico-w-go in vscode
         pyflakes # for emacs
@@ -60,12 +60,13 @@ let
         twine # for uploading to PyPI
         python-lsp-server # for emacs lsp
         pyyaml # for runcontainer
+        meshcore
       ]
     )
   );
 
   syspython = pkgs.writeScriptBin "syspython" ''
-    exec ${python313WithPackages}/bin/python $@
+    exec ${python314WithPackages}/bin/python $@
   '';
 
 in
@@ -74,6 +75,7 @@ in
     # unmaintained python
     "python-2.7.18.8"
     "python-2.7.18.12"
+    "electron-39.8.10"
     "jitsi-meet-1.0.8792"
   ];
 
@@ -81,8 +83,10 @@ in
     with pkgs;
     [
       age
+      aha
       alsa-utils
       any-nix-shell
+      ansi2html
       asciiquarium
       banner
       bastet # tetris
@@ -93,7 +97,8 @@ in
       btop
       cachix
       pkgs-claude-code.claude-code
-      pkgs-unstable.github-copilot-cli
+      devenv
+      github-copilot-cli
       cntr # for build debugging
       cowsay
       curl
@@ -117,12 +122,12 @@ in
       html-tidy
       inetutils # for telnet
       inotify-tools
-      inputs.agenix.packages."${system}".default
+      inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
       iperf
       isd
       jq
       killall
-      lha
+      pkgs-2511.lha # XXX26.05 broken in nixpkgs 26.05 (C compile errors with newer GCC, waiting for https://github.com/NixOS/nixpkgs/pull/516861)
       loccount
       lolcat
       lsof
@@ -139,8 +144,9 @@ in
       nix-index # for nix-locate
       nix-output-monitor
       nix-tree
-      nixfmt-rfc-style
+      nixfmt
       nixos-repl
+      nodejs
       nmap
       openssl
       openvpn
@@ -150,25 +156,27 @@ in
       pre-commit
       progress
       pv
-      python313WithPackages # order intentional; python313 will be first
+      python314WithPackages # order intentional; python314 will be first
       rig
       ripgrep
       shellcheck
       speedtest-cli
       swaks
       syspython
+      tea
       tldr
       tmux
+      tcpdump
       tree
       unzip
       usbutils
       util-linux # wipefs
+      uv
       wakeonlan
       wget
       wol
       xz
       zstd
-      nixos-rebuild-ng
     ]
     ++ lib.optionals (!config.jawns.isworkstation) [
       vim
@@ -195,14 +203,14 @@ in
       pkgs-py37.python37
       pkgs-py39.python38
       pkgs-py39.python39
-      python310
-      python311
-      python312
+      pkgs-2511.python310 # XXX26.05 removed in nixpkgs 26.05
+      pkgs-2511.python311 # XXX26.05 broken in nixpkgs 26.05 (sphinx/docutils crash building docs)
+      pkgs-2511.python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
       pypy3
       python27
-      (wrapOBS {
-        plugins = [ pkgs.obs-studio-plugins.obs-backgroundremoval ];
-      })
+      # obs; plugin wrap retired with obs-backgroundremoval, plain package is
+      # fine (overlay in flake.nix adds cudaSupport for NVENC)
+      obs-studio
 
       agebox
       airspy
@@ -210,7 +218,7 @@ in
       alsa-utils # aplay
       antigravity
       appimage-run
-      # ardour # broken under 25.11
+      ardour
       argyllcms
       audacity
       audiowaveform
@@ -223,19 +231,20 @@ in
       discord
       distrobox
       dive # docker
-      #dsd # for gprx dmr decoding, problems under 25.11
-      #dsdcc # for gprx dmr decoding, problems under 25.11
+      dsdcc # for gprx dmr decoding 
       dtc # milkv
       dupe-krill
-      dupeguru
+      pkgs-2511.dupeguru # XXX26.05 broken in nixpkgs 26.05 (sphinx 9.1 doesn't support python 3.11)
       element-desktop
-      fast-cli # wants chromium, wtf
+      pkgs-2511.fast-cli # XXX26.05 removed in nixpkgs 26.05 (unmaintainable)
+      fastfetch
       fdupes
       ffmpeg-full
       firefox
       freepats
       geekbench
       geteltorito
+      ghostty
       gimp
       gitg
       github-desktop
@@ -272,34 +281,36 @@ in
       libreoffice
       lm_sensors
       localsend
-      # manim # broken under 25.11
-      # manim-slides
+      #manim # disabled: build fails - test_ImageMobject/test_ImageInterpolation "ValueError: Invalid mode for data type" with manim 0.20.1
       meld
+      #python314Packages.meshcore
+      #meshtastic
       mullvad-vpn
-      #mplayer # broken under 25.11
-      pkgs-unstable.mpv
-      neofetch
+      #(mpv.override { youtubeSupport = false; }) # no deno dep
+      mpv
       networkmanager-openvpn
       nickel
       nil # for nix emacs lsp-mode
       nrsc5
       nvidia-offload
       nvtopPackages.nvidia
+      obsidian
       odin2
-      pkgs-unstable.opencode
+      opencode
       #olive-editor # 0.2 # a dep has cmake problems in 25.11
       pico-sdk
       pinentry-tty # dep of gpg
-      pkgs.vscode-fhs
+      #pkgs.vscode-fhs # 1.144.0 fails patchPhase: @vscode/ripgrep/bin/rg missing
+      psmisc
       powertop
-      protonvpn-gui
+      proton-vpn
       qjackctl
       qjournalctl
       quickemu
       remmina
-      #rhythmbox # broken under 25.11
+      rhythmbox
       rnnoise-plugin
-      #rpi-imager
+      rpi-imager
       rshell
       rst2pdf
       ruby
@@ -309,7 +320,7 @@ in
       sanoid
       screenkey
       sdcc
-      # sdrangel # broken under 25.11
+      sdrangel
       setbfree
       sfizz
       signal-desktop
@@ -327,20 +338,20 @@ in
       tap-plugins
       thermald
       thinkfan
-      vdhcoapp # vdhcoapp install --user (https://github.com/NixOS/nixpkgs/issues/112046)
+      usbimager
       vim-full
       virt-manager
       virt-viewer # for remote-viewer
       vlc
-      #wireshark
+      wireshark
       x42-avldrums
       x42-plugins
       xcalib
       xclip # unnamed dep of opencode
       xdotool
-      xorg.xev
-      xorg.xkbcomp
-      xorg.xmodmap
+      xev
+      xkbcomp
+      xmodmap
       yt-dlp
       zam-plugins
       zgrviewer

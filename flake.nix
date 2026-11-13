@@ -2,12 +2,12 @@
   description = "Chris' Jawns";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11";
-    # pinned: newer revs have LOCALVERSION serialization bug breaking rpi4 kernel
-    nixos-hardware.url = "github:NixOS/nixos-hardware/2096f3f411ce46e88a79ae4eafcfc9df8ed41c61";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    home-manager.url = "github:nix-community/home-manager/release-26.05"; # unstable until release-26.05 branch exists
     # musnix.url = "github:musnix/musnix";
     # musnix.inputs.nixpkgs.follows = "nixpkgs";
     #nixtheplanet.url = "github:matthewcroughan/NixThePlanet";
@@ -15,7 +15,7 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-    mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
+    mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-26.05";
     nixpkgs-py36.url = "github:NixOS/nixpkgs/407f8825b321617a38b86a4d9be11fd76d513da2";
     nixpkgs-py37.url = "github:NixOS/nixpkgs/79b3d4bcae8c7007c9fd51c279a8a67acfa73a2a";
     nixpkgs-py39.url = "github:NixOS/nixpkgs/fe7ab74a86d78ba00d144aa7a8da8c71a200c563";
@@ -28,6 +28,10 @@
     nixpkgs-pjsip.url = "github:NixOS/nixpkgs/3e20095fe3c6cbb1ddcef89b26969a69a1570776";
     # locked revision of nixos-25.11 as of 2026-03-21, prevent emacs recompiles
     nixpkgs-emacs.url = "github:NixOS/nixpkgs/fea3b367d61c1a6592bc47c72f40a9f3e6a53e96";
+    herdr.url = "github:ogulcancelik/herdr/v0.6.2";
+    herdr.inputs.nixpkgs.follows = "nixpkgs";
+    microvm.url = "github:microvm-nix/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-olive.url =
     #   "github:NixOS/nixpkgs/0aca8f43c8dba4a77aa0c16fb0130237c3da514c";
   };
@@ -36,7 +40,14 @@
     inputs:
     let
 
-      my_overlay = (self: super: { });
+      my_overlay = (
+        self: super:
+        {
+          # NVENC in OBS: patches the obs-nvenc test executable with the
+          # NVIDIA driver runpath so it can dlopen libnvidia-encode
+          obs-studio = super.obs-studio.override { cudaSupport = true; };
+        }
+      );
 
       mkSystem =
         host:
@@ -80,6 +91,10 @@
             {
               name = "pkgs-2411";
               value = nixpkgs-2411;
+            }
+            {
+              name = "pkgs-2511";
+              value = nixpkgs-2511;
             }
             # {
             #   name = "pkgs-olive";
@@ -131,7 +146,6 @@
             inputs
             // forks
             // {
-              system = host.system;
               inherit inputs;
             };
 
@@ -139,9 +153,11 @@
         {
           name = host.hostname;
           value = inputs.nixpkgs.lib.nixosSystem {
-            system = host.system;
             inherit specialArgs;
-            modules = shared-mods ++ [ (./. + "/hosts/${host.hostname}.nix") ];
+            modules = shared-mods ++ [
+              { nixpkgs.hostPlatform.system = host.system; }
+              (./. + "/hosts/${host.hostname}.nix")
+            ];
           };
         };
 
@@ -180,6 +196,18 @@
         }
         {
           hostname = "keithmoon";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "klangk-ci";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "klangk-jit";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "klangk-jit52";
           system = "x86_64-linux";
         }
         {

@@ -3,7 +3,8 @@
 {
   services.ollama.enable = true;
   services.ollama.package = pkgs-unstable.ollama-cuda;
-  services.ollama.acceleration = "cuda";
+  systemd.services.ollama.serviceConfig.MemoryDenyWriteExecute = pkgs.lib.mkForce false;
+  # services.ollama.acceleration = "cuda"; # removed in 26.05; use package instead
   services.ollama.loadModels = [
     "codellama:7b"
     "qwen2.5-coder:7b"
@@ -11,6 +12,7 @@
   ];
   services.ollama.environmentVariables = {
     "OLLAMA_CONTEXT_LENGTH" = "64000";
+    "OLLAMA_ORIGINS" = "*";
   };
 
   services.open-webui.enable = true;

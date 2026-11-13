@@ -2,7 +2,6 @@
   lib,
   pkgs,
   inputs,
-  system,
   config,
   ...
 }:
@@ -17,7 +16,7 @@
     ./roles/minimal.nix
     ./roles/lock802/doorserver.nix
     ./roles/journalwatch.nix
-    ./roles/jupyterhub.nix
+    ./roles/sudorelax.nix
   ];
 
   networking.firewall.enable = true;
@@ -26,6 +25,12 @@
     80
     443
   ];
+  # for klangk
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 9000; to = 9500; }
+  ];
+  # Allow Docker containers to reach Klangk nginx (bridge endpoint)
+  networking.firewall.interfaces.docker0.allowedTCPPorts = [ 8995 ];
   networking.firewall.logRefusedConnections = false;
 
   services.fail2ban.enable = true;
@@ -45,14 +50,6 @@
       findtime = 600
       maxretry = 3
     '';
-    "jupyterhub-bruteforce" = ''
-      enabled = true
-      filter = jupyterhub-bruteforce
-      findtime = 600
-      maxretry = 6
-      backend = auto
-      logpath = /var/log/nginx/access.log
-    '';
   };
 
   environment.etc."fail2ban/filter.d/postfix-bruteforce.conf".text = ''
@@ -64,11 +61,6 @@
     [Definition]
     failregex = warning: hostname [\w\.\-]+ does not resolve to address <HOST>
     journalmatch = _SYSTEMD_UNIT=postfix.service
-  '';
-  # 98.169.127.190 - - [30/Jun/2025:18:49:10 -0400] "POST /hub/login?next= HTTP/2.0" 403 7931 "https://jupyterhub.repoze.org/hub/login?next=" "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0"
-  environment.etc."fail2ban/filter.d/jupyterhub-bruteforce.conf".text = ''
-    [Definition]
-    failregex = ^<HOST>.*POST.*(\/hub\/login).* HTTP\/\d.\d\" 403.*$
   '';
 
   services.doorserver.enable = true;
@@ -128,6 +120,90 @@
           autoindex_localtime on;
         '';
       };
+      locations."/meshextend" = {
+        return = "301 /meshextend/";
+      };
+      locations."/meshextend/" = {
+        proxyPass = "http://localhost:8079/";
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+        '';
+      };
+      locations."/klangk" = {
+        return = "301 /klangk/";
+      };
+      # Hosted app proxy: nginx proxies directly to container port
+      locations."~ ^/klangk/hosted/[^/]+/(\\d+)/(.*)" = {
+        extraConfig = ''
+          proxy_pass http://127.0.0.1:$1/$2$is_args$args;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_http_version 1.1;
+        '';
+      };
+      locations."/klangk/" = {
+        proxyPass = "http://localhost:8997/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Prefix /klangk;
+          proxy_set_header Accept-Encoding "";
+
+          # Rewrite base href for subpath hosting
+          sub_filter '<base href="/" />' '<base href="/klangk/" />';
+          sub_filter_once on;
+          sub_filter_types text/html;
+        '';
+      };
+      locations."/soliplex" = {
+        return = "301 /soliplex/";
+      };
+      locations."/soliplex/" = {
+        proxyPass = "http://localhost:8555/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-Prefix /soliplex;
+          proxy_set_header Accept-Encoding "";
+
+          # Rewrite base href for subpath hosting
+          sub_filter '<base href="/" />' '<base href="/soliplex/" />';
+          sub_filter_once on;
+          sub_filter_types text/html;
+        '';
+      };
+      locations."/openai-proxy/" = {
+        proxyPass = "https://ollama.com/v1/";
+        extraConfig = ''
+          proxy_set_header Host ollama.com;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_ssl_server_name on;
+
+          # CORS headers
+          add_header Access-Control-Allow-Origin "*" always;
+          add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+          add_header Access-Control-Allow-Headers "Authorization, Content-Type" always;
+
+          # Handle preflight requests
+          if ($request_method = OPTIONS) {
+            return 204;
+          }
+        '';
+      };
     };
     virtualHosts."repoze.org" = {
       addSSL = true;
@@ -176,27 +252,29 @@
       };
     };
 
-    virtualHosts."jupyterhub.repoze.org" = {
+    virtualHosts."klangk.org" = {
       forceSSL = true;
       enableACME = true;
-      acmeRoot = null;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8000/";
-        proxyWebsockets = true;
-        extraConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-Host $host:$server_port;
-          proxy_set_header X-Forwarded-Port $server_port;
-        '';
+        root = "/srv/klangk/website";
       };
     };
 
   };
 
+  security.acme.certs."klangk.org" = {
+    dnsProvider = lib.mkForce null;
+    environmentFile = lib.mkForce null;
+  };
+
+  systemd.services.nginx.serviceConfig.ProtectHome = lib.mkForce false;
+  # Allow nginx to traverse /home/chrism for serving klangk.org
+  systemd.tmpfiles.rules = [
+    "d /home/chrism 0701 chrism users -"
+  ];
+
   users.users.nginx.extraGroups = [ "acme" ];
+  users.users.chrism.extraGroups = [ "postdrop" ];  # for sendmail maildrop queue (klangk email verification)
 
   mailserver =
     let
@@ -216,7 +294,7 @@
       # To create the password hashes, use
       # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
 
-      loginAccounts = {
+      accounts = {
         "chrism@repoze.org" = {
           hashedPasswordFile = passfile;
           # aliases = [ "@repoze.org" ]
@@ -230,7 +308,7 @@
         "chrism@repoze.org" = "chrism@plope.com";
       };
 
-      certificateScheme = "acme"; # managed by service.ngnix above
+      x509.useACMEHost = "arctor.repoze.org"; # managed by services.nginx above
     };
 
   # setting this to false also stops postfix from running
@@ -246,20 +324,21 @@
     /^(.*[^@]+)@([^.@]+(\.localdomain)?)$/        ''${1}@repoze.org
   '';
 
+  services.postfix.submissionOptions = {
+    smtpd_sender_restrictions = lib.mkForce "permit_sasl_authenticated,reject";
+    smtpd_sender_login_maps = lib.mkForce "";
+  };
+
   services.postfix.settings.main = {
     smtpd_sasl_security_options = lib.mkForce "noanonymous";
     recipient_canonical_maps = "regexp:/etc/postfix/canonical";
     sender_canonical_maps = "regexp:/etc/postfix/canonical";
-    # allow recipient to be any domain if sasl-auth submitted
     smtpd_recipient_restrictions = lib.mkForce ''
       permit_mynetworks, permit_sasl_authenticated, reject
     '';
-    # allow sender to be any domain if sasl-auth submitted
     smtpd_sender_restrictions = lib.mkForce ''
       permit_mynetworks, permit_sasl_authenticated, reject
     '';
-    #debug_peer_list = lib.mkForce "98.169.127.190";
-    #debug_peer_level = lib.mkForce 3;
   };
 
   #https://bkiran.com/blog/using-nginx-in-nixos
@@ -270,6 +349,52 @@
 
   # rpi: https://blog.janissary.xyz/posts/nixos-install-custom-image
 
+  systemd.services.meshextend-web = {
+    description = "Meshextend Web Server";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/meshextend-web";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
+  systemd.services.soliplex = {
+    description = "Soliplex";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/soliplex/devenv";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
+  systemd.services.klangk = {
+    description = "Klangk";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/klangk";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    path = [ "/run/wrappers" ];
+  };
+  
   boot.kernel.sysctl."vm.overcommit_memory" = lib.mkForce "1"; # redis
 
 }

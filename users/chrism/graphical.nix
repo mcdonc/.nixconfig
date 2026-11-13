@@ -45,6 +45,10 @@ let
   '';
 
   ssh-chcolor = pkgs.writeShellScript "ssh-chcolor" ''
+    if [ -n "$SSH_NO_COLOR" ]; then
+      # bypass color switching entirely (see termAliases below)
+      exec ${pkgs.openssh}/bin/ssh "$@"
+    fi
     source ${gterm-color-funcs}
     pushcolor 5
     ${pkgs.openssh}/bin/ssh $@
@@ -248,6 +252,32 @@ in
   services.keybase.enable = true;
   services.kbfs.enable = true;
 
+  # Wrapper script that launches keybase-gui then restarts the keybase
+  # service after a short delay.  The gregor push handler often ends up
+  # in a stale "client unset" state, causing "disconnected from chat
+  # server" in the GUI.  The restart fixes it (what kbrestart does
+  # manually).  --disable-gpu-sandbox is needed for NVIDIA.
+  xdg.desktopEntries.keybase = {
+    name = "Keybase";
+    comment = "Keybase Filesystem Service and GUI";
+    icon = "keybase";
+    exec = toString (pkgs.writeShellScript "keybase-gui-wrapper" ''
+      ${pkgs.keybase-gui}/bin/keybase-gui --disable-gpu-sandbox &
+      sleep 5
+      systemctl --user restart keybase.service
+      wait
+    '');
+    terminal = false;
+    type = "Application";
+    startupNotify = true;
+    mimeType = [
+      "x-scheme-handler/web+stellar"
+      "x-scheme-handler/keybase"
+      "application/x-saltpack"
+    ];
+    categories = [ "Network" ];
+  };
+
   programs.gnome-terminal = termsettings;
 
   programs.bash = {
@@ -266,11 +296,21 @@ in
       }
 
       function devenv () {
-         # turn term color blue
+         # turn term color purple
          pushcolor 4
+         # devenv shell execs into a new shell, so popcolor after
+         # command devenv may never run; export a flag so the new
+         # shell sets up a trap to popcolor on exit
+         export __DEVENV_POPCOLOR=1
          command devenv "$@"
+         # in case devenv doesn't exec (e.g. devenv build)
+         unset __DEVENV_POPCOLOR 2>/dev/null
          popcolor
       }
+      if [[ -n "$__DEVENV_POPCOLOR" ]]; then
+         unset __DEVENV_POPCOLOR
+         trap 'popcolor' EXIT
+      fi
 
     '';
   };

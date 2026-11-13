@@ -19,18 +19,43 @@
     ./roles/davinci-resolve/studio.nix
     ./roles/steam.nix
     ./roles/speedtest
+    ./roles/gitea.nix
+    ./roles/pocket-id.nix
+    ./roles/pocket-id-sso.nix
+    ./roles/strata.nix
     ./roles/idracfanctl.nix
     #./roles/tailscale
     #./roles/rc505
-    ./roles/ollama.nix
+    #./roles/ollama.nix
     ./roles/mailrelayer.nix
     ./roles/zedalerts.nix
     ./roles/journalwatch.nix
+    ./roles/klangk-jit-pool.nix
+    ./roles/klangk-jit-pool-sudo.nix
     ./roles/nvidiapassthru.nix
+    ./roles/dictation.nix
     #./roles/vllm.nix
+
+    ./roles/sudorelax.nix
+
+    # microvm.nix host module: declares microvm.vms below as systemd units
+    # (microvm@<name>.service) with state under /var/lib/microvms/<name>/.
+    inputs.microvm.nixosModules.host
   ];
 
   system.stateVersion = "24.05";
+
+  # Podman: enable the NixOS module (provides policy.json, subuid/subgid, etc.)
+  # Storage on ext4 — ZFS lacks idmapped mount support, causing
+  # storage-chown-by-maps to hang with --userns=keep-id.
+  virtualisation.podman.enable = true;
+  virtualisation.containers.storage.settings = {
+    storage = {
+      driver = "overlay";
+      graphroot = "/steam2/podman/storage";
+      runroot = "/steam2/podman/run";
+    };
+  };
 
   # environment.extraInit =
   #   let
@@ -57,9 +82,15 @@
   networking.hostId = "90ca4330";
   networking.hostName = "keithmoon";
 
-  # networking.hosts = {
-  #   "127.0.0.1" = [ "rag-logfire.enfoldsystems.net" ];
-  # };
+  # SAME-SITE AUTH-FETCH TEST MODE (reversible — comment out + rebuild
+  # to remove): the klangkd dev UI answers at
+  # https://klangkd.tail33f8f4.ts.net:8997 via loopback, so its origin
+  # shares a registrable domain with the oauth2-proxy gates
+  # (*.tail33f8f4.ts.net is one site; ts.net is a public suffix) —
+  # popup-login cookies then ride the tab's same-site fetches.
+  networking.hosts = {
+    "127.0.0.1" = [ "klangkd.tail33f8f4.ts.net" ];
+  };
 
   boot.initrd.availableKernelModules = [
     "ahci"
@@ -70,7 +101,11 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_drm"
+  ];
   # see prepserver.sh
   boot.initrd.secrets."/key.txt" = /key.txt;
   boot.extraModulePackages = [ ];
@@ -226,6 +261,129 @@
   #   enable = true;
   #   openFirewall = true;
   # };
+
+  # --- msks deployment host (#229, #231)
+  # --- msks dev mode (#231): the capability wrapper the devenv msksd
+  # process execs — setpriv carrying the two ambient caps the
+  # daemon's egress stack needs (per-VM taps, nftables/NFQUEUE,
+  # DHCP 67, DNS 53). The whole grant: root-owned in /run/wrappers,
+  # usable only as
+  #   msks-caps --inh-caps=+net_admin,+net_bind_service \
+  #     --ambient-caps=+net_admin,+net_bind_service -- <cmd>
+  # (both flags required: ambient needs the caps inheritable first,
+  # and file caps alone never reach exec'd children). The wrapper
+  # path is store-free and stable, unlike devenv's capability broker
+  # whose root helper rides a rotating store path and wildcard
+  # sudoers — tried and rejected as more machinery for the same
+  # grant.
+  security.wrappers.msks-caps = {
+    source = "${pkgs.util-linux}/bin/setpriv";
+    capabilities = "cap_net_admin,cap_net_bind_service+ep";
+    owner = "root";
+    group = "users";
+    permissions = "u+rx,g+rx";
+  };
+
+  # --- microvm.nix trial VMs (msks research)
+  # Two fully-declarative MicroVMs, started manually:
+  #   systemctl start microvm@vm-a   (then: ssh -p 2222 root@127.0.0.1, pw: demo123)
+  #   systemctl start microvm@vm-b   (then: ssh -p 2223 root@127.0.0.1, pw: demo123)
+  # Stop with systemctl stop microvm@vm-a (graceful shutdown via microvm-shutdown).
+  # Boot log: journalctl -u microvm@vm-a
+  #
+  # Hypervisor is qemu here because it alone offers user-mode networking
+  # (slirp) — no tap/bridge/host-network changes on this workstation. To try
+  # cloud-hypervisor instead, set hypervisor = "cloud-hypervisor" and switch
+  # the interface to type = "tap" (needs a bridge; see
+  # https://microvm-nix.github.io/microvm.nix/simple-network.html). The
+  # virtiofs ro-store share below already exercises the CH-style stack.
+  # microvm.vms =
+  #   let
+  #     guest =
+  #       {
+  #         name,
+  #         hostPort,
+  #         mac,
+  #       }:
+  #       {
+  #         config =
+  #           { pkgs, ... }:
+  #           {
+  #             networking.hostName = name;
+
+  #             # Share the host's nix store read-only over virtiofs (no
+  #             # squashfs/erofs image build), plus a tmpfs-backed writable
+  #             # overlay so the guest can install packages.
+  #             microvm.shares = [
+  #               {
+  #                 proto = "virtiofs";
+  #                 tag = "ro-store";
+  #                 source = "/nix/store";
+  #                 mountPoint = "/nix/.ro-store";
+  #               }
+  #             ];
+  #             microvm.writableStoreOverlay = "/nix/.rw-store";
+
+  #             microvm.hypervisor = "qemu";
+  #             microvm.vcpu = 2;
+  #             microvm.mem = 1024;
+
+  #             # slirp user networking; hostfwd bound to localhost only, so
+  #             # the VMs are reachable from this host but not from the LAN.
+  #             microvm.interfaces = [
+  #               {
+  #                 type = "user";
+  #                 id = "vm-${name}";
+  #                 inherit mac;
+  #               }
+  #             ];
+  #             microvm.forwardPorts = [
+  #               {
+  #                 from = "host";
+  #                 proto = "tcp";
+  #                 host.address = "127.0.0.1";
+  #                 host.port = hostPort;
+  #                 guest.port = 22;
+  #               }
+  #             ];
+
+  #             # Persistent /var (image volume under /var/lib/microvms/<name>)
+  #             microvm.volumes = [
+  #               {
+  #                 mountPoint = "/var";
+  #                 image = "var.img";
+  #                 size = 2048;
+  #               }
+  #             ];
+
+  #             services.openssh.enable = true;
+  #             services.openssh.settings.PermitRootLogin = "yes";
+  #             # /etc is ephemeral (read-only root image): persist host keys on
+  #             # the /var volume so they survive VM restarts.
+  #             services.openssh.hostKeys = [
+  #               {
+  #                 path = "/var/lib/ssh/ssh_host_ed25519_key";
+  #                 type = "ed25519";
+  #               }
+  #             ];
+  #             users.users.root.password = "demo123";
+
+  #             system.stateVersion = "25.11";
+  #           };
+  #       };
+  #   in
+  #   {
+  #     vm-a = guest {
+  #       name = "vm-a";
+  #       hostPort = 2222;
+  #       mac = "02:00:00:00:0a:01";
+  #     };
+  #     vm-b = guest {
+  #       name = "vm-b";
+  #       hostPort = 2223;
+  #       mac = "02:00:00:00:0b:01";
+  #     };
+  #   };
 
   system.activationScripts.chrism_home_x = pkgs.lib.stringAfter [ "users" ] ''
     chmod o+x /home/chrism
@@ -383,7 +541,39 @@
     };
   };
 
+  # Loopback btrfs volume on ext4 (avoids ZFS double-CoW).
+  # Image lives on /steam2; mounted at /steam2/btrfs.
+  systemd.services.btrfs-loopback = {
+    description = "Mount btrfs loopback image";
+    after = [ "local-fs.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = with pkgs; [
+      btrfs-progs
+      util-linux
+      coreutils
+    ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "mount-btrfs-loopback" ''
+        IMG=/steam2/btrfs.img
+        MNT=/steam2/btrfs
+        if [ ! -f "$IMG" ]; then
+          truncate -s 50G "$IMG"
+          mkfs.btrfs "$IMG"
+        fi
+        mkdir -p "$MNT"
+        if ! mountpoint -q "$MNT"; then
+          mount -o loop "$IMG" "$MNT"
+        fi
+        chown chrism:users "$MNT"
+      '';
+      ExecStop = "${pkgs.util-linux}/bin/umount /steam2/btrfs";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
+    btrfs-progs
     cifs-utils
     # used by zfs send/receive
     pv
@@ -392,6 +582,9 @@
     zstd
     #inputs.winboat.packages.x86_64-linux.winboat
     #freerdp # for winboat
+    inputs.herdr.packages."${pkgs.stdenv.hostPlatform.system}".default
+    input-leap
+    matchbox # for screenrecordings
   ];
 
   # services.pulseaudio.enable = lib.mkForce true;
@@ -420,6 +613,192 @@
       value = "0";
     }
   ];
+
+  systemd.services.klangk = {
+    description = "Klangk (test deployment, #1546)";
+    after = [ "network.target" ];
+    # Auto-start disabled: won't start at boot or on-rebuild, but remains
+    # manually startable via `systemctl start klangk`.
+    wantedBy = lib.mkForce [ ];
+    serviceConfig = {
+      # Self-contained checkout at /tmp/temp-klangk (shallow clone of main).
+      # `devenv shell -- klangkd` runs klangkd with the checkout's full
+      # devenv toolchain on PATH (nginx, podman, etc.) — dotenv is disabled
+      # (-O dotenv.enable:bool false), so no .env is loaded; config comes only
+      # from /tmp/temp-klangk/state/klangkd.yaml (+ devenv.nix's infra env for
+      # state_dir/data_dir). Serves browser :28997 + egress :28995.
+      ExecStart = "${pkgs.devenv}/bin/devenv --quiet -O dotenv.enable:bool false shell -- klangkd --config /tmp/temp-klangk/state/klangkd.yaml";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/tmp/temp-klangk";
+      # nginx's config opens `access_log /dev/stdout; error_log stderr;` by
+      # path (/proc/self/fd/1). Under systemd the inherited stdout fd is a
+      # journald socket that can't be reopened by path, so nginx fails with
+      # `open() "/dev/stdout" failed`. Route the unit's stdout/stderr to a
+      # real file so /dev/stdout resolves to an openable regular file.
+      StandardOutput = "append:/tmp/temp-klangk/state/klangkd.stdout.log";
+      StandardError = "append:/tmp/temp-klangk/state/klangkd.stderr.log";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    path = [ "/run/wrappers" ];
+  };
+
+  # --- #1546: declarative NixOS container that acts as a non-localhost HTTPS
+  # reverse proxy in front of the klangk service above. The container has its
+  # own network namespace + a non-loopback veth IP (10.100.0.2), so klangk's
+  # nginx sees $remote_addr=10.100.0.2 — faithfully simulating a proxy on a
+  # separate host. It terminates TLS (self-signed cert) and reverse-proxies to
+  # the host's klangk browser listener (0.0.0.0:28997) reached via the host
+  # bridge IP (10.100.0.1). KLANGK_TRUSTED_PROXY_CIDRS in the klangkd config
+  # includes 10.100.0.0/24 so X-Forwarded-* / X-Real-IP are honored.
+  #
+  # Caddy is used (not nginx) because the NixOS nginx module emits a duplicate
+  # Host header on the upstream request (HTTP/2 :authority + proxy_set_header
+  # Host interaction) that the klangk upstream correctly rejects with 400 per
+  # RFC 7230 §5.4. Caddy's reverse_proxy sends a single, well-formed Host.
+  # The point of #1546 is to validate klangk's proxy-trust behavior behind an
+  # *arbitrary* well-behaved proxy, not to debug a specific proxy's quirks.
+  containers.klangk-proxy = {
+    # Manual start only (matches the klangk service's wantedBy = []).
+    autoStart = false;
+    privateNetwork = true;
+    hostAddress = "10.100.0.1";
+    localAddress = "10.100.0.2";
+    # The container reaches the host's klangk browser listener directly at
+    # 10.100.0.1:28997 (klangk binds 0.0.0.0, option a, #1546).
+    bindMounts = {
+      "/etc/klangk-proxy/certs" = {
+        hostPath = "/tmp/temp-klangk/state/certs";
+        isReadOnly = true;
+      };
+    };
+    config =
+      { config, pkgs, ... }:
+      {
+        # declarative containers are separate NixOS evals; without this
+        # nixpkgs >= 26.05 emits "stateVersion is not set" at eval time.
+        # Ephemeral test container (caddy only, manual start), no stateful
+        # services, so current release is fine.
+        system.stateVersion = "26.05";
+        services.caddy = {
+          enable = true;
+          # Self-signed internal cert (Caddy's tls internal) terminates HTTPS
+          # on :443. reverse_proxy forwards to the host bridge IP. Caddy sets
+          # X-Forwarded-For / X-Forwarded-Proto / a single Host by default.
+          extraConfig = ''
+            :443 {
+              tls /etc/klangk-proxy/certs/klangk-test.crt /etc/klangk-proxy/certs/klangk-test.key
+              reverse_proxy 10.100.0.1:28997 {
+                header_up X-Forwarded-Proto https
+                header_up X-Real-IP {remote_host}
+              }
+            }
+          '';
+        };
+        networking.firewall.allowedTCPPorts = [ 443 ];
+      };
+  };
+
+  systemd.services.soliplex = {
+    description = "Soliplex";
+    after = [ "network.target" ];
+    # Auto-start disabled: won't start at boot or on-rebuild, but remains
+    # manually startable via `systemctl start soliplex`.
+    wantedBy = lib.mkForce [ ];
+    serviceConfig = {
+      ExecStart = "${pkgs.devenv}/bin/devenv processes up";
+      Environment = "DEVENV_TUI=false";
+      User = "chrism";
+      Group = "users";
+      WorkingDirectory = "/home/chrism/projects/soliplex/devenv";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
+  # klangk CI now runs on the klangk-ci VM (two runners, label "nix"); the
+  # host-side runner was retired when the VM proved green. The PAT secret
+  # itself lives in roles/klangk-jit-pool.nix now.
+
+  # Autostart the klangk-ci VM at boot (system-level unit, independent of
+  # any login session). The VM closure is resolved at NixOS evaluation time
+  # from the klangk-ci nixosConfiguration, so `nixos-rebuild switch` on
+  # keithmoon automatically picks up klangk-ci config changes and restarts
+  # the VM with the new closure — no manual vmout step needed.
+  #
+  # DISABLED since the JIT pool (klangk-jit-pool below) replaced it: the
+  # long-lived multi-runner VM's shared state caused every class of e2e
+  # flake we chased (stale sessions, leaked podman state, ghost nix DB
+  # entries). Keep the unit definition for rollback.
+  systemd.services.klangk-ci-vm =
+    let
+      vmClosure = inputs.self.nixosConfigurations.klangk-ci.config.system.build.vm;
+      bootScript = pkgs.writeShellScript "klangk-ci-vm-boot" (
+        builtins.replaceStrings [ "@vmClosure@" ] [ "${vmClosure}" ] (
+          builtins.readFile ../scripts/klangk-ci-vm-boot.sh
+        )
+      );
+    in
+    {
+      description = "klangk-ci GitHub Actions runner VM (QEMU/KVM)";
+      after = [
+        "network.target"
+        "libvirtd.service"
+      ];
+      wantedBy = lib.mkForce [ ];
+      serviceConfig = {
+        Type = "simple";
+        User = "chrism";
+        Group = "users";
+        ExecStart = "${bootScript}";
+        KillMode = "mixed";
+        TimeoutStopSec = 60;
+        Restart = "on-failure";
+        RestartSec = 10;
+      };
+    };
+
+  # klangk JIT runner pool: polls for queued e2e jobs (label "nix") and
+  # boots one disposable klangk-jit VM per job with a just-in-time runner
+  # token. Replaces the long-lived klangk-ci VM above. The pool service
+  # and the PAT secret are defined in roles/klangk-jit-pool.nix;
+  # thinknix52 runs the same role with two laptop-sized klangk-jit52 VMs.
+  services.klangk-jit-pool = {
+    enable = true;
+    maxVms = 5;
+  };
+
+  services.strata.enable = false;
+
+  # --- TEST: password-protected page on :8090 ------------------------------
+  # Standalone nginx vhost gated by HTTP basic auth, for testing auth
+  # wiring end-to-end (curl / browser / proxies). It is the only listener
+  # on :8090, so any Host header reaches it. Remove this block when done.
+  # NOTE: the apr1 hash below lands world-readable in /nix/store — fine for
+  # a throwaway test; for anything real use basicAuthFile with an agenix
+  # secret instead.
+  services.nginx.virtualHosts."protected-test" = {
+    listen = [ { addr = "0.0.0.0"; port = 8090; } ];
+    root = "${
+      pkgs.writeTextDir "index.html" ''
+        <!doctype html>
+        <html>
+          <head><title>protected test page</title></head>
+          <body>
+            <h1>It worked.</h1>
+            <p>If you can read this, basic auth on :8090 is doing its job.</p>
+          </body>
+        </html>
+      ''
+    }";
+    # NB: the module's basicAuth option treats values as plaintext (it
+    # prefixes them with {PLAIN} in the generated htpasswd), so to keep a
+    # crypt-hashed entry we write the htpasswd ourselves via basicAuthFile.
+    basicAuthFile = pkgs.writeText "protected-test.htpasswd"
+      "test:$apr1$4zokz5xU$RvgmtPdcxIDAM8Iw96Gn1.";
+  };
 
   environment.etc."security/limits.conf".text = ''
     # set soft and hard nofile for all users

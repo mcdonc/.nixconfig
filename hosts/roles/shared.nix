@@ -45,8 +45,6 @@
 
   environment.variables = {
     EDITOR = "emacs -nw";
-    # Prevent Docker images from showing "46 years ago" as creation date
-    SOURCE_DATE_EPOCH = "";
     # try to allow qemu-aarch64 to use all available CPUs
     QEMU_CPU = "max";
   };

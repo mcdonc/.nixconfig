@@ -399,6 +399,39 @@
 
 (setq gptel-model "gpt-4")
 
+;;;; TRAMP into msks workspaces: C-x C-f /msks:<workspace-id>:~/...
+;;
+;; The method wraps `msks-tramp ssh' — the wrapper home.nix stages
+;; at ~/.local/bin/msks-tramp, which presets the dev-daemon env the
+;; graphical Emacs daemon does not inherit. `msks ssh' owns the
+;; transport (the forward websocket as ProxyCommand), the identity
+;; (a transient in-process agent) and the login user, so the method
+;; contributes only the ssh options TRAMP needs; the wrapper places
+;; passthrough options ahead of the destination in ssh's argv.
+(with-eval-after-load 'tramp
+  (add-to-list
+   'tramp-methods
+   '("msks"
+     (tramp-login-program "msks-tramp")
+     (tramp-login-args
+      (("ssh")
+       ("%h")
+       ("-e" "none")     ; no escape character over TRAMP's pipes
+       ("-t" "-t")))    ; force a pty: TRAMP's stdin is not a tty
+     ;; No ControlMaster here, deliberately: TRAMP holds one
+     ;; persistent connection per workspace itself, and a control
+     ;; master is shared state with sharp edges — an ssh that finds
+     ;; a live socket at its ControlPath muxes into that master even
+     ;; with ControlMaster "no" in the config, and a mux client
+     ;; cannot add agent forwarding the master lacks. A TRAMP master
+     ;; on the config's shared ControlPath silently broke
+     ;; `msks ssh <ws> -- -A` for every other client. Async TRAMP
+     ;; processes (compile, grep) each open their own connection —
+     ;; a few seconds apiece, an acceptable price for the isolation.
+     (tramp-async-args (("-q")))
+     (tramp-remote-shell "/bin/sh")
+     (tramp-remote-shell-args (("-c"))))))
+
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20
 

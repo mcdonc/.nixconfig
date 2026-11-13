@@ -8,6 +8,36 @@ args@{
 
 let
 
+  # TRAMP's entry into msks workspaces (the "msks" tramp-method in
+  # .emacs.d/init.el): reproduce the devenv shell's client presets
+  # for the dev daemon of the main msks checkout, then run the
+  # checkout's venv CLI. An Emacs daemon started from the graphical
+  # session inherits none of these, so TRAMP cannot call `msks`
+  # directly.
+  msks-tramp = pkgs.writeShellScriptBin "msks-tramp" ''
+    set -euo pipefail
+
+    root=/home/chrism/projects/msks
+    state=$root/.devenv/state/msksd
+
+    if [ ! -s "$state/bootstrap-token" ]; then
+      echo "msks-tramp: no daemon state under $state (start the dev daemon first)" >&2
+      exit 1
+    fi
+
+    export MSKSC_TOKEN="$(<"$state/bootstrap-token")"
+    export MSKSC_URL="https://127.0.0.1:$(<"$state/port")"
+    export MSKSC_CAFILE="$state/msks-ca.pem"
+    # Per-worktree client state (#251): the same roots the devenv
+    # shell presets, so TRAMP sessions share the known_hosts cache
+    # and minted identities with interactive msks sessions from the
+    # checkout.
+    export MSKSC_CACHE_DIR=$root/.devenv/state/msksc/cache
+    export MSKSC_DATA_DIR=$root/.devenv/state/msksc/data
+
+    exec "$root/.devenv/state/venv/bin/msks" "$@"
+  '';
+
   remoterebuild = pkgs.writeShellScriptBin "remoterebuild" ''
     cd /etc/nixos
     verbose=""
@@ -19,7 +49,7 @@ let
     target_hostname="''${fqdn%%.*}"
     target_arch=$(nix eval --raw ".#hostArchitectures.$target_hostname" 2>/dev/null)
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
-    rebuild_cmd=(nixos-rebuild-ng switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
+    rebuild_cmd=(nixos-rebuild switch --flake ".#$target_hostname" --target-host "chrism@$fqdn" --ask-sudo-password $verbose)
     if [ "$target_arch" = "aarch64-linux" ]; then
       cachix watch-exec mcdonc -- "''${rebuild_cmd[@]}"
     else
@@ -32,9 +62,9 @@ let
     export CACHIX_AUTH_TOKEN=$(cat /run/agenix/mcdonc-unhappy-cachix-authtoken)
     target_arch=$(nix eval --raw /etc/nixos#hostArchitectures.$(hostname) 2>/dev/null)
     if [ "$target_arch" = "aarch64-linux" ]; then
-      cachix watch-exec mcdonc -- sudo nixos-rebuild-ng switch --verbose --show-trace
+      cachix watch-exec mcdonc -- sudo nixos-rebuild switch --verbose --show-trace
     else
-      sudo nixos-rebuild-ng switch --verbose --show-trace
+      sudo nixos-rebuild switch --verbose --show-trace
     fi
   '';
 
@@ -48,10 +78,38 @@ let
     fi
   '';
 
+  # Rekey all agenix secrets with one passphrase entry (agenix -r prompts
+  # per-file otherwise). Expect drives the interactive prompt.
+  agenix-rekey = pkgs.writeScriptBin "agenix-rekey" ''
+    #!${pkgs.expect}/bin/expect -f
+    set timeout -1
+    log_user 1
+    stty -echo
+    send_user "Enter passphrase for ssh key: "
+    expect_user -re "(.*)\n"
+    set passphrase $expect_out(1,string)
+    stty echo
+    send_user "\n"
+    spawn agenix -r
+    expect {
+        -re {Enter passphrase for .*:} {
+            send -- "$passphrase\r"
+            exp_continue
+        }
+        -re {(?i)yes/no} {
+            send -- "yes\r"
+            exp_continue
+        }
+        eof
+    }
+    catch wait result
+    exit [lindex $result 3]
+  '';
+
   enfoldrebuild = pkgs.writeShellScriptBin "enfoldrebuild" ''
     cd $HOME/projects/enfold/nixos
     fqdn="enfold.repoze.org"
-    nixos-rebuild-ng switch --flake ".#''${fqdn%%.*}" \
+    nixos-rebuild switch --flake ".#''${fqdn%%.*}" \
       --target-host chrism@$fqdn --ask-sudo-password
   '';
 
@@ -71,7 +129,7 @@ let
   '';
 
   nixfmt80 = pkgs.writeShellScriptBin "nixfmt80" ''
-    ${pkgs.nixfmt-rfc-style}/bin/nixfmt -w80 $@
+    ${pkgs.nixfmt}/bin/nixfmt -w80 $@
   '';
 
   edit = pkgs.writeShellScriptBin "edit" ''
@@ -81,8 +139,6 @@ let
       exec emacsclient -n -c $@
     fi
   '';
-
-  sessionVariables = { };
 
   zshDotDir = config.users.users."chrism".home + "/.config/zsh";
 
@@ -97,6 +153,7 @@ let
     '';
     oldreplnix = "nix repl '<nixpkgs>'";
     replnix = "${pkgs.nh}/bin/nh os repl /etc/nixos";
+    bootnix = "sudo nixos-rebuild boot";
     rbnix = "sudo nixos-rebuild build --rollback";
     mountzfs = "sudo zfs load-key d/o; sudo zfs mount d/o";
     restartemacs = "systemctl --user restart emacs";
@@ -118,55 +175,54 @@ let
     ragupdate = ''ssh -t enfold.repoze.org "sudo systemctl restart rag; journalctl -f -u rag.service"'';
   };
 
+  sessionVariables = { };
+
   graphicalimports = lib.optionals config.jawns.isworkstation [
     ./graphical.nix
   ];
 
   # use emacs-nox for headless systems, full emacs for workstations
   # pkgs-emacs is pinned to prevent recompiles on every nix flake update
-  emacsBase =
-    if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
+  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
 
-  emacswithpackages =
-    (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages
-      (epkgs: [
-        epkgs.dockerfile-mode
-        epkgs.nix-mode
-        epkgs.nixpkgs-fmt
-        epkgs.flycheck
-        epkgs.json-mode
-        epkgs.python-mode
-        epkgs.auto-complete
-        epkgs.web-mode
-        epkgs.smart-tabs-mode
-        epkgs.whitespace-cleanup-mode
-        epkgs.flycheck-pyflakes
-        epkgs.flycheck-pos-tip
-        epkgs.doom-modeline
-        epkgs.all-the-icons
-        epkgs.all-the-icons-dired
-        epkgs.magit
-        epkgs.markdown-mode
-        epkgs.markdown-preview-mode
-        epkgs.gptel
-        pkgs-emacs.emacs-all-the-icons-fonts
-        epkgs.yaml-mode
-        epkgs.multiple-cursors
-        epkgs.dts-mode
-        epkgs.rust-mode
-        epkgs.nickel-mode
-        epkgs.editorconfig
-        epkgs.terraform-mode
-        # epkgs.lspce
-        # epkgs.lsp-mode
-        # epkgs.lsp-ui
-        # epkgs.lsp-jedi
-        epkgs.company
-        epkgs.dart-mode
-        epkgs.adoc-mode
-        epkgs.typescript-mode
-        # epkgs.tsc # maybe required for typescript-mode
-      ]);
+  emacswithpackages = (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages (epkgs: [
+    epkgs.dockerfile-mode
+    epkgs.nix-mode
+    epkgs.nixpkgs-fmt
+    epkgs.flycheck
+    epkgs.json-mode
+    epkgs.python-mode
+    epkgs.auto-complete
+    epkgs.web-mode
+    epkgs.smart-tabs-mode
+    epkgs.whitespace-cleanup-mode
+    epkgs.flycheck-pyflakes
+    epkgs.flycheck-pos-tip
+    epkgs.doom-modeline
+    epkgs.all-the-icons
+    epkgs.all-the-icons-dired
+    epkgs.magit
+    epkgs.markdown-mode
+    epkgs.markdown-preview-mode
+    epkgs.gptel
+    pkgs-emacs.emacs-all-the-icons-fonts
+    epkgs.yaml-mode
+    epkgs.multiple-cursors
+    epkgs.dts-mode
+    epkgs.rust-mode
+    epkgs.nickel-mode
+    epkgs.editorconfig
+    epkgs.terraform-mode
+    # epkgs.lspce
+    # epkgs.lsp-mode
+    # epkgs.lsp-ui
+    # epkgs.lsp-jedi
+    epkgs.company
+    epkgs.dart-mode
+    epkgs.adoc-mode
+    epkgs.typescript-mode
+    # epkgs.tsc # maybe required for typescript-mode
+  ]);
 
 in
 
@@ -175,6 +231,14 @@ in
   # or config.jawns can't be found
   imports = [ (import ../home.nix args) ] ++ graphicalimports;
 
+  # useGlobalPkgs defaults to false, so home-manager imports its own
+  # nixpkgs; the system-level permittedInsecurePackages (see
+  # hosts/roles/packages.nix) does not apply here. keybase-gui is
+  # marked insecure (EOL vendored Electron 39.2.7).
+  nixpkgs.config.permittedInsecurePackages = [
+    "keybase-gui-6.5.1"
+  ];
+
   home.stateVersion = "22.05";
 
   home.packages = with pkgs; [
@@ -182,16 +246,22 @@ in
     shell-genie
     nixpkgs-fmt # unnamed dependency of emacs package
     nixfmt80
+    agenix-rekey
     keithtemps
     whoosh
     nvfantemps
     edit
+    msks-tramp
     typescript # for tsc for emacs
     remoterebuild
     enfoldrebuild
     swnix
     nhswnix
   ];
+
+  home.file."AGENTS.md" = {
+    source = ./AGENTS.md;
+  };
 
   services.gpg-agent = {
     enable = true;
@@ -206,81 +276,100 @@ in
 
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false; # useful for the following matchBlocks."*"
-    matchBlocks."*" = {
-      forwardAgent = false;
-      addKeysToAgent = "yes";
-      compression = false;
-      serverAliveInterval = 0;
-      serverAliveCountMax = 3;
-      hashKnownHosts = false;
-      userKnownHostsFile = "~/.ssh/known_hosts";
-      controlMaster = "no";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "no";
-    };
-    matchBlocks = {
-      "192.168.1.*".forwardAgent = true;
-      "quisling.local".forwardAgent = true;
-      "quisling".forwardAgent = true;
-      "lock802".forwardAgent = true;
-      "clonelock802".forwardAgent = true;
-      "keithmoon".forwardAgent = true;
-      "optinix.".forwardAgent = true;
-      "arctor.repoze.org".forwardAgent = true;
-      "enfold.repoze.org".forwardAgent = true;
-      "thinknix*".forwardAgent = true;
-      "nixcentre".forwardAgent = true;
-      "bouncer.repoze.org".forwardAgent = true;
-      "lock802.repoze.org".forwardAgent = true;
-      "optinix".forwardAgent = true;
-      "win10".user = "user";
-      "enfold-mac-studio.repoze.org".port = 19911;
-      "enfold-mac-studio.repoze.org".forwardAgent = true;
-      "biggysmalls".forwardAgent = true;
-      "biggysmalls".user = "ec2-user";
-      "smallysmalls".forwardAgent = true;
-      "smallysmalls".user = "ec2-user";
-      "demo.toughserv.com".forwardAgent = true;
-      "demo.toughserv.com".user = "amia";
+    enableDefaultConfig = false;
+    settings = {
+      "*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "yes";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+      };
+      "192.168.1.*".ForwardAgent = true;
+      # msks workspaces (docs/networking.md alias workflow): ssh,
+      # rsync, git, and VS Code Remote-SSH against `msks-<workspace>`;
+      # the ProxyCommand opens the daemon's authenticated forward, so
+      # run ssh where the msks client and its MSKSC_* environment live
+      # (a devenv shell presets them). ForwardAgent carries the host
+      # agent into every session. The identity is the operator's own
+      # key (#497: the daemon holds no workspace private halves; the
+      # private material is never a file in the cache) — the private
+      # half of pubkey_file in the msks client config, seeded into
+      # each workspace's authorized_keys at first boot. No User line:
+      # ssh's default local username is the workspace's recorded
+      # login user (#248 — the creating operator's own name); `ssh -l
+      # root` is the recovery login (#500).
+      "msks-*" = {
+        ForwardAgent = true;
+        ProxyCommand = "sh -c 'exec msks forward \"\${1#msks-}\" 22' _ %h";
+        UserKnownHostsFile = "~/.cache/msks/%h/known_hosts";
+        StrictHostKeyChecking = "accept-new";
+        IdentityFile = "~/.ssh/id_ed25519";
+        IdentitiesOnly = true;
+        ControlMaster = "auto";
+        ControlPath = "~/.cache/msks/%h.ctl";
+        ControlPersist = "10m";
+      };
+      "quisling.local".ForwardAgent = true;
+      "quisling".ForwardAgent = true;
+      "lock802".ForwardAgent = true;
+      "clonelock802".ForwardAgent = true;
+      "keithmoon".ForwardAgent = true;
+      "optinix.".ForwardAgent = true;
+      "arctor.repoze.org".ForwardAgent = true;
+      "enfold.repoze.org".ForwardAgent = true;
+      "thinknix*".ForwardAgent = true;
+      "nixcentre".ForwardAgent = true;
+      "bouncer.repoze.org".ForwardAgent = true;
+      "lock802.repoze.org".ForwardAgent = true;
+      "optinix".ForwardAgent = true;
+      "win10".User = "user";
+      "bizon".ForwardAgent = true;
+      "enfold-mac-studio.repoze.org" = {
+        Port = 19911;
+        ForwardAgent = true;
+      };
+      "biggysmalls" = {
+        ForwardAgent = true;
+        User = "ec2-user";
+      };
+      "smallysmalls" = {
+        ForwardAgent = true;
+        User = "ec2-user";
+      };
+      "demo.toughserv.com" = {
+        ForwardAgent = true;
+        User = "amia";
+      };
       "apex.firewall" = {
-        hostname = "apex.firewall";
-        proxyJump = "bouncer.palladion.com";
-        forwardAgent = true;
-        serverAliveInterval = 60;
-        localForwards = [
+        HostName = "apex.firewall";
+        ProxyJump = "bouncer.palladion.com";
+        ForwardAgent = true;
+        ServerAliveInterval = 60;
+        LocalForward = [
           # windresource
-          {
-            bind.port = 56526;
-            host.port = 56526;
-            host.address = "apex-gis.ace.apexcleanenergy.com";
-          }
+          "56526 apex-gis.ace.apexcleanenergy.com:56526"
           # 8760, techdash, gisproject
-          {
-            bind.port = 1433;
-            host.port = 1433;
-            host.address = "ace-ra-sql1.ace.apexcleanenergy.com";
-          }
+          "1433 ace-ra-sql1.ace.apexcleanenergy.com:1433"
           # mongo
-          {
-            bind.port = 27017;
-            host.port = 27017;
-            host.address = "ace-web-test.ace.apexcleanenergy.com";
-          }
+          "27017 ace-web-test.ace.apexcleanenergy.com:27017"
         ];
       };
       "15.200.113.205" = {
-        user = "ec2-user";
-        identityFile = "~/.ssh/id_ecdsa_enfold";
-        forwardAgent = true;
-        serverAliveInterval = 60;
-        serverAliveCountMax = 3;
-        extraOptions = {
-          HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
-          PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
-          StrictHostKeyChecking = "no";
-          AddKeysToAgent = "yes";
-        };
+        User = "ec2-user";
+        IdentityFile = "~/.ssh/id_ecdsa_enfold";
+        ForwardAgent = true;
+        ServerAliveInterval = 60;
+        ServerAliveCountMax = 3;
+        HostKeyAlgorithms = "+ecdsa-sha2-nistp256";
+        PubkeyAcceptedAlgorithms = "+ecdsa-sha2-nistp521";
+        StrictHostKeyChecking = "no";
+        AddKeysToAgent = "yes";
       };
     };
   };
@@ -320,6 +409,10 @@ in
     shellAliases = shellAliases;
     sessionVariables = sessionVariables;
     enableCompletion = true;
+    # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
+    initExtra = ''
+      export PATH="$HOME/.local/bin:$PATH"
+    '';
   };
 
   programs.zsh = {
@@ -330,6 +423,15 @@ in
 
     dotDir = zshDotDir; # config.home.homeDirectory + "/ " + zshDotDir;
     autosuggestion.enable = true;
+
+    # Don't write every command to $HISTFILE in real time (the default
+    # SHARE_HISTORY); instead append this session's new commands to the
+    # file once, on shell exit. Other sessions' commands are only picked
+    # up when a new shell starts.
+    history = {
+      share = false;
+      append = true;
+    };
 
     # speed up zsh start time, see
     # https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
@@ -363,6 +465,9 @@ in
     #'';
 
     initContent = ''
+      # ensure ~/.local/bin (pip install --user, rustup, etc.) is on PATH
+      export PATH="$HOME/.local/bin:$PATH"
+
       # be more bashy
       setopt interactive_comments bashautolist nobeep nomenucomplete \
              noautolist extended_glob
@@ -432,6 +537,7 @@ in
 
   programs.git = {
     enable = true;
+    signing.format = "openpgp";
     settings = {
       user.name = "Chris McDonough";
       user.email = "chrism@plope.com";
