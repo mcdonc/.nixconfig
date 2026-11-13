@@ -231,6 +231,14 @@ in
   # or config.jawns can't be found
   imports = [ (import ../home.nix args) ] ++ graphicalimports;
 
+  # useGlobalPkgs defaults to false, so home-manager imports its own
+  # nixpkgs; the system-level permittedInsecurePackages (see
+  # hosts/roles/packages.nix) does not apply here. keybase-gui is
+  # marked insecure (EOL vendored Electron 39.2.7).
+  nixpkgs.config.permittedInsecurePackages = [
+    "keybase-gui-6.5.1"
+  ];
+
   home.stateVersion = "22.05";
 
   home.packages = with pkgs; [
