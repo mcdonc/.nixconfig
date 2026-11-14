@@ -115,6 +115,11 @@
   services.desktopManager.plasma6.enable = true;
   services.xserver.displayManager.sessionCommands =
     let
+      # XXX26.11 xmodmap is X-only and does nothing under the Wayland-only
+      # Plasma session. Replace with keyd (evdev-level, works under Wayland,
+      # X11 and the console): right-ctrl/right-alt overload layers mapping
+      # arrows -> Home/End/PgUp/PgDn and PgUp/PgDn -> Home/End, keeping the
+      # same chords below. Do this when switching keithmoon to 26.11.
       modmap = pkgs.writeText "modmap" ''
         ! disable middle click
         ! pointer = 1 0 3 4 5
