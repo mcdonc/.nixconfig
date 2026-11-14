@@ -111,7 +111,7 @@
   # desktop stuff
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "plasmax11"; # "plasma";
+  services.displayManager.defaultSession = "plasma"; # XXX26.11 plasmax11 session removed upstream; Wayland is the only Plasma session now
   services.desktopManager.plasma6.enable = true;
   services.xserver.displayManager.sessionCommands =
     let
@@ -167,6 +167,8 @@
   };
 
   services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+  # XXX26.11 package split: pkgs.mullvad-vpn no longer contains the daemon;
+  # unset package lets the module use the daemon-only default (GUI client is
+  # still installed via systemPackages)
 
 }

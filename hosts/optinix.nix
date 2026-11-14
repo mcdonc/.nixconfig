@@ -35,17 +35,22 @@ in
     ./roles/backupsource.nix
     #    ./roles/proaudio.nix
     #    ./roles/rc505
-    (import ./roles/macos-ventura.nix (
-      args
-      // {
-        mem = "8G";
-        cores = 4;
-        enable = false;
-      }
-    ))
+    # XXX26.05+ broken since the nixtheplanet input was commented out of
+    # flake.nix (no bigger-darwin package / services.macos-ventura option);
+    # feature was already disabled (enable = false) — re-enable alongside
+    # the nixtheplanet input if ever needed
+    #(import ./roles/macos-ventura.nix (
+    #  args
+    #  // {
+    #    mem = "8G";
+    #    cores = 4;
+    #    enable = false;
+    #  }
+    #))
   ];
 
-  hardware.opengl.extraPackages = with pkgs; [ intel-compute-runtime ];
+  # XXX26.11 hardware.opengl renamed to hardware.graphics
+  hardware.graphics.extraPackages = with pkgs; [ intel-compute-runtime ];
 
   system.stateVersion = "23.11";
   networking.hostId = "0a2c6441";

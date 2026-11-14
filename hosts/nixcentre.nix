@@ -64,10 +64,11 @@
   services.locate.prunePaths = [ "/v" ];
 
   # Enable OpenGL
-  hardware.opengl = {
+  # XXX26.11 hardware.opengl renamed to hardware.graphics
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    # XXX26.11 driSupport removed (always on)
+    enable32Bit = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
@@ -82,6 +83,10 @@
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
+    # XXX pre-existing 26.05 breakage: hardware.nvidia.open defaults to null
+    # and the assertion on this (older) GPU tripped on it; pin the classic
+    # proprietary kernel module explicitly
+    open = false;
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for
@@ -108,18 +113,20 @@
 
   services.samba = {
     enable = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = nixcentre
-      netbios name = nixcentre
-      security = user
+    # XXX26.11 extraConfig removed; global section keys nest under
+    # settings.global (securityType renamed to settings.global.security,
+    # "user" is the module default so it is dropped)
+    settings.global = {
+      "workgroup" = "WORKGROUP";
+      "server string" = "nixcentre";
+      "netbios name" = "nixcentre";
+      "security" = "user";
       # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.1. 127.0.0.1 localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-    '';
+      "hosts allow" = "192.168.1. 127.0.0.1 localhost";
+      "hosts deny" = "0.0.0.0/0";
+      "guest account" = "nobody";
+      "map to guest" = "bad user";
+    };
     shares = {
       v = {
         path = "/v";

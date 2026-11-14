@@ -44,7 +44,9 @@
     })
   ];
 
-  nixpkgs.hostPlatform = "aarch64-linux";
+  # nixpkgs.hostPlatform set per-host in flake.nix mkSystem; a plain string
+  # here failed to merge with the attrset form (XXX pre-existing 26.05 breakage)
+  #nixpkgs.hostPlatform = "aarch64-linux";
 
   environment.systemPackages = [
     pkgs.libraspberrypi

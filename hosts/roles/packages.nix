@@ -207,7 +207,7 @@ in
       pkgs-2511.python311 # XXX26.05 broken in nixpkgs 26.05 (sphinx/docutils crash building docs)
       pkgs-2511.python312 # XXX26.05 broken in nixpkgs 26.05 (same sphinx/docutils doc build crash)
       pypy3
-      python27
+      # python27 # XXX26.11 removed from nixpkgs (Python 2 EOL)
       # obs; plugin wrap retired with obs-backgroundremoval, plain package is
       # fine (overlay in flake.nix adds cudaSupport for NVENC)
       obs-studio
@@ -216,7 +216,7 @@ in
       airspy
       alsa-scarlett-gui
       alsa-utils # aplay
-      antigravity
+      antigravity-ide # XXX26.11 renamed from antigravity
       appimage-run
       ardour
       argyllcms

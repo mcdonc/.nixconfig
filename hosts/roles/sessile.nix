@@ -6,10 +6,11 @@
     lidSwitch = "suspend";
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
-    extraConfig = ''
-      HandlePowerKey=suspend
-      IdleAction=ignore
-    '';
+    # XXX26.11 extraConfig removed; new settings.Login form
+    settings.Login = {
+      HandlePowerKey = "suspend";
+      IdleAction = "ignore";
+    };
   };
   # recommended for audio work
   powerManagement.cpuFreqGovernor = "performance";

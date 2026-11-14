@@ -10,9 +10,12 @@ args@{ config, pkgs, ... }:
   programs.git = {
     enable = true;
     signing.format = "openpgp";
-    userName = "Larry";
-    userEmail = "larry@agendaless.com";
-    extraConfig = {
+    # XXX26.11 userName/userEmail/extraConfig all removed; use settings
+    settings = {
+      user = {
+        name = "Larry";
+        email = "larry@agendaless.com";
+      };
       pull.rebase = "true";
       diff.guitool = "meld";
       difftool.meld.path = "${pkgs.meld}/bin/meld";

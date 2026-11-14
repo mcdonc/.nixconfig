@@ -27,7 +27,8 @@
     database.type = "sqlite3";
     settings = {
       server = {
-        DOMAIN = "keithmoon.tail33f8f4.ts.net";
+        # XXX26.11 DOMAIN removed upstream; ROOT_URL below already carries the
+        # full public URL
         ROOT_URL = "https://keithmoon.tail33f8f4.ts.net/gitea/";
         HTTP_ADDR = "0.0.0.0";
         HTTP_PORT = 3000;

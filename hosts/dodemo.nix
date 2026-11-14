@@ -26,7 +26,10 @@
     settings = {
       tarball-ttl = 300;
       auto-optimise-store = true;
-      experimental-features = "nix-command flakes";
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ]; # XXX26.11 list type enforced (string no longer coerced)
       trusted-users = [
         "root"
         "@wheel"

@@ -236,7 +236,7 @@ in
   # hosts/roles/packages.nix) does not apply here. keybase-gui is
   # marked insecure (EOL vendored Electron 39.2.7).
   nixpkgs.config.permittedInsecurePackages = [
-    "keybase-gui-6.5.1"
+    "keybase-gui-6.6.3"
   ];
 
   home.stateVersion = "22.05";

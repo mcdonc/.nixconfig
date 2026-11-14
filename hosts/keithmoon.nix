@@ -49,12 +49,17 @@
   # Storage on ext4 — ZFS lacks idmapped mount support, causing
   # storage-chown-by-maps to hang with --userns=keep-id.
   virtualisation.podman.enable = true;
-  virtualisation.containers.storage.settings = {
-    storage = {
-      driver = "overlay";
-      graphroot = "/steam2/podman/storage";
-      runroot = "/steam2/podman/run";
-    };
+  # XXX26.11 storage.settings split into rootful/rootless (the old unified
+  # option now applies to both and "will likely not work as intended")
+  virtualisation.containers.storage.rootful.settings.storage = {
+    driver = "overlay";
+    graphroot = "/steam2/podman/storage";
+    runroot = "/steam2/podman/run";
+  };
+  virtualisation.containers.storage.rootless.settings.storage = {
+    driver = "overlay";
+    graphroot = "/steam2/podman/storage";
+    runroot = "/steam2/podman/run";
   };
 
   # environment.extraInit =

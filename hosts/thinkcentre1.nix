@@ -41,10 +41,11 @@
     };
 
     # is this too much?  It's convenient for Steam.
-    opengl = {
+    # XXX26.11 hardware.opengl renamed to hardware.graphics
+    graphics = {
       enable = true;
-      driSupport = lib.mkDefault true;
-      driSupport32Bit = lib.mkDefault true;
+      # XXX26.11 driSupport removed (always on)
+      enable32Bit = lib.mkDefault true;
     };
   };
 
