@@ -66,7 +66,7 @@ in
 
   services.nginx = {
     enable = true;
-    virtualHosts."192.168.1.110" = {
+    virtualHosts."192.168.1.112" = {
       root = "/var/www/speedtest";
     };
     virtualHosts."localhost" = {
