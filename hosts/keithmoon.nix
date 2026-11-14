@@ -159,8 +159,11 @@
   # 20 GiB max ARC cache
   boot.kernelParams = [
     "zfs.zfs_arc_max=21474836480"
-    # required by wayland, see
-    # https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/
+    # XXX26.11 mandatory now: plasmax11 is gone and Plasma runs Wayland-only,
+    # and kwin_wayland refuses to start on NVIDIA without modesetting (see
+    # https://blog.davidedmundson.co.uk/blog/running-kwin-wayland-on-nvidia/).
+    # Note hardware.nvidia.modesetting.enable = true below sets the same
+    # param via the nvidia module; this explicit line is belt-and-braces.
     "nvidia-drm.modeset=1"
   ];
 
