@@ -46,6 +46,19 @@
           # NVENC in OBS: patches the obs-nvenc test executable with the
           # NVIDIA driver runpath so it can dlopen libnvidia-encode
           obs-studio = super.obs-studio.override { cudaSupport = true; };
+
+          # XXX26.11 newer meson removed the build-dir fallback for
+          # install_data sources; upstream's pinned meson.build installs the
+          # *generated* manifest.ttl via a bogus 'build/manifest.ttl' relative
+          # path (nixpkgs unfixed as of d4f25a3e). Install it via
+          # configure_file instead.
+          speech-denoiser = super.speech-denoiser.overrideAttrs (old: {
+            postPatch = (old.postPatch or "") + ''
+              substituteInPlace meson.build \
+                --replace "configuration : manifest_conf)" "configuration : manifest_conf, install : true, install_dir : install_folder)" \
+                --replace "install_data(['build/manifest.ttl', 'lv2ttl/sdenoise.ttl'],install_dir : install_folder)" "install_data(['lv2ttl/sdenoise.ttl'],install_dir : install_folder)"
+            '';
+          });
         }
       );
 
