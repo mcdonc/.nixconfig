@@ -113,6 +113,10 @@
   services.displayManager.sddm.enable = true;
   services.displayManager.defaultSession = "plasma"; # XXX26.11 plasmax11 session removed upstream; Wayland is the only Plasma session now
   services.desktopManager.plasma6.enable = true;
+  # XXX26.11 kwin direct scanout black-screens fullscreen games (Halo
+  # Infinite/Proton) on NVIDIA under Wayland; disable it session-wide until
+  # kwin fixes the bug (test by removing this after Plasma updates).
+  environment.sessionVariables.KWIN_DRM_NO_DIRECT_SCANOUT = "1";
   services.xserver.displayManager.sessionCommands =
     let
       # XXX26.11 xmodmap is X-only and does nothing under the Wayland-only
