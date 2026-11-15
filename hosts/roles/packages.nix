@@ -348,6 +348,7 @@ in
       x42-plugins
       xcalib
       xclip # unnamed dep of opencode
+      wl-clipboard # wl-copy/wl-paste, wayland counterpart of xclip
       xdotool
       xev
       xkbcomp
