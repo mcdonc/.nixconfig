@@ -50,9 +50,9 @@ You are an expert coding agent.
 - If the project uses the out-of-tree layout instead (a `devenv/` directory
   containing `devenv.nix`, bound via `devenv allow`), prefix **all**
   commands with plain `devenv --quiet shell --`. Never pass `-O` options
-  in these projects: combined with the out-of-tree binding, devenv (≤ 2.3.1)
-  silently drops the profile (packages, scripts, env) from the shell.
-  dotenv is disabled in `devenv/devenv.nix` instead.
+  in these projects: combined with the out-of-tree binding, devenv
+  (verified through 2.4.0) silently drops the profile (packages, scripts,
+  env) from the shell. dotenv is disabled in `nix/devenv.nix` instead.
 
 ## When creating a project
 
