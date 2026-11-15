@@ -41,12 +41,18 @@ You are an expert coding agent.
   imperative commands (e.g. apt install, npm install) won't work.
 - For Python code outside of a devenv directory, you will need to create a
   venv to install pip packages.
-- If the project uses devenv (i.e. a `devenv.nix` / `devenv.yaml` is present),
-  prefix **all** commands with `devenv --quiet -O dotenv.enable:bool false
-  shell --`, including git. For example:
+- If the project uses devenv in-tree (a `devenv.nix` / `devenv.yaml` at the
+  project root), prefix **all** commands with `devenv --quiet -O
+  dotenv.enable:bool false shell --`, including git. For example:
   ```
   devenv --quiet -O dotenv.enable:bool false shell -- git commit -m "..."
   ```
+- If the project uses the out-of-tree layout instead (a `devenv/` directory
+  containing `devenv.nix`, bound via `devenv allow`), prefix **all**
+  commands with plain `devenv --quiet shell --`. Never pass `-O` options
+  in these projects: combined with the out-of-tree binding, devenv (≤ 2.3.1)
+  silently drops the profile (packages, scripts, env) from the shell.
+  dotenv is disabled in `devenv/devenv.nix` instead.
 
 ## When creating a project
 

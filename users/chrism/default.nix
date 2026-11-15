@@ -62,7 +62,11 @@
   environment.variables = {
     UBUNTU_PRO_ATTACH = config.age.secrets."mcdonc-ubuntu-pro-attach".path;
     ENFOLD_ALAN_PAT = config.age.secrets."enfold-alan-pat".path;
-    CACHIX_AUTHTOKEN = config.age.secrets."enfold-cachix-authtoken".path;
+    # An expired token here is sent to every substituter (incl. public
+    # devenv.cachix.org) and 401s instead of falling back to anonymous
+    # access, breaking substitution in all devenv projects. Re-enable
+    # only with a fresh token (see enfold-cachix-authtoken secret).
+    # CACHIX_AUTHTOKEN = config.age.secrets."enfold-cachix-authtoken".path;
   };
 
   # Define a user account.
