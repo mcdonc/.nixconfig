@@ -76,6 +76,10 @@
 
   programs.dconf.enable = true;
 
+  # 1Password GUI via module (system-wide install + polkit auth integration);
+  # replaces the bare home.packages entry
+  programs._1password-gui.enable = true;
+
   services.locate.enable = false;
 
   # wireshark without sudo; note that still necessary to add
