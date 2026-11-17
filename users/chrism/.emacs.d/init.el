@@ -10,9 +10,6 @@
 (when (fboundp 'set-scroll-bar-mode)
   (set-scroll-bar-mode nil))
 
-;; uncorrupt under wayland?  doesnt seem to work.
-(modify-all-frames-parameters '((inhibit-double-buffering . t)))
-
 ;;;; Presentation font sizing (emacsclient)
 ;; (setq default-frame-alist '((width . 80)
 ;;                             (height . 34)
@@ -23,7 +20,6 @@
 ;; Normal font sizing (emacsclient)
 (setq default-frame-alist '((width . 80)
                             (height . 34)
-                            (font-backend . "xft")
                             (font . "UbuntuMono Nerd Font Mono-18")
                             (vertical-scroll-bars . nil)))
 

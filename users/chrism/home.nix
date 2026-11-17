@@ -181,9 +181,13 @@ let
     ./graphical.nix
   ];
 
-  # use emacs-nox for headless systems, full emacs for workstations
+  # use emacs-nox for headless systems, PGTK emacs for workstations.
+  # PGTK renders natively under Wayland (no Xwayland round-trip), fixing
+  # the screen corruption the old inhibit-double-buffering hack in
+  # .emacs.d/init.el tried and failed to work around; the xft font-backend
+  # forcing was dropped along with it (PGTK uses cairo/harfbuzz).
   # pkgs-emacs is pinned to prevent recompiles on every nix flake update
-  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs else pkgs-emacs.emacs-nox;
+  emacsBase = if config.jawns.isworkstation then pkgs-emacs.emacs-pgtk else pkgs-emacs.emacs-nox;
 
   emacswithpackages = (pkgs-emacs.emacsPackagesFor emacsBase).emacsWithPackages (epkgs: [
     epkgs.dockerfile-mode
