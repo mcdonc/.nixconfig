@@ -88,6 +88,7 @@ in
       any-nix-shell
       ansi2html
       asciiquarium
+      backblaze-b2
       banner
       bastet # tetris
       bat
@@ -176,6 +177,7 @@ in
       wget
       wol
       xz
+      yubikey-manager
       zstd
     ]
     ++ lib.optionals (!config.jawns.isworkstation) [

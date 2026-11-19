@@ -184,4 +184,6 @@
   # unset package lets the module use the daemon-only default (GUI client is
   # still installed via systemPackages)
 
+  programs.yubikey-manager.enable = true;
+
 }
