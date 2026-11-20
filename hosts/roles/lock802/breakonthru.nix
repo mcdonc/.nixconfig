@@ -25,7 +25,11 @@ let
     ];
 
     dependencies = with pkgs.python312Packages; [
-      setuptools
+      # setuptools deliberately NOT listed: on 26.11 the set's setuptools
+      # (83.0.0) conflicts with the setuptools-80.10.2 pyramid propagates
+      # (pythonCatchConflictsPhase fails on two setuptools in one env);
+      # pyramid's pinned one lands in the runtime closure anyway, which is
+      # enough for the egg: entry points used by pserve
       plaster-pastedeploy
       pyramid
       pyramid-chameleon
@@ -49,7 +53,8 @@ let
     pkgs.python312.withPackages (
       p: with p; [
         breakonthru
-        setuptools
+        # setuptools NOT listed, see note above (pyramid's pinned
+        # setuptools-80.10.2 is in the closure)
         plaster-pastedeploy
         pyramid
         pyramid-chameleon
