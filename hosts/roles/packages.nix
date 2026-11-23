@@ -127,6 +127,7 @@ in
       iperf
       isd
       jq
+      just
       killall
       pkgs-2511.lha # XXX26.05 broken in nixpkgs 26.05 (C compile errors with newer GCC, waiting for https://github.com/NixOS/nixpkgs/pull/516861)
       loccount
@@ -150,6 +151,7 @@ in
       nodejs
       nmap
       openssl
+      opentofu
       openvpn
       pbzip2
       pciutils
